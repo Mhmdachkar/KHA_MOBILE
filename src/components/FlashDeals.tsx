@@ -184,35 +184,46 @@ const FlashDeals = () => {
           </motion.div>
         </motion.div>
 
-        {/* Flash Deals Grid */}
+        {/* Flash Deals Grid - Horizontal Scrollable Row */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="mb-12"
         >
-          <div className="flex items-center justify-center gap-2 sm:gap-3 mb-8 sm:mb-10 md:mb-12">
+          <div className="flex items-center justify-center gap-2 sm:gap-3 mb-6 sm:mb-8 md:mb-10">
             <TrendingDown className="h-5 w-5 sm:h-6 sm:w-6 text-destructive" />
             <h3 className="text-elegant text-xl sm:text-2xl md:text-3xl">More Flash Deals</h3>
             <Clock className="h-5 w-5 sm:h-6 sm:w-6 text-primary animate-pulse" />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            {flashDeals.map((deal, index) => (
-              <motion.div
-                key={deal.id}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="relative"
-              >
-                <Badge className="absolute top-4 left-4 z-10 bg-destructive text-destructive-foreground">
-                  -{deal.discount}%
-                </Badge>
-                <ProductCard {...deal} />
-              </motion.div>
-            ))}
+          {/* Horizontal Scrollable Container */}
+          <div className="relative group">
+            <div className="flex gap-4 sm:gap-6 overflow-x-auto scrollbar-hide scroll-smooth px-4 sm:px-0 snap-x snap-mandatory"
+              style={{ 
+                scrollbarWidth: "none", 
+                msOverflowStyle: "none", 
+                WebkitOverflowScrolling: "touch",
+                willChange: "scroll-position",
+                transform: "translateZ(0)"
+              }}
+            >
+              {flashDeals.map((deal, index) => (
+                <motion.div
+                  key={deal.id}
+                  initial={{ opacity: 0, x: 40 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.05 }}
+                  className="relative flex-none w-[280px] sm:w-[300px] md:w-[320px] snap-start"
+                >
+                  <Badge className="absolute top-4 left-4 z-10 bg-destructive text-destructive-foreground">
+                    -{deal.discount}%
+                  </Badge>
+                  <ProductCard {...deal} />
+                </motion.div>
+              ))}
+            </div>
           </div>
         </motion.div>
       </div>

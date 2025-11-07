@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Grid3x3, List, ShoppingCart, Gift } from "lucide-react";
+import { Grid3x3, List, ShoppingCart, Gift, Filter } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 // Import all iTunes USA gift card images
 import itunesUSA2 from "@/assets/gift cards/itunes/USA/2$.png";
@@ -1326,131 +1334,294 @@ const FilterSidebar = ({ filters, onUpdateFilters, onClearFilters }: FilterSideb
     onUpdateFilters({ selectedPriceRanges: newRanges });
   };
 
-  return (
-    <motion.aside
-      initial={{ opacity: 0, x: -50 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: 0.2 }}
-      className="lg:col-span-1"
-    >
-      <div className="sticky top-24 space-y-8">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-elegant text-lg">Filters</h2>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="text-elegant text-xs"
-            onClick={onClearFilters}
-          >
-            Clear All
-          </Button>
-        </div>
+  const FilterContent = () => (
+    <div className="space-y-6 sm:space-y-8">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-elegant text-lg">Filters</h2>
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          className="text-elegant text-xs"
+          onClick={onClearFilters}
+        >
+          Clear All
+        </Button>
+      </div>
 
-        {/* Region */}
-        <div className="bg-gradient-to-r from-primary/5 to-accent/5 rounded-lg p-4 border border-primary/20">
-          <h3 className="text-elegant text-sm mb-4 font-medium">🌍 Region</h3>
-          <div className="space-y-3">
-            {REGIONS.map((region) => (
-              <div key={region} className={`flex items-center space-x-2 p-2 rounded transition-all duration-200 ${
-                filters.regions.includes(region) 
-                  ? "bg-primary/10 border border-primary/30" 
-                  : "hover:bg-white/50"
-              }`}>
-                <Checkbox 
-                  id={`region-${region}`}
-                  checked={filters.regions.includes(region)}
-                  onCheckedChange={(checked) => 
-                    handleRegionChange(region, checked as boolean)
-                  }
-                />
-                 <Label
-                   htmlFor={`region-${region}`}
-                   className={`text-sm cursor-pointer transition-colors duration-200 ${
-                     filters.regions.includes(region) 
-                       ? "font-medium text-primary" 
-                       : "font-light"
-                   }`}
-                 >
-                   {region === "Family" ? `${region} (Anghami only)` : region}
-                 </Label>
-              </div>
-            ))}
-          </div>
-          {filters.regions.length > 0 && (
-            <div className="mt-3 p-2 bg-primary/10 rounded border border-primary/20">
-              <p className="text-xs text-primary font-medium">
-                Selected: {filters.regions.join(", ")}
-              </p>
+      {/* Region */}
+      <div className="bg-gradient-to-r from-primary/5 to-accent/5 rounded-lg p-4 border border-primary/20">
+        <h3 className="text-elegant text-sm mb-4 font-medium">🌍 Region</h3>
+        <div className="space-y-3">
+          {REGIONS.map((region) => (
+            <div key={region} className={`flex items-center space-x-2 p-2 rounded transition-all duration-200 ${
+              filters.regions.includes(region) 
+                ? "bg-primary/10 border border-primary/30" 
+                : "hover:bg-white/50"
+            }`}>
+              <Checkbox 
+                id={`region-${region}`}
+                checked={filters.regions.includes(region)}
+                onCheckedChange={(checked) => 
+                  handleRegionChange(region, checked as boolean)
+                }
+              />
+               <Label
+                 htmlFor={`region-${region}`}
+                 className={`text-sm cursor-pointer transition-colors duration-200 ${
+                   filters.regions.includes(region) 
+                     ? "font-medium text-primary" 
+                     : "font-light"
+                 }`}
+               >
+                 {region === "Family" ? `${region} (Anghami only)` : region}
+               </Label>
             </div>
-          )}
+          ))}
         </div>
-
-        {/* Brand */}
-        <div>
-          <h3 className="text-elegant text-sm mb-4">Brand</h3>
-          <div className="space-y-3">
-            {BRANDS.map((brand) => (
-              <div key={brand} className="flex items-center space-x-2">
-                <Checkbox 
-                  id={`brand-${brand}`}
-                  checked={filters.brands.includes(brand)}
-                  onCheckedChange={(checked) => 
-                    handleBrandChange(brand, checked as boolean)
-                  }
-                />
-                <Label
-                  htmlFor={`brand-${brand}`}
-                  className="text-sm font-light cursor-pointer"
-                >
-                  {brand}
-                </Label>
-              </div>
-            ))}
+        {filters.regions.length > 0 && (
+          <div className="mt-3 p-2 bg-primary/10 rounded border border-primary/20">
+            <p className="text-xs text-primary font-medium">
+              Selected: {filters.regions.join(", ")}
+            </p>
           </div>
-        </div>
+        )}
+      </div>
 
-        {/* Price Range Slider */}
-        <div>
-          <h3 className="text-elegant text-sm mb-4">Price Range</h3>
-          <Slider
-            value={filters.priceRange}
-            onValueChange={(value) => onUpdateFilters({ priceRange: value })}
-            max={500}
-            min={0}
-            step={1}
-            className="mb-4"
-          />
-          <div className="flex items-center justify-between text-sm">
-            <span>${filters.priceRange[0].toFixed(2)}</span>
-            <span>${filters.priceRange[1].toFixed(2)}</span>
-          </div>
-        </div>
-
-        {/* Quick Price Filters */}
-        <div>
-          <h3 className="text-elegant text-sm mb-4">Quick Filters</h3>
-          <div className="space-y-3">
-            {PRICE_RANGES.map((range) => (
-              <div key={range.label} className="flex items-center space-x-2">
-                <Checkbox 
-                  id={range.label}
-                  checked={filters.selectedPriceRanges.includes(range.label)}
-                  onCheckedChange={(checked) => 
-                    handlePriceRangeChange(range.label, checked as boolean)
-                  }
-                />
-                <Label
-                  htmlFor={range.label}
-                  className="text-sm font-light cursor-pointer"
-                >
-                  {range.label}
-                </Label>
-              </div>
-            ))}
-          </div>
+      {/* Brand */}
+      <div>
+        <h3 className="text-elegant text-sm mb-4">Brand</h3>
+        <div className="space-y-3">
+          {BRANDS.map((brand) => (
+            <div key={brand} className="flex items-center space-x-2">
+              <Checkbox 
+                id={`brand-${brand}`}
+                checked={filters.brands.includes(brand)}
+                onCheckedChange={(checked) => 
+                  handleBrandChange(brand, checked as boolean)
+                }
+              />
+              <Label
+                htmlFor={`brand-${brand}`}
+                className="text-sm font-light cursor-pointer"
+              >
+                {brand}
+              </Label>
+            </div>
+          ))}
         </div>
       </div>
-    </motion.aside>
+
+      {/* Price Range Slider */}
+      <div>
+        <h3 className="text-elegant text-sm mb-4">Price Range</h3>
+        <Slider
+          value={filters.priceRange}
+          onValueChange={(value) => onUpdateFilters({ priceRange: value })}
+          max={500}
+          min={0}
+          step={1}
+          className="mb-4"
+        />
+        <div className="flex items-center justify-between text-sm">
+          <span>${filters.priceRange[0].toFixed(2)}</span>
+          <span>${filters.priceRange[1].toFixed(2)}</span>
+        </div>
+      </div>
+
+      {/* Quick Price Filters */}
+      <div>
+        <h3 className="text-elegant text-sm mb-4">Quick Filters</h3>
+        <div className="space-y-3">
+          {PRICE_RANGES.map((range) => (
+            <div key={range.label} className="flex items-center space-x-2">
+              <Checkbox 
+                id={range.label}
+                checked={filters.selectedPriceRanges.includes(range.label)}
+                onCheckedChange={(checked) => 
+                  handlePriceRangeChange(range.label, checked as boolean)
+                }
+              />
+              <Label
+                htmlFor={range.label}
+                className="text-sm font-light cursor-pointer"
+              >
+                {range.label}
+              </Label>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <>
+      {/* Desktop Sidebar - Hidden on mobile, visible on lg+ */}
+      <motion.aside
+        initial={{ opacity: 0, x: -50 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.2 }}
+        className="hidden lg:block lg:col-span-1"
+      >
+        <div className="sticky top-24">
+          <FilterContent />
+        </div>
+      </motion.aside>
+    </>
+  );
+};
+
+// Separate Mobile Filter Button Component
+const MobileFilterButton = ({ filters, onUpdateFilters, onClearFilters }: FilterSidebarProps) => {
+  const FilterContent = () => (
+    <div className="space-y-6 sm:space-y-8">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-elegant text-lg">Filters</h2>
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          className="text-elegant text-xs"
+          onClick={onClearFilters}
+        >
+          Clear All
+        </Button>
+      </div>
+
+      {/* Region */}
+      <div className="bg-gradient-to-r from-primary/5 to-accent/5 rounded-lg p-4 border border-primary/20">
+        <h3 className="text-elegant text-sm mb-4 font-medium">🌍 Region</h3>
+        <div className="space-y-3">
+          {REGIONS.map((region) => (
+            <div key={region} className={`flex items-center space-x-2 p-2 rounded transition-all duration-200 ${
+              filters.regions.includes(region) 
+                ? "bg-primary/10 border border-primary/30" 
+                : "hover:bg-white/50"
+            }`}>
+              <Checkbox 
+                id={`mobile-region-${region}`}
+                checked={filters.regions.includes(region)}
+                onCheckedChange={(checked) => {
+                  const newRegions = checked
+                    ? [...filters.regions, region]
+                    : filters.regions.filter(r => r !== region);
+                  onUpdateFilters({ regions: newRegions });
+                }}
+              />
+               <Label
+                 htmlFor={`mobile-region-${region}`}
+                 className={`text-sm cursor-pointer transition-colors duration-200 ${
+                   filters.regions.includes(region) 
+                     ? "font-medium text-primary" 
+                     : "font-light"
+                 }`}
+               >
+                 {region === "Family" ? `${region} (Anghami only)` : region}
+               </Label>
+            </div>
+          ))}
+        </div>
+        {filters.regions.length > 0 && (
+          <div className="mt-3 p-2 bg-primary/10 rounded border border-primary/20">
+            <p className="text-xs text-primary font-medium">
+              Selected: {filters.regions.join(", ")}
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Brand */}
+      <div>
+        <h3 className="text-elegant text-sm mb-4">Brand</h3>
+        <div className="space-y-3">
+          {BRANDS.map((brand) => (
+            <div key={brand} className="flex items-center space-x-2">
+              <Checkbox 
+                id={`mobile-brand-${brand}`}
+                checked={filters.brands.includes(brand)}
+                onCheckedChange={(checked) => {
+                  const newBrands = checked
+                    ? [...filters.brands, brand]
+                    : filters.brands.filter(b => b !== brand);
+                  onUpdateFilters({ brands: newBrands });
+                }}
+              />
+              <Label
+                htmlFor={`mobile-brand-${brand}`}
+                className="text-sm font-light cursor-pointer"
+              >
+                {brand}
+              </Label>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Price Range Slider */}
+      <div>
+        <h3 className="text-elegant text-sm mb-4">Price Range</h3>
+        <Slider
+          value={filters.priceRange}
+          onValueChange={(value) => onUpdateFilters({ priceRange: value })}
+          max={500}
+          min={0}
+          step={1}
+          className="mb-4"
+        />
+        <div className="flex items-center justify-between text-sm">
+          <span>${filters.priceRange[0].toFixed(2)}</span>
+          <span>${filters.priceRange[1].toFixed(2)}</span>
+        </div>
+      </div>
+
+      {/* Quick Price Filters */}
+      <div>
+        <h3 className="text-elegant text-sm mb-4">Quick Filters</h3>
+        <div className="space-y-3">
+          {PRICE_RANGES.map((range) => (
+            <div key={range.label} className="flex items-center space-x-2">
+              <Checkbox 
+                id={`mobile-${range.label}`}
+                checked={filters.selectedPriceRanges.includes(range.label)}
+                onCheckedChange={(checked) => {
+                  const newRanges = checked
+                    ? [...filters.selectedPriceRanges, range.label]
+                    : filters.selectedPriceRanges.filter(r => r !== range.label);
+                  onUpdateFilters({ selectedPriceRanges: newRanges });
+                }}
+              />
+              <Label
+                htmlFor={`mobile-${range.label}`}
+                className="text-sm font-light cursor-pointer"
+              >
+                {range.label}
+              </Label>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="outline" className="w-full">
+          <Filter className="mr-2 h-4 w-4" />
+          Filters
+        </Button>
+      </SheetTrigger>
+      <SheetContent side="left" className="w-[280px] sm:w-[320px] overflow-y-auto">
+        <SheetHeader>
+          <SheetTitle>Filters</SheetTitle>
+          <SheetDescription>
+            Filter gift cards by region, brand, and price range
+          </SheetDescription>
+        </SheetHeader>
+        <div className="mt-6">
+          <FilterContent />
+        </div>
+      </SheetContent>
+    </Sheet>
   );
 };
 
@@ -1464,13 +1635,13 @@ interface ControlsProps {
 
 const Controls = ({ viewMode, onViewModeChange, sortBy, onSortChange, totalCount }: ControlsProps) => {
   return (
-    <div className="flex items-center justify-between mb-8">
-      <p className="text-sm text-muted-foreground">
+    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 mb-6 sm:mb-8">
+      <p className="text-xs sm:text-sm text-muted-foreground">
         Showing {totalCount} gift cards
       </p>
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto">
         <Select value={sortBy} onValueChange={onSortChange}>
-          <SelectTrigger className="w-[180px] text-elegant text-xs">
+          <SelectTrigger className="w-full sm:w-[180px] text-elegant text-xs">
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
           <SelectContent>
@@ -1481,11 +1652,12 @@ const Controls = ({ viewMode, onViewModeChange, sortBy, onSortChange, totalCount
             ))}
           </SelectContent>
         </Select>
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-shrink-0">
           <Button
             variant={viewMode === "grid" ? "default" : "outline"}
             size="icon"
             onClick={() => onViewModeChange("grid")}
+            className="h-9 w-9"
           >
             <Grid3x3 className="h-4 w-4" />
           </Button>
@@ -1493,6 +1665,7 @@ const Controls = ({ viewMode, onViewModeChange, sortBy, onSortChange, totalCount
             variant={viewMode === "list" ? "default" : "outline"}
             size="icon"
             onClick={() => onViewModeChange("list")}
+            className="h-9 w-9"
           >
             <List className="h-4 w-4" />
           </Button>
@@ -1597,11 +1770,11 @@ const GiftCards = () => {
     <div className="min-h-screen bg-white no-horizontal-scroll overflow-x-hidden">
       <Header />
 
-      <div className="container mx-auto px-6 py-12">
+      <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12">
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-elegant text-4xl mb-4"
+          className="text-elegant text-2xl sm:text-3xl md:text-4xl mb-3 sm:mb-4"
         >
           Gift Cards
         </motion.h1>
@@ -1610,7 +1783,7 @@ const GiftCards = () => {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="text-muted-foreground mb-8"
+          className="text-sm sm:text-base text-muted-foreground mb-6 sm:mb-8"
         >
           Premium digital gift cards for all your favorite platforms
         </motion.p>
@@ -1620,12 +1793,12 @@ const GiftCards = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-gradient-to-r from-primary/5 to-accent/5 rounded-lg p-6 mb-8 border border-primary/20"
+          className="bg-gradient-to-r from-primary/5 to-accent/5 rounded-lg p-4 sm:p-6 mb-6 sm:mb-8 border border-primary/20"
         >
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h2 className="text-elegant text-lg font-medium mb-2">🌍 Select Your Region</h2>
-              <p className="text-sm text-muted-foreground">
+              <h2 className="text-elegant text-base sm:text-lg font-medium mb-2">🌍 Select Your Region</h2>
+              <p className="text-xs sm:text-sm text-muted-foreground">
                 Choose your region to see available gift cards. This is required to ensure compatibility.
               </p>
             </div>
@@ -1641,7 +1814,7 @@ const GiftCards = () => {
                        : [...filters.regions, region];
                      updateFilters({ regions: newRegions });
                    }}
-                   className={`transition-all duration-200 ${
+                   className={`text-xs sm:text-sm transition-all duration-200 ${
                      filters.regions.includes(region)
                        ? "bg-primary text-white shadow-lg scale-105"
                        : "hover:bg-primary/10"
@@ -1654,18 +1827,29 @@ const GiftCards = () => {
           </div>
         </motion.div>
 
-        <div className="grid lg:grid-cols-4 gap-8">
+        {/* Mobile Filter Button - Appears above cards on mobile, hidden on desktop */}
+        <div className="lg:hidden mb-4">
+          <MobileFilterButton 
+            filters={filters}
+            onUpdateFilters={updateFilters}
+            onClearFilters={clearAllFilters}
+          />
+        </div>
+
+        <div className="grid lg:grid-cols-4 gap-6 lg:gap-8">
+          {/* Desktop Filter Sidebar - Hidden on mobile, visible on lg+ */}
           <FilterSidebar 
             filters={filters}
             onUpdateFilters={updateFilters}
             onClearFilters={clearAllFilters}
           />
 
+          {/* Main Content Area - Cards (Full width on mobile, 3 columns on desktop) */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
-            className="lg:col-span-3"
+            className="w-full lg:col-span-3"
           >
             <Controls
               viewMode={viewMode}

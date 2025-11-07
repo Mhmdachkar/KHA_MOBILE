@@ -104,7 +104,7 @@ const Home = () => {
       {/* Revolutionary Hero Section */}
       <motion.section
         ref={heroRef}
-        className="relative min-h-screen flex items-center justify-center overflow-hidden"
+        className="relative min-h-[85vh] sm:min-h-screen flex items-center justify-center overflow-hidden py-8 sm:py-12 md:py-16"
         style={{
           backgroundColor: "#ffffff",
           backgroundImage: `
@@ -127,8 +127,8 @@ const Home = () => {
           />
 
 
-        <motion.div style={{ opacity, scale }} className="container mx-auto px-4 sm:px-6 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 items-center">
+        <motion.div style={{ opacity, scale }} className="container mx-auto px-4 sm:px-6 relative z-10 w-full">
+          <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12 items-center">
             {/* Left Content */}
             <motion.div
               initial={{ opacity: 0, x: -150, rotateY: 30 }}
@@ -140,7 +140,7 @@ const Home = () => {
                 stiffness: 80,
                 damping: 20
               }}
-              className="space-y-4 sm:space-y-6 lg:space-y-8 text-center lg:text-left"
+              className="space-y-3 sm:space-y-4 md:space-y-6 lg:space-y-8 text-center lg:text-left"
             >
               {/* Floating Badge with Powerful Entrance */}
               <motion.div
@@ -161,7 +161,7 @@ const Home = () => {
                   transition: { duration: 0.4 }
                 }}
               >
-                <Badge className="mb-4 relative overflow-hidden">
+                <Badge className="mb-2 sm:mb-3 md:mb-4 relative overflow-hidden text-xs sm:text-sm">
                   <motion.div
                     initial={{ x: "-100%" }}
                     animate={{ x: "100%" }}
@@ -172,7 +172,7 @@ const Home = () => {
                     }}
                     className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
                   />
-                  <Sparkles className="h-3 w-3 mr-1" />
+                  <Sparkles className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-1" />
                   New Collection 2025
                 </Badge>
               </motion.div>
@@ -184,7 +184,7 @@ const Home = () => {
                 transition={{ delay: 0.5, duration: 0.8 }}
               >
                 <motion.h1
-                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl font-bold"
+                  className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-7xl 2xl:text-8xl font-bold leading-tight"
               >
                   <motion.span 
                     initial={{ opacity: 0, y: 80, rotateX: -120, scale: 0.5 }}
@@ -235,7 +235,7 @@ const Home = () => {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 1.2, duration: 1 }}
-                  className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-lg mx-auto lg:mx-0 font-light leading-relaxed"
+                  className="text-xs sm:text-sm md:text-base lg:text-lg text-muted-foreground max-w-lg mx-auto lg:mx-0 font-light leading-relaxed px-2 sm:px-0"
               >
                 Experience the pinnacle of technology with our curated collection of premium devices, 
                 smart accessories, and cutting-edge innovations.
@@ -254,7 +254,7 @@ const Home = () => {
                   stiffness: 120,
                   damping: 15
                 }}
-                className="flex flex-wrap gap-3 sm:gap-4 justify-center lg:justify-start"
+                className="flex flex-wrap gap-2 sm:gap-3 md:gap-4 justify-center lg:justify-start px-2 sm:px-0"
               >
                 <motion.div
                   whileHover={{ scale: 1.05 }}
@@ -306,7 +306,7 @@ const Home = () => {
                   stiffness: 100,
                   damping: 18
                 }}
-                className="flex gap-8 pt-8"
+                className="flex gap-4 sm:gap-6 md:gap-8 pt-4 sm:pt-6 md:pt-8 justify-center lg:justify-start"
               >
                 {[
                   { value: "10K+", label: "Products" },
@@ -339,7 +339,7 @@ const Home = () => {
                       transition={{ duration: 0.3 }}
                       className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 rounded-lg blur-xl"
                     />
-                    <div className="relative z-10 flex items-center justify-center gap-1 text-2xl font-bold text-primary mb-1">
+                    <div className="relative z-10 flex items-center justify-center gap-1 text-lg sm:text-xl md:text-2xl font-bold text-primary mb-1">
                       <motion.span
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -353,11 +353,11 @@ const Home = () => {
                           animate={{ opacity: 1, rotate: 0 }}
                           transition={{ delay: 2.2 + (i * 0.1), duration: 0.8 }}
                         >
-                          <stat.icon className="h-5 w-5 fill-primary" />
+                          <stat.icon className="h-4 w-4 sm:h-5 sm:w-5 fill-primary" />
                         </motion.div>
                       )}
                     </div>
-                    <div className="text-sm text-muted-foreground">{stat.label}</div>
+                    <div className="text-xs sm:text-sm text-muted-foreground">{stat.label}</div>
                   </motion.div>
                 ))}
               </motion.div>
@@ -376,11 +376,11 @@ const Home = () => {
                 damping: 25
               }}
               style={{ y }}
-              className="relative group"
+              className="relative group order-first lg:order-last"
             >
               {/* Image Container with Perfect Edge Blending */}
               <div 
-                className="hero-image-container relative overflow-hidden"
+                className="hero-image-container relative overflow-hidden max-w-full mx-auto"
                 style={{
                   backgroundColor: "#ffffff",
                   backgroundImage: `
@@ -491,7 +491,7 @@ const Home = () => {
                 <motion.img
                   src={heroProduct}
                   alt="Premium Technology"
-                  className="w-full h-auto relative z-10"
+                  className="w-full h-auto relative z-10 max-h-[300px] sm:max-h-[400px] md:max-h-[500px] lg:max-h-[600px] xl:max-h-[700px] object-contain"
                   initial={{ 
                     opacity: 0, 
                     scale: 0.4, 
@@ -603,7 +603,7 @@ const Home = () => {
             duration: 0.8,
             ease: [0.4, 0, 0.2, 1]
           }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          className="absolute bottom-4 sm:bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 hidden md:block"
         >
           <motion.div
             whileHover={{ scale: 1.1 }}
