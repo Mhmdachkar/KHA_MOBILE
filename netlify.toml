@@ -1,12 +1,11 @@
 [build]
-  # Build command - installs dependencies and builds the project
+  # Build command - installs dependencies (including devDependencies) and builds the project
+  # Vite builds in production mode by default, so no need to set NODE_ENV
   command = "npm ci && npm run build"
   # Directory with the build output (Vite outputs to 'dist')
   publish = "dist"
 
 [build.environment]
-  # Set NODE_ENV to production for optimized build
-  NODE_ENV = "production"
   # Node version (Netlify will use .nvmrc if present, or this value)
   NODE_VERSION = "18"
 
