@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Grid3x3, List, Filter } from "lucide-react";
 import { useLocation, Link } from "react-router-dom";
@@ -127,27 +127,61 @@ const CategoryPage = () => {
   }, [location.pathname]);
 
   // Get category display name from pathname
-  const categoryDisplayName = categoryMap[location.pathname] || "Category";
+  // Handle both direct routes (/audio) and dynamic routes (/category/audio)
+  const getCategoryFromPath = (pathname: string): string => {
+    // Check direct route first
+    if (categoryMap[pathname]) {
+      return categoryMap[pathname];
+    }
+    
+    // Check dynamic route (/category/:categoryName)
+    const categoryMatch = pathname.match(/^\/category\/(.+)$/);
+    if (categoryMatch) {
+      const categoryParam = categoryMatch[1];
+      // Capitalize first letter for category name
+      return categoryParam.charAt(0).toUpperCase() + categoryParam.slice(1);
+    }
+    
+    return "Category";
+  };
+
+  const categoryDisplayName = getCategoryFromPath(location.pathname);
 
   // Get products for this category
   const categoryProducts = useMemo(() => {
     let products: any[] = [];
 
-    // Get mock products if they exist
-    if (mockProducts[categoryDisplayName as keyof typeof mockProducts]) {
-      products = [...mockProducts[categoryDisplayName as keyof typeof mockProducts]];
-    }
+    try {
+      // Get mock products if they exist
+      if (mockProducts[categoryDisplayName as keyof typeof mockProducts]) {
+        const mock = mockProducts[categoryDisplayName as keyof typeof mockProducts];
+        if (Array.isArray(mock) && mock.length > 0) {
+          products = [...mock];
+        }
+      }
 
-    // Add accessories products if category matches
-    if (categoryDisplayName === "Audio") {
-      const audioAccessories = getProductsByCategory("Audio");
-      products = [...products, ...audioAccessories];
-    } else if (categoryDisplayName === "Gaming") {
-      const gamingAccessories = getProductsByCategory("Gaming");
-      products = [...products, ...gamingAccessories];
-    } else if (categoryDisplayName === "Wearables") {
-      const wearables = getProductsByCategory("Wearables");
-      products = [...products, ...wearables];
+      // Get real products from data file based on category
+      if (categoryDisplayName === "Audio") {
+        const audioProducts = getProductsByCategory("Audio");
+        if (Array.isArray(audioProducts) && audioProducts.length > 0) {
+          products = [...products, ...audioProducts];
+        }
+      } else if (categoryDisplayName === "Gaming") {
+        const gamingProducts = getProductsByCategory("Gaming");
+        if (Array.isArray(gamingProducts) && gamingProducts.length > 0) {
+          products = [...products, ...gamingProducts];
+        }
+      } else if (categoryDisplayName === "Wearables") {
+        const wearables = getProductsByCategory("Wearables");
+        if (Array.isArray(wearables) && wearables.length > 0) {
+          products = [...products, ...wearables];
+        }
+      } else if (categoryDisplayName === "Smartphones") {
+        // Smartphones are mock data only
+        // You can add real smartphone products here if needed
+      }
+    } catch (error) {
+      console.error("Error fetching products for category:", categoryDisplayName, error);
     }
 
     return products;
@@ -178,8 +212,20 @@ const CategoryPage = () => {
     return filtered;
   }, [categoryProducts, sortBy]);
 
-  // Redirect if category not found
-  if (!categoryDisplayName || categoryDisplayName === "Category") {
+  // Debug: Log category information (remove in production)
+  useEffect(() => {
+    console.log("CategoryPage - pathname:", location.pathname);
+    console.log("CategoryPage - categoryDisplayName:", categoryDisplayName);
+    console.log("CategoryPage - categoryProducts:", categoryProducts.length);
+    console.log("CategoryPage - filteredAndSortedProducts:", filteredAndSortedProducts.length);
+  }, [location.pathname, categoryDisplayName, categoryProducts, filteredAndSortedProducts]);
+
+  // Only redirect if category is truly not found (not in map and not a valid dynamic route)
+  const isCategoryNotFound = !categoryMap[location.pathname] && 
+                             categoryDisplayName === "Category" &&
+                             !location.pathname.match(/^\/category\//);
+  
+  if (isCategoryNotFound) {
     return (
       <div className="min-h-screen bg-background no-horizontal-scroll overflow-x-hidden">
         <Header />
@@ -357,28 +403,55 @@ const CategoryPage = () => {
                     : "grid-cols-1"
                 }`}
               >
-                {filteredAndSortedProducts.map((product, index) => (
-                  <motion.div
-                    key={product.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.05 }}
-                  >
-                    <ProductCard {...product} />
-                  </motion.div>
-                ))}
+                {filteredAndSortedProducts.map((product, index) => {
+                  // Ensure product has all required fields
+                  if (!product || !product.id || !product.name || !product.image) {
+                    console.warn("Invalid product:", product);
+                    return null;
+                  }
+                  return (
+                    <motion.div
+                      key={product.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                    >
+                      <ProductCard 
+                        id={product.id}
+                        name={product.name}
+                        price={product.price || 0}
+                        image={product.image}
+                        rating={product.rating}
+                        category={product.category}
+                      />
+                    </motion.div>
+                  );
+                })}
               </div>
             ) : (
               <div className="text-center py-12 sm:py-16">
-                <p className="text-muted-foreground mb-4">No products found matching your filters.</p>
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    setSortBy("default");
-                  }}
-                >
-                  Clear Filters
-                </Button>
+                <p className="text-muted-foreground text-lg mb-4">
+                  {categoryProducts.length === 0 
+                    ? `No products available in ${categoryDisplayName} category yet.`
+                    : "No products found matching your filters."}
+                </p>
+                {categoryProducts.length > 0 && (
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setSortBy("default");
+                    }}
+                  >
+                    Clear Filters
+                  </Button>
+                )}
+                <div className="mt-6">
+                  <Link to="/">
+                    <Button variant="default">
+                      Back to Home
+                    </Button>
+                  </Link>
+                </div>
               </div>
             )}
           </motion.div>

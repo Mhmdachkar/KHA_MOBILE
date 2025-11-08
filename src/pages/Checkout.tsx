@@ -529,11 +529,11 @@ const Checkout = () => {
               {isStreamingServiceCheckout || isRechargeCheckout ? (
                 <>
                   {/* Streaming Service/Recharge/Gift Card Product Image */}
-                  <div className="aspect-[4/3] bg-gradient-to-br from-primary/5 to-accent/5 rounded-lg mb-6 overflow-hidden border border-border">
+                  <div className="aspect-[4/3] bg-gradient-to-br from-primary/5 to-accent/5 rounded-lg mb-4 sm:mb-6 overflow-hidden border border-border">
                     <img
                       src={productImage || getProductImage()}
                       alt={productName}
-                      className="w-full h-full object-contain p-8"
+                      className="w-full h-full object-contain p-4 sm:p-6 md:p-8"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.src = "/placeholder.svg";
@@ -542,37 +542,37 @@ const Checkout = () => {
                   </div>
 
                   {/* Streaming Service/Recharge/Gift Card Product Details */}
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between pb-4 border-b border-border">
-                      <div>
-                        <p className="text-elegant text-xs text-primary mb-1">{productCategory}</p>
-                        <h3 className="text-elegant text-lg">{productName}</h3>
+                  <div className="space-y-3 sm:space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 pb-3 sm:pb-4 border-b border-border">
+                      <div className="flex-1 min-w-0">
+                        <p className="text-elegant text-[10px] sm:text-xs text-primary mb-1">{productCategory}</p>
+                        <h3 className="text-elegant text-base sm:text-lg">{productName}</h3>
                         {productRegion && (
-                          <div className="flex items-center gap-2 mt-2">
-                            <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
+                          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mt-2">
+                            <span className="text-[10px] sm:text-xs bg-primary/10 text-primary px-2 py-0.5 sm:py-1 rounded-full">
                               🌍 {productRegion}
                             </span>
                             {productBrand && (
-                              <span className="text-xs bg-accent/10 text-accent px-2 py-1 rounded-full">
+                              <span className="text-[10px] sm:text-xs bg-accent/10 text-accent px-2 py-0.5 sm:py-1 rounded-full">
                                 {productBrand}
                               </span>
                             )}
                           </div>
                         )}
                       </div>
-                      <div className="text-right">
+                      <div className="text-left sm:text-right flex-shrink-0">
                         {isStreamingServiceCheckout ? (
                           <>
                             {productPrice > 0 && (
-                              <p className="text-elegant text-xl font-medium">${productPrice.toFixed(2)}</p>
+                              <p className="text-elegant text-lg sm:text-xl font-medium">${productPrice.toFixed(2)}</p>
                             )}
-                            <p className="text-sm text-muted-foreground">+ $8.00/month</p>
+                            <p className="text-xs sm:text-sm text-muted-foreground">+ $8.00/month</p>
                           </>
                         ) : (
                           <>
-                            <p className="text-elegant text-xl font-medium">${productPrice.toFixed(2)}</p>
+                            <p className="text-elegant text-lg sm:text-xl font-medium">${productPrice.toFixed(2)}</p>
                             {productRegion !== "USA" && productRegionalPrice > 0 && (
-                              <p className="text-sm text-muted-foreground">
+                              <p className="text-xs sm:text-sm text-muted-foreground">
                                 {productRegionalCurrency} {productRegionalPrice}
                               </p>
                             )}
@@ -591,10 +591,10 @@ const Checkout = () => {
                         key={item.id}
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="flex gap-4 p-4 border border-border rounded-lg bg-gradient-to-r from-primary/5 to-accent/5"
+                        className="flex gap-2 sm:gap-3 md:gap-4 p-3 sm:p-4 border border-border rounded-lg bg-gradient-to-r from-primary/5 to-accent/5"
                       >
                         {/* Product Image */}
-                        <div className="w-24 h-24 rounded-lg overflow-hidden bg-white border border-border flex-shrink-0">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-lg overflow-hidden bg-white border border-border flex-shrink-0">
                           <img
                             src={item.image}
                             alt={item.name}
@@ -609,40 +609,40 @@ const Checkout = () => {
                         {/* Product Info */}
                         <div className="flex-1 min-w-0">
                           <Link to={`/product/${item.id}`} className="hover:underline">
-                            <h3 className="text-sm font-medium text-elegant line-clamp-2 mb-1">
+                            <h3 className="text-xs sm:text-sm font-medium text-elegant line-clamp-2 mb-1">
                               {item.name}
                             </h3>
                           </Link>
                           {item.category && (
-                            <p className="text-xs text-muted-foreground mb-2">{item.category}</p>
+                            <p className="text-[10px] sm:text-xs text-muted-foreground mb-1 sm:mb-2">{item.category}</p>
                           )}
-                          <div className="flex items-center justify-between mt-2">
-                            <div className="flex items-center gap-2 border border-border rounded-lg">
+                          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mt-1 sm:mt-2">
+                            <div className="flex items-center gap-1 sm:gap-2 border border-border rounded-lg">
                               <motion.button
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
                                 onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                className="h-7 w-7 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
+                                className="h-6 w-6 sm:h-7 sm:w-7 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
                               >
-                                <Minus className="h-3 w-3" />
+                                <Minus className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
                               </motion.button>
-                              <span className="text-sm font-medium w-8 text-center">
+                              <span className="text-xs sm:text-sm font-medium w-6 sm:w-8 text-center">
                                 {item.quantity}
                               </span>
                               <motion.button
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
                                 onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                className="h-7 w-7 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
+                                className="h-6 w-6 sm:h-7 sm:w-7 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
                               >
-                                <Plus className="h-3 w-3" />
+                                <Plus className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
                               </motion.button>
                             </div>
-                            <div className="text-right">
-                              <p className="text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                            <div className="text-left sm:text-right">
+                              <p className="text-base sm:text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                                 ${(item.price * item.quantity).toFixed(2)}
                               </p>
-                              <p className="text-xs text-muted-foreground">
+                              <p className="text-[10px] sm:text-xs text-muted-foreground">
                                 ${item.price.toFixed(2)} each
                               </p>
                             </div>
@@ -654,9 +654,9 @@ const Checkout = () => {
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
                           onClick={() => removeFromCart(item.id)}
-                          className="h-8 w-8 rounded-full hover:bg-destructive hover:text-destructive-foreground transition-all flex items-center justify-center self-start"
+                          className="h-6 w-6 sm:h-8 sm:w-8 rounded-full hover:bg-destructive hover:text-destructive-foreground transition-all flex items-center justify-center self-start"
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
                         </motion.button>
                       </motion.div>
                     ))}
@@ -770,12 +770,12 @@ const Checkout = () => {
                 </div>
 
               {/* Security Notice */}
-              <div className="mt-6 p-4 bg-primary/5 rounded-lg border border-primary/20">
-                <div className="flex items-start gap-3">
-                  <Check className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+              <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-primary/5 rounded-lg border border-primary/20">
+                <div className="flex items-start gap-2 sm:gap-3">
+                  <Check className="h-4 w-4 sm:h-5 sm:w-5 text-primary mt-0.5 flex-shrink-0" />
                   <div>
-                    <p className="text-sm font-medium mb-1">Secure Payment</p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs sm:text-sm font-medium mb-1">Secure Payment</p>
+                    <p className="text-[10px] sm:text-xs text-muted-foreground">
                       Your payment will be processed securely via WhatsApp. We'll send your card details instantly after confirmation.
                     </p>
                   </div>
@@ -1073,17 +1073,17 @@ const Checkout = () => {
                 </motion.div>
 
                 {/* Payment Info */}
-                <div className="pt-4 space-y-3">
-                  <div className="flex items-start gap-2 text-xs text-muted-foreground">
-                    <Check className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                <div className="pt-3 sm:pt-4 space-y-2 sm:space-y-3">
+                  <div className="flex items-start gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-muted-foreground">
+                    <Check className="h-3 w-3 sm:h-4 sm:w-4 text-primary mt-0.5 flex-shrink-0" />
                     <p>Instant delivery via WhatsApp after payment confirmation</p>
                   </div>
-                  <div className="flex items-start gap-2 text-xs text-muted-foreground">
-                    <Check className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                  <div className="flex items-start gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-muted-foreground">
+                    <Check className="h-3 w-3 sm:h-4 sm:w-4 text-primary mt-0.5 flex-shrink-0" />
                     <p>Secure payment process - your information is protected</p>
                   </div>
-                  <div className="flex items-start gap-2 text-xs text-muted-foreground">
-                    <Check className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                  <div className="flex items-start gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-muted-foreground">
+                    <Check className="h-3 w-3 sm:h-4 sm:w-4 text-primary mt-0.5 flex-shrink-0" />
                     <p>24/7 customer support available</p>
                   </div>
                 </div>
