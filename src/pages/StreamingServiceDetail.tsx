@@ -259,9 +259,9 @@ const StreamingServiceDetail = () => {
             )}
 
             {/* Subscription Plans */}
-            <div id="subscription-plans" className="mb-8 scroll-mt-24">
-              <h2 className="text-elegant text-xl sm:text-2xl mb-4">Subscription Plans</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div id="subscription-plans" className="mb-6 sm:mb-8 scroll-mt-24">
+              <h2 className="text-elegant text-xl sm:text-2xl mb-3 sm:mb-4">Subscription Plans</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 {service.plans.map((plan) => {
                   const isSelected = selectedPlan === plan.id;
                   return (
@@ -270,7 +270,7 @@ const StreamingServiceDetail = () => {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => setSelectedPlan(plan.id)}
-                      className={`p-4 rounded-lg border-2 transition-all duration-200 text-left relative ${
+                      className={`p-3 sm:p-4 rounded-lg border-2 transition-all duration-200 text-left relative ${
                         isSelected
                           ? plan.isFreeTrial
                             ? "bg-accent/20 border-accent shadow-lg"
@@ -280,20 +280,20 @@ const StreamingServiceDetail = () => {
                             : "bg-primary/5 border-primary/20 hover:border-primary/40 hover:bg-primary/10"
                       }`}
                     >
-                      <div className="flex items-center justify-between">
-                        <span className={`text-base font-medium ${
+                      <div className="flex items-center justify-between gap-2">
+                        <span className={`text-sm sm:text-base font-medium ${
                           plan.isFreeTrial ? "text-accent" : "text-elegant"
                         }`}>
                           {plan.duration}
                         </span>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 flex-shrink-0">
                           {plan.isFreeTrial && (
-                            <span className="text-xs bg-accent text-white px-3 py-1 rounded">
+                            <span className="text-[10px] sm:text-xs bg-accent text-white px-2 sm:px-3 py-0.5 sm:py-1 rounded">
                               FREE
                             </span>
                           )}
                           {isSelected && (
-                            <CheckCircle2 className="h-5 w-5 text-primary" />
+                            <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0" />
                           )}
                         </div>
                       </div>
@@ -306,7 +306,7 @@ const StreamingServiceDetail = () => {
             {/* Subscribe Button */}
             <Button
               size="lg"
-              className="w-full sm:w-auto text-elegant"
+              className="w-full sm:w-auto text-elegant py-4 sm:py-5 md:py-6 text-sm sm:text-base"
               onClick={() => {
                 // Navigate to checkout with selected plan
                 const plan = service.plans.find(p => p.id === selectedPlan) || service.plans[0];
@@ -316,7 +316,7 @@ const StreamingServiceDetail = () => {
               }}
               disabled={!selectedPlan}
             >
-              <ShoppingCart className="mr-2 h-5 w-5" />
+              <ShoppingCart className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
               Subscribe Now
             </Button>
           </motion.div>

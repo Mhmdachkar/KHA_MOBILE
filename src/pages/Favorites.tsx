@@ -140,20 +140,24 @@ const Favorites = () => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-gradient-to-r from-primary/5 to-accent/5 rounded-lg border border-primary/10"
+            className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 p-3 sm:p-4 md:p-5 bg-gradient-to-r from-primary/5 to-accent/5 rounded-lg border border-primary/10"
           >
-            <div className="flex items-center gap-2">
-              <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
-              <span className="text-xs sm:text-sm text-muted-foreground">Total Value:</span>
-              <span className="text-lg sm:text-xl font-bold text-elegant bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+            <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-start">
+              <div className="flex items-center gap-2">
+                <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0" />
+                <span className="text-xs sm:text-sm text-muted-foreground">Total Value:</span>
+              </div>
+              <span className="text-base sm:text-lg md:text-xl font-bold text-elegant bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 ${totalPrice.toFixed(2)}
               </span>
             </div>
             <div className="hidden sm:block h-6 w-px bg-border" />
-            <div className="flex items-center gap-2">
-              <Heart className="h-4 w-4 sm:h-5 sm:w-5 text-accent" />
-              <span className="text-xs sm:text-sm text-muted-foreground">Saved Items:</span>
-              <span className="text-lg sm:text-xl font-bold text-elegant text-accent">
+            <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-start">
+              <div className="flex items-center gap-2">
+                <Heart className="h-4 w-4 sm:h-5 sm:w-5 text-accent flex-shrink-0" />
+                <span className="text-xs sm:text-sm text-muted-foreground">Saved Items:</span>
+              </div>
+              <span className="text-base sm:text-lg md:text-xl font-bold text-elegant text-accent">
                 {favorites.length}
               </span>
             </div>
@@ -185,32 +189,32 @@ const Favorites = () => {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </div>
-                <div className="p-4">
+                <div className="p-3 sm:p-4">
                   {product.category && (
                     <motion.p 
                       initial={{ opacity: 0.7 }}
                       whileHover={{ opacity: 1 }}
-                      className="text-elegant text-[10px] text-primary mb-1"
+                      className="text-elegant text-[10px] sm:text-xs text-primary mb-1"
                     >
                       {product.category}
                     </motion.p>
                   )}
-                  <h3 className="text-elegant text-xs mb-2 line-clamp-2 group-hover:text-primary transition-colors duration-300">
+                  <h3 className="text-elegant text-xs sm:text-sm mb-2 line-clamp-2 group-hover:text-primary transition-colors duration-300">
                     {product.name}
                   </h3>
                   <div className="flex items-center justify-between">
-                    <p className="text-elegant text-sm font-normal bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                    <p className="text-elegant text-sm sm:text-base font-normal bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                       ${product.price.toFixed(2)}
                     </p>
                   </div>
                 </div>
               </Link>
               
-              {/* Action Buttons */}
+              {/* Action Buttons - Visible on mobile, hover on desktop */}
               <motion.div 
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300"
+                className="absolute top-2 right-2 sm:top-4 sm:right-4 flex flex-col gap-1.5 sm:gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-300 z-10"
               >
                 <motion.button 
                   whileHover={{ scale: 1.1 }}
@@ -219,9 +223,9 @@ const Favorites = () => {
                     e.preventDefault();
                     toggleFavorite(product);
                   }}
-                  className="h-8 w-8 rounded-full glassmorphism border border-border/50 flex items-center justify-center bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-300 ripple"
+                  className="h-7 w-7 sm:h-8 sm:w-8 rounded-full glassmorphism border border-border/50 flex items-center justify-center bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-300 ripple shadow-lg"
                 >
-                  <Heart className="h-4 w-4 fill-white" />
+                  <Heart className="h-3.5 w-3.5 sm:h-4 sm:w-4 fill-white" />
                 </motion.button>
                 <motion.button 
                   whileHover={{ scale: 1.1 }}
@@ -230,16 +234,16 @@ const Favorites = () => {
                     e.preventDefault();
                     removeFromFavorites(product.id);
                   }}
-                  className="h-8 w-8 rounded-full glassmorphism border border-border/50 flex items-center justify-center hover:bg-destructive hover:text-destructive-foreground hover:border-destructive transition-all duration-300 ripple"
+                  className="h-7 w-7 sm:h-8 sm:w-8 rounded-full glassmorphism border border-border/50 flex items-center justify-center hover:bg-destructive hover:text-destructive-foreground hover:border-destructive transition-all duration-300 ripple shadow-lg bg-white/90 backdrop-blur"
                 >
-                  <Trash2 className="h-4 w-4" />
+                  <Trash2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </motion.button>
               </motion.div>
 
               {/* Favorite Badge */}
-              <div className="absolute top-4 left-4">
-                <Badge className="bg-primary text-primary-foreground px-2 py-1 text-xs">
-                  <Heart className="h-3 w-3 mr-1 fill-white" />
+              <div className="absolute top-2 left-2 sm:top-4 sm:left-4 z-10">
+                <Badge className="bg-primary text-primary-foreground px-1.5 py-0.5 sm:px-2 sm:py-1 text-[10px] sm:text-xs shadow-md">
+                  <Heart className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-0.5 sm:mr-1 fill-white" />
                   Saved
                 </Badge>
               </div>
@@ -252,25 +256,25 @@ const Favorites = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-4 p-6 bg-gradient-to-r from-primary/5 to-accent/5 rounded-lg border border-primary/10"
+          className="mt-8 sm:mt-10 md:mt-12 flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6 p-4 sm:p-5 md:p-6 bg-gradient-to-r from-primary/5 to-accent/5 rounded-lg border border-primary/10"
         >
-          <div>
-            <p className="text-sm text-muted-foreground mb-1">Total Value</p>
-            <p className="text-3xl font-bold text-elegant bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+          <div className="w-full sm:w-auto text-center sm:text-left">
+            <p className="text-xs sm:text-sm text-muted-foreground mb-1">Total Value</p>
+            <p className="text-2xl sm:text-3xl font-bold text-elegant bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
               ${totalPrice.toFixed(2)}
             </p>
           </div>
           
-          <div className="flex gap-3">
-            <Link to="/products">
-              <Button variant="outline" className="text-elegant">
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+            <Link to="/products" className="w-full sm:w-auto">
+              <Button variant="outline" className="text-elegant w-full sm:w-auto">
                 <LinkIcon className="mr-2 h-4 w-4" />
                 Continue Shopping
               </Button>
             </Link>
             <Button 
               onClick={handleAddAllToCart}
-              className="text-elegant bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90"
+              className="text-elegant bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 w-full sm:w-auto"
             >
               <ShoppingCart className="mr-2 h-4 w-4" />
               Add All to Cart

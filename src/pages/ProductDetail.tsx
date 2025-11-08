@@ -221,7 +221,7 @@ const ProductDetail = () => {
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6">
               <Button 
                 size="lg" 
-                className="flex-1 text-elegant text-sm sm:text-base py-3 sm:py-6"
+                className="flex-1 text-elegant text-sm sm:text-base py-4 sm:py-5 md:py-6"
                 onClick={() => addToCart({
                   id: product.id,
                   name: product.name,
@@ -235,7 +235,7 @@ const ProductDetail = () => {
                 <ShoppingCart className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                 Add to Cart
               </Button>
-              <Button size="lg" variant="outline" className="flex-1 text-elegant text-sm sm:text-base py-3 sm:py-6">
+              <Button size="lg" variant="outline" className="flex-1 text-elegant text-sm sm:text-base py-4 sm:py-5 md:py-6">
                 Buy Now
               </Button>
             </div>
@@ -278,15 +278,15 @@ const ProductDetail = () => {
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mb-24"
+          className="mb-12 sm:mb-16 md:mb-24"
         >
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-elegant text-2xl">Customer Feedback</h2>
-            <div className="flex gap-4">
-              <Button variant="outline" size="sm" className="text-elegant">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 sm:mb-8">
+            <h2 className="text-elegant text-xl sm:text-2xl">Customer Feedback</h2>
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full sm:w-auto">
+              <Button variant="outline" size="sm" className="text-elegant w-full sm:w-auto">
                 Filter Reviews
               </Button>
-              <Button variant="default" size="sm" className="text-elegant">
+              <Button variant="default" size="sm" className="text-elegant w-full sm:w-auto">
                 Write a Review
               </Button>
             </div>
