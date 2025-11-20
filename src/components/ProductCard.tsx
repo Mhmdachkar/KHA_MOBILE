@@ -117,18 +117,18 @@ const ProductCard = ({ id, name, price, image, images, rating = 4.5, category }:
             />
           )}
         </div>
-        <div className="p-3 sm:p-4">
+        <div className="p-2 sm:p-3 md:p-4">
           {category && (
             <motion.p 
               initial={{ opacity: 0.7 }}
               whileHover={{ opacity: 1 }}
-              className="text-elegant text-[10px] text-primary mb-1"
+              className="text-elegant text-[9px] sm:text-[10px] text-primary mb-0.5 sm:mb-1 line-clamp-1"
             >
               {category}
             </motion.p>
           )}
-          <h3 className="text-elegant text-xs mb-2 line-clamp-2 group-hover:text-primary transition-colors duration-300">{name}</h3>
-          <div className="flex items-center gap-1 mb-2">
+          <h3 className="text-elegant text-[10px] sm:text-xs mb-1 sm:mb-2 line-clamp-2 group-hover:text-primary transition-colors duration-300 leading-tight sm:leading-normal">{name}</h3>
+          <div className="flex items-center gap-0.5 sm:gap-1 mb-1 sm:mb-2">
             {Array.from({ length: 5 }).map((_, i) => (
               <motion.div
                 key={i}
@@ -137,7 +137,7 @@ const ProductCard = ({ id, name, price, image, images, rating = 4.5, category }:
                 transition={{ duration: 0.2 }}
               >
                 <Star
-                  className={`h-3 w-3 transition-colors duration-300 ${
+                  className={`h-2.5 w-2.5 sm:h-3 sm:w-3 transition-colors duration-300 ${
                     i < Math.floor(rating)
                       ? "fill-primary text-primary"
                       : "text-border"
@@ -145,11 +145,11 @@ const ProductCard = ({ id, name, price, image, images, rating = 4.5, category }:
                 />
               </motion.div>
             ))}
-            <span className="text-[10px] text-muted-foreground ml-1">
+            <span className="text-[9px] sm:text-[10px] text-muted-foreground ml-0.5 sm:ml-1">
               ({rating})
             </span>
           </div>
-          <p className="text-elegant text-sm font-normal bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">${price.toFixed(2)}</p>
+          <p className="text-elegant text-xs sm:text-sm font-normal bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">${price.toFixed(2)}</p>
         </div>
       </Link>
       
@@ -157,7 +157,7 @@ const ProductCard = ({ id, name, price, image, images, rating = 4.5, category }:
       <motion.div 
         initial={{ opacity: 0, y: 10 }}
         whileInView={{ opacity: 1, y: 0 }}
-        className="absolute top-2 right-2 sm:top-3 sm:right-3 md:top-4 md:right-4 flex flex-col gap-1.5 sm:gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-300"
+        className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 md:top-3 md:right-3 lg:top-4 lg:right-4 flex flex-col gap-1 sm:gap-1.5 md:gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-300"
       >
         <motion.button 
           whileHover={{ scale: 1.1 }}
@@ -166,23 +166,23 @@ const ProductCard = ({ id, name, price, image, images, rating = 4.5, category }:
             e.preventDefault();
             toggleFavorite({ id, name, price, image, rating, category });
           }}
-          className={`h-7 w-7 sm:h-8 sm:w-8 rounded-full glassmorphism border border-border/50 flex items-center justify-center transition-all duration-300 ripple bg-background/80 backdrop-blur-sm ${
+          className={`h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 rounded-full glassmorphism border border-border/50 flex items-center justify-center transition-all duration-300 ripple bg-background/80 backdrop-blur-sm ${
             favorite 
               ? "bg-primary text-primary-foreground border-primary" 
               : "hover:bg-primary hover:text-primary-foreground hover:border-primary"
           }`}
           aria-label={favorite ? "Remove from favorites" : "Add to favorites"}
         >
-          <Heart className={`h-3.5 w-3.5 sm:h-4 sm:w-4 ${favorite ? "fill-white" : ""}`} />
+          <Heart className={`h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 ${favorite ? "fill-white" : ""}`} />
         </motion.button>
         <motion.button 
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={handleAddToCart}
-          className="h-7 w-7 sm:h-8 sm:w-8 rounded-full glassmorphism border border-border/50 flex items-center justify-center hover:bg-accent hover:text-accent-foreground hover:border-accent transition-all duration-300 ripple bg-background/80 backdrop-blur-sm"
+          className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 rounded-full glassmorphism border border-border/50 flex items-center justify-center hover:bg-accent hover:text-accent-foreground hover:border-accent transition-all duration-300 ripple bg-background/80 backdrop-blur-sm"
           aria-label="Add to cart"
         >
-          <ShoppingCart className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+          <ShoppingCart className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4" />
         </motion.button>
       </motion.div>
     </motion.div>

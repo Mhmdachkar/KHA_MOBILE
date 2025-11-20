@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Grid3x3, List, SlidersHorizontal } from "lucide-react";
+import { Grid3x3, List, SlidersHorizontal, Filter } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
 import Header from "@/components/Header";
 import ProductCard from "@/components/ProductCard";
@@ -14,6 +14,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { phoneAccessories, wearablesProducts } from "@/data/products";
 import { greenLionProducts } from "@/data/greenLionProducts";
 
@@ -238,13 +246,110 @@ const Products = () => {
           )}
         </div>
 
+        {/* Mobile Filter Button */}
+        <div className="lg:hidden mb-4 flex items-center justify-between gap-3">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="outline" size="sm" className="flex items-center gap-2">
+                <Filter className="h-4 w-4" />
+                Filters
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-[300px] sm:w-[400px] overflow-y-auto">
+              <SheetHeader>
+                <SheetTitle>Filters</SheetTitle>
+                <SheetDescription>Filter products by category, brand, and more</SheetDescription>
+              </SheetHeader>
+              <div className="mt-6 space-y-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-elegant text-base">Filters</h3>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="text-elegant text-xs"
+                    onClick={handleClearFilters}
+                  >
+                    Clear All
+                  </Button>
+                </div>
+
+                {/* Category */}
+                <div>
+                  <h4 className="text-elegant text-sm mb-3">Category</h4>
+                  <div className="space-y-2">
+                    {categories.map((category) => (
+                      <div key={category} className="flex items-center space-x-2">
+                        <Checkbox 
+                          id={`mobile-category-${category}`}
+                          checked={selectedCategories.includes(category)}
+                          onCheckedChange={() => handleCategoryToggle(category)}
+                        />
+                        <Label
+                          htmlFor={`mobile-category-${category}`}
+                          className="text-sm font-light cursor-pointer"
+                        >
+                          {category}
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Brand */}
+                <div>
+                  <h4 className="text-elegant text-sm mb-3">Brand</h4>
+                  <div className="space-y-2">
+                    {brands.map((brand) => (
+                      <div key={brand} className="flex items-center space-x-2">
+                        <Checkbox 
+                          id={`mobile-brand-${brand}`}
+                          checked={selectedBrands.includes(brand)}
+                          onCheckedChange={() => handleBrandToggle(brand)}
+                        />
+                        <Label
+                          htmlFor={`mobile-brand-${brand}`}
+                          className="text-sm font-light cursor-pointer"
+                        >
+                          {brand}
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
+
+          {/* View Mode Toggle */}
+          <div className="flex items-center gap-2">
+            <Button
+              variant={viewMode === "grid" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setViewMode("grid")}
+              className="h-9 w-9 p-0"
+              aria-label="Grid view"
+            >
+              <Grid3x3 className="h-4 w-4" />
+            </Button>
+            <Button
+              variant={viewMode === "list" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setViewMode("list")}
+              className="h-9 w-9 p-0"
+              aria-label="List view"
+            >
+              <List className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+
         <div className="grid lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
-          {/* Filters Sidebar */}
+          {/* Filters Sidebar - Hidden on mobile, visible on lg+ */}
           <motion.aside
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
-            className="lg:col-span-1"
+            className="hidden lg:block lg:col-span-1"
           >
             <div className="sticky top-20 sm:top-24 space-y-6 sm:space-y-8">
               <div className="flex items-center justify-between mb-4 sm:mb-6">
@@ -353,7 +458,7 @@ const Products = () => {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
-            className="lg:col-span-3"
+            className="w-full lg:col-span-3"
           >
             {/* Controls */}
             <div className="flex items-center justify-between mb-8">
@@ -395,7 +500,7 @@ const Products = () => {
 
             {/* Products */}
             {filteredAndSortedProducts.length > 0 ? (
-              <div className={`grid gap-4 sm:gap-6 ${viewMode === "grid" ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"}`}>
+              <div className={`grid gap-2 sm:gap-3 md:gap-4 lg:gap-6 ${viewMode === "grid" ? "grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5" : "grid-cols-1"}`}>
                 {filteredAndSortedProducts.map((product, index) => (
                   <motion.div
                     key={product.id}
