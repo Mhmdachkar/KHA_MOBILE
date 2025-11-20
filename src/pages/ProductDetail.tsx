@@ -4,11 +4,12 @@ import { Heart, ShoppingCart, Star, ChevronLeft, ChevronRight, CheckCircle2 } fr
 import { Link, useParams, useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
-import ProductCarousel from "@/components/ProductCarousel";
 import { useFavorites } from "@/context/FavoritesContext";
 import { useCart } from "@/context/CartContext";
-import { getProductById, phoneAccessories } from "@/data/products";
+import { getProductById, phoneAccessories, wearablesProducts } from "@/data/products";
 import { getGreenLionProductById, greenLionProducts } from "@/data/greenLionProducts";
+import ProductCard from "@/components/ProductCard";
+import ProductCarousel from "@/components/ProductCarousel";
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -66,23 +67,130 @@ const ProductDetail = () => {
     setSelectedImage((prev) => (prev < productImages.length - 1 ? prev + 1 : 0));
   };
 
-  // Get related products from same category (excluding current product)
+  // Get all products from all sources (for comprehensive recommendations)
   // Combine regular products and Green Lion products
   const allProducts = [
-    ...phoneAccessories,
+    ...phoneAccessories.map(p => ({
+      id: p.id,
+      name: p.name,
+      price: p.price,
+      image: p.image,
+      images: [p.image],
+      rating: p.rating,
+      category: p.category,
+      brand: p.brand || extractBrand(p.name),
+      secondaryCategories: [],
+    })),
+    ...wearablesProducts.map(p => ({
+      id: p.id,
+      name: p.name,
+      price: p.price,
+      image: p.image,
+      images: [p.image],
+      rating: p.rating,
+      category: p.category,
+      brand: p.brand || extractBrand(p.name),
+      secondaryCategories: [],
+    })),
     ...greenLionProducts.map((p) => ({
       id: p.id,
       name: p.name,
       price: p.price,
       image: p.images[0],
+      images: p.images,
       rating: p.rating,
       category: p.category,
+      brand: p.brand,
+      secondaryCategories: p.secondaryCategories || [],
     })),
   ];
-  
-  const relatedProducts = allProducts
-    .filter(p => p.category === product.category && p.id !== product.id)
-    .slice(0, 4);
+
+  // Helper function to extract brand from product name
+  function extractBrand(productName: string): string | null {
+    const brandPatterns = [
+      /^Green Lion\s+/i,
+      /^Apple\s+/i,
+      /^Samsung\s+/i,
+      /^Sony\s+/i,
+      /^Bose\s+/i,
+      /^JBL\s+/i,
+      /^Hoco\s+/i,
+      /^Dobe\s+/i,
+      /^Foneng\s+/i,
+      /^Borofone\s+/i,
+    ];
+    
+    for (const pattern of brandPatterns) {
+      const match = productName.match(pattern);
+      if (match) {
+        return match[0].trim();
+      }
+    }
+    return null;
+  }
+
+  // Multi-factor scoring recommendation algorithm
+  const getRecommendedProducts = () => {
+    const currentProduct = greenLionProduct || regularProduct;
+    if (!currentProduct) return [];
+
+    const currentBrand = greenLionProduct ? greenLionProduct.brand : extractBrand(product.name);
+    const currentPrice = product.price;
+    const currentCategory = product.category;
+    const currentSecondaryCategories = greenLionProduct?.secondaryCategories || [];
+
+    // Score each product
+    const scoredProducts = allProducts
+      .filter(p => p.id !== product.id) // Exclude current product
+      .map(p => {
+        let score = 0;
+
+        // Factor 1: Category Match (40% weight = 40 points max)
+        if (p.category === currentCategory) {
+          score += 40; // Primary category match
+        } else if (p.secondaryCategories?.includes(currentCategory)) {
+          score += 20; // Secondary category match
+        } else if (currentSecondaryCategories?.some(cat => p.category === cat || p.secondaryCategories?.includes(cat))) {
+          score += 15; // Cross-category match
+        }
+
+        // Factor 2: Brand Match (25% weight = 25 points max)
+        if (currentBrand && p.brand === currentBrand) {
+          score += 25; // Same brand
+        }
+
+        // Factor 3: Price Similarity (20% weight = 20 points max)
+        const priceDifference = Math.abs(p.price - currentPrice);
+        const pricePercentage = (priceDifference / currentPrice) * 100;
+        if (pricePercentage <= 20) {
+          score += 20; // Within ±20%
+        } else if (pricePercentage <= 50) {
+          score += 10; // Within ±50%
+        } else if (pricePercentage <= 100) {
+          score += 5; // Within ±100%
+        }
+
+        // Factor 4: Rating (15% weight = 15 points max)
+        if (p.rating >= 4.5) {
+          score += 15; // High-rated (4.5+)
+        } else if (p.rating >= 4.0) {
+          score += 10; // Good (4.0-4.4)
+        } else if (p.rating >= 3.5) {
+          score += 5; // Average (3.5-3.9)
+        }
+
+        return {
+          ...p,
+          score,
+        };
+      })
+      .sort((a, b) => b.score - a.score) // Sort by score descending
+      .slice(0, 8); // Get top 8 recommendations (will show 4 in 2x2 grid, but having extras for better variety)
+
+    return scoredProducts;
+  };
+
+  const relatedProducts = getRecommendedProducts();
 
   return (
     <div className="min-h-screen bg-white no-horizontal-scroll overflow-x-hidden">
@@ -169,14 +277,72 @@ const ProductDetail = () => {
               </div>
             )}
 
-            {/* AR/360 Buttons */}
-            <div className="flex gap-2 sm:gap-3 md:gap-4 mt-4 sm:mt-6">
+            {/* AR/360 Buttons - Hidden on mobile, shown on desktop */}
+            <div className="hidden md:flex gap-2 sm:gap-3 md:gap-4 mt-4 sm:mt-6">
               <Button variant="outline" className="flex-1 text-elegant text-xs sm:text-sm py-2 sm:py-3">
                 360° View
               </Button>
               <Button variant="outline" className="flex-1 text-elegant text-xs sm:text-sm py-2 sm:py-3">
                 AR Preview
               </Button>
+            </div>
+
+            {/* Mobile Action Buttons - Only visible on mobile */}
+            <div className="md:hidden mt-4 sm:mt-6">
+              <div className="flex flex-col gap-3 mb-4">
+                <Button 
+                  size="lg" 
+                  className="flex-1 text-elegant text-sm py-4 sm:py-5 w-full"
+                  onClick={() => addToCart({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    image: productImages[0],
+                    rating: product.rating,
+                    category: product.category,
+                    quantity: 1,
+                  })}
+                >
+                  <ShoppingCart className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+                  Add to Cart
+                </Button>
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  className="flex-1 text-elegant text-sm py-4 sm:py-5 w-full"
+                  onClick={() => {
+                    addToCart({
+                      id: product.id,
+                      name: product.name,
+                      price: product.price,
+                      image: productImages[0],
+                      rating: product.rating,
+                      category: product.category,
+                      quantity: 1,
+                    });
+                    navigate("/checkout");
+                  }}
+                >
+                  Buy Now
+                </Button>
+              </div>
+              
+              {/* Wishlist Button - Well structured below Buy Now */}
+              <motion.button 
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => toggleFavorite(product)}
+                className={`w-full flex items-center justify-center gap-2 px-4 py-3 sm:py-3.5 rounded-sm border transition-all duration-300 ${
+                  favorite 
+                    ? "bg-accent/10 text-accent border-accent/30 hover:bg-accent/20" 
+                    : "bg-background text-foreground border-border hover:bg-secondary/50 hover:border-primary/40"
+                }`}
+              >
+                <Heart className={`h-4 w-4 sm:h-5 sm:w-5 transition-colors ${favorite ? "fill-accent text-accent" : ""}`} />
+                <span className="text-elegant text-sm font-medium">
+                  {favorite ? "Remove from Wishlist" : "Add to Wishlist"}
+                </span>
+              </motion.button>
             </div>
           </motion.div>
 
@@ -235,8 +401,8 @@ const ProductDetail = () => {
               )}
             </div>
 
-            {/* Actions */}
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6">
+            {/* Actions - Hidden on mobile (buttons shown in image gallery), visible on desktop */}
+            <div className="hidden md:flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6">
               <Button 
                 size="lg" 
                 className="flex-1 text-elegant text-sm sm:text-base py-4 sm:py-5 md:py-6"
@@ -244,7 +410,7 @@ const ProductDetail = () => {
                   id: product.id,
                   name: product.name,
                   price: product.price,
-                  image: product.image,
+                  image: productImages[0],
                   rating: product.rating,
                   category: product.category,
                   quantity: 1,
@@ -253,16 +419,33 @@ const ProductDetail = () => {
                 <ShoppingCart className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                 Add to Cart
               </Button>
-              <Button size="lg" variant="outline" className="flex-1 text-elegant text-sm sm:text-base py-4 sm:py-5 md:py-6">
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="flex-1 text-elegant text-sm sm:text-base py-4 sm:py-5 md:py-6"
+                onClick={() => {
+                  addToCart({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    image: productImages[0],
+                    rating: product.rating,
+                    category: product.category,
+                    quantity: 1,
+                  });
+                  navigate("/checkout");
+                }}
+              >
                 Buy Now
               </Button>
             </div>
 
+            {/* Wishlist Button - Desktop only (mobile version is in image gallery) */}
             <motion.button 
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => toggleFavorite(product)}
-              className={`flex items-center gap-2 text-sm transition-colors mb-12 ${
+              className={`hidden md:flex items-center gap-2 text-sm transition-colors mb-12 ${
                 favorite 
                   ? "text-accent" 
                   : "hover:text-accent"
@@ -346,16 +529,25 @@ const ProductDetail = () => {
           </div>
         </motion.section>
 
-        {/* You May Also Like */}
+        {/* You May Also Like - Horizontal Scrolling Carousel */}
         {relatedProducts.length > 0 && (
           <motion.section
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            className="mt-12 sm:mt-16 md:mt-24"
           >
             <ProductCarousel
               title="You May Also Like"
-              products={relatedProducts}
+              products={relatedProducts.slice(0, 12).map(p => ({
+                id: p.id,
+                name: p.name,
+                price: p.price,
+                image: p.image,
+                images: p.images,
+                rating: p.rating,
+                category: p.category,
+              }))}
             />
           </motion.section>
         )}

@@ -113,9 +113,14 @@ const ServiceCard = ({ service }: ServiceCardProps) => {
           <h3 className="text-elegant text-xl mb-3 group-hover:text-primary transition-colors duration-300 cursor-pointer">
             {service.name}
           </h3>
-          <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+          <p className="text-muted-foreground text-sm mb-3 line-clamp-2">
             {service.description}
           </p>
+          {service.category === "IPTV" && (
+            <p className="text-xs text-muted-foreground mb-4">
+              Includes premium sports channels such as <span className="font-semibold text-foreground">beIN SPORTS</span> alongside the full IPTV catalog.
+            </p>
+          )}
           <div className="text-primary text-xs hover:underline mb-4 flex items-center gap-1 group/link">
             View Details <ArrowRight className="h-3 w-3 group-hover/link:translate-x-1 transition-transform" />
           </div>

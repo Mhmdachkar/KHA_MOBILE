@@ -238,26 +238,92 @@ const CategoryPage = () => {
     return products;
   }, [categoryDisplayName]);
 
+  // Helper function to check if product is Green Lion
+  const isGreenLionProduct = (product: any) => {
+    return product.id >= 5000 || product.brand === "Green Lion" || product.name?.startsWith("Green Lion");
+  };
+
   // Filter and sort products
   const filteredAndSortedProducts = useMemo(() => {
     let filtered = [...categoryProducts];
 
-    // Sort products
-    switch (sortBy) {
-      case "price-low":
-        filtered.sort((a, b) => a.price - b.price);
-        break;
-      case "price-high":
-        filtered.sort((a, b) => b.price - a.price);
-        break;
-      case "rating":
-        filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-        break;
-      case "name":
-        filtered.sort((a, b) => a.name.localeCompare(b.name));
-        break;
-      default:
-        break;
+    // Always sort to put Green Lion products first (unless user selects a specific sort)
+    if (sortBy === "default") {
+      filtered.sort((a, b) => {
+        const aIsGreenLion = isGreenLionProduct(a);
+        const bIsGreenLion = isGreenLionProduct(b);
+        
+        // Green Lion products first
+        if (aIsGreenLion && !bIsGreenLion) return -1;
+        if (!aIsGreenLion && bIsGreenLion) return 1;
+        
+        // Within same type, sort by rating (high to low)
+        return (b.rating || 0) - (a.rating || 0);
+      });
+    } else {
+      // User-selected sort
+      switch (sortBy) {
+        case "price-low":
+          filtered.sort((a, b) => {
+            const aIsGreenLion = isGreenLionProduct(a);
+            const bIsGreenLion = isGreenLionProduct(b);
+            
+            // Green Lion products first, then by price
+            if (aIsGreenLion && !bIsGreenLion) return -1;
+            if (!aIsGreenLion && bIsGreenLion) return 1;
+            
+            return a.price - b.price;
+          });
+          break;
+        case "price-high":
+          filtered.sort((a, b) => {
+            const aIsGreenLion = isGreenLionProduct(a);
+            const bIsGreenLion = isGreenLionProduct(b);
+            
+            // Green Lion products first, then by price
+            if (aIsGreenLion && !bIsGreenLion) return -1;
+            if (!aIsGreenLion && bIsGreenLion) return 1;
+            
+            return b.price - a.price;
+          });
+          break;
+        case "rating":
+          filtered.sort((a, b) => {
+            const aIsGreenLion = isGreenLionProduct(a);
+            const bIsGreenLion = isGreenLionProduct(b);
+            
+            // Green Lion products first, then by rating
+            if (aIsGreenLion && !bIsGreenLion) return -1;
+            if (!aIsGreenLion && bIsGreenLion) return 1;
+            
+            return (b.rating || 0) - (a.rating || 0);
+          });
+          break;
+        case "name":
+          filtered.sort((a, b) => {
+            const aIsGreenLion = isGreenLionProduct(a);
+            const bIsGreenLion = isGreenLionProduct(b);
+            
+            // Green Lion products first, then by name
+            if (aIsGreenLion && !bIsGreenLion) return -1;
+            if (!aIsGreenLion && bIsGreenLion) return 1;
+            
+            return a.name.localeCompare(b.name);
+          });
+          break;
+        default:
+          // Default: Green Lion first, then by rating
+          filtered.sort((a, b) => {
+            const aIsGreenLion = isGreenLionProduct(a);
+            const bIsGreenLion = isGreenLionProduct(b);
+            
+            if (aIsGreenLion && !bIsGreenLion) return -1;
+            if (!aIsGreenLion && bIsGreenLion) return 1;
+            
+            return (b.rating || 0) - (a.rating || 0);
+          });
+          break;
+      }
     }
 
     return filtered;

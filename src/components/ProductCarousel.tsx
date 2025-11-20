@@ -7,6 +7,7 @@ interface Product {
   name: string;
   price: number;
   image: string;
+  images?: string[];
   rating?: number;
   category?: string;
 }
@@ -121,7 +122,15 @@ const ProductCarousel = ({ title, products }: ProductCarouselProps) => {
       >
         {products.map((product) => (
           <div key={product.id} className="flex-none w-[200px] sm:w-[240px] md:w-64 snap-start">
-            <ProductCard {...product} />
+            <ProductCard 
+              id={product.id}
+              name={product.name}
+              price={product.price}
+              image={product.image}
+              images={product.images || [product.image]}
+              rating={product.rating}
+              category={product.category}
+            />
           </div>
         ))}
       </div>

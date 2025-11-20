@@ -223,9 +223,14 @@ const StreamingServiceDetail = () => {
             <h1 className="text-elegant text-3xl sm:text-4xl mb-4">
               {service.name}
             </h1>
-            <p className="text-muted-foreground text-base sm:text-lg mb-6">
+            <p className="text-muted-foreground text-base sm:text-lg mb-4 sm:mb-5">
               {service.description}
             </p>
+            {service.category === "IPTV" && (
+              <p className="text-sm sm:text-base text-muted-foreground mb-6">
+                Enjoy comprehensive live TV coverage including <span className="font-semibold text-foreground">beIN SPORTS</span> alongside movies, series, and international channels.
+              </p>
+            )}
 
             {/* Detailed Description */}
             {service.detailedDescription && (

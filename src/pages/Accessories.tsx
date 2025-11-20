@@ -20,6 +20,15 @@ const Accessories = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedBrand, setSelectedBrand] = useState<string>("all");
 
+  // Get brand from URL params if present
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const brandParam = urlParams.get("brand");
+    if (brandParam) {
+      setSelectedBrand(brandParam);
+    }
+  }, []);
+
   // Scroll to top on mount
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
@@ -56,6 +65,11 @@ const Accessories = () => {
     new Set(allAccessoryProducts.map((p: any) => p.brand || "Other"))
   ).sort();
 
+  // Helper function to check if product is Green Lion
+  const isGreenLionProduct = (product: any) => {
+    return product.id >= 5000 || product.brand === "Green Lion" || product.name?.startsWith("Green Lion");
+  };
+
   // Filter products based on category and brand
   const getFilteredProducts = () => {
     let products = allAccessoryProducts;
@@ -75,6 +89,19 @@ const Accessories = () => {
         return brand === selectedBrand;
       });
     }
+
+    // Always sort to put Green Lion products first
+    products.sort((a: any, b: any) => {
+      const aIsGreenLion = isGreenLionProduct(a);
+      const bIsGreenLion = isGreenLionProduct(b);
+      
+      // Green Lion products first
+      if (aIsGreenLion && !bIsGreenLion) return -1;
+      if (!aIsGreenLion && bIsGreenLion) return 1;
+      
+      // Within same type, sort by rating (high to low)
+      return (b.rating || 0) - (a.rating || 0);
+    });
 
     return products;
   };
@@ -196,9 +223,9 @@ const Accessories = () => {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className={`grid gap-2 sm:gap-3 md:gap-4 lg:gap-6 ${
+            className={`grid gap-2 sm:gap-3 md:gap-4 lg:gap-6 ${
             viewMode === "grid"
-              ? "grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+              ? "grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
               : "grid-cols-1"
           }`}
         >

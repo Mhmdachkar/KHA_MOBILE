@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { useCart } from "@/context/CartContext";
 import { getProductById } from "@/data/products";
+import { getGreenLionProductById } from "@/data/greenLionProducts";
 
 // Import recharge images for display
 import recharge1_67 from "@/assets/recharges/1.67$.png";
@@ -80,6 +81,8 @@ interface CheckoutFormData {
   // For recharge/gift card checkout
   separateDollars: boolean;
   dollarsAmount: string;
+  // For streaming service checkout
+  accountType: string; // "1 user" or "full account"
 }
 
 interface AdditionalCard {
@@ -111,6 +114,8 @@ const Checkout = () => {
   
   // Check if this is a streaming service checkout
   const isStreamingServiceCheckout = productCategory === "Streaming Services";
+  const requiresAccountType =
+    isStreamingServiceCheckout && (productBrand === "Netflix" || productBrand === "Shahid");
   
   // Monthly fee for streaming services
   const STREAMING_MONTHLY_FEE = 8.00;
@@ -149,6 +154,7 @@ const Checkout = () => {
     deliveryLocation: "",
     separateDollars: false,
     dollarsAmount: "",
+    accountType: "1 user", // Default to "1 user"
   });
 
   const [errors, setErrors] = useState({
@@ -364,7 +370,11 @@ const Checkout = () => {
   // Get cart items with full product details
   const getCartItemsWithDetails = () => {
     return cart.map(item => {
-      const fullProduct = getProductById(item.id);
+      // Check both regular products and Green Lion products
+      const regularProduct = getProductById(item.id);
+      const greenLionProduct = item.id >= 5000 ? getGreenLionProductById(item.id) : null;
+      const fullProduct = regularProduct || greenLionProduct;
+      
       return {
         ...item,
         title: fullProduct?.title || item.name,
@@ -417,6 +427,9 @@ const Checkout = () => {
         message += `• *Service Price:* $${productPrice.toFixed(2)}\n`;
       }
       message += `• *Monthly Fee:* $${STREAMING_MONTHLY_FEE.toFixed(2)} per month\n`;
+      if (requiresAccountType && formData.accountType) {
+        message += `• *Account Type:* ${formData.accountType === "1 user" ? "1 User" : "Full Account"}\n`;
+      }
       message += `\n• *Phone Number:* ${formData.phoneNumber}\n`;
     } else if (isRechargeCheckout) {
       // Recharge/gift card checkout message
@@ -796,6 +809,31 @@ const Checkout = () => {
               <div className="space-y-4 sm:space-y-6">
                 {isStreamingServiceCheckout ? (
                   <>
+                    {/* Account Type Dropdown - Only for Netflix and Shahid */}
+                    {requiresAccountType && (
+                      <div>
+                        <Label htmlFor="accountType" className="text-elegant text-sm mb-2 flex items-center gap-2">
+                          Account Type
+                          <span className="text-red-500">*</span>
+                        </Label>
+                        <Select
+                          value={formData.accountType}
+                          onValueChange={(value) => setFormData({ ...formData, accountType: value })}
+                        >
+                          <SelectTrigger className="mt-2">
+                            <SelectValue placeholder="Select account type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="1 user">1 User</SelectItem>
+                            <SelectItem value="full account">Full Account</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <p className="text-xs text-muted-foreground mt-2">
+                          Choose between single user access or full account access
+                        </p>
+                      </div>
+                    )}
+                    
                     {/* Phone Number Field - Required (for streaming services) */}
                     <div>
                       <Label htmlFor="phoneNumber" className="text-elegant text-sm mb-2 flex items-center gap-2">

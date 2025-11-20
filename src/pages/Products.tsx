@@ -33,6 +33,14 @@ const Products = () => {
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState(searchParams.get("search") || "");
 
+  // Get brand from URL params if present
+  useEffect(() => {
+    const brandParam = searchParams.get("brand");
+    if (brandParam && !selectedBrands.includes(brandParam)) {
+      setSelectedBrands([brandParam]);
+    }
+  }, [searchParams, selectedBrands]);
+
   // Scroll to top on mount
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
@@ -159,27 +167,87 @@ const Products = () => {
       return categoryMatch && brandMatch;
     });
 
-    // Sort products
+    // Helper function to check if product is Green Lion
+    const isGreenLionProduct = (product: any) => {
+      return product.id >= 5000 || product.brand === "Green Lion" || product.name?.startsWith("Green Lion");
+    };
+
+    // Sort products - Always put Green Lion products first
     switch (sortBy) {
       case "price-low":
-        filtered.sort((a, b) => a.price - b.price);
+        filtered.sort((a, b) => {
+          const aIsGreenLion = isGreenLionProduct(a);
+          const bIsGreenLion = isGreenLionProduct(b);
+          
+          // Green Lion products first, then by price
+          if (aIsGreenLion && !bIsGreenLion) return -1;
+          if (!aIsGreenLion && bIsGreenLion) return 1;
+          
+          return a.price - b.price;
+        });
         break;
       case "price-high":
-        filtered.sort((a, b) => b.price - a.price);
+        filtered.sort((a, b) => {
+          const aIsGreenLion = isGreenLionProduct(a);
+          const bIsGreenLion = isGreenLionProduct(b);
+          
+          // Green Lion products first, then by price
+          if (aIsGreenLion && !bIsGreenLion) return -1;
+          if (!aIsGreenLion && bIsGreenLion) return 1;
+          
+          return b.price - a.price;
+        });
         break;
       case "rating":
-        filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+        filtered.sort((a, b) => {
+          const aIsGreenLion = isGreenLionProduct(a);
+          const bIsGreenLion = isGreenLionProduct(b);
+          
+          // Green Lion products first, then by rating
+          if (aIsGreenLion && !bIsGreenLion) return -1;
+          if (!aIsGreenLion && bIsGreenLion) return 1;
+          
+          return (b.rating || 0) - (a.rating || 0);
+        });
         break;
       case "name":
-        filtered.sort((a, b) => a.name.localeCompare(b.name));
+        filtered.sort((a, b) => {
+          const aIsGreenLion = isGreenLionProduct(a);
+          const bIsGreenLion = isGreenLionProduct(b);
+          
+          // Green Lion products first, then by name
+          if (aIsGreenLion && !bIsGreenLion) return -1;
+          if (!aIsGreenLion && bIsGreenLion) return 1;
+          
+          return a.name.localeCompare(b.name);
+        });
         break;
       case "newest":
-        // Sort by ID descending (newer products have higher IDs)
-        filtered.sort((a, b) => b.id - a.id);
+        // Sort by ID descending (newer products have higher IDs), but Green Lion first
+        filtered.sort((a, b) => {
+          const aIsGreenLion = isGreenLionProduct(a);
+          const bIsGreenLion = isGreenLionProduct(b);
+          
+          // Green Lion products first, then by ID
+          if (aIsGreenLion && !bIsGreenLion) return -1;
+          if (!aIsGreenLion && bIsGreenLion) return 1;
+          
+          return b.id - a.id;
+        });
         break;
       default:
-        // Default: sort by popularity (rating)
-        filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+        // Default: Green Lion first, then by popularity (rating)
+        filtered.sort((a, b) => {
+          const aIsGreenLion = isGreenLionProduct(a);
+          const bIsGreenLion = isGreenLionProduct(b);
+          
+          // Green Lion products first
+          if (aIsGreenLion && !bIsGreenLion) return -1;
+          if (!aIsGreenLion && bIsGreenLion) return 1;
+          
+          // Then by rating
+          return (b.rating || 0) - (a.rating || 0);
+        });
         break;
     }
 

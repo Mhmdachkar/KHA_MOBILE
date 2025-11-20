@@ -8,6 +8,7 @@ import ProductCarousel from "@/components/ProductCarousel";
 import PersonalizedRecommendations from "@/components/PersonalizedRecommendations";
 import FlashDeals from "@/components/FlashDeals";
 import WhyShopWithUs from "@/components/WhyShopWithUs";
+import BrandShowcase from "@/components/BrandShowcase";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import heroProduct from "@/assets/Gemini_Generated_Image_3qc0nc3qc0nc3qc0.png";
@@ -741,21 +742,8 @@ const Home = () => {
       {/* Flash Deals Section */}
       <FlashDeals />
 
-      {/* Trending Now - Audio */}
-      <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-background">
-        <div className="container mx-auto px-4 sm:px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <ProductCarousel
-              title="Trending in Audio"
-              products={trendingAudio}
-            />
-          </motion.div>
-        </div>
-      </section>
+      {/* Shop by Brand */}
+      <BrandShowcase />
 
       {/* This Week's Favorites - Gift Cards */}
       <section className="py-24 bg-secondary">
