@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { phoneAccessories, wearablesProducts } from "@/data/products";
+import { greenLionProducts } from "@/data/greenLionProducts";
 
 const Products = () => {
   const [searchParams] = useSearchParams();
@@ -31,8 +32,29 @@ const Products = () => {
     document.body.scrollTop = 0;
   }, []);
 
-  // Get all real products from products.ts (including wearables)
-  const allProducts = [...phoneAccessories, ...wearablesProducts];
+  // Get all real products from products.ts (including wearables + Green Lion)
+  const allProducts = [
+    ...phoneAccessories.map(p => ({
+      ...p,
+      images: [p.image]
+    })),
+    ...wearablesProducts.map(p => ({
+      ...p,
+      images: [p.image]
+    })),
+    ...greenLionProducts.map(p => ({
+      id: p.id,
+      name: p.name,
+      price: p.price,
+      image: p.images[0],
+      images: p.images,
+      rating: p.rating,
+      category: p.category,
+      brand: p.brand,
+      description: p.description,
+      title: p.title
+    }))
+  ];
 
   // Get unique categories from real products
   const categories = useMemo(() => {
@@ -373,7 +395,7 @@ const Products = () => {
 
             {/* Products */}
             {filteredAndSortedProducts.length > 0 ? (
-              <div className={`grid gap-6 ${viewMode === "grid" ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"}`}>
+              <div className={`grid gap-4 sm:gap-6 ${viewMode === "grid" ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"}`}>
                 {filteredAndSortedProducts.map((product, index) => (
                   <motion.div
                     key={product.id}
@@ -381,14 +403,22 @@ const Products = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05 }}
                   >
-                    <ProductCard {...product} />
+                    <ProductCard 
+                      id={product.id}
+                      name={product.name}
+                      price={product.price}
+                      image={product.image}
+                      images={product.images || [product.image]}
+                      rating={product.rating}
+                      category={product.category}
+                    />
                   </motion.div>
                 ))}
               </div>
             ) : (
-              <div className="text-center py-12">
-                <p className="text-muted-foreground mb-4">No products found matching your filters.</p>
-                <Button onClick={handleClearFilters} variant="outline">
+              <div className="text-center py-8 sm:py-12">
+                <p className="text-sm sm:text-base text-muted-foreground mb-4">No products found matching your filters.</p>
+                <Button onClick={handleClearFilters} variant="outline" className="text-xs sm:text-sm">
                   Clear Filters
                 </Button>
               </div>

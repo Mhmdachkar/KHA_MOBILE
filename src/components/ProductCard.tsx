@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Heart, ShoppingCart, Star } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -9,14 +10,29 @@ interface ProductCardProps {
   name: string;
   price: number;
   image: string;
+  images?: string[]; // Optional images array for hover switching
   rating?: number;
   category?: string;
 }
 
-const ProductCard = ({ id, name, price, image, rating = 4.5, category }: ProductCardProps) => {
+const ProductCard = ({ id, name, price, image, images, rating = 4.5, category }: ProductCardProps) => {
   const { isFavorite, toggleFavorite } = useFavorites();
   const { addToCart } = useCart();
   const favorite = isFavorite(id);
+  
+  // Use images array if provided, otherwise use single image
+  const productImages = images && images.length > 0 ? images : [image];
+  const hasMultipleImages = productImages.length > 1;
+  const defaultImage = productImages[0];
+  const hoverImage = hasMultipleImages ? productImages[1] : defaultImage;
+  
+  // State for hover image switching
+  const [currentImage, setCurrentImage] = useState(defaultImage);
+  
+  // Reset image when product changes
+  useEffect(() => {
+    setCurrentImage(defaultImage);
+  }, [defaultImage, id]);
   
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -24,28 +40,82 @@ const ProductCard = ({ id, name, price, image, rating = 4.5, category }: Product
       id,
       name,
       price,
-      image,
+      image: defaultImage,
       rating,
       category,
       quantity: 1,
     });
   };
+
+  // Handle mouse enter/leave for image switching (only on non-touch devices)
+  const handleMouseEnter = () => {
+    // Check if device supports hover (non-touch devices)
+    if (hasMultipleImages && window.matchMedia('(hover: hover)').matches) {
+      setCurrentImage(hoverImage);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    // Check if device supports hover (non-touch devices)
+    if (hasMultipleImages && window.matchMedia('(hover: hover)').matches) {
+      setCurrentImage(defaultImage);
+    }
+  };
+  
   return (
     <motion.div
-      whileHover={{ y: -8 }}
+      whileHover={{ y: window.matchMedia('(hover: hover)').matches ? -8 : 0 }}
       transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
       style={{ willChange: "transform" }}
       className="group relative bg-white rounded-sm overflow-hidden border border-border hover:border-primary/40 transition-all duration-500 shadow-card hover:shadow-elegant"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <Link to={`/product/${id}`}>
         <div className="aspect-square overflow-hidden bg-white relative border-b border-border">
+          {/* Default Image - Base layer */}
           <motion.img
-            src={image}
+            key={`default-${id}`}
+            src={defaultImage}
             alt={name}
-            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+            initial={{ opacity: 1 }}
+            animate={{ 
+              opacity: currentImage === defaultImage ? 1 : 0
+            }}
+            transition={{ 
+              duration: 0.7, 
+              ease: [0.23, 1, 0.32, 1] // Smooth, elegant cubic bezier
+            }}
+            className="absolute inset-0 h-full w-full object-cover will-change-[opacity]"
             loading="lazy"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = defaultImage;
+            }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          
+          {/* Hover Image - Overlay layer (only if multiple images exist) */}
+          {hasMultipleImages && (
+            <motion.img
+              key={`hover-${id}`}
+              src={hoverImage}
+              alt={`${name} - Alternate view`}
+              initial={{ opacity: 0 }}
+              animate={{ 
+                opacity: currentImage === hoverImage ? 1 : 0
+              }}
+              transition={{ 
+                duration: 0.7, 
+                ease: [0.23, 1, 0.32, 1] // Smooth, elegant cubic bezier
+              }}
+              className="absolute inset-0 h-full w-full object-cover will-change-[opacity]"
+              loading="lazy"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = defaultImage;
+              }}
+            />
+          )}
         </div>
         <div className="p-3 sm:p-4">
           {category && (

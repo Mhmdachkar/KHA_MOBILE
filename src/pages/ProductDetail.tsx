@@ -8,6 +8,7 @@ import ProductCarousel from "@/components/ProductCarousel";
 import { useFavorites } from "@/context/FavoritesContext";
 import { useCart } from "@/context/CartContext";
 import { getProductById, phoneAccessories } from "@/data/products";
+import { getGreenLionProductById, greenLionProducts } from "@/data/greenLionProducts";
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -17,7 +18,11 @@ const ProductDetail = () => {
   const { addToCart } = useCart();
 
   const productId = id ? parseInt(id, 10) : null;
-  const product = productId ? getProductById(productId) : null;
+  
+  // Check both regular products and Green Lion products
+  const regularProduct = productId ? getProductById(productId) : null;
+  const greenLionProduct = productId ? getGreenLionProductById(productId) : null;
+  const product = regularProduct || greenLionProduct;
 
   // Scroll to top on mount and when product ID changes
   useEffect(() => {
@@ -47,8 +52,8 @@ const ProductDetail = () => {
     );
   }
 
-  // Use product image, or create array with single image
-  const productImages = [product.image];
+  // Use multiple images for Green Lion products, or single image for regular products
+  const productImages = greenLionProduct ? greenLionProduct.images : [regularProduct!.image];
   
   const favorite = isFavorite(product.id);
 
@@ -62,7 +67,20 @@ const ProductDetail = () => {
   };
 
   // Get related products from same category (excluding current product)
-  const relatedProducts = phoneAccessories
+  // Combine regular products and Green Lion products
+  const allProducts = [
+    ...phoneAccessories,
+    ...greenLionProducts.map((p) => ({
+      id: p.id,
+      name: p.name,
+      price: p.price,
+      image: p.images[0],
+      rating: p.rating,
+      category: p.category,
+    })),
+  ];
+  
+  const relatedProducts = allProducts
     .filter(p => p.category === product.category && p.id !== product.id)
     .slice(0, 4);
 

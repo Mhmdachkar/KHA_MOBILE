@@ -1,5 +1,6 @@
 // Centralized product data for all categories
 import { getProductsByCategory, wearablesProducts as realWearables } from "./products";
+import { greenLionProducts, getGreenLionProductsByCategory } from "./greenLionProducts";
 
 export interface Product {
   id: number;
@@ -54,7 +55,7 @@ export const smartphonesProducts: Product[] = [
   },
 ];
 
-// Audio products (merging mock data with real accessories)
+// Audio products (merging mock data with real accessories + Green Lion audio)
 export const audioProducts: Product[] = [
   // Real audio accessories
   ...getProductsByCategory("Audio").map(product => ({
@@ -62,6 +63,15 @@ export const audioProducts: Product[] = [
     name: product.name,
     price: product.price,
     image: product.image,
+    rating: product.rating,
+    category: product.category,
+  })),
+  // Green Lion audio products
+  ...getGreenLionProductsByCategory("Audio").map(product => ({
+    id: product.id,
+    name: product.name,
+    price: product.price,
+    image: product.images[0],
     rating: product.rating,
     category: product.category,
   })),
@@ -144,17 +154,28 @@ export const computersProducts: Product[] = [
   },
 ];
 
-// Wearables products - using real products from products.ts
-export const wearablesProducts: Product[] = realWearables.map(product => ({
-  id: product.id,
-  name: product.name,
-  price: product.price,
-  image: product.image,
-  rating: product.rating,
-  category: product.category,
-}));
+// Wearables products - using real products from products.ts + Green Lion smartwatches
+export const wearablesProducts: Product[] = [
+  ...realWearables.map(product => ({
+    id: product.id,
+    name: product.name,
+    price: product.price,
+    image: product.image,
+    rating: product.rating,
+    category: product.category,
+  })),
+  // Green Lion smartwatches
+  ...getGreenLionProductsByCategory("Wearables").map(product => ({
+    id: product.id,
+    name: product.name,
+    price: product.price,
+    image: product.images[0],
+    rating: product.rating,
+    category: product.category,
+  })),
+];
 
-// Gaming products (merging mock data with real accessories)
+// Gaming products (merging mock data with real accessories + Green Lion gaming)
 export const gamingProducts: Product[] = [
   // Real gaming accessories
   ...getProductsByCategory("Gaming").map(product => ({
@@ -162,6 +183,17 @@ export const gamingProducts: Product[] = [
     name: product.name,
     price: product.price,
     image: product.image,
+    rating: product.rating,
+    category: product.category,
+  })),
+  // Green Lion gaming accessories
+  ...greenLionProducts.filter(p => 
+    p.secondaryCategories?.includes("Gaming") || p.name.toLowerCase().includes("gaming")
+  ).map(product => ({
+    id: product.id,
+    name: product.name,
+    price: product.price,
+    image: product.images[0],
     rating: product.rating,
     category: product.category,
   })),

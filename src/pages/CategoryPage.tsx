@@ -22,6 +22,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { getProductsByCategory } from "@/data/products";
+import { greenLionProducts, getGreenLionProductsByCategory } from "@/data/greenLionProducts";
 
 // Mock products data - in a real app, this would come from an API
 const mockProducts = {
@@ -164,17 +165,67 @@ const CategoryPage = () => {
       if (categoryDisplayName === "Audio") {
         const audioProducts = getProductsByCategory("Audio");
         if (Array.isArray(audioProducts) && audioProducts.length > 0) {
-          products = [...products, ...audioProducts];
+          products = [...products, ...audioProducts.map(p => ({
+            ...p,
+            images: [p.image]
+          }))];
+        }
+        // Add Green Lion audio products
+        const greenLionAudio = getGreenLionProductsByCategory("Audio");
+        if (Array.isArray(greenLionAudio) && greenLionAudio.length > 0) {
+          products = [...products, ...greenLionAudio.map(p => ({
+            id: p.id,
+            name: p.name,
+            price: p.price,
+            image: p.images[0],
+            images: p.images,
+            rating: p.rating,
+            category: p.category
+          }))];
         }
       } else if (categoryDisplayName === "Gaming") {
         const gamingProducts = getProductsByCategory("Gaming");
         if (Array.isArray(gamingProducts) && gamingProducts.length > 0) {
-          products = [...products, ...gamingProducts];
+          products = [...products, ...gamingProducts.map(p => ({
+            ...p,
+            images: [p.image]
+          }))];
+        }
+        // Add Green Lion gaming products if any
+        const greenLionGaming = greenLionProducts.filter(p => 
+          p.secondaryCategories?.includes("Gaming") || p.name.toLowerCase().includes("gaming")
+        );
+        if (greenLionGaming.length > 0) {
+          products = [...products, ...greenLionGaming.map(p => ({
+            id: p.id,
+            name: p.name,
+            price: p.price,
+            image: p.images[0],
+            images: p.images,
+            rating: p.rating,
+            category: p.category
+          }))];
         }
       } else if (categoryDisplayName === "Wearables") {
         const wearables = getProductsByCategory("Wearables");
         if (Array.isArray(wearables) && wearables.length > 0) {
-          products = [...products, ...wearables];
+          products = [...products, ...wearables.map(p => ({
+            ...p,
+            images: [p.image]
+          }))];
+        }
+        // Add Green Lion smartwatches
+        const greenLionWearables = getGreenLionProductsByCategory("Wearables");
+        if (Array.isArray(greenLionWearables) && greenLionWearables.length > 0) {
+          products = [...products, ...greenLionWearables.map(p => ({
+            id: p.id,
+            name: p.name,
+            price: p.price,
+            image: p.images[0],
+            images: p.images,
+            rating: p.rating,
+            category: p.category
+          }))];
         }
       } else if (categoryDisplayName === "Smartphones") {
         // Smartphones are mock data only
@@ -421,6 +472,7 @@ const CategoryPage = () => {
                         name={product.name}
                         price={product.price || 0}
                         image={product.image}
+                        images={product.images || [product.image]}
                         rating={product.rating}
                         category={product.category}
                       />

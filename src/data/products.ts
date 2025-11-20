@@ -33,6 +33,7 @@ export interface Product {
   image: string;
   rating: number;
   category: string;
+  brand?: string;
   description: string;
   features: string[];
   specifications?: Array<{ label: string; value: string }>;
@@ -47,6 +48,7 @@ export const phoneAccessories: Product[] = [
     image: hocoQ37,
     rating: 4.8,
     category: "Charging",
+    brand: "Hoco",
     description: "Stay powered up wherever you go with the Hoco Q37 IntelligentBalance Power Bank. This compact and powerful 10000mAh charger is your perfect travel companion, featuring built-in cables so you never have to worry about forgetting yours. With multiple fast-charging outputs, it can power up your devices quickly and efficiently.",
     features: [
       "10000mAh Capacity: Provides multiple charges for most smartphones.",
@@ -74,6 +76,7 @@ export const phoneAccessories: Product[] = [
     image: dobePS4,
     rating: 4.7,
     category: "Gaming",
+    brand: "Dobe",
     description: "Keep your gaming sessions uninterrupted with the Dobe Dual Charging Dock for PS4. This station is designed to charge two DUALSHOCK 4 controllers simultaneously. Its sleek, compact design fits perfectly with your gaming setup and ensures your controllers are always charged and ready for action.",
     features: [
       "Dual Controller Charging: Charges two PS4 controllers at the same time.",
@@ -97,6 +100,7 @@ export const phoneAccessories: Product[] = [
     image: dobePS5,
     rating: 4.8,
     category: "Gaming",
+    brand: "Dobe",
     description: "Power up your next-gen gaming with the Dobe Charging Dock for PS5. Designed to perfectly match the aesthetic of the PlayStation 5, this dock securely holds and charges two DualSense wireless controllers. It's the essential accessory for any PS5 owner to keep the game going.",
     features: [
       "DualSense Charging: Charges two PS5 DualSense controllers simultaneously.",
@@ -120,6 +124,7 @@ export const phoneAccessories: Product[] = [
     image: hocoJ132A,
     rating: 4.9,
     category: "Charging",
+    brand: "Hoco",
     description: "The Hoco J132A is a high-capacity powerhouse, packing 20000mAh to keep all your devices running for days. With multiple built-in cables and support for 22.5W and PD 20W fast charging, this power bank is the ultimate solution for heavy users, travelers, and families. The clear LED display lets you know exactly how much power is left.",
     features: [
       "Massive 20000mAh Capacity: Ideal for long trips, charging tablets, or powering multiple devices.",
@@ -144,6 +149,7 @@ export const phoneAccessories: Product[] = [
     image: kakusigaStand,
     rating: 4.6,
     category: "Accessories",
+    brand: "Kakusiga",
     description: "Find your perfect viewing angle with the Kakusiga Folding Rotatable Desktop Stand. This versatile stand is perfect for watching videos, video calls, or simply keeping your phone accessible on your desk. Its 360° rotating base and adjustable height make it incredibly ergonomic, while the foldable design allows you to take it anywhere.",
     features: [
       "360° Rotating Base: Easily spin the stand to share your screen or adjust your viewing angle.",
@@ -168,6 +174,7 @@ export const phoneAccessories: Product[] = [
     image: airpods3rd,
     rating: 4.9,
     category: "Audio",
+    brand: "Apple",
     description: "Experience the magic of Apple's 3rd Generation AirPods. Featuring Spatial Audio with dynamic head tracking, these earbuds place sound all around you for an immersive, three-dimensional listening experience. The all-new contoured design provides a comfortable fit, while the force sensor gives you easy control over your music and calls.",
     features: [
       "Spatial Audio: With dynamic head tracking for a theater-like sound experience.",
@@ -197,6 +204,7 @@ export const phoneAccessories: Product[] = [
     image: galaxyBuds6White,
     rating: 4.7,
     category: "Audio",
+    brand: "Samsung",
     description: "Immerse yourself in high-quality sound with the Galaxy Buds6 Pro. These sleek, ergonomic wireless earbuds are designed for all-day comfort and a secure fit. Enjoy the convenience of true wireless audio, perfect for music, calls, and workouts.",
     features: [
       "True Wireless Design: Enjoy complete freedom from wires with Bluetooth connectivity.",
@@ -222,6 +230,7 @@ export const phoneAccessories: Product[] = [
     image: galaxyBuds6Black,
     rating: 4.7,
     category: "Audio",
+    brand: "Samsung",
     description: "Immerse yourself in high-quality sound with the Galaxy Buds6 Pro. These sleek, ergonomic wireless earbuds are designed for all-day comfort and a secure fit. Enjoy the convenience of true wireless audio, perfect for music, calls, and workouts.",
     features: [
       "True Wireless Design: Enjoy complete freedom from wires with Bluetooth connectivity.",
@@ -247,6 +256,7 @@ export const phoneAccessories: Product[] = [
     image: usbCAdapter,
     rating: 4.8,
     category: "Charging",
+    brand: "Apple",
     description: "Get the fast charge your device deserves with this 25W USB-C Power Adapter and Cable Set. Designed to provide 25W of power, it's ideal for fast-charging iPhones, iPads, and other compatible devices. The set includes both the wall adapter and a durable USB-C to Lightning cable.",
     features: [
       "25W Fast Charging: Provides significantly faster charging speeds than standard adapters.",
@@ -269,6 +279,7 @@ export const phoneAccessories: Product[] = [
     image: jblTune903BT,
     rating: 4.7,
     category: "Audio",
+    brand: "JBL",
     description: "Experience premium sound quality with the JBL Tune 903BT wireless headphone. Featuring Bluetooth 5.3 technology for stable connectivity and enhanced audio performance, these over-ear headphones deliver powerful bass and crystal-clear sound. Perfect for music lovers, gamers, and professionals who demand superior audio quality on the go.",
     features: [
       "Bluetooth 5.3 Technology: Enjoy stable, low-latency wireless connectivity with extended range.",
@@ -296,6 +307,7 @@ export const phoneAccessories: Product[] = [
     image: airpodsPro2,
     rating: 4.9,
     category: "Audio",
+    brand: "Apple",
     description: "Take your audio experience to the next level with Apple AirPods Pro (2nd Generation). Featuring the revolutionary H2 chip, these earbuds deliver exceptional active noise cancellation, immersive Spatial Audio, and personalized sound. The adaptive transparency mode lets you hear your surroundings while the customizable fit ensures comfort for all-day wear.",
     features: [
       "H2 Chip: Advanced audio processing for breakthrough sound quality and noise cancellation.",
@@ -326,6 +338,7 @@ export const phoneAccessories: Product[] = [
     image: hoco22_5W,
     rating: 4.8,
     category: "Charging",
+    brand: "Hoco",
     description: "Never run out of power with the Hoco 22.5W Super Fast Charging Power Bank. This high-capacity 10000mAh portable charger delivers blazing-fast charging speeds, capable of charging your smartphone from 0% to 50% in just 30 minutes. Perfect for travelers, students, and professionals who need reliable power on the go.",
     features: [
       "22.5W Super Fast Charging: Charges compatible devices significantly faster than standard power banks.",
@@ -354,6 +367,7 @@ export const phoneAccessories: Product[] = [
     image: apple25WAdapter,
     rating: 4.9,
     category: "Charging",
+    brand: "Apple",
     description: "Charge your iPhone, iPad, and other USB-C devices at maximum speed with the official Apple USB-C 25W Power Adapter. This compact adapter is designed by Apple to deliver fast, efficient charging while maintaining safety standards. Perfect for iPhone 14 Pro Max and other compatible devices that support fast charging.",
     features: [
       "Official Apple Product: Designed and manufactured by Apple for optimal compatibility and safety.",
@@ -381,6 +395,7 @@ export const phoneAccessories: Product[] = [
     image: foneng25WAdapter,
     rating: 4.6,
     category: "Charging",
+    brand: "Foneng",
     description: "Fast charge your devices with the Foneng 25W USB-C Power Adapter. This reliable wall charger delivers quick charging speeds for smartphones, tablets, and other USB-C compatible devices. Compact and portable, it's perfect for home, office, or travel use.",
     features: [
       "25W Fast Charging: Rapidly charges compatible devices up to 25W power output.",
@@ -408,6 +423,7 @@ export const phoneAccessories: Product[] = [
     image: fonengAuxCable,
     rating: 4.5,
     category: "Audio",
+    brand: "Foneng",
     description: "Connect your devices with crystal-clear audio using the Foneng 3.5mm AUX Audio Cable. This high-quality cable ensures pristine audio transmission between your smartphone, tablet, car stereo, or any device with a 3.5mm audio jack. Perfect for music lovers who demand the best sound quality.",
     features: [
       "High-Quality Audio: Delivers clear, distortion-free audio transmission for premium sound quality.",
@@ -435,6 +451,7 @@ export const phoneAccessories: Product[] = [
     image: fonengUsbCable,
     rating: 4.6,
     category: "Charging",
+    brand: "Foneng",
     description: "Fast charge and sync your devices with the Foneng USB-A to USB-C Cable. This durable cable supports fast charging and high-speed data transfer, making it ideal for connecting your USB-C devices to computers, power banks, or wall chargers. Built to last with quality materials and reinforced connectors.",
     features: [
       "Fast Charging Support: Enables rapid charging for compatible devices with fast charge technology.",
@@ -462,6 +479,7 @@ export const phoneAccessories: Product[] = [
     image: borofoneUsbCable,
     rating: 4.7,
     category: "Charging",
+    brand: "BOROFONE",
     description: "Experience reliable charging and data transfer with the BOROFONE USB-A to USB-C Cable. This premium cable is designed for durability and performance, featuring fast charging capabilities and high-speed data synchronization. Perfect for daily use with your smartphone, tablet, or other USB-C devices.",
     features: [
       "Fast Charging: Supports fast charging protocols for rapid device charging.",
@@ -490,6 +508,7 @@ export const phoneAccessories: Product[] = [
     image: fonengDesktopHolder,
     rating: 4.6,
     category: "Accessories",
+    brand: "Foneng",
     description: "Keep your phone at the perfect angle with the Foneng Foldable Desktop Phone Holder. This versatile stand features adjustable height and viewing angles, making it perfect for video calls, watching content, or following recipes in the kitchen. The foldable design makes it easy to store and transport.",
     features: [
       "Adjustable Height: Multiple height settings to find your perfect viewing position.",
@@ -518,6 +537,7 @@ export const phoneAccessories: Product[] = [
     image: samsung25WAdapter,
     rating: 4.8,
     category: "Charging",
+    brand: "Samsung",
     description: "Fast charge your Samsung Galaxy devices and other USB-C phones with the Samsung 25W USB-C Power Delivery Adapter. This official Samsung charger delivers optimized charging performance for Galaxy smartphones and tablets, ensuring your device charges quickly and safely.",
     features: [
       "Official Samsung Product: Designed specifically for Samsung Galaxy devices for optimal performance.",
@@ -549,6 +569,7 @@ export const wearablesProducts: Product[] = [
     image: s8UltraMax,
     rating: 4.7,
     category: "Wearables",
+    brand: "Generic",
     description: "Experience the ultimate in smartwatch technology with the S8 Ultra Max. This premium smartwatch combines advanced health tracking, fitness monitoring, and smart connectivity in a sleek, durable design. Perfect for fitness enthusiasts, health-conscious individuals, and tech-savvy users who demand the best in wearable technology.",
     features: [
       "Large HD Display: Crystal-clear 1.9-inch AMOLED display with vibrant colors and excellent visibility in all lighting conditions.",
@@ -579,6 +600,7 @@ export const wearablesProducts: Product[] = [
     image: smartWatchActivePro,
     rating: 4.6,
     category: "Wearables",
+    brand: "Green Lion",
     description: "The Smart Watch Active Pro Green Lion Edition is a powerful fitness companion designed for active lifestyles. With its striking green design and comprehensive health tracking features, this smartwatch helps you stay on top of your fitness goals while keeping you connected throughout the day.",
     features: [
       "Vibrant Green Design: Eye-catching green colorway that stands out from the crowd.",
@@ -609,6 +631,7 @@ export const wearablesProducts: Product[] = [
     image: u9Ultra2,
     rating: 4.8,
     category: "Wearables",
+    brand: "Generic",
     description: "The U9 Ultra 2 represents the pinnacle of smartwatch innovation, combining cutting-edge technology with elegant design. This ultra-premium smartwatch offers comprehensive health monitoring, advanced fitness tracking, and seamless smartphone integration, making it the perfect companion for your active lifestyle.",
     features: [
       "Premium Build Quality: High-grade materials with a sleek, modern design that exudes sophistication.",
@@ -639,6 +662,7 @@ export const wearablesProducts: Product[] = [
     image: watchXSeries10,
     rating: 4.9,
     category: "Wearables",
+    brand: "Generic",
     description: "The Watch X Series 10 is the latest evolution in smartwatch technology, featuring state-of-the-art health monitoring, AI-powered fitness coaching, and seamless integration with your digital life. This next-generation smartwatch is designed for those who want the most advanced features in a stylish, comfortable package.",
     features: [
       "Next-Gen Display: Ultra-bright, high-resolution display with 60Hz refresh rate for smooth interactions.",
