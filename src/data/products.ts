@@ -4,17 +4,29 @@ import dobePS4 from "@/assets/phone_accessories/Dobe Dual Charging Dock for PS4 
 import dobePS5 from "@/assets/phone_accessories/Dobe Charging Dock for PS5 Controllers (P-5).png";
 import hocoJ132A from "@/assets/phone_accessories/Hoco J132A IntelligentBalance 20000mAh Power Bank.png";
 import kakusigaStand from "@/assets/phone_accessories/Kakusiga Folding Rotatable Desktop Stand.png";
-import airpods3rd from "@/assets/phone_accessories/Apple AirPods (3rd Generation).png";
-import galaxyBuds6White from "@/assets/phone_accessories/Galaxy Buds6 Pro (White).png";
-import galaxyBuds6Black from "@/assets/phone_accessories/Galaxy Buds6 Pro (Black).png";
 import usbCAdapter from "@/assets/phone_accessories/25W USB-C Power Adapter with USB-C to Lightning Cable.png";
-// New product imports
-import jblTune903BT from "@/assets/phone_accessories/wireless headphone JBL Tune903BT V5.3.png";
-import airpodsPro2 from "@/assets/phone_accessories/airpods pro generation 2.png";
+// Audio product imports
+import airpods3rd from "@/assets/audio/Apple AirPods (3rd Generation).png";
+import galaxyBuds6White from "@/assets/audio/Galaxy Buds6 Pro (White).png";
+import galaxyBuds6Black from "@/assets/audio/Galaxy Buds6 Pro (Black).png";
+import jblTune903BT from "@/assets/audio/wireless headphone JBL Tune903BT V5.3.png";
+import airpodsPro2 from "@/assets/audio/airpods pro generation 2.png";
+import waterproofSpeakerBlack from "@/assets/audio/3INCH SPAKER WATER PROOF black.png";
+import waterproofSpeakerBlue from "@/assets/audio/3INCH SPAKER WATER PROOF blue.png";
+import waterproofSpeakerGrey from "@/assets/audio/3INCH SPAKER WATER PROOF grey.png";
+import waterproofSpeakerRed from "@/assets/audio/3INCH SPAKER WATER PROOF red.png";
+import yesidoHeadset from "@/assets/audio/YESIDO WIRED GAMING HEADSET EK05.webp";
+import yesidoHeadset1 from "@/assets/audio/YESIDO WIRED GAMING HEADSET EK05 1.webp";
+import yesidoHeadset2 from "@/assets/audio/YESIDO WIRED GAMING HEADSET EK05 2.webp";
 import hoco22_5W from "@/assets/phone_accessories/powerbank hoco 22.5W-10000MAH.png";
 import apple25WAdapter from "@/assets/phone_accessories/apple adapter USB-C 25W.gif";
 import foneng25WAdapter from "@/assets/phone_accessories/adapter foneng 25W.png";
-import fonengAuxCable from "@/assets/phone_accessories/aux cable foneng.jpg";
+import fonengAuxCable from "@/assets/audio/aux cable foneng.jpg";
+// Accessories imports
+import rgbMj33Ring from "@/assets/accessories/RGB MJ33 RING 13INCH.avif";
+import rgbMj33RingGif from "@/assets/accessories/RGB MJ33 RING 13INCH.gif";
+import rl19LedSoft from "@/assets/accessories/RL-19 LED SOFT.jpg";
+import rl19LedSoft1 from "@/assets/accessories/RL-19 LED SOFT1.jpg";
 import fonengUsbCable from "@/assets/phone_accessories/USB to Type-C foneng.webp";
 import borofoneUsbCable from "@/assets/phone_accessories/usb to type-C BOROFONE.jpg";
 import fonengDesktopHolder from "@/assets/phone_accessories/foldable desktop holder foneng.webp";
@@ -444,6 +456,147 @@ export const phoneAccessories: Product[] = [
     ]
   },
   {
+    id: 120,
+    name: "3 Inch Waterproof Bluetooth Speaker (Black)",
+    title: "3 Inch Portable Waterproof Bluetooth Speaker - Black",
+    price: 34.99,
+    image: waterproofSpeakerBlack,
+    rating: 4.6,
+    category: "Audio",
+    brand: "Generic",
+    description: "Take your music anywhere with this compact 3-inch waterproof Bluetooth speaker. Perfect for outdoor adventures, pool parties, or beach trips, this speaker features IPX7 waterproof rating, making it resistant to water splashes and brief submersion. With impressive sound quality and long battery life, it's the perfect companion for your mobile lifestyle.",
+    features: [
+      "IPX7 Waterproof Rating: Fully waterproof design that can withstand water splashes and brief submersion.",
+      "Bluetooth 5.0 Connectivity: Stable wireless connection with extended range for seamless music streaming.",
+      "Compact 3-Inch Design: Portable size that fits easily in your bag or pocket without sacrificing sound quality.",
+      "Long Battery Life: Extended playback time to keep the music going all day long.",
+      "Rich Bass Sound: Powerful drivers deliver clear, balanced audio with impressive bass response.",
+      "Built-in Microphone: Hands-free calling capability for convenient phone conversations.",
+      "Multiple Color Options: Available in black, blue, grey, and red to match your style."
+    ],
+    specifications: [
+      { label: "Size", value: "3 inches" },
+      { label: "Waterproof", value: "IPX7 rating" },
+      { label: "Bluetooth", value: "5.0 wireless connectivity" },
+      { label: "Battery", value: "Extended playback time" },
+      { label: "Microphone", value: "Built-in for hands-free calls" },
+      { label: "Colors", value: "Black, Blue, Grey, Red" }
+    ]
+  },
+  {
+    id: 121,
+    name: "3 Inch Waterproof Bluetooth Speaker (Blue)",
+    title: "3 Inch Portable Waterproof Bluetooth Speaker - Blue",
+    price: 34.99,
+    image: waterproofSpeakerBlue,
+    rating: 4.6,
+    category: "Audio",
+    brand: "Generic",
+    description: "Take your music anywhere with this compact 3-inch waterproof Bluetooth speaker in vibrant blue. Perfect for outdoor adventures, pool parties, or beach trips, this speaker features IPX7 waterproof rating, making it resistant to water splashes and brief submersion. With impressive sound quality and long battery life, it's the perfect companion for your mobile lifestyle.",
+    features: [
+      "IPX7 Waterproof Rating: Fully waterproof design that can withstand water splashes and brief submersion.",
+      "Bluetooth 5.0 Connectivity: Stable wireless connection with extended range for seamless music streaming.",
+      "Compact 3-Inch Design: Portable size that fits easily in your bag or pocket without sacrificing sound quality.",
+      "Long Battery Life: Extended playback time to keep the music going all day long.",
+      "Rich Bass Sound: Powerful drivers deliver clear, balanced audio with impressive bass response.",
+      "Built-in Microphone: Hands-free calling capability for convenient phone conversations.",
+      "Vibrant Blue Color: Eye-catching blue design that stands out."
+    ],
+    specifications: [
+      { label: "Size", value: "3 inches" },
+      { label: "Waterproof", value: "IPX7 rating" },
+      { label: "Bluetooth", value: "5.0 wireless connectivity" },
+      { label: "Battery", value: "Extended playback time" },
+      { label: "Microphone", value: "Built-in for hands-free calls" },
+      { label: "Color", value: "Blue" }
+    ]
+  },
+  {
+    id: 122,
+    name: "3 Inch Waterproof Bluetooth Speaker (Grey)",
+    title: "3 Inch Portable Waterproof Bluetooth Speaker - Grey",
+    price: 34.99,
+    image: waterproofSpeakerGrey,
+    rating: 4.6,
+    category: "Audio",
+    brand: "Generic",
+    description: "Take your music anywhere with this compact 3-inch waterproof Bluetooth speaker in sleek grey. Perfect for outdoor adventures, pool parties, or beach trips, this speaker features IPX7 waterproof rating, making it resistant to water splashes and brief submersion. With impressive sound quality and long battery life, it's the perfect companion for your mobile lifestyle.",
+    features: [
+      "IPX7 Waterproof Rating: Fully waterproof design that can withstand water splashes and brief submersion.",
+      "Bluetooth 5.0 Connectivity: Stable wireless connection with extended range for seamless music streaming.",
+      "Compact 3-Inch Design: Portable size that fits easily in your bag or pocket without sacrificing sound quality.",
+      "Long Battery Life: Extended playback time to keep the music going all day long.",
+      "Rich Bass Sound: Powerful drivers deliver clear, balanced audio with impressive bass response.",
+      "Built-in Microphone: Hands-free calling capability for convenient phone conversations.",
+      "Sleek Grey Color: Modern grey finish for a sophisticated look."
+    ],
+    specifications: [
+      { label: "Size", value: "3 inches" },
+      { label: "Waterproof", value: "IPX7 rating" },
+      { label: "Bluetooth", value: "5.0 wireless connectivity" },
+      { label: "Battery", value: "Extended playback time" },
+      { label: "Microphone", value: "Built-in for hands-free calls" },
+      { label: "Color", value: "Grey" }
+    ]
+  },
+  {
+    id: 123,
+    name: "3 Inch Waterproof Bluetooth Speaker (Red)",
+    title: "3 Inch Portable Waterproof Bluetooth Speaker - Red",
+    price: 34.99,
+    image: waterproofSpeakerRed,
+    rating: 4.6,
+    category: "Audio",
+    brand: "Generic",
+    description: "Take your music anywhere with this compact 3-inch waterproof Bluetooth speaker in bold red. Perfect for outdoor adventures, pool parties, or beach trips, this speaker features IPX7 waterproof rating, making it resistant to water splashes and brief submersion. With impressive sound quality and long battery life, it's the perfect companion for your mobile lifestyle.",
+    features: [
+      "IPX7 Waterproof Rating: Fully waterproof design that can withstand water splashes and brief submersion.",
+      "Bluetooth 5.0 Connectivity: Stable wireless connection with extended range for seamless music streaming.",
+      "Compact 3-Inch Design: Portable size that fits easily in your bag or pocket without sacrificing sound quality.",
+      "Long Battery Life: Extended playback time to keep the music going all day long.",
+      "Rich Bass Sound: Powerful drivers deliver clear, balanced audio with impressive bass response.",
+      "Built-in Microphone: Hands-free calling capability for convenient phone conversations.",
+      "Bold Red Color: Vibrant red design for a striking appearance."
+    ],
+    specifications: [
+      { label: "Size", value: "3 inches" },
+      { label: "Waterproof", value: "IPX7 rating" },
+      { label: "Bluetooth", value: "5.0 wireless connectivity" },
+      { label: "Battery", value: "Extended playback time" },
+      { label: "Microphone", value: "Built-in for hands-free calls" },
+      { label: "Color", value: "Red" }
+    ]
+  },
+  {
+    id: 124,
+    name: "YESIDO Wired Gaming Headset EK05",
+    title: "YESIDO Wired Gaming Headset EK05 - Professional Gaming Audio",
+    price: 39.99,
+    image: yesidoHeadset,
+    rating: 4.7,
+    category: "Audio",
+    brand: "YESIDO",
+    description: "Immerse yourself in the game with the YESIDO Wired Gaming Headset EK05. Designed for serious gamers, this headset delivers crystal-clear audio with powerful bass and crisp highs. The comfortable over-ear design with plush ear cushions ensures hours of comfortable gaming sessions. With a flexible microphone and in-line controls, it's the perfect audio companion for competitive gaming.",
+    features: [
+      "High-Quality Audio Drivers: Premium drivers deliver clear, immersive sound with excellent bass response for gaming.",
+      "Noise-Canceling Microphone: Flexible boom microphone with noise cancellation for clear voice communication.",
+      "Comfortable Over-Ear Design: Plush ear cushions and adjustable headband for extended gaming comfort.",
+      "Wired Connection: Reliable wired connection ensures zero latency and consistent audio quality.",
+      "In-Line Controls: Easy-to-reach controls for volume adjustment and microphone mute.",
+      "Wide Compatibility: Works with PC, PlayStation, Xbox, Nintendo Switch, and mobile devices.",
+      "Durable Construction: Built to last with quality materials and reinforced cable design."
+    ],
+    specifications: [
+      { label: "Connection", value: "Wired (3.5mm jack)" },
+      { label: "Driver Size", value: "40mm or 50mm drivers" },
+      { label: "Microphone", value: "Noise-canceling boom microphone" },
+      { label: "Compatibility", value: "PC, PS4, PS5, Xbox, Switch, Mobile" },
+      { label: "Controls", value: "In-line volume and mute controls" },
+      { label: "Design", value: "Over-ear with plush cushions" },
+      { label: "Cable", value: "Reinforced, durable cable" }
+    ]
+  },
+  {
     id: 116,
     name: "Foneng USB to USB-C Cable",
     title: "Foneng USB-A to USB-C Fast Charging Cable",
@@ -555,6 +708,64 @@ export const phoneAccessories: Product[] = [
       { label: "Design", value: "Compact and lightweight" },
       { label: "Protection", value: "Overcharge, overheat, voltage protection" },
       { label: "Brand", value: "Official Samsung product" }
+    ]
+  },
+  {
+    id: 125,
+    name: "RGB MJ33 Ring LED Light (13 Inch)",
+    title: "RGB MJ33 Ring LED Light 13 Inch - Professional Lighting",
+    price: 49.99,
+    image: rgbMj33Ring,
+    rating: 4.8,
+    category: "Accessories",
+    brand: "Generic",
+    description: "Illuminate your workspace or content creation setup with the RGB MJ33 Ring LED Light. This 13-inch professional ring light features adjustable brightness and color temperature, making it perfect for video calls, streaming, photography, and content creation. The RGB color modes add a creative touch to your setup.",
+    features: [
+      "13-Inch Large Ring Light: Generous 13-inch diameter provides even, professional lighting coverage.",
+      "RGB Color Modes: Multiple RGB color modes and effects to create the perfect ambiance.",
+      "Adjustable Brightness: Multiple brightness levels from soft glow to bright studio lighting.",
+      "Color Temperature Control: Adjustable color temperature (warm to cool) for natural-looking light.",
+      "Flexible Mounting Options: Compatible with tripods, desk mounts, and other standard mounting solutions.",
+      "USB Powered: Convenient USB power supply for easy connection to computers, power banks, or wall adapters.",
+      "Professional Quality: High-quality LED panels ensure consistent, flicker-free illumination."
+    ],
+    specifications: [
+      { label: "Size", value: "13 inches diameter" },
+      { label: "Light Modes", value: "RGB color modes + white light" },
+      { label: "Brightness", value: "Adjustable multiple levels" },
+      { label: "Color Temperature", value: "Adjustable warm to cool" },
+      { label: "Power", value: "USB powered" },
+      { label: "Mounting", value: "Standard tripod/desk mount compatible" },
+      { label: "LED Type", value: "High-quality LED panels" }
+    ]
+  },
+  {
+    id: 126,
+    name: "RL-19 LED Soft Light Strip",
+    title: "RL-19 RGB LED Soft Light Strip - Ambient Lighting",
+    price: 24.99,
+    image: rl19LedSoft,
+    rating: 4.7,
+    category: "Accessories",
+    brand: "Generic",
+    description: "Transform your space with the RL-19 LED Soft Light Strip. This flexible RGB LED strip features smooth color transitions, multiple lighting modes, and easy installation. Perfect for adding ambient lighting to your desk, room, or gaming setup. The soft, diffused light creates a relaxing and modern atmosphere.",
+    features: [
+      "RGB Color Changing: Full RGB color spectrum with smooth color transitions and effects.",
+      "Soft Diffused Light: Soft, even light distribution without harsh spots or glare.",
+      "Multiple Lighting Modes: Various modes including static colors, color cycling, breathing effects, and more.",
+      "Remote Control: Wireless remote control for easy color and mode adjustments.",
+      "Easy Installation: Self-adhesive backing for quick and easy installation on any clean surface.",
+      "Flexible Design: Flexible strip design allows for curved installations and creative setups.",
+      "Energy Efficient: Low power consumption LED technology for long-lasting, energy-efficient operation."
+    ],
+    specifications: [
+      { label: "LED Type", value: "RGB LED soft light strip" },
+      { label: "Control", value: "Wireless remote control included" },
+      { label: "Installation", value: "Self-adhesive backing" },
+      { label: "Modes", value: "Multiple lighting modes and effects" },
+      { label: "Power", value: "USB or adapter powered" },
+      { label: "Flexibility", value: "Flexible, cuttable design" },
+      { label: "Length", value: "Standard length with extension options" }
     ]
   }
 ];
