@@ -818,12 +818,31 @@ const Checkout = () => {
                         </Label>
                         <Select
                           value={formData.accountType}
-                          onValueChange={(value) => setFormData({ ...formData, accountType: value })}
+                          onValueChange={(value) => {
+                            setFormData({ ...formData, accountType: value });
+                          }}
                         >
-                          <SelectTrigger className="mt-2">
+                          <SelectTrigger 
+                            className="mt-2"
+                            onClick={(e) => {
+                              // Prevent scroll-to-top when clicking dropdown
+                              e.stopPropagation();
+                            }}
+                          >
                             <SelectValue placeholder="Select account type" />
                           </SelectTrigger>
-                          <SelectContent>
+                          <SelectContent 
+                            position="popper" 
+                            className="z-[100]"
+                            onCloseAutoFocus={(e) => {
+                              // Prevent auto-focus from causing scroll
+                              e.preventDefault();
+                            }}
+                            onEscapeKeyDown={(e) => {
+                              // Prevent escape key from causing scroll
+                              e.stopPropagation();
+                            }}
+                          >
                             <SelectItem value="1 user">1 User</SelectItem>
                             <SelectItem value="full account">Full Account</SelectItem>
                           </SelectContent>

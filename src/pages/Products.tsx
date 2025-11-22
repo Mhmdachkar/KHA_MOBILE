@@ -78,11 +78,18 @@ const Products = () => {
     return uniqueCategories.sort();
   }, [allProducts]);
 
-  // Get unique brands from product names (extract brand names)
+  // Get unique brands from product names (extract brand names) and product.brand field
   const brands = useMemo(() => {
     const brandSet = new Set<string>();
     allProducts.forEach(product => {
+      // First check product.brand field
+      if (product.brand) {
+        brandSet.add(product.brand);
+      }
+      
+      // Then check product name
       const name = product.name.toLowerCase();
+      if (name.includes("green lion") || name.startsWith("green lion")) brandSet.add("Green Lion");
       if (name.includes("apple")) brandSet.add("Apple");
       if (name.includes("samsung")) brandSet.add("Samsung");
       if (name.includes("jbl")) brandSet.add("JBL");
@@ -92,6 +99,9 @@ const Products = () => {
       if (name.includes("borofone")) brandSet.add("BOROFONE");
       if (name.includes("galaxy")) brandSet.add("Samsung");
       if (name.includes("kakusiga")) brandSet.add("Kakusiga");
+      
+      // Also check for Green Lion by ID
+      if (product.id >= 5000) brandSet.add("Green Lion");
     });
     return Array.from(brandSet).sort();
   }, [allProducts]);
@@ -99,6 +109,7 @@ const Products = () => {
   // Helper to extract brand name from product name
   const extractBrand = (name: string): string | null => {
     const lower = name.toLowerCase();
+    if (lower.includes("green lion") || lower.startsWith("green lion")) return "Green Lion";
     if (lower.includes("apple")) return "Apple";
     if (lower.includes("samsung")) return "Samsung";
     if (lower.includes("jbl")) return "JBL";
@@ -160,9 +171,23 @@ const Products = () => {
       // Category filter
       const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(product.category);
       
-      // Brand filter
-      const productBrand = extractBrand(product.name);
-      const brandMatch = selectedBrands.length === 0 || (productBrand !== null && selectedBrands.includes(productBrand));
+      // Brand filter - check both product.brand field and extracted brand from name
+      const productBrand = product.brand || extractBrand(product.name);
+      
+      // For Green Lion, also check if name starts with "Green Lion"
+      const isGreenLionBrand = product.brand === "Green Lion" || 
+                               product.name?.startsWith("Green Lion") ||
+                               product.id >= 5000; // Green Lion products have IDs >= 5000
+      
+      const brandMatch = selectedBrands.length === 0 || 
+        (selectedBrands.some(selectedBrand => {
+          // Special handling for Green Lion
+          if (selectedBrand === "Green Lion" && isGreenLionBrand) {
+            return true;
+          }
+          // For other brands, check exact match
+          return productBrand !== null && productBrand === selectedBrand;
+        }));
       
       return categoryMatch && brandMatch;
     });

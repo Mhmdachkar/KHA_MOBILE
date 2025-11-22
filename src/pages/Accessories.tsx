@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Grid3x3, List, Battery, Gamepad2, Headphones, Smartphone, Filter } from "lucide-react";
+import { Grid3x3, List, Battery, Smartphone, Filter } from "lucide-react";
 import Header from "@/components/Header";
 import ProductCard from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
@@ -37,27 +37,81 @@ const Accessories = () => {
   }, []);
 
   // Combine all accessory products (existing + Green Lion)
+  // Exclude Audio, Gaming, and Wearables categories
   const allAccessoryProducts = [
-    ...phoneAccessories.map((product) => ({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.image,
-      images: [product.image], // Convert single image to array for consistency
-      rating: product.rating,
-      category: product.category,
-      brand: product.brand || "Other",
-    })),
-    ...greenLionProducts.map((product) => ({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.images[0], // Use first image for grid view
-      images: product.images, // Pass full images array for hover switching
-      rating: product.rating,
-      category: product.category,
-      brand: product.brand,
-    })),
+    // Filter phoneAccessories to exclude Audio, Gaming, and Wearables
+    ...phoneAccessories
+      .filter((product) => {
+        const category = product.category?.toLowerCase();
+        // Exclude Audio, Gaming, and Wearables
+        return category !== "audio" && 
+               category !== "gaming" && 
+               category !== "wearables";
+      })
+      .map((product) => ({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.image,
+        images: [product.image], // Convert single image to array for consistency
+        rating: product.rating,
+        category: product.category,
+        brand: product.brand || "Other",
+      })),
+    // Filter Green Lion products to exclude Audio, Gaming, and Wearables
+    ...greenLionProducts
+      .filter((product) => {
+        // Exclude if it has Audio, Gaming, or Wearables in secondary categories
+        const hasAudio = product.secondaryCategories?.some(
+          (cat) => cat.toLowerCase() === "audio" || 
+                   cat.toLowerCase() === "headphones" || 
+                   cat.toLowerCase() === "earbuds" || 
+                   cat.toLowerCase() === "speakers" ||
+                   cat.toLowerCase() === "neckbands"
+        );
+        const hasGaming = product.secondaryCategories?.some(
+          (cat) => cat.toLowerCase() === "gaming"
+        );
+        const hasWearables = product.secondaryCategories?.some(
+          (cat) => cat.toLowerCase() === "wearables" || 
+                   cat.toLowerCase() === "smartwatches" ||
+                   cat.toLowerCase() === "watch"
+        );
+        
+        // Also check product name for audio/gaming/wearable keywords
+        const nameLower = product.name.toLowerCase();
+        const isAudioProduct = nameLower.includes("earbud") || 
+                              nameLower.includes("headphone") || 
+                              nameLower.includes("speaker") || 
+                              nameLower.includes("neckband") ||
+                              nameLower.includes("river") ||
+                              nameLower.includes("manchester") ||
+                              nameLower.includes("porto") ||
+                              nameLower.includes("jupiter") ||
+                              nameLower.includes("rhythm") ||
+                              nameLower.includes("echo") ||
+                              nameLower.includes("sevilla");
+        const isGamingProduct = nameLower.includes("gaming");
+        const isWearableProduct = nameLower.includes("watch") || 
+                                 nameLower.includes("smartwatch") ||
+                                 nameLower.includes("track fit") ||
+                                 (nameLower.includes("ultimate") && (nameLower.includes("46mm") || nameLower.includes("41"))) ||
+                                 nameLower.includes("active 49");
+        
+        // Only include if it's NOT audio, gaming, or wearable
+        return !hasAudio && !hasGaming && !hasWearables && 
+               !isAudioProduct && !isGamingProduct && !isWearableProduct;
+      })
+      .map((product) => ({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.images[0], // Use first image for grid view
+        images: product.images, // Pass full images array for hover switching
+        rating: product.rating,
+        category: product.category,
+        brand: product.brand,
+      })),
   ];
 
   // Get all unique brands for the filter
@@ -133,7 +187,7 @@ const Accessories = () => {
           className="mb-6 sm:mb-8 overflow-x-auto scrollbar-hide"
         >
           <Tabs value={selectedCategory} onValueChange={setSelectedCategory}>
-            <TabsList className="grid w-full max-w-2xl grid-cols-3 sm:grid-cols-5 h-auto p-1 gap-1 sm:gap-0">
+            <TabsList className="grid w-full max-w-2xl grid-cols-3 h-auto p-1 gap-1 sm:gap-0">
               <TabsTrigger value="all" className="text-elegant text-[10px] sm:text-xs px-2 sm:px-4 py-2">
                 <span className="hidden sm:inline">All Products</span>
                 <span className="sm:hidden">All</span>
@@ -141,14 +195,6 @@ const Accessories = () => {
               <TabsTrigger value="charging" className="text-elegant text-[10px] sm:text-xs px-2 sm:px-4 py-2">
                 <Battery className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                 <span className="hidden sm:inline">Charging</span>
-              </TabsTrigger>
-              <TabsTrigger value="audio" className="text-elegant text-[10px] sm:text-xs px-2 sm:px-4 py-2">
-                <Headphones className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
-                <span className="hidden sm:inline">Audio</span>
-              </TabsTrigger>
-              <TabsTrigger value="gaming" className="text-elegant text-[10px] sm:text-xs px-2 sm:px-4 py-2">
-                <Gamepad2 className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
-                <span className="hidden sm:inline">Gaming</span>
               </TabsTrigger>
               <TabsTrigger value="accessories" className="text-elegant text-[10px] sm:text-xs px-2 sm:px-4 py-2">
                 <Smartphone className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
