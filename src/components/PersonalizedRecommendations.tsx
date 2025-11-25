@@ -74,6 +74,7 @@ const HorizontalScrollContainer = ({ products }: { products: any[] }) => {
       {showLeftArrow && (
         <button
           onClick={() => scroll("left")}
+          style={{ touchAction: 'manipulation' }}
           className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 lg:h-12 lg:w-12 bg-background/90 backdrop-blur border border-border rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-background"
           aria-label="Scroll left"
         >
@@ -85,6 +86,7 @@ const HorizontalScrollContainer = ({ products }: { products: any[] }) => {
       {showRightArrow && (
         <button
           onClick={() => scroll("right")}
+          style={{ touchAction: 'manipulation' }}
           className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 lg:h-12 lg:w-12 bg-background/90 backdrop-blur border border-border rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-background"
           aria-label="Scroll right"
         >

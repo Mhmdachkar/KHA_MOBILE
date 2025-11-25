@@ -338,4 +338,36 @@ All colors MUST be HSL.
     max-width: 100vw;
     overflow-x: hidden;
   }
+
+  /* Fix scroll conflicts on touch devices */
+  button, a, [role="button"] {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  /* Prevent tap delay on mobile */
+  a, button, input, select, textarea {
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+  }
+
+  /* Smooth scrolling for touch devices */
+  * {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+
+  /* Prevent scroll interruption when clicking */
+  .prevent-scroll-interrupt {
+    pointer-events: auto;
+    touch-action: manipulation;
+  }
+
+  /* Optimize motion components for touch */
+  [data-framer-component] {
+    touch-action: manipulation;
+  }
 }

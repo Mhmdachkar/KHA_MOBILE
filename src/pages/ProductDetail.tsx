@@ -432,6 +432,7 @@ const ProductDetail = () => {
                   size="lg" 
                   className="flex-1 text-elegant text-sm py-4 sm:py-5 w-full"
                   onClick={() => handleAddToCart()}
+                  style={{ touchAction: 'manipulation' }}
                 >
                   <ShoppingCart className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                   Add to Cart
@@ -441,6 +442,7 @@ const ProductDetail = () => {
                   variant="outline" 
                   className="flex-1 text-elegant text-sm py-4 sm:py-5 w-full"
                   onClick={() => handleAddToCart(true)}
+                  style={{ touchAction: 'manipulation' }}
                 >
                   Buy Now
                 </Button>
@@ -448,9 +450,9 @@ const ProductDetail = () => {
               
               {/* Wishlist Button - Well structured below Buy Now */}
               <motion.button 
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={window.matchMedia('(hover: hover)').matches ? { scale: 1.02 } : undefined}
                 onClick={() => toggleFavorite(product)}
+                style={{ touchAction: 'manipulation' }}
                 className={`w-full flex items-center justify-center gap-2 px-4 py-3 sm:py-3.5 rounded-sm border transition-all duration-300 ${
                   favorite 
                     ? "bg-accent/10 text-accent border-accent/30 hover:bg-accent/20" 
@@ -533,6 +535,7 @@ const ProductDetail = () => {
                       <button
                         key={variant.key}
                         onClick={() => setSelectedVariantKey(variant.key)}
+                        style={{ touchAction: 'manipulation' }}
                         className={`text-left border rounded-sm p-3 sm:p-4 flex flex-col gap-1 transition-all duration-300 ${
                           isActive
                             ? "border-primary bg-primary/5 shadow-sm"
@@ -601,9 +604,9 @@ const ProductDetail = () => {
 
             {/* Wishlist Button - Desktop only (mobile version is in image gallery) */}
             <motion.button 
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={window.matchMedia('(hover: hover)').matches ? { scale: 1.05 } : undefined}
               onClick={() => toggleFavorite(product)}
+              style={{ touchAction: 'manipulation' }}
               className={`hidden md:flex items-center gap-2 text-sm transition-colors mb-12 ${
                 favorite 
                   ? "text-accent" 

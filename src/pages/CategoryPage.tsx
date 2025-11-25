@@ -476,6 +476,7 @@ const CategoryPage = () => {
           <div className="grid grid-cols-2 gap-2">
             <button
               onClick={() => setSelectedSmartphoneBrand("All")}
+              style={{ touchAction: 'manipulation' }}
               className={`col-span-2 flex items-center justify-center p-2 rounded-md border transition-all duration-200 ${
                 selectedSmartphoneBrand === "All"
                   ? "border-primary bg-primary/5 text-primary shadow-sm"
@@ -493,6 +494,7 @@ const CategoryPage = () => {
                 <button
                   key={brand}
                   onClick={() => setSelectedSmartphoneBrand(brand)}
+                  style={{ touchAction: 'manipulation' }}
                   className={`relative flex flex-col items-center justify-center p-3 rounded-md border transition-all duration-200 group ${
                     isActive
                       ? "border-primary bg-primary/5 shadow-md scale-[1.02]"
@@ -718,7 +720,11 @@ const CategoryPage = () => {
                           {product.variants.map((variant: any) => (
                             <button
                               key={variant.key}
-                              onClick={() => navigate(`/product/${product.id}?variant=${encodeURIComponent(variant.key)}`)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                navigate(`/product/${product.id}?variant=${encodeURIComponent(variant.key)}`);
+                              }}
+                              style={{ touchAction: 'manipulation' }}
                               className="px-2.5 py-1 rounded-full text-[11px] border border-border hover:border-primary/60 hover:text-primary transition"
                             >
                               {variant.label}

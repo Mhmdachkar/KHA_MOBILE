@@ -164,12 +164,13 @@ const ProductCard = ({ id, name, price, image, images, rating = 4.5, category }:
         className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 md:top-3 md:right-3 lg:top-4 lg:right-4 flex flex-col gap-1 sm:gap-1.5 md:gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-300"
       >
         <motion.button 
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+          whileHover={window.matchMedia('(hover: hover)').matches ? { scale: 1.1 } : undefined}
           onClick={(e) => {
             e.preventDefault();
+            e.stopPropagation();
             toggleFavorite({ id, name, price, image, rating, category });
           }}
+          style={{ touchAction: 'manipulation' }}
           className={`h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 rounded-full glassmorphism border border-border/50 flex items-center justify-center transition-all duration-300 ripple bg-background/80 backdrop-blur-sm ${
             favorite 
               ? "bg-primary text-primary-foreground border-primary" 
@@ -180,9 +181,9 @@ const ProductCard = ({ id, name, price, image, images, rating = 4.5, category }:
           <Heart className={`h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 ${favorite ? "fill-white" : ""}`} />
         </motion.button>
         <motion.button 
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+          whileHover={window.matchMedia('(hover: hover)').matches ? { scale: 1.1 } : undefined}
           onClick={handleAddToCart}
+          style={{ touchAction: 'manipulation' }}
           className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 rounded-full glassmorphism border border-border/50 flex items-center justify-center hover:bg-accent hover:text-accent-foreground hover:border-accent transition-all duration-300 ripple bg-background/80 backdrop-blur-sm"
           aria-label="Add to cart"
         >

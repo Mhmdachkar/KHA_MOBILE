@@ -169,9 +169,9 @@ const BrandShowcase = () => {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                whileHover={{ scale: 1.05, y: -5 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={window.matchMedia('(hover: hover)').matches ? { scale: 1.05, y: -5 } : undefined}
                 onClick={() => handleBrandClick(brand.name)}
+                style={{ touchAction: 'manipulation' }}
                 className="group relative bg-white rounded-sm border-2 border-border hover:border-primary/60 transition-all duration-300 p-6 sm:p-8 flex flex-col items-center justify-center gap-3 sm:gap-4 shadow-card hover:shadow-elegant overflow-hidden"
               >
                 {/* Gradient Background */}
