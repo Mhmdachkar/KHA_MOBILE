@@ -101,6 +101,7 @@ const BrandShowcase = () => {
 
   // Handle brand click - navigate directly to products page with brand filter
   const handleBrandClick = (brandName: string) => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
     navigate(`/products?brand=${encodeURIComponent(brandName)}`);
   };
 

@@ -337,6 +337,48 @@ const ProductDetail = () => {
 
   const smartAccessories = getSmartAccessories();
 
+  const accessoryFilters = ["All Essentials", "Charging", "Protection", "Audio"] as const;
+  const [selectedAccessoryFilter, setSelectedAccessoryFilter] = useState<(typeof accessoryFilters)[number]>("All Essentials");
+
+  const determineAccessoryCategory = (accessory: typeof smartAccessories[number]) => {
+    const name = accessory.name.toLowerCase();
+    const primaryCategory = accessory.category?.toLowerCase() || "";
+
+    const matchesCharging =
+      primaryCategory === "charging" ||
+      ["charger", "charging", "power bank", "adapter", "cable", "usb", "type-c", "lightning", "wall", "dock"].some((keyword) =>
+        name.includes(keyword)
+      );
+
+    const matchesProtection =
+      ["case", "cover", "protector", "screen", "holder", "stand", "mount", "armour", "sleeve"].some((keyword) =>
+        name.includes(keyword)
+      );
+
+    const matchesAudio =
+      primaryCategory === "audio" ||
+      ["earbud", "speaker", "headphone", "neckband", "buds", "audio", "sound"].some((keyword) => name.includes(keyword));
+
+    if (matchesCharging) return "Charging" as const;
+    if (matchesProtection) return "Protection" as const;
+    if (matchesAudio) return "Audio" as const;
+    return "All Essentials" as const;
+  };
+
+  const categorizedAccessories = useMemo(() => {
+    return smartAccessories.map((accessory) => ({
+      ...accessory,
+      accessoryCategory: determineAccessoryCategory(accessory),
+    }));
+  }, [smartAccessories]);
+
+  const filteredAccessories = useMemo(() => {
+    if (selectedAccessoryFilter === "All Essentials") {
+      return categorizedAccessories;
+    }
+    return categorizedAccessories.filter((accessory) => accessory.accessoryCategory === selectedAccessoryFilter);
+  }, [categorizedAccessories, selectedAccessoryFilter]);
+
   return (
     <div className="min-h-screen bg-white no-horizontal-scroll overflow-x-hidden" style={{ touchAction: 'pan-y pinch-zoom' }}>
       <Header />
@@ -763,7 +805,7 @@ const ProductDetail = () => {
         </motion.section>
 
         {/* Complete Your Setup - Smart Accessories for Smartphones */}
-        {isSmartphone && smartAccessories.length > 0 && (
+        {isSmartphone && filteredAccessories.length > 0 && (
           <motion.section
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -791,42 +833,59 @@ const ProductDetail = () => {
 
             {/* Category Tabs for Accessories */}
             <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-6 sm:mb-8">
-              {['All Essentials', 'Charging', 'Protection', 'Audio'].map((tab, index) => (
-                <motion.button
-                  key={tab}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  style={{ touchAction: 'manipulation' }}
-                  className="px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm border border-border hover:border-primary/60 hover:bg-primary/5 transition-all duration-300"
-                >
-                  {tab}
-                </motion.button>
-              ))}
+              {accessoryFilters.map((tab, index) => {
+                const isActive = selectedAccessoryFilter === tab;
+                return (
+                  <motion.button
+                    key={tab}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    style={{ touchAction: 'manipulation' }}
+                    onClick={() => setSelectedAccessoryFilter(tab)}
+                    className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm border transition-all duration-300 ${
+                      isActive
+                        ? "border-primary bg-primary/5 text-primary shadow-sm"
+                        : "border-border hover:border-primary/60 hover:bg-primary/5"
+                    }`}
+                  >
+                    {tab}
+                  </motion.button>
+                );
+              })}
             </div>
 
-            {/* Accessories Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
-              {smartAccessories.map((accessory, index) => (
-                <motion.div
-                  key={accessory.id}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.05 }}
-                >
-                  <ProductCard
-                    id={accessory.id}
-                    name={accessory.name}
-                    price={accessory.price}
-                    image={accessory.image}
-                    images={accessory.images}
-                    rating={accessory.rating}
-                    category={accessory.category}
-                  />
-                </motion.div>
-              ))}
+            {/* Accessories Horizontal Scroll */}
+            <div className="relative group">
+              <div
+                className="flex gap-3 sm:gap-4 md:gap-5 overflow-x-auto scrollbar-hide scroll-smooth snap-x snap-mandatory px-1 sm:px-2"
+                style={{
+                  WebkitOverflowScrolling: "touch",
+                  touchAction: "pan-y",
+                }}
+              >
+                {filteredAccessories.map((accessory, index) => (
+                  <motion.div
+                    key={accessory.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.05 }}
+                    className="flex-none w-[200px] sm:w-[220px] md:w-[240px] snap-start"
+                  >
+                    <ProductCard
+                      id={accessory.id}
+                      name={accessory.name}
+                      price={accessory.price}
+                      image={accessory.image}
+                      images={accessory.images}
+                      rating={accessory.rating}
+                      category={accessory.category}
+                    />
+                  </motion.div>
+                ))}
+              </div>
             </div>
 
             {/* Call to Action */}
