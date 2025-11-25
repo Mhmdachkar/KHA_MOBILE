@@ -266,11 +266,82 @@ const ProductDetail = () => {
   // Determine if this is a smartphone product for specialized display logic
   const isSmartphone = product.category === "Smartphones";
 
+  // Get smart accessory recommendations for smartphones
+  const getSmartAccessories = () => {
+    if (!isSmartphone) return [];
+
+    // Combine all accessories from different sources
+    const allAccessories = [
+      ...phoneAccessories.map(p => ({
+        id: p.id,
+        name: p.name,
+        price: p.price,
+        image: p.image,
+        images: [p.image],
+        rating: p.rating,
+        category: p.category,
+        brand: p.brand || null,
+      })),
+      ...greenLionProducts
+        .filter(p => 
+          p.category === "Accessories" || 
+          p.secondaryCategories?.includes("Accessories") ||
+          p.secondaryCategories?.includes("Charging") ||
+          p.category === "Charging"
+        )
+        .map(p => ({
+          id: p.id,
+          name: p.name,
+          price: p.price,
+          image: p.images[0],
+          images: p.images,
+          rating: p.rating,
+          category: p.category,
+          brand: p.brand,
+        })),
+    ];
+
+    // Prioritize essential phone accessories
+    const essentialKeywords = [
+      'case', 'cover', 'screen protector', 'charger', 'cable', 'adapter',
+      'power bank', 'holder', 'stand', 'usb', 'type-c', 'lightning',
+      'wireless', 'magsafe', 'charging', 'wall adapter'
+    ];
+
+    // Score and sort accessories
+    const scoredAccessories = allAccessories.map(acc => {
+      let score = 0;
+      const nameLower = acc.name.toLowerCase();
+      
+      // Boost essential accessories
+      essentialKeywords.forEach(keyword => {
+        if (nameLower.includes(keyword)) score += 10;
+      });
+
+      // Boost highly rated products
+      if (acc.rating >= 4.5) score += 5;
+      
+      // Boost Green Lion products
+      if (acc.id >= 5000 || acc.brand === "Green Lion") score += 8;
+      
+      // Boost charging accessories
+      if (acc.category === "Charging") score += 7;
+
+      return { ...acc, score };
+    });
+
+    return scoredAccessories
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 12);
+  };
+
+  const smartAccessories = getSmartAccessories();
+
   return (
-    <div className="min-h-screen bg-white no-horizontal-scroll overflow-x-hidden">
+    <div className="min-h-screen bg-white no-horizontal-scroll overflow-x-hidden" style={{ touchAction: 'pan-y pinch-zoom' }}>
       <Header />
 
-      <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12">
+      <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12" style={{ touchAction: 'pan-y pinch-zoom' }}>
         {/* Breadcrumb */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -492,8 +563,8 @@ const ProductDetail = () => {
               }}
             />
 
-            <h1 className="text-elegant text-2xl sm:text-3xl md:text-4xl mb-2 relative z-10">{product.title}</h1>
-            <p className="text-muted-foreground text-xs sm:text-sm mb-3 sm:mb-4">{product.category}</p>
+            <h1 className="text-elegant text-2xl sm:text-3xl md:text-4xl mb-2 relative z-10" style={{ userSelect: 'text', WebkitUserSelect: 'text', touchAction: 'pan-y' }}>{product.title}</h1>
+            <p className="text-muted-foreground text-xs sm:text-sm mb-3 sm:mb-4" style={{ userSelect: 'text', WebkitUserSelect: 'text', touchAction: 'pan-y' }}>{product.category}</p>
             
             <div className="flex items-center gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 flex-wrap">
               <div className="flex items-center gap-1">
@@ -560,9 +631,9 @@ const ProductDetail = () => {
             )}
 
             {/* Description */}
-            <div className="mb-8">
-              <h3 className="text-elegant text-lg mb-3">Description</h3>
-              <p className="text-sm font-light leading-relaxed text-muted-foreground mb-4">
+            <div className="mb-8" style={{ touchAction: 'pan-y' }}>
+              <h3 className="text-elegant text-lg mb-3" style={{ userSelect: 'text', WebkitUserSelect: 'text' }}>Description</h3>
+              <p className="text-sm font-light leading-relaxed text-muted-foreground mb-4" style={{ userSelect: 'text', WebkitUserSelect: 'text', touchAction: 'pan-y' }}>
                 {product.description}
               </p>
               
@@ -690,6 +761,95 @@ const ProductDetail = () => {
             </div>
           </div>
         </motion.section>
+
+        {/* Complete Your Setup - Smart Accessories for Smartphones */}
+        {isSmartphone && smartAccessories.length > 0 && (
+          <motion.section
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-12 sm:mt-16 md:mt-20 mb-12 sm:mb-16 md:mb-20"
+          >
+            {/* Section Header */}
+            <div className="text-center mb-8 sm:mb-10 md:mb-12">
+              <motion.div
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ type: "spring", duration: 0.6 }}
+                className="inline-block mb-4"
+              >
+                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+                  <ShoppingCart className="h-6 w-6 sm:h-7 sm:w-7 text-primary" />
+                </div>
+              </motion.div>
+              <h2 className="text-elegant text-2xl sm:text-3xl md:text-4xl mb-3 sm:mb-4">Complete Your Setup</h2>
+              <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto font-light">
+                Essential accessories to enhance your smartphone experience. Handpicked for maximum compatibility and quality.
+              </p>
+            </div>
+
+            {/* Category Tabs for Accessories */}
+            <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-6 sm:mb-8">
+              {['All Essentials', 'Charging', 'Protection', 'Audio'].map((tab, index) => (
+                <motion.button
+                  key={tab}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  style={{ touchAction: 'manipulation' }}
+                  className="px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm border border-border hover:border-primary/60 hover:bg-primary/5 transition-all duration-300"
+                >
+                  {tab}
+                </motion.button>
+              ))}
+            </div>
+
+            {/* Accessories Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
+              {smartAccessories.map((accessory, index) => (
+                <motion.div
+                  key={accessory.id}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.05 }}
+                >
+                  <ProductCard
+                    id={accessory.id}
+                    name={accessory.name}
+                    price={accessory.price}
+                    image={accessory.image}
+                    images={accessory.images}
+                    rating={accessory.rating}
+                    category={accessory.category}
+                  />
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Call to Action */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mt-8 sm:mt-10 md:mt-12"
+            >
+              <Link to="/accessories">
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  className="text-elegant"
+                  style={{ touchAction: 'manipulation' }}
+                >
+                  View All Accessories
+                  <ChevronRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </motion.div>
+          </motion.section>
+        )}
 
         {/* You May Also Like - Horizontal Scrolling Carousel */}
         {relatedProducts.length > 0 && (
