@@ -228,7 +228,7 @@ const CartDashboard = () => {
               >
                 {cart.map((item, index) => (
                   <motion.div
-                    key={item.id}
+                    key={`${item.id}-${item.variantKey || "base"}`}
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.05 }}
@@ -248,6 +248,11 @@ const CartDashboard = () => {
                       <h3 className="text-sm sm:text-base font-medium text-elegant line-clamp-2 mb-1">
                         {item.name}
                       </h3>
+                      {item.variantLabel && (
+                        <p className="text-[10px] sm:text-xs text-primary/80 mb-1">
+                          {item.variantLabel}
+                        </p>
+                      )}
                       {item.category && (
                         <p className="text-xs text-muted-foreground mb-1">{item.category}</p>
                       )}
@@ -261,7 +266,7 @@ const CartDashboard = () => {
                       <motion.button
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
-                        onClick={() => removeFromCart(item.id)}
+                        onClick={() => removeFromCart(item.id, item.variantKey)}
                         className="h-6 w-6 rounded-full hover:bg-destructive hover:text-destructive-foreground transition-all duration-300 flex items-center justify-center"
                       >
                         <Trash2 className="h-3 w-3" />
@@ -271,7 +276,7 @@ const CartDashboard = () => {
                         <motion.button
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                          onClick={() => updateQuantity(item.id, item.quantity - 1, item.variantKey)}
                           className="h-8 w-8 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all duration-300"
                         >
                           <Minus className="h-3 w-3" />
@@ -284,7 +289,7 @@ const CartDashboard = () => {
                         <motion.button
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          onClick={() => updateQuantity(item.id, item.quantity + 1, item.variantKey)}
                           className="h-8 w-8 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all duration-300"
                         >
                           <Plus className="h-3 w-3" />

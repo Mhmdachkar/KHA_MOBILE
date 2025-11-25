@@ -1,12 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Heart, ShoppingCart, Star, ChevronLeft, ChevronRight, CheckCircle2 } from "lucide-react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { Link, useParams, useNavigate, useSearchParams } from "react-router-dom";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { useFavorites } from "@/context/FavoritesContext";
 import { useCart } from "@/context/CartContext";
-import { getProductById, phoneAccessories, wearablesProducts } from "@/data/products";
+import { getProductById, phoneAccessories, wearablesProducts, smartphoneProducts } from "@/data/products";
 import { getGreenLionProductById, greenLionProducts } from "@/data/greenLionProducts";
 import ProductCard from "@/components/ProductCard";
 import ProductCarousel from "@/components/ProductCarousel";
@@ -53,10 +53,70 @@ const ProductDetail = () => {
     );
   }
 
-  // Use multiple images for Green Lion products, or single image for regular products
-  const productImages = greenLionProduct ? greenLionProduct.images : [regularProduct!.image];
+  // Variant handling (for smartphones and future configurable products)
+  const variantOptions = useMemo(() => product.variants || [], [product]);
+  const [searchParams] = useSearchParams();
+  const variantParam = searchParams.get("variant");
+  const [selectedVariantKey, setSelectedVariantKey] = useState<string | null>(null);
+  useEffect(() => {
+    if (variantOptions.length === 0) {
+      setSelectedVariantKey(null);
+      return;
+    }
+    if (variantParam) {
+      const matched = variantOptions.find((variant) => variant.key === variantParam);
+      if (matched) {
+        setSelectedVariantKey(matched.key);
+        return;
+      }
+    }
+    setSelectedVariantKey(variantOptions[0]?.key ?? null);
+  }, [variantOptions, variantParam]);
+  const selectedVariant = useMemo(() => {
+    if (variantOptions.length === 0) return null;
+    return variantOptions.find((variant) => variant.key === selectedVariantKey) || variantOptions[0];
+  }, [variantOptions, selectedVariantKey]);
+
+  // Use multiple images for Green Lion or smartphone products, fallback to single image
+  const productImages = useMemo(() => {
+    if (greenLionProduct) {
+      return greenLionProduct.images;
+    }
+    if (regularProduct?.images && regularProduct.images.length > 0) {
+      return regularProduct.images;
+    }
+    return regularProduct ? [regularProduct.image] : [];
+  }, [greenLionProduct, regularProduct]);
+
+  useEffect(() => {
+    setSelectedImage(0);
+  }, [productImages]);
+
+  const displayPrice = selectedVariant?.price ?? product.price;
+  const primaryImage =
+    productImages[0] ||
+    regularProduct?.image ||
+    (greenLionProduct ? greenLionProduct.images[0] : "/placeholder.svg");
   
   const favorite = isFavorite(product.id);
+
+  const handleAddToCart = (redirect?: boolean) => {
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: displayPrice,
+      image: primaryImage,
+      rating: product.rating,
+      category: product.category,
+      quantity: 1,
+      variantKey: selectedVariant?.key,
+      variantLabel: selectedVariant?.label,
+    });
+
+    if (redirect) {
+      navigate("/checkout");
+    }
+  };
 
   // Image navigation handlers
   const handlePreviousImage = () => {
@@ -87,6 +147,17 @@ const ProductDetail = () => {
       price: p.price,
       image: p.image,
       images: [p.image],
+      rating: p.rating,
+      category: p.category,
+      brand: p.brand || extractBrand(p.name),
+      secondaryCategories: [],
+    })),
+    ...smartphoneProducts.map(p => ({
+      id: p.id,
+      name: p.name,
+      price: p.price,
+      image: p.image,
+      images: p.images && p.images.length > 0 ? p.images : [p.image],
       rating: p.rating,
       category: p.category,
       brand: p.brand || extractBrand(p.name),
@@ -192,6 +263,9 @@ const ProductDetail = () => {
 
   const relatedProducts = getRecommendedProducts();
 
+  // Determine if this is a smartphone product for specialized display logic
+  const isSmartphone = product.category === "Smartphones";
+
   return (
     <div className="min-h-screen bg-white no-horizontal-scroll overflow-x-hidden">
       <Header />
@@ -217,12 +291,45 @@ const ProductDetail = () => {
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
+            className="relative"
           >
+            {/* Elegant Background Element for "Smart" feel */}
+            <div className="absolute -top-20 -left-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl opacity-50 pointer-events-none animate-pulse" />
+            <div className="absolute -bottom-10 -right-10 w-48 h-48 bg-accent/5 rounded-full blur-3xl opacity-50 pointer-events-none" />
+
             <div className="relative aspect-square bg-white rounded-sm mb-4 sm:mb-6 overflow-hidden group border border-border">
+              {/* Dynamic Background Animation behind the product */}
+              <motion.div 
+                className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary/5 to-transparent opacity-30"
+                animate={{ 
+                  backgroundPosition: ["0% 0%", "100% 100%", "0% 0%"],
+                }}
+                transition={{ 
+                  duration: 15, 
+                  ease: "linear", 
+                  repeat: Infinity 
+                }} 
+              />
+              
+              {/* Floating Geometric Accent for blank space */}
+              <motion.div
+                className="absolute top-10 right-10 w-20 h-20 border border-primary/10 rounded-full"
+                animate={{ 
+                  y: [0, -10, 0],
+                  scale: [1, 1.05, 1],
+                  opacity: [0.2, 0.5, 0.2]
+                }}
+                transition={{ 
+                  duration: 8, 
+                  ease: "easeInOut", 
+                  repeat: Infinity 
+                }}
+              />
+
               <img
                 src={productImages[selectedImage]}
                 alt={product.name}
-                className="h-full w-full object-cover transition-opacity duration-300"
+                className={`h-full w-full ${isSmartphone ? "object-contain p-6 md:p-8" : "object-cover"} transition-opacity duration-300 relative z-10`}
                 onError={(e) => {
                   // Fallback if image fails to load
                   const target = e.target as HTMLImageElement;
@@ -266,7 +373,7 @@ const ProductDetail = () => {
                     <img
                       src={image}
                       alt={`${product.name} - View ${index + 1}`}
-                      className="h-full w-full object-cover"
+                      className={`h-full w-full ${isSmartphone ? "object-contain p-1" : "object-cover"}`}
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.src = "/placeholder.svg";
@@ -287,21 +394,44 @@ const ProductDetail = () => {
               </Button>
             </div>
 
+            {/* Elegant Feature Highlight (Desktop Only) - Fills blank space */}
+            <div className="hidden md:block mt-6 sm:mt-8">
+              <div className="bg-primary/5 border border-primary/10 rounded-md p-6 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-primary/10 to-transparent rounded-bl-full" />
+                
+                <h4 className="text-elegant font-medium mb-4 relative z-10 flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-primary" />
+                  Why this is a great choice
+                </h4>
+                
+                <div className="space-y-3 relative z-10">
+                  {product.features?.slice(0, 3).map((feature, i) => (
+                    <div key={i} className="flex items-start gap-2.5">
+                      <div className="w-1.5 h-1.5 rounded-full bg-primary/40 mt-1.5 shrink-0" />
+                      <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">
+                        {feature}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-6 pt-4 border-t border-primary/10 flex items-center justify-between text-xs text-muted-foreground">
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                    Authorized Reseller
+                  </div>
+                  <span>1 Year Warranty</span>
+                </div>
+              </div>
+            </div>
+
             {/* Mobile Action Buttons - Only visible on mobile */}
             <div className="md:hidden mt-4 sm:mt-6">
               <div className="flex flex-col gap-3 mb-4">
                 <Button 
                   size="lg" 
                   className="flex-1 text-elegant text-sm py-4 sm:py-5 w-full"
-                  onClick={() => addToCart({
-                    id: product.id,
-                    name: product.name,
-                    price: product.price,
-                    image: productImages[0],
-                    rating: product.rating,
-                    category: product.category,
-                    quantity: 1,
-                  })}
+                  onClick={() => handleAddToCart()}
                 >
                   <ShoppingCart className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                   Add to Cart
@@ -310,18 +440,7 @@ const ProductDetail = () => {
                   size="lg" 
                   variant="outline" 
                   className="flex-1 text-elegant text-sm py-4 sm:py-5 w-full"
-                  onClick={() => {
-                    addToCart({
-                      id: product.id,
-                      name: product.name,
-                      price: product.price,
-                      image: productImages[0],
-                      rating: product.rating,
-                      category: product.category,
-                      quantity: 1,
-                    });
-                    navigate("/checkout");
-                  }}
+                  onClick={() => handleAddToCart(true)}
                 >
                   Buy Now
                 </Button>
@@ -351,8 +470,27 @@ const ProductDetail = () => {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
+            className="relative"
           >
-            <h1 className="text-elegant text-2xl sm:text-3xl md:text-4xl mb-2">{product.title}</h1>
+            {/* Elegant Backdrop for Info */}
+            <div className="absolute -top-10 -right-10 w-40 h-40 bg-gradient-to-b from-primary/5 to-transparent rounded-full blur-3xl pointer-events-none -z-10" />
+            
+            {/* Floating particle animation */}
+            <motion.div
+              className="absolute top-4 right-4 w-3 h-3 bg-primary/20 rounded-full blur-[1px]"
+              animate={{
+                y: [0, -15, 0],
+                opacity: [0.3, 0.8, 0.3],
+                scale: [1, 1.2, 1]
+              }}
+              transition={{
+                duration: 5,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+
+            <h1 className="text-elegant text-2xl sm:text-3xl md:text-4xl mb-2 relative z-10">{product.title}</h1>
             <p className="text-muted-foreground text-xs sm:text-sm mb-3 sm:mb-4">{product.category}</p>
             
             <div className="flex items-center gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 flex-wrap">
@@ -371,12 +509,52 @@ const ProductDetail = () => {
               <span className="text-xs sm:text-sm text-muted-foreground">({product.rating} rating)</span>
             </div>
 
-            <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8 flex-wrap">
-              <p className="text-elegant text-2xl sm:text-3xl">${product.price.toFixed(2)}</p>
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+              <div className="flex flex-col">
+                <p className="text-elegant text-2xl sm:text-3xl">${displayPrice.toFixed(2)}</p>
+                {selectedVariant?.label && (
+                  <span className="text-xs sm:text-sm text-muted-foreground">
+                    Configuration: {selectedVariant.label}
+                  </span>
+                )}
+              </div>
               <span className="text-xs sm:text-sm text-green-600 bg-green-50 px-2 sm:px-3 py-1 rounded-full">
                 In Stock
               </span>
             </div>
+
+            {variantOptions.length > 0 && (
+              <div className="mb-6 sm:mb-8">
+                <h4 className="text-elegant text-base mb-3">Choose your configuration</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+                  {variantOptions.map((variant) => {
+                    const isActive = selectedVariant?.key === variant.key;
+                    return (
+                      <button
+                        key={variant.key}
+                        onClick={() => setSelectedVariantKey(variant.key)}
+                        className={`text-left border rounded-sm p-3 sm:p-4 flex flex-col gap-1 transition-all duration-300 ${
+                          isActive
+                            ? "border-primary bg-primary/5 shadow-sm"
+                            : "border-border hover:border-primary/50"
+                        }`}
+                      >
+                        <span className="text-sm font-semibold text-elegant">{variant.label}</span>
+                        <span className="text-xs text-muted-foreground">
+                          {variant.ram} · {variant.storage}
+                        </span>
+                        <span className="text-sm text-elegant">${variant.price.toFixed(2)}</span>
+                        {variant.description && (
+                          <span className="text-[11px] text-muted-foreground">
+                            {variant.description}
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             {/* Description */}
             <div className="mb-8">
@@ -406,15 +584,7 @@ const ProductDetail = () => {
               <Button 
                 size="lg" 
                 className="flex-1 text-elegant text-sm sm:text-base py-4 sm:py-5 md:py-6"
-                onClick={() => addToCart({
-                  id: product.id,
-                  name: product.name,
-                  price: product.price,
-                  image: productImages[0],
-                  rating: product.rating,
-                  category: product.category,
-                  quantity: 1,
-                })}
+                onClick={() => handleAddToCart()}
               >
                 <ShoppingCart className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                 Add to Cart
@@ -423,18 +593,7 @@ const ProductDetail = () => {
                 size="lg" 
                 variant="outline" 
                 className="flex-1 text-elegant text-sm sm:text-base py-4 sm:py-5 md:py-6"
-                onClick={() => {
-                  addToCart({
-                    id: product.id,
-                    name: product.name,
-                    price: product.price,
-                    image: productImages[0],
-                    rating: product.rating,
-                    category: product.category,
-                    quantity: 1,
-                  });
-                  navigate("/checkout");
-                }}
+                onClick={() => handleAddToCart(true)}
               >
                 Buy Now
               </Button>

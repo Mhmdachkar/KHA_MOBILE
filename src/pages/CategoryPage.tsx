@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Grid3x3, List, Filter } from "lucide-react";
-import { useLocation, Link } from "react-router-dom";
+import { Grid3x3, List, Filter, Check } from "lucide-react";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import ProductCard from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
@@ -24,50 +24,55 @@ import {
 import { getProductsByCategory } from "@/data/products";
 import { greenLionProducts, getGreenLionProductsByCategory } from "@/data/greenLionProducts";
 
+// Import brand logos
+import appleLogo from "@/assets/logo's/apple logo.png";
+import fonengLogo from "@/assets/logo's/foneng logo.jpg";
+import greenLionLogo from "@/assets/logo's/green lion logo.jpg";
+import hocoLogo from "@/assets/logo's/hoco logo.webp";
+import samsungLogo from "@/assets/logo's/samsung logo.avif";
+import smartLogo from "@/assets/smart logo.jpg";
+import tecnoLogo from "@/assets/techno logo.jpg";
+
+const brandLogoMap: Record<string, string> = {
+  "Apple": appleLogo,
+  "Samsung": samsungLogo,
+  "Green Lion": greenLionLogo,
+  "Hoco": hocoLogo,
+  "Foneng": fonengLogo,
+  "Smart": smartLogo,
+  "Tecno": tecnoLogo,
+};
+
+// Quote map for each category
+const categoryQuotes: Record<string, { title: string; subtitle: string }> = {
+  "Smartphones": {
+    title: "\"Technology is best when it brings people together.\"",
+    subtitle: "Discover the future in your hands."
+  },
+  "Audio": {
+    title: "\"Music is the soundtrack of your life. Play it loud.\"",
+    subtitle: "Immerse yourself in crystal clear sound."
+  },
+  "Wearables": {
+    title: "\"Empower your fitness, elevate your style.\"",
+    subtitle: "Stay connected and healthy on the go."
+  },
+  "Accessories": {
+    title: "\"The perfect companions for your digital life.\"",
+    subtitle: "Enhance your device with premium essentials."
+  },
+  "Gaming": {
+    title: "\"Level up your game with precision and power.\"",
+    subtitle: "Gear up for victory."
+  },
+  "Computers": {
+    title: "\"Power and performance for every ambition.\"",
+    subtitle: "Create, work, and play without limits."
+  }
+};
+
 // Mock products data - in a real app, this would come from an API
 const mockProducts = {
-  Smartphones: [
-    {
-      id: 1,
-      name: "X-Phone Pro Max",
-      price: 1299,
-      image: "https://images.unsplash.com/photo-1592286927505-128fc4a04179?w=500&h=500&fit=crop",
-      rating: 4.8,
-      category: "Smartphones"
-    },
-    {
-      id: 2,
-      name: "Galaxy Ultra S23",
-      price: 1199,
-      image: "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=500&h=500&fit=crop",
-      rating: 4.7,
-      category: "Smartphones"
-    },
-    {
-      id: 3,
-      name: "Pixel 8 Pro",
-      price: 999,
-      image: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=500&h=500&fit=crop",
-      rating: 4.9,
-      category: "Smartphones"
-    },
-    {
-      id: 4,
-      name: "OnePlus 12 Pro",
-      price: 899,
-      image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500&h=500&fit=crop",
-      rating: 4.6,
-      category: "Smartphones"
-    },
-    {
-      id: 5,
-      name: "Xperia 1 VI",
-      price: 1099,
-      image: "https://images.unsplash.com/photo-1585060544812-6b45742d762f?w=500&h=500&fit=crop",
-      rating: 4.5,
-      category: "Smartphones"
-    },
-  ],
   Computers: [
     {
       id: 11,
@@ -116,9 +121,11 @@ const categoryMap: Record<string, string> = {
 
 const CategoryPage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [sortBy, setSortBy] = useState<string>("default");
   const [showFilters, setShowFilters] = useState(false);
+  const [selectedSmartphoneBrand, setSelectedSmartphoneBrand] = useState<string>("All");
 
   // Scroll to top on mount and when category changes
   useEffect(() => {
@@ -147,6 +154,7 @@ const CategoryPage = () => {
   };
 
   const categoryDisplayName = getCategoryFromPath(location.pathname);
+  const isSmartphoneCategory = categoryDisplayName === "Smartphones";
 
   // Get products for this category
   const categoryProducts = useMemo(() => {
@@ -206,6 +214,17 @@ const CategoryPage = () => {
             category: p.category
           }))];
         }
+      } else if (categoryDisplayName === "Smartphones") {
+        const smartphones = getProductsByCategory("Smartphones");
+        if (Array.isArray(smartphones) && smartphones.length > 0) {
+          products = [
+            ...products,
+            ...smartphones.map(p => ({
+              ...p,
+              images: p.images && p.images.length > 0 ? p.images : [p.image],
+            }))
+          ];
+        }
       } else if (categoryDisplayName === "Wearables") {
         const wearables = getProductsByCategory("Wearables");
         if (Array.isArray(wearables) && wearables.length > 0) {
@@ -227,9 +246,6 @@ const CategoryPage = () => {
             category: p.category
           }))];
         }
-      } else if (categoryDisplayName === "Smartphones") {
-        // Smartphones are mock data only
-        // You can add real smartphone products here if needed
       }
     } catch (error) {
       console.error("Error fetching products for category:", categoryDisplayName, error);
@@ -243,9 +259,43 @@ const CategoryPage = () => {
     return product.id >= 5000 || product.brand === "Green Lion" || product.name?.startsWith("Green Lion");
   };
 
+  const inferProductBrand = (product: any): string | undefined => {
+    if (!product) return undefined;
+    if (product.brand) return product.brand;
+    const name = typeof product.name === "string" ? product.name.toLowerCase() : "";
+    if (name.startsWith("smart")) return "Smart";
+    if (name.includes("samsung")) return "Samsung";
+    if (name.includes("apple")) return "Apple";
+    if (name.includes("green lion")) return "Green Lion";
+    return undefined;
+  };
+
+  const smartphoneBrandOptions = useMemo(() => {
+    // Apply this to all categories, not just Smartphones
+    const set = new Set<string>();
+    categoryProducts.forEach((product) => {
+      const brand = inferProductBrand(product);
+      if (brand) {
+        set.add(brand);
+      }
+    });
+    return Array.from(set).sort();
+  }, [categoryProducts]);
+
+  useEffect(() => {
+    setSelectedSmartphoneBrand("All");
+  }, [categoryDisplayName]);
+
   // Filter and sort products
   const filteredAndSortedProducts = useMemo(() => {
     let filtered = [...categoryProducts];
+
+    if (selectedSmartphoneBrand !== "All") {
+      filtered = filtered.filter(product => {
+        const brand = inferProductBrand(product);
+        return brand === selectedSmartphoneBrand;
+      });
+    }
 
     // Always sort to put Green Lion products first (unless user selects a specific sort)
     if (sortBy === "default") {
@@ -327,7 +377,7 @@ const CategoryPage = () => {
     }
 
     return filtered;
-  }, [categoryProducts, sortBy]);
+  }, [categoryProducts, sortBy, isSmartphoneCategory, selectedSmartphoneBrand]);
 
   // Debug: Log category information (remove in production)
   useEffect(() => {
@@ -352,13 +402,41 @@ const CategoryPage = () => {
             <Button>Back to Home</Button>
           </Link>
         </div>
+
+        {isSmartphoneCategory && smartphoneBrandOptions.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-6"
+          >
+            <p className="text-sm font-medium text-muted-foreground mb-3">Filter by brand</p>
+            <div className="flex flex-wrap gap-2">
+              {["All", ...smartphoneBrandOptions].map((brand) => {
+                const isActive = selectedSmartphoneBrand === brand;
+                return (
+                  <button
+                    key={brand}
+                    onClick={() => setSelectedSmartphoneBrand(brand)}
+                    className={`px-3 py-1.5 rounded-full text-xs sm:text-sm border transition-all ${
+                      isActive
+                        ? "border-primary bg-primary/10 text-primary shadow-sm"
+                        : "border-border hover:border-primary/40"
+                    }`}
+                  >
+                    {brand}
+                  </button>
+                );
+              })}
+            </div>
+          </motion.div>
+        )}
       </div>
     );
   }
 
   // Filter sidebar component
   const FilterSidebar = () => (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-semibold text-foreground">Filters</h2>
         <Button
@@ -366,6 +444,7 @@ const CategoryPage = () => {
           size="sm"
           onClick={() => {
             setSortBy("default");
+            setSelectedSmartphoneBrand("All");
           }}
           className="text-xs"
         >
@@ -389,6 +468,67 @@ const CategoryPage = () => {
           </SelectContent>
         </Select>
       </div>
+
+      {/* Brand Filter (For All Categories) */}
+      {smartphoneBrandOptions.length > 0 && (
+        <div>
+          <Label className="text-sm font-medium mb-4 block">Brands</Label>
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              onClick={() => setSelectedSmartphoneBrand("All")}
+              className={`col-span-2 flex items-center justify-center p-2 rounded-md border transition-all duration-200 ${
+                selectedSmartphoneBrand === "All"
+                  ? "border-primary bg-primary/5 text-primary shadow-sm"
+                  : "border-border hover:border-primary/50 hover:bg-secondary/50"
+              }`}
+            >
+              <span className="text-sm font-medium">All Brands</span>
+            </button>
+            
+            {smartphoneBrandOptions.map((brand) => {
+              const isActive = selectedSmartphoneBrand === brand;
+              const logo = brandLogoMap[brand];
+
+              return (
+                <button
+                  key={brand}
+                  onClick={() => setSelectedSmartphoneBrand(brand)}
+                  className={`relative flex flex-col items-center justify-center p-3 rounded-md border transition-all duration-200 group ${
+                    isActive
+                      ? "border-primary bg-primary/5 shadow-md scale-[1.02]"
+                      : "border-border hover:border-primary/50 hover:bg-secondary/50"
+                  }`}
+                >
+                  {isActive && (
+                    <div className="absolute top-1 right-1">
+                      <div className="w-2 h-2 bg-primary rounded-full" />
+                    </div>
+                  )}
+                  
+                  {logo ? (
+                    <div className="w-full h-8 flex items-center justify-center mb-1">
+                      <img 
+                        src={logo} 
+                        alt={brand} 
+                        className="max-w-full max-h-full object-contain opacity-80 group-hover:opacity-100 transition-opacity" 
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-full h-8 flex items-center justify-center mb-1">
+                      <span className="text-xs font-bold text-muted-foreground group-hover:text-foreground">
+                        {brand.charAt(0)}
+                      </span>
+                    </div>
+                  )}
+                  <span className={`text-xs font-medium ${isActive ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground'}`}>
+                    {brand}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 
@@ -422,6 +562,36 @@ const CategoryPage = () => {
           <p className="text-sm sm:text-base text-muted-foreground">
             {filteredAndSortedProducts.length} product{filteredAndSortedProducts.length !== 1 ? 's' : ''} available
           </p>
+        </motion.div>
+
+        {/* Category Banner Quote */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2, duration: 0.8, type: "spring" }}
+          className="relative w-full overflow-hidden rounded-2xl mb-10 sm:mb-12 p-8 sm:p-12 text-center"
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-accent/5 to-primary/5 opacity-50" />
+          <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
+          
+          {/* Decorative Circles */}
+          <div className="absolute top-0 left-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
+          <div className="absolute bottom-0 right-0 w-40 h-40 bg-accent/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
+
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+            className="relative z-10"
+          >
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-light text-elegant mb-4 tracking-wide">
+              {categoryQuotes[categoryDisplayName]?.title || "\"Quality is not an act, it is a habit.\""}
+            </h2>
+            <div className="w-20 h-1 bg-gradient-to-r from-primary to-transparent mx-auto rounded-full" />
+            <p className="mt-4 text-sm sm:text-base text-muted-foreground font-light italic">
+              {categoryQuotes[categoryDisplayName]?.subtitle || "Experience excellence in every detail."}
+            </p>
+          </motion.div>
         </motion.div>
 
         {/* Mobile Filter Button */}
@@ -532,6 +702,7 @@ const CategoryPage = () => {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.05 }}
+                      className="space-y-2"
                     >
                       <ProductCard 
                         id={product.id}
@@ -542,6 +713,19 @@ const CategoryPage = () => {
                         rating={product.rating}
                         category={product.category}
                       />
+                      {isSmartphoneCategory && product.variants?.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5">
+                          {product.variants.map((variant: any) => (
+                            <button
+                              key={variant.key}
+                              onClick={() => navigate(`/product/${product.id}?variant=${encodeURIComponent(variant.key)}`)}
+                              className="px-2.5 py-1 rounded-full text-[11px] border border-border hover:border-primary/60 hover:text-primary transition"
+                            >
+                              {variant.label}
+                            </button>
+                          ))}
+                        </div>
+                      )}
                     </motion.div>
                   );
                 })}
@@ -558,6 +742,7 @@ const CategoryPage = () => {
                     variant="outline"
                     onClick={() => {
                       setSortBy("default");
+                      setSelectedSmartphoneBrand("All");
                     }}
                   >
                     Clear Filters

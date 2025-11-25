@@ -468,7 +468,8 @@ const Checkout = () => {
       
       message += `• *Order Items:*\n`;
       cart.forEach((item) => {
-        message += `  - ${item.name} (Qty: ${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}\n`;
+        const itemLabel = item.variantLabel ? `${item.name} - ${item.variantLabel}` : item.name;
+        message += `  - ${itemLabel} (Qty: ${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}\n`;
       });
       
       const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -601,7 +602,7 @@ const Checkout = () => {
                   <div className="space-y-4 mb-6">
                     {getCartItemsWithDetails().map((item) => (
                       <motion.div
-                        key={item.id}
+                        key={`${item.id}-${item.variantKey || "base"}`}
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         className="flex gap-2 sm:gap-3 md:gap-4 p-3 sm:p-4 border border-border rounded-lg bg-gradient-to-r from-primary/5 to-accent/5"
@@ -626,6 +627,11 @@ const Checkout = () => {
                               {item.name}
                             </h3>
                           </Link>
+                          {item.variantLabel && (
+                            <p className="text-[10px] sm:text-xs text-primary/80 mb-1">
+                              {item.variantLabel}
+                            </p>
+                          )}
                           {item.category && (
                             <p className="text-[10px] sm:text-xs text-muted-foreground mb-1 sm:mb-2">{item.category}</p>
                           )}
@@ -634,7 +640,7 @@ const Checkout = () => {
                               <motion.button
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
-                                onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                onClick={() => updateQuantity(item.id, item.quantity - 1, item.variantKey)}
                                 className="h-6 w-6 sm:h-7 sm:w-7 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
                               >
                                 <Minus className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
@@ -645,7 +651,7 @@ const Checkout = () => {
                               <motion.button
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
-                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                onClick={() => updateQuantity(item.id, item.quantity + 1, item.variantKey)}
                                 className="h-6 w-6 sm:h-7 sm:w-7 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
                               >
                                 <Plus className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
@@ -666,7 +672,7 @@ const Checkout = () => {
                         <motion.button
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
-                          onClick={() => removeFromCart(item.id)}
+                          onClick={() => removeFromCart(item.id, item.variantKey)}
                           className="h-6 w-6 sm:h-8 sm:w-8 rounded-full hover:bg-destructive hover:text-destructive-foreground transition-all flex items-center justify-center self-start"
                         >
                           <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />

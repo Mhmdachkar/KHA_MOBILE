@@ -36,6 +36,60 @@ import s8UltraMax from "@/assets/wearables/s8 ultra max smart watch.png";
 import smartWatchActivePro from "@/assets/wearables/smart watch active pro (green lion).webp";
 import u9Ultra2 from "@/assets/wearables/u9 ultra 2.png";
 import watchXSeries10 from "@/assets/wearables/watch x series 10.png";
+// Smartphone image imports
+import a06Main from "@/assets/phones/A06 128gb/A06 5G (FAST PROCESSOR,HIGHER DISPLAY REFRESH RATE-90HZ, WATER RESISTANT ) 128GB.jpg";
+import a075Purple from "@/assets/phones/A075 samsunng galaxy/A075 Mediatek Helio G99 (6 nm)  purple.webp";
+import a075Grey from "@/assets/phones/A075 samsunng galaxy/A075 Mediatek Helio G99 (6 nm) grey.webp";
+import a075Silver from "@/assets/phones/A075 samsunng galaxy/A075 Mediatek Helio G99 (6 nm) 64GB.webp";
+import a16Black from "@/assets/phones/A16/A16 .png";
+import a16Silver from "@/assets/phones/A16/A16 light grey.png";
+import a16Display from "@/assets/phones/A16/Screenshot 2025-11-24 153248.png";
+import a16Lifestyle from "@/assets/phones/A16/Screenshot 2025-11-24 153315.png";
+import a17Hero from "@/assets/phones/A17/A17 placeholder.webp";
+import a17Blue from "@/assets/phones/A17/Screenshot 2025-11-24 153834.png";
+import a17Camera from "@/assets/phones/A17/Screenshot 2025-11-24 153952.png";
+import a26Front from "@/assets/phones/A26/Screenshot 2025-11-24 233921.png";
+import a26Angles from "@/assets/phones/A26/Screenshot 2025-11-24 233959.png";
+import a26Lifestyle from "@/assets/phones/A26/Screenshot 2025-11-24 234052.png";
+import a36Front from "@/assets/phones/A36/Screenshot 2025-11-24 232921.png";
+import a36Back from "@/assets/phones/A36/Screenshot 2025-11-24 232950.png";
+import a36Angles from "@/assets/phones/A36/Screenshot 2025-11-24 233046.png";
+import a56Front from "@/assets/phones/A56/Screenshot 2025-11-24 234542.png";
+import a56Side from "@/assets/phones/A56/Screenshot 2025-11-24 234605.png";
+import a56Camera from "@/assets/phones/A56/Screenshot 2025-11-24 234628.png";
+import sparkGo2Black from "@/assets/phones/techno spark go 2 (KM4)/techno spark go 2 (KM4) black.png";
+import sparkGo2Grey from "@/assets/phones/techno spark go 2 (KM4)/techno spark go 2 (KM4) titanium grey.png";
+import sparkGo2Green from "@/assets/phones/techno spark go 2 (KM4)/techno spark go 2 (KM4) turquoise green.png";
+import sparkGo2White from "@/assets/phones/techno spark go 2 (KM4)/techno spark go 2 (KM4) viel white.png";
+import spark40CBlack from "@/assets/phones/techno spark 40 C(KM4K)/techno spark 40 C(KM4K) black.png";
+import spark40CBlue from "@/assets/phones/techno spark 40 C(KM4K)/techno spark 40 C(KM4K) Ripple blue.png";
+import spark40CWhite from "@/assets/phones/techno spark 40 C(KM4K)/techno spark 40 C(KM4K) WHITE.png";
+import spark40CGrey from "@/assets/phones/techno spark 40 C(KM4K)/Titanium grey.png";
+import spark40Black from "@/assets/phones/tecno spark 40 km5/tecno spark 40 km5 BLACK.jpg";
+import spark40Blue from "@/assets/phones/tecno spark 40 km5/tecno spark 40 km5 MIRAGE BLUE.jpg";
+import spark40Grey from "@/assets/phones/tecno spark 40 km5/tecno spark 40 km5 TITANIUM GREY.jpg";
+import spark40White from "@/assets/phones/tecno spark 40 km5/tecno spark 40 km5 VIEL WHITE.jpg";
+import sparkSlimBlack from "@/assets/phones/Tecno Spark Slim/tecno spark SUM (KM7K) BLACK.webp";
+import sparkSlimBlue from "@/assets/phones/Tecno Spark Slim/tecno spark SUM (KM7K) BLUE.webp";
+import sparkSlimWhite from "@/assets/phones/Tecno Spark Slim/tecno spark SUM (KM7K) WHITE.webp";
+import smart10HdBlack from "@/assets/phones/smart 10 hd/smart 10 hd black color.webp";
+import smart10HdGold from "@/assets/phones/smart 10 hd/smart 10 hd gold color.webp";
+import smart10HdGreen from "@/assets/phones/smart 10 hd/smart 10 hd green color.webp";
+import smart10HdGrey from "@/assets/phones/smart 10 hd/smart 10 hd grey color.webp";
+import smart10HdPlaceholder from "@/assets/phones/smart 10 hd/smart 10 hd placeholder image.png";
+import smart10PlusBlack from "@/assets/phones/smart 10 plus/smart 10 plus black.webp";
+import smart10PlusBlue from "@/assets/phones/smart 10 plus/smart 10 plus blue.webp";
+import smart10PlusPink from "@/assets/phones/smart 10 plus/smart 10 plus pink.webp";
+import smart10PlusSilver from "@/assets/phones/smart 10 plus/smart 10 plus silver.webp";
+
+export interface ProductVariant {
+  key: string;
+  ram: string;
+  storage: string;
+  label: string;
+  price: number;
+  description?: string;
+}
 
 export interface Product {
   id: number;
@@ -43,12 +97,14 @@ export interface Product {
   title: string;
   price: number;
   image: string;
+  images?: string[];
   rating: number;
   category: string;
   brand?: string;
   description: string;
   features: string[];
   specifications?: Array<{ label: string; value: string }>;
+  variants?: ProductVariant[];
 }
 
 export const phoneAccessories: Product[] = [
@@ -573,6 +629,7 @@ export const phoneAccessories: Product[] = [
     title: "YESIDO Wired Gaming Headset EK05 - Professional Gaming Audio",
     price: 39.99,
     image: yesidoHeadset,
+    images: [yesidoHeadset, yesidoHeadset1, yesidoHeadset2],
     rating: 4.7,
     category: "Audio",
     brand: "YESIDO",
@@ -716,6 +773,7 @@ export const phoneAccessories: Product[] = [
     title: "RGB MJ33 Ring LED Light 13 Inch - Professional Lighting",
     price: 49.99,
     image: rgbMj33Ring,
+    images: [rgbMj33Ring, rgbMj33RingGif],
     rating: 4.8,
     category: "Accessories",
     brand: "Generic",
@@ -745,6 +803,7 @@ export const phoneAccessories: Product[] = [
     title: "RL-19 RGB LED Soft Light Strip - Ambient Lighting",
     price: 24.99,
     image: rl19LedSoft,
+    images: [rl19LedSoft, rl19LedSoft1],
     rating: 4.7,
     category: "Accessories",
     brand: "Generic",
@@ -768,6 +827,676 @@ export const phoneAccessories: Product[] = [
       { label: "Length", value: "Standard length with extension options" }
     ]
   }
+];
+
+// Smartphone products
+export const smartphoneProducts: Product[] = [
+  {
+    id: 301,
+    name: "Samsung Galaxy A06 5G",
+    title: "Samsung Galaxy A06 5G (6GB RAM, 128GB Storage)",
+    price: 239.99,
+    image: a06Main,
+    images: [a06Main],
+    rating: 4.6,
+    category: "Smartphones",
+    brand: "Samsung",
+    description: "The Galaxy A06 5G delivers reliable speed, a large 6.7\" 90Hz display, and a 50MP dual-camera system wrapped in Samsung's modern design language. Built for creators and students, it balances performance with all-day battery life so you can scroll, stream, and shoot without slowing down.",
+    features: [
+      "6.7\" FHD+ Infinity Display with a smooth 90Hz refresh rate for fluid scrolling.",
+      "MediaTek Dimensity 6100+ 5G chipset provides dependable performance and fast connectivity.",
+      "50MP dual-camera system captures bright, detailed shots even in low light.",
+      "6GB of RAM keeps apps active in the background for seamless multitasking.",
+      "Large 128GB internal storage with microSD expansion up to 1TB.",
+      "Massive 5000mAh battery with 25W fast charging for a full day of use."
+    ],
+    specifications: [
+      { label: "Display", value: "6.7\" FHD+ (1080 x 2400) 90Hz Infinity-U" },
+      { label: "Processor", value: "MediaTek Dimensity 6100+ 5G" },
+      { label: "Rear Camera", value: "50MP main + 2MP depth" },
+      { label: "Front Camera", value: "13MP selfie" },
+      { label: "Battery", value: "5000mAh with 25W fast charging" },
+      { label: "Security", value: "Side-mounted fingerprint + Face Unlock" },
+      { label: "Connectivity", value: "Dual SIM, 5G SA/NSA" }
+    ],
+    variants: [
+      {
+        key: "a06-6-128",
+        ram: "6GB RAM",
+        storage: "128GB Storage",
+        label: "6GB + 128GB",
+        price: 239.99,
+        description: "Best value configuration with enough headroom for daily multitasking."
+      }
+    ]
+  },
+  {
+    id: 302,
+    name: "Samsung Galaxy A07s (A075)",
+    title: "Samsung Galaxy A07s with Helio G99 and Triple Camera",
+    price: 179.99,
+    image: a075Purple,
+    images: [a075Purple, a075Grey, a075Silver],
+    rating: 4.7,
+    category: "Smartphones",
+    brand: "Samsung",
+    description: "Galaxy A07s pairs the power-efficient MediaTek Helio G99 platform with a 50MP triple camera, premium matte finish, and an adaptive 90Hz display. Choose the memory configuration that fits your workflow and enjoy Samsung Knox protection plus a free travel adapter in the box.",
+    features: [
+      "MediaTek Helio G99 (6nm) delivers flagship-level efficiency and smooth gaming.",
+      "6.6\" FHD+ 90Hz display keeps scrolling and gaming fluid.",
+      "50MP triple camera with Nightography tuning for detailed photos day or night.",
+      "Up to 6GB RAM with RAM Plus virtual memory for smoother multitasking.",
+      "UFS 2.2 storage with microSD expansion to 1TB.",
+      "5000mAh battery with adaptive power saving and 25W fast charging."
+    ],
+    specifications: [
+      { label: "Display", value: "6.6\" FHD+ (1080 x 2408) 90Hz" },
+      { label: "Processor", value: "MediaTek Helio G99 (6nm)" },
+      { label: "Rear Camera", value: "50MP main + 2MP macro + 2MP depth" },
+      { label: "Front Camera", value: "13MP" },
+      { label: "Battery", value: "5000mAh, 25W fast charging" },
+      { label: "Audio", value: "Dolby Atmos stereo speakers" },
+      { label: "Security", value: "Side fingerprint sensor" }
+    ],
+    variants: [
+      {
+        key: "a075-4-64",
+        ram: "4GB RAM",
+        storage: "64GB Storage",
+        label: "4GB + 64GB",
+        price: 179.99,
+        description: "Entry option ideal for essential apps and light photography."
+      },
+      {
+        key: "a075-4-128",
+        ram: "4GB RAM",
+        storage: "128GB Storage",
+        label: "4GB + 128GB",
+        price: 199.99,
+        description: "Double the storage for creatives who keep more offline."
+      },
+      {
+        key: "a075-6-128",
+        ram: "6GB RAM",
+        storage: "128GB Storage",
+        label: "6GB + 128GB",
+        price: 229.99,
+        description: "Maximum RAM for gamers and social storytellers."
+      }
+    ]
+  },
+  {
+    id: 303,
+    name: "Samsung Galaxy A16",
+    title: "Samsung Galaxy A16 – 6.7\" AMOLED, Up to 8GB RAM",
+    price: 199.99,
+    image: a16Black,
+    images: [a16Black, a16Silver, a16Display, a16Lifestyle],
+    rating: 4.8,
+    category: "Smartphones",
+    brand: "Samsung",
+    description: "Galaxy A16 elevates the A-series with a vivid Super AMOLED display, stereo speakers, OIS camera, and long-term software support. Choose between 4GB, 6GB, or 8GB RAM variants to match your workflow—all powered by Samsung's efficient Exynos platform and a 5000mAh battery.",
+    features: [
+      "6.7\" Super AMOLED display with Vision Booster for outdoor readability.",
+      "Samsung ISOCELL 50MP primary camera with optical stabilization.",
+      "Stereo speakers tuned for Dolby Atmos cinematic sound.",
+      "RAM Plus intelligently reallocates storage for up to +8GB virtual RAM.",
+      "Secure by Samsung Knox with 4 years of OS updates.",
+      "All-day 5000mAh battery with 25W wired charging."
+    ],
+    specifications: [
+      { label: "Display", value: "6.7\" FHD+ Super AMOLED 90Hz" },
+      { label: "Processor", value: "Exynos 1280 Octa-core" },
+      { label: "Rear Camera", value: "50MP OIS + 8MP ultra-wide + 2MP macro" },
+      { label: "Front Camera", value: "13MP" },
+      { label: "Battery", value: "5000mAh, 25W charging" },
+      { label: "Storage Expansion", value: "microSD up to 1TB" },
+      { label: "Software", value: "One UI 6.1, 4 OS upgrades" }
+    ],
+    variants: [
+      {
+        key: "a16-4-128",
+        ram: "4GB RAM",
+        storage: "128GB Storage",
+        label: "4GB + 128GB",
+        price: 199.99,
+        description: "Perfect for everyday users stepping into AMOLED."
+      },
+      {
+        key: "a16-6-128",
+        ram: "6GB RAM",
+        storage: "128GB Storage",
+        label: "6GB + 128GB",
+        price: 229.99,
+        description: "More RAM for creators editing on the go."
+      },
+      {
+        key: "a16-8-256",
+        ram: "8GB RAM",
+        storage: "256GB Storage",
+        label: "8GB + 256GB",
+        price: 279.99,
+        description: "Ultimate storage + RAM combo for power users."
+      }
+    ]
+  },
+  {
+    id: 304,
+    name: "Samsung Galaxy A17",
+    title: "Samsung Galaxy A17 – Pro-Grade Camera Choices",
+    price: 229.99,
+    image: a17Hero,
+    images: [a17Hero, a17Blue, a17Camera],
+    rating: 4.9,
+    category: "Smartphones",
+    brand: "Samsung",
+    description: "Galaxy A17 refines the design with razor-thin bezels, a 120Hz AMOLED display, and triple pro-grade cameras. Every configuration includes vapor chamber cooling, Knox Vault security, and Wi-Fi 6 readiness so you can stream, shoot, and game with confidence.",
+    features: [
+      "6.7\" FHD+ 120Hz AMOLED panel with adaptive refresh for balanced battery.",
+      "50MP OIS wide + 12MP ultra-wide + 5MP macro triple camera system.",
+      "Vapor chamber cooling keeps sustained gaming smooth.",
+      "Knox Vault hardware-level security protects biometric data.",
+      "Three RAM/storage options to match every workflow.",
+      "Supports Wi-Fi 6, 5G, NFC, and Samsung Wallet."
+    ],
+    specifications: [
+      { label: "Display", value: "6.7\" FHD+ 120Hz AMOLED" },
+      { label: "Processor", value: "Qualcomm Snapdragon 7s Gen 2" },
+      { label: "Rear Camera", value: "50MP OIS + 12MP ultra-wide + 5MP macro" },
+      { label: "Front Camera", value: "32MP UHD selfie" },
+      { label: "Battery", value: "5000mAh, 45W Super Fast Charging" },
+      { label: "Audio", value: "Stereo speakers with Dolby Atmos" },
+      { label: "Security", value: "Knox Vault + in-display fingerprint" }
+    ],
+    variants: [
+      {
+        key: "a17-4-128",
+        ram: "4GB RAM",
+        storage: "128GB Storage",
+        label: "4GB + 128GB",
+        price: 229.99,
+        description: "Ideal for social media and casual creators."
+      },
+      {
+        key: "a17-6-128",
+        ram: "6GB RAM",
+        storage: "128GB Storage",
+        label: "6GB + 128GB",
+        price: 259.99,
+        description: "Balanced option for gamers and students."
+      },
+      {
+        key: "a17-8-256",
+        ram: "8GB RAM",
+        storage: "256GB Storage",
+        label: "8GB + 256GB",
+        price: 309.99,
+        description: "Maximum storage for 4K video lovers."
+      }
+    ]
+  },
+  {
+    id: 305,
+    name: "Samsung Galaxy A26",
+    title: "Samsung Galaxy A26 – Advanced Nightography",
+    price: 269.99,
+    image: a26Front,
+    images: [a26Front, a26Angles, a26Lifestyle],
+    rating: 4.7,
+    category: "Smartphones",
+    brand: "Samsung",
+    description: "The Galaxy A26 is tuned for creators who need dependable 5G, a stellar 50MP OIS camera, and two premium memory options. Capture stabilized 4K clips, edit on the expansive 6.8\" canvas, and stay online for longer with Samsung's adaptive battery management.",
+    features: [
+      "6.8\" Super AMOLED+ display with 120Hz refresh rate.",
+      "50MP OIS Nightography camera + 12MP ultra-wide for dramatic shots.",
+      "Snapdragon 7 Gen 1 Mobile Platform for reliable 5G speed.",
+      "Two-lane vapour chamber dissipates heat during gaming.",
+      "6GB or 8GB RAM options with RAM Plus 12GB virtual boost.",
+      "5000mAh battery intelligently optimizes overnight charging."
+    ],
+    specifications: [
+      { label: "Display", value: "6.8\" FHD+ Super AMOLED+ 120Hz" },
+      { label: "Processor", value: "Qualcomm Snapdragon 7 Gen 1" },
+      { label: "Rear Camera", value: "50MP OIS + 12MP ultra-wide + 5MP depth" },
+      { label: "Front Camera", value: "32MP" },
+      { label: "Battery", value: "5000mAh, 45W Super Fast Charging" },
+      { label: "Storage Expansion", value: "microSD up to 1TB" },
+      { label: "Build", value: "Armor Aluminum frame, Gorilla Glass 5" }
+    ],
+    variants: [
+      {
+        key: "a26-6-128",
+        ram: "6GB RAM",
+        storage: "128GB Storage",
+        label: "6GB + 128GB",
+        price: 269.99,
+        description: "Ideal for daily creators who want flagship cameras."
+      },
+      {
+        key: "a26-8-256",
+        ram: "8GB RAM",
+        storage: "256GB Storage",
+        label: "8GB + 256GB",
+        price: 329.99,
+        description: "Extra space and RAM for filming long-form content."
+      }
+    ]
+  },
+  {
+    id: 306,
+    name: "Samsung Galaxy A36",
+    title: "Samsung Galaxy A36 – Flagship Feel, Friendly Price",
+    price: 299.99,
+    image: a36Front,
+    images: [a36Front, a36Back, a36Angles],
+    rating: 4.8,
+    category: "Smartphones",
+    brand: "Samsung",
+    description: "Galaxy A36 brings a flagship look with flat edges, satin glass, and a powerful 108MP camera array. With Vision Booster, on-device AI editing, and two generous memory choices, it's the everyday flagship alternative that still keeps prices accessible.",
+    features: [
+      "108MP main camera with Super HDR video and object eraser.",
+      "On-device AI photo remastering and voice focus for vlogs.",
+      "6.7\" Dynamic AMOLED 2X display with Vision Booster.",
+      "Snapdragon 7+ Gen 2 Mobile Platform with 5G.",
+      "Gorilla Glass Victus front + IP67 water resistance.",
+      "Two-day 5000mAh battery with intelligent power saving."
+    ],
+    specifications: [
+      { label: "Display", value: "6.7\" FHD+ Dynamic AMOLED 2X 120Hz" },
+      { label: "Processor", value: "Qualcomm Snapdragon 7+ Gen 2" },
+      { label: "Rear Camera", value: "108MP OIS + 12MP ultra-wide + 10MP tele" },
+      { label: "Front Camera", value: "32MP 4K selfie" },
+      { label: "Battery", value: "5000mAh, 45W charging" },
+      { label: "Protection", value: "IP67, Gorilla Glass Victus" },
+      { label: "Audio", value: "Stereo speakers, Dolby Atmos" }
+    ],
+    variants: [
+      {
+        key: "a36-6-128",
+        ram: "6GB RAM",
+        storage: "128GB Storage",
+        label: "6GB + 128GB",
+        price: 299.99,
+        description: "Premium feel with the most accessible price tag."
+      },
+      {
+        key: "a36-8-256",
+        ram: "8GB RAM",
+        storage: "256GB Storage",
+        label: "8GB + 256GB",
+        price: 359.99,
+        description: "Maxed-out storage for RAW shooters and gamers."
+      }
+    ]
+  },
+  {
+    id: 307,
+    name: "Samsung Galaxy A56",
+    title: "Samsung Galaxy A56 – Performance for Pro Creators",
+    price: 379.99,
+    image: a56Front,
+    images: [a56Front, a56Side, a56Camera],
+    rating: 4.9,
+    category: "Smartphones",
+    brand: "Samsung",
+    description: "Galaxy A56 is the most powerful phone in this drop, featuring a flagship-grade 4nm processor, 8GB RAM standard, and cinematic 8K-ready optics. It's built for content pros who need uncompromised speed, storage, and reliability when shooting, editing, and sharing on the move.",
+    features: [
+      "6.8\" QHD+ Dynamic AMOLED 2X display with adaptive 1-120Hz LTPO panel.",
+      "Qualcomm Snapdragon 8s Gen 3 delivers desktop-class responsiveness.",
+      "50MP triple camera with 8K recording and Expert RAW support.",
+      "8GB RAM standard with LPDDR5X speeds and UFS 4.0 storage.",
+      "Two storage options plus microSD expansion up to 1TB.",
+      "5000mAh battery with 45W Super Fast Charging and wireless PowerShare."
+    ],
+    specifications: [
+      { label: "Display", value: "6.8\" QHD+ Dynamic AMOLED 2X LTPO 120Hz" },
+      { label: "Processor", value: "Qualcomm Snapdragon 8s Gen 3 (4nm)" },
+      { label: "Rear Camera", value: "50MP OIS + 12MP ultra-wide + 10MP tele (3x)" },
+      { label: "Front Camera", value: "32MP autofocus" },
+      { label: "Battery", value: "5000mAh, 45W wired + 15W wireless" },
+      { label: "Storage", value: "UFS 4.0 with microSD support" },
+      { label: "Other", value: "IP68, stereo speakers, Wi-Fi 6E" }
+    ],
+    variants: [
+      {
+        key: "a56-8-128",
+        ram: "8GB RAM",
+        storage: "128GB Storage",
+        label: "8GB + 128GB",
+        price: 379.99,
+        description: "Powerful entry for next-gen flagship performance."
+      },
+      {
+        key: "a56-8-256",
+        ram: "8GB RAM",
+        storage: "256GB Storage",
+        label: "8GB + 256GB",
+        price: 429.99,
+        description: "Extra storage for 8K footage and Pro RAW projects."
+      }
+    ]
+  },
+  {
+    id: 311,
+    name: "Smart 10 HD",
+    title: "Smart 10 HD (2GB RAM + 64GB Storage)",
+    price: 129.99,
+    image: smart10HdBlack,
+    images: [smart10HdBlack, smart10HdGold, smart10HdGreen, smart10HdGrey, smart10HdPlaceholder],
+    rating: 4.5,
+    category: "Smartphones",
+    brand: "Smart",
+    description: "Smart 10 HD focuses on essentials with a large immersive HD+ display, memory fusion technology, and a dependable 5000mAh battery. It is the ideal first smartphone for students and multitaskers who still want modern styling and a responsive UI.",
+    features: [
+      "6.6\" HD+ immersive display with thin bezels for a cinema-like view.",
+      "Memory Fusion expands the 2GB physical RAM up to 4GB for smoother multitasking.",
+      "64GB of internal storage with microSD expansion for photos, apps, and files.",
+      "50MP AI dual camera system captures vivid daylight shots and bright portraits.",
+      "5000mAh battery paired with smart power management for up to two days of use.",
+      "Side-mounted fingerprint sensor plus Face Unlock for instant access."
+    ],
+    specifications: [
+      { label: "Display", value: "6.6\" HD+ IPS, 20:9 aspect" },
+      { label: "Processor", value: "Octa-core efficiency chipset" },
+      { label: "RAM", value: "2GB physical + up to 4GB extended" },
+      { label: "Storage", value: "64GB internal, microSD up to 1TB" },
+      { label: "Battery", value: "5000mAh with USB-C charging" },
+      { label: "Rear Camera", value: "50MP AI dual system" },
+      { label: "Security", value: "Face Unlock + side fingerprint" }
+    ],
+    variants: [
+      {
+        key: "smart10hd-2-64",
+        ram: "2GB RAM",
+        storage: "64GB Storage",
+        label: "2GB + 64GB",
+        price: 129.99,
+        description: "Includes up to 4GB extended RAM for smooth everyday use."
+      }
+    ]
+  },
+  {
+    id: 312,
+    name: "Smart 10",
+    title: "Smart 10 – Memory Fusion Smartphone",
+    price: 149.99,
+    image: smart10HdPlaceholder,
+    images: [smart10HdPlaceholder, smart10HdBlack, smart10HdGold, smart10HdGreen],
+    rating: 4.6,
+    category: "Smartphones",
+    brand: "Smart",
+    description: "Smart 10 upgrades the HD edition with additional RAM choices, faster performance, and a refined matte chassis. Extended Memory Fusion lets you bump RAM up to 8GB, so editing, gaming, and streaming feel seamless even when dozens of apps remain open.",
+    features: [
+      "Up to 8GB memory fusion keeps social apps, games, and camera tasks active.",
+      "Choose between 64GB or 128GB storage depending on your offline library.",
+      "Premium dual-ring camera housing with 50MP AI main sensor.",
+      "XOS-like gaming mode optimizes resources for higher frame rates.",
+      "Dual stereo speakers tuned for clear highs during movies and games.",
+      "NFC-ready with side fingerprint sensor and Face Unlock."
+    ],
+    specifications: [
+      { label: "Display", value: "6.6\" HD+ punch-hole display" },
+      { label: "Processor", value: "Octa-core Performance Chip" },
+      { label: "RAM", value: "3GB/4GB + up to 8GB extended" },
+      { label: "Storage", value: "64GB or 128GB, microSD up to 1TB" },
+      { label: "Battery", value: "5000mAh, Type-C 18W charging" },
+      { label: "Rear Camera", value: "50MP AI main + depth sensor" },
+      { label: "Audio", value: "Stereo speakers, DTS enhancement" }
+    ],
+    variants: [
+      {
+        key: "smart10-3-64",
+        ram: "3GB RAM",
+        storage: "64GB Storage",
+        label: "3GB + 64GB",
+        price: 149.99,
+        description: "Ideal for daily messaging with up to 6GB extended RAM."
+      },
+      {
+        key: "smart10-4-64",
+        ram: "4GB RAM",
+        storage: "64GB Storage",
+        label: "4GB + 64GB",
+        price: 159.99,
+        description: "Balanced option with up to 8GB total memory."
+      },
+      {
+        key: "smart10-4-128",
+        ram: "4GB RAM",
+        storage: "128GB Storage",
+        label: "4GB + 128GB",
+        price: 179.99,
+        description: "Extra storage for video libraries and offline playlists."
+      }
+    ]
+  },
+  {
+    id: 313,
+    name: "Smart 10 Plus",
+    title: "Smart 10 Plus – AMOLED Lite Flagship",
+    price: 199.99,
+    image: smart10PlusBlack,
+    images: [smart10PlusBlack, smart10PlusBlue, smart10PlusPink, smart10PlusSilver],
+    rating: 4.7,
+    category: "Smartphones",
+    brand: "Smart",
+    description: "Smart 10 Plus takes the series premium with a curved glass finish, ultra-narrow bezels, and upgraded 8GB memory fusion that hits 16GB extended. It's the creative-friendly option with upgraded cooling, dual stereo speakers, and AI night photography.",
+    features: [
+      "6.78\" FHD+ punch-hole display with adaptive brightness and slim bezels.",
+      "Memory Fusion 2.0 delivers up to 16GB extended RAM for pro-level multitasking.",
+      "Dual stereo speakers with DTS + Dirac tuning for immersive audio.",
+      "50MP Ultra Pixel camera with Super Night Mode and 2K video.",
+      "In-display fingerprint sensor plus AI Face Unlock.",
+      "5000mAh battery with 33W fast charging and battery health guard."
+    ],
+    specifications: [
+      { label: "Display", value: "6.78\" FHD+ 120Hz panel" },
+      { label: "Processor", value: "Octa-core 6nm platform with Vapor Chamber cooling" },
+      { label: "RAM", value: "4GB or 8GB + up to 16GB extended" },
+      { label: "Storage", value: "128GB UFS 2.2, microSD support" },
+      { label: "Battery", value: "5000mAh, 33W fast charging" },
+      { label: "Rear Camera", value: "50MP main + 2MP depth + AI lens" },
+      { label: "Audio", value: "Dual stereo speakers, DTS + Dirac" }
+    ],
+    variants: [
+      {
+        key: "smart10plus-4-128",
+        ram: "4GB RAM",
+        storage: "128GB Storage",
+        label: "4GB + 128GB",
+        price: 199.99,
+        description: "Great blend of storage and 8GB total memory fusion."
+      },
+      {
+        key: "smart10plus-8-128",
+        ram: "8GB RAM",
+        storage: "128GB Storage",
+        label: "8GB + 128GB",
+        price: 229.99,
+        description: "Ships with 8GB physical RAM and up to 16GB extended."
+      }
+    ]
+  },
+  {
+    id: 308,
+    name: "Tecno Spark Go 2",
+    title: "Tecno Spark Go 2 – Durable 120Hz Budget Smartphone",
+    price: 149.99,
+    image: sparkGo2Black,
+    images: [sparkGo2Black, sparkGo2Grey, sparkGo2Green, sparkGo2White],
+    rating: 4.5,
+    category: "Smartphones",
+    brand: "Tecno",
+    description: "The Tecno Spark Go 2 brings a smooth 120Hz display, IP64 durability, and a long-lasting 5000mAh battery to the entry-level segment. Running Android 15 on the Unisoc T7250 platform, it handles daily multitasking with ease while staying tough enough for active lifestyles.",
+    features: [
+      "6.67\" IPS LCD with 120Hz refresh for fluid scrolling and gaming.",
+      "Unisoc T7250 chipset + Android 15 (HIOS 15) optimized for everyday reliability.",
+      "IP64 dust and water resistance plus drop protection up to 1.5 meters.",
+      "5000mAh battery with 15W USB-C charging keeps you powered all day.",
+      "Dual speakers with FM radio and OTG support for flexible connectivity.",
+      "Side-mounted fingerprint sensor for fast, secure unlocking.",
+      "Expandable storage via microSDXC slot for extra media and apps."
+    ],
+    specifications: [
+      { label: "Display", value: "6.67\" IPS LCD, 120Hz, 720 x 1600 (20:9)" },
+      { label: "Processor", value: "Unisoc T7250 (12nm) Octa-core, Mali-G57 MP1 GPU" },
+      { label: "OS", value: "Android 15, HIOS 15" },
+      { label: "Durability", value: "IP64, drop resistant to 1.5m" },
+      { label: "Rear Camera", value: "13MP PDAF with Dual-LED flash" },
+      { label: "Front Camera", value: "8MP with Dual-LED flash" },
+      { label: "Battery", value: "5000mAh, 15W wired charging" },
+      { label: "Audio", value: "Dual speakers, 3.5mm jack, FM radio" },
+      { label: "Security", value: "Side-mounted fingerprint sensor" }
+    ],
+    variants: [
+      {
+        key: "sparkgo2-3-64",
+        ram: "3GB RAM",
+        storage: "64GB Storage",
+        label: "3GB + 64GB",
+        price: 149.99,
+        description: "Accessible price with the same rugged build and smooth 120Hz screen."
+      },
+      {
+        key: "sparkgo2-4-128",
+        ram: "4GB RAM",
+        storage: "128GB Storage",
+        label: "4GB + 128GB",
+        price: 169.99,
+        description: "Adds more storage for photos, apps, and offline playlists."
+      },
+      {
+        key: "sparkgo2-4-256",
+        ram: "4GB RAM",
+        storage: "256GB Storage",
+        label: "4GB + 256GB",
+        price: 189.99,
+        description: "Maximum onboard storage while keeping the price approachable."
+      }
+    ]
+  },
+  {
+    id: 309,
+    name: "Tecno Spark Slim",
+    title: "Tecno Spark Slim – 5.93mm Ultra-Slim AI Flagship",
+    price: 429.99,
+    image: sparkSlimBlack,
+    images: [sparkSlimBlack, sparkSlimBlue, sparkSlimWhite],
+    rating: 4.7,
+    category: "Smartphones",
+    brand: "Tecno",
+    description: "Spark Slim delivers the world’s thinnest 3D curved smartphone profile without sacrificing power. A 6.78\" 1.5K AMOLED display, Helio G200 processor, and 45W charging pair with AI imaging tools, Dolby Atmos sound, and IP64 durability for a future-ready experience.",
+    features: [
+      "Only 5.93mm thin with 3D curved glass and Corning Gorilla Glass 7i protection.",
+      "6.78\" 1.5K AMOLED display, 144Hz refresh, 4500 nits peak brightness, SGS low blue light certified.",
+      "MediaTek Helio G200 with 16GB RAM (8GB extended) + 256GB storage for flagship-class multitasking.",
+      "5160mAh battery with 45W super charging, bypass charging, and wired reverse charging.",
+      "Dual stereo speakers with Dolby Atmos plus advanced cooling using a 24,532mm² vapor chamber.",
+      "50MP ultra-clear rear camera and 13MP selfie camera with AI tools like Ask Ella, AI Translate, and AI Eraser 2.0.",
+      "FreeLink connectivity, NFC, infrared remote control, dual-system privacy, and IP64 rating."
+    ],
+    specifications: [
+      { label: "Display", value: "6.78\" 1.5K 3D AMOLED, 144Hz, 1224 x 2720" },
+      { label: "Processor", value: "MediaTek Helio G200 + Mali-G57 MC2 GPU" },
+      { label: "RAM/Storage", value: "16GB (8GB extended) + 256GB" },
+      { label: "Battery", value: "5160mAh with 45W Super Charging & bypass charge" },
+      { label: "Camera", value: "50MP rear + 13MP front, dual flash, FlashSnap" },
+      { label: "Durability", value: "IP64 + military-grade shock resistance" },
+      { label: "Audio", value: "Dual speakers, Dolby Atmos" },
+      { label: "Software", value: "Android 15 with AI suite (AI Translate, AI Eraser, AI Writing)" }
+    ],
+    variants: [
+      {
+        key: "sparkslim-16-256",
+        ram: "16GB RAM (8GB Extended)",
+        storage: "256GB Storage",
+        label: "16GB + 256GB",
+        price: 429.99,
+        description: "Single premium configuration with AI features and 45W super charging."
+      }
+    ]
+  },
+  {
+    id: 310,
+    name: "Tecno Spark 40C",
+    title: "Tecno Spark 40C – 6000mAh All-Day Entertainment Phone",
+    price: 219.99,
+    image: spark40CBlack,
+    images: [spark40CBlack, spark40CBlue, spark40CWhite, spark40CGrey],
+    rating: 4.6,
+    category: "Smartphones",
+    brand: "Tecno",
+    description: "Spark 40C blends a 120Hz hole display with Helio G81 power, 8GB RAM, and 256GB storage for smooth everyday multitasking. Dual DTS speakers, a gigantic 6000mAh battery, and Android 15 optimizations make it perfect for streaming, gaming, and productivity on the go.",
+    features: [
+      "6.67\" HD+ hole screen with 120Hz refresh rate for fluid visuals.",
+      "Helio G81 processor plus Android 15 ensures responsive performance.",
+      "256GB storage + 8GB RAM (memory fusion) for large app libraries.",
+      "6000mAh battery with 18W fast charging handles multi-day use.",
+      "Dual loudspeakers tuned with DTS audio for immersive sound.",
+      "Side fingerprint sensor, software gyroscope, and IR remote control.",
+      "Dual camera system with 13MP rear + 8MP selfie, both with dual flash."
+    ],
+    specifications: [
+      { label: "Display", value: "6.67\" 120Hz hole screen, 720 x 1600" },
+      { label: "Processor", value: "MediaTek Helio G81" },
+      { label: "RAM/Storage", value: "8GB RAM + 256GB storage (expandable)" },
+      { label: "Battery", value: "6000mAh with 18W fast charging" },
+      { label: "Rear Camera", value: "13MP Dual Flash" },
+      { label: "Front Camera", value: "8MP Dual Flash" },
+      { label: "Connectivity", value: "GPS, Wi-Fi, Bluetooth, FM, OTG" },
+      { label: "Audio", value: "Dual speakers with DTS Sound" }
+    ],
+    variants: [
+      {
+        key: "spark40c-8-256",
+        ram: "8GB RAM",
+        storage: "256GB Storage",
+        label: "8GB + 256GB",
+        price: 219.99,
+        description: "Standard configuration with maximum storage and memory fusion."
+      }
+    ]
+  },
+  {
+    id: 314,
+    name: "Tecno Spark 40",
+    title: "Tecno Spark 40 – 120Hz IPS with 45W Charging",
+    price: 249.99,
+    image: spark40Black,
+    images: [spark40Black, spark40Blue, spark40Grey, spark40White],
+    rating: 4.6,
+    category: "Smartphones",
+    brand: "Tecno",
+    description: "Spark 40 levels up the Spark family with a 6.67\" 120Hz IPS display, Helio G81 chipset, and 45W charging. With 16GB memory fusion (8GB+8GB), 256GB storage, IP64 resistance, and a 50MP main camera, it is the versatile daily driver for creators and commuters alike.",
+    features: [
+      "6.67\" IPS LCD with 120Hz refresh and slim bezels for immersive content.",
+      "Mediatek Helio G81 + Android 15 (HIOS 15) keeps multitasking smooth.",
+      "16GB total RAM via memory fusion (8GB physical + 8GB extended).",
+      "256GB storage plus microSD support for massive offline libraries.",
+      "50MP main camera with 8MP selfie camera and dual flash support.",
+      "5200mAh battery paired with 45W fast charging and IP64 splash resistance.",
+      "Dual Nano-SIM + microSD slot, dual speakers, and 100-day screen warranty."
+    ],
+    specifications: [
+      { label: "Display", value: "6.67\" IPS LCD, 120Hz" },
+      { label: "Processor", value: "Mediatek Helio G81" },
+      { label: "RAM/Storage", value: "16GB (8GB+8GB) RAM, 256GB storage" },
+      { label: "Battery", value: "5200mAh, 45W charging" },
+      { label: "Camera", value: "50MP main + 8MP selfie" },
+      { label: "Durability", value: "IP64 splash/dust resistance, 100-day screen warranty" },
+      { label: "SIM", value: "Dual Nano-SIM + microSD" }
+    ],
+    variants: [
+      {
+        key: "spark40-16-256",
+        ram: "16GB RAM (8GB+8GB)",
+        storage: "256GB Storage",
+        label: "16GB + 256GB",
+        price: 249.99,
+        description: "Single configuration with 45W charging and IP64 protection."
+      }
+    ]
+  },
 ];
 
 // Wearables products
@@ -900,13 +1629,13 @@ export const wearablesProducts: Product[] = [
 
 // Helper function to get product by ID
 export const getProductById = (id: number): Product | undefined => {
-  const allProducts = [...phoneAccessories, ...wearablesProducts];
+  const allProducts = [...phoneAccessories, ...wearablesProducts, ...smartphoneProducts];
   return allProducts.find(product => product.id === id);
 };
 
 // Helper function to get products by category
 export const getProductsByCategory = (category: string): Product[] => {
-  const allProducts = [...phoneAccessories, ...wearablesProducts];
+  const allProducts = [...phoneAccessories, ...wearablesProducts, ...smartphoneProducts];
   return allProducts.filter(product => product.category === category);
 };
 

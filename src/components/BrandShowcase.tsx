@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Store, TrendingUp, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { phoneAccessories } from "@/data/products";
+import { phoneAccessories, smartphoneProducts } from "@/data/products";
 import { greenLionProducts } from "@/data/greenLionProducts";
 
 // Import brand logos
@@ -28,6 +28,8 @@ const BrandShowcase = () => {
       { pattern: /^Apple\s+/i, name: "Apple" },
       { pattern: /^Samsung\s+/i, name: "Samsung" },
       { pattern: /^Hoco\s+/i, name: "Hoco" },
+      { pattern: /^Smart\s+/i, name: "Smart" },
+      { pattern: /^Tecno\s+/i, name: "Tecno" },
       { pattern: /^Dobe\s+/i, name: "Dobe" },
       { pattern: /^Foneng\s+/i, name: "Foneng" },
       { pattern: /^Borofone\s+/i, name: "BOROFONE" },
@@ -49,6 +51,11 @@ const BrandShowcase = () => {
       ...p,
       brand: p.brand || extractBrand(p.name) || "Other",
       images: [p.image],
+    })),
+    ...smartphoneProducts.map(p => ({
+      ...p,
+      brand: p.brand || extractBrand(p.name) || "Other",
+      images: p.images && p.images.length > 0 ? p.images : [p.image],
     })),
     ...greenLionProducts.map(p => ({
       id: p.id,

@@ -8,7 +8,7 @@ import { useCart } from "@/context/CartContext";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "./ui/sheet";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 import { Input } from "./ui/input";
-import { phoneAccessories, wearablesProducts } from "@/data/products";
+import { phoneAccessories, wearablesProducts, smartphoneProducts } from "@/data/products";
 
 const Header = () => {
   const { favorites } = useFavorites();
@@ -22,7 +22,7 @@ const Header = () => {
   const lastScrollY = useRef(0);
 
   // Get all products for search
-  const allProducts = useMemo(() => [...phoneAccessories, ...wearablesProducts], []);
+  const allProducts = useMemo(() => [...phoneAccessories, ...wearablesProducts, ...smartphoneProducts], []);
 
   // Filter products based on search query (case-insensitive)
   const searchResults = useMemo(() => {

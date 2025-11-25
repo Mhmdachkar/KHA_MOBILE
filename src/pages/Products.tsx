@@ -22,7 +22,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { phoneAccessories, wearablesProducts } from "@/data/products";
+import { phoneAccessories, wearablesProducts, smartphoneProducts } from "@/data/products";
 import { greenLionProducts } from "@/data/greenLionProducts";
 
 const Products = () => {
@@ -58,6 +58,10 @@ const Products = () => {
       ...p,
       images: [p.image]
     })),
+    ...smartphoneProducts.map(p => ({
+      ...p,
+      images: p.images && p.images.length > 0 ? p.images : [p.image]
+    })),
     ...greenLionProducts.map(p => ({
       id: p.id,
       name: p.name,
@@ -92,6 +96,8 @@ const Products = () => {
       if (name.includes("green lion") || name.startsWith("green lion")) brandSet.add("Green Lion");
       if (name.includes("apple")) brandSet.add("Apple");
       if (name.includes("samsung")) brandSet.add("Samsung");
+      if (name.includes("tecno")) brandSet.add("Tecno");
+      if (name.startsWith("smart ")) brandSet.add("Smart");
       if (name.includes("jbl")) brandSet.add("JBL");
       if (name.includes("hoco")) brandSet.add("Hoco");
       if (name.includes("dobe")) brandSet.add("Dobe");
@@ -112,6 +118,8 @@ const Products = () => {
     if (lower.includes("green lion") || lower.startsWith("green lion")) return "Green Lion";
     if (lower.includes("apple")) return "Apple";
     if (lower.includes("samsung")) return "Samsung";
+    if (lower.includes("tecno")) return "Tecno";
+    if (lower.startsWith("smart ")) return "Smart";
     if (lower.includes("jbl")) return "JBL";
     if (lower.includes("hoco")) return "Hoco";
     if (lower.includes("dobe")) return "Dobe";

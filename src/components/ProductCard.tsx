@@ -19,6 +19,10 @@ const ProductCard = ({ id, name, price, image, images, rating = 4.5, category }:
   const { isFavorite, toggleFavorite } = useFavorites();
   const { addToCart } = useCart();
   const favorite = isFavorite(id);
+  const isSmartphoneCategory = category?.toLowerCase() === "smartphones";
+  const imageFitClass = isSmartphoneCategory
+    ? "object-contain p-2 md:p-3"
+    : "object-cover";
   
   // Use images array if provided, otherwise use single image
   const productImages = images && images.length > 0 ? images : [image];
@@ -86,7 +90,7 @@ const ProductCard = ({ id, name, price, image, images, rating = 4.5, category }:
               duration: 0.7, 
               ease: [0.23, 1, 0.32, 1] // Smooth, elegant cubic bezier
             }}
-            className="absolute inset-0 h-full w-full object-cover will-change-[opacity]"
+            className={`absolute inset-0 h-full w-full ${imageFitClass} will-change-[opacity]`}
             loading="lazy"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
@@ -108,7 +112,7 @@ const ProductCard = ({ id, name, price, image, images, rating = 4.5, category }:
                 duration: 0.7, 
                 ease: [0.23, 1, 0.32, 1] // Smooth, elegant cubic bezier
               }}
-              className="absolute inset-0 h-full w-full object-cover will-change-[opacity]"
+              className={`absolute inset-0 h-full w-full ${imageFitClass} will-change-[opacity]`}
               loading="lazy"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;

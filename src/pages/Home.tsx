@@ -43,48 +43,17 @@ const Home = () => {
     { icon: Zap, name: "Accessories", linkTo: "/accessories" },
   ];
 
-  const trendingSmartphones = [
-    {
-      id: 1,
-      name: "X-Phone Pro Max",
-      price: 1299,
-      image: "https://images.unsplash.com/photo-1592286927505-128fc4a04179?w=500&h=500&fit=crop",
-      rating: 4.8,
-      category: "Smartphones"
-    },
-    {
-      id: 2,
-      name: "Galaxy Ultra S23",
-      price: 1199,
-      image: "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=500&h=500&fit=crop",
-      rating: 4.7,
-      category: "Smartphones"
-    },
-    {
-      id: 3,
-      name: "Pixel 8 Pro",
-      price: 999,
-      image: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=500&h=500&fit=crop",
-      rating: 4.9,
-      category: "Smartphones"
-    },
-    {
-      id: 4,
-      name: "OnePlus 12 Pro",
-      price: 899,
-      image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500&h=500&fit=crop",
-      rating: 4.6,
-      category: "Smartphones"
-    },
-    {
-      id: 5,
-      name: "Xperia 1 VI",
-      price: 1099,
-      image: "https://images.unsplash.com/photo-1585060544812-6b45742d762f?w=500&h=500&fit=crop",
-      rating: 4.5,
-      category: "Smartphones"
-    },
-  ];
+  const trendingSmartphones = getProductsByCategory("Smartphones")
+    .slice(0, 10)
+    .map(product => ({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      images: product.images,
+      rating: product.rating,
+      category: product.category,
+    }));
 
   // Get real audio products from phone accessories
   const trendingAudio = getProductsByCategory("Audio");

@@ -8,13 +8,15 @@ export interface CartProduct {
   rating?: number;
   category?: string;
   quantity: number;
+  variantKey?: string;
+  variantLabel?: string;
 }
 
 interface CartContextType {
   cart: CartProduct[];
   addToCart: (product: CartProduct) => void;
-  removeFromCart: (id: number) => void;
-  updateQuantity: (id: number, quantity: number) => void;
+  removeFromCart: (id: number, variantKey?: string) => void;
+  updateQuantity: (id: number, quantity: number, variantKey?: string) => void;
   clearCart: () => void;
   isOpen: boolean;
   openCart: () => void;
@@ -60,15 +62,20 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [cart]);
 
+  const isSameCartItem = (item: CartProduct, id: number, variantKey?: string) => {
+    const normalizedVariant = variantKey || "";
+    return item.id === id && (item.variantKey || "") === normalizedVariant;
+  };
+
   const addToCart = (product: CartProduct) => {
     setCart((prev) => {
       // Check if product already exists
-      const existingProduct = prev.find((item) => item.id === product.id);
+      const existingProduct = prev.find((item) => isSameCartItem(item, product.id, product.variantKey));
       
       if (existingProduct) {
         // Update quantity if product exists
         return prev.map((item) =>
-          item.id === product.id
+          isSameCartItem(item, product.id, product.variantKey)
             ? { ...item, quantity: item.quantity + product.quantity }
             : item
         );
@@ -82,19 +89,19 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     setIsOpen(true);
   };
 
-  const removeFromCart = (id: number) => {
-    setCart((prev) => prev.filter((item) => item.id !== id));
+  const removeFromCart = (id: number, variantKey?: string) => {
+    setCart((prev) => prev.filter((item) => !isSameCartItem(item, id, variantKey)));
   };
 
-  const updateQuantity = (id: number, quantity: number) => {
+  const updateQuantity = (id: number, quantity: number, variantKey?: string) => {
     if (quantity <= 0) {
-      removeFromCart(id);
+      removeFromCart(id, variantKey);
       return;
     }
     
     setCart((prev) =>
       prev.map((item) =>
-        item.id === id ? { ...item, quantity } : item
+        isSameCartItem(item, id, variantKey) ? { ...item, quantity } : item
       )
     );
   };
