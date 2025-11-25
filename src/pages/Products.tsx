@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Grid3x3, List, SlidersHorizontal, Filter } from "lucide-react";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import Header from "@/components/Header";
 import ProductCard from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
@@ -26,6 +26,7 @@ import { phoneAccessories, wearablesProducts, smartphoneProducts } from "@/data/
 import { greenLionProducts } from "@/data/greenLionProducts";
 
 const Products = () => {
+  const location = useLocation();
   const [searchParams] = useSearchParams();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [sortBy, setSortBy] = useState<string>("default");
@@ -41,12 +42,12 @@ const Products = () => {
     }
   }, [searchParams, selectedBrands]);
 
-  // Scroll to top on mount
+  // Scroll to top whenever this page or its query changes (handles navigation from brand cards)
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
-  }, []);
+  }, [location.pathname, location.search]);
 
   // Get all real products from products.ts (including wearables + Green Lion)
   const allProducts = [
