@@ -472,18 +472,18 @@ const CategoryPage = () => {
       {/* Brand Filter (For All Categories) */}
       {smartphoneBrandOptions.length > 0 && (
         <div>
-          <Label className="text-sm font-medium mb-4 block">Brands</Label>
-          <div className="grid grid-cols-2 gap-2">
+          <Label className="text-xs sm:text-sm font-medium mb-3 sm:mb-4 block">Brands</Label>
+          <div className="grid grid-cols-2 gap-2 sm:gap-2.5">
             <button
               onClick={() => setSelectedSmartphoneBrand("All")}
               style={{ touchAction: 'manipulation' }}
-              className={`col-span-2 flex items-center justify-center p-2 rounded-md border transition-all duration-200 ${
+              className={`col-span-2 flex items-center justify-center p-2.5 sm:p-3 rounded-md border transition-all duration-200 min-h-[44px] ${
                 selectedSmartphoneBrand === "All"
                   ? "border-primary bg-primary/5 text-primary shadow-sm"
                   : "border-border hover:border-primary/50 hover:bg-secondary/50"
               }`}
             >
-              <span className="text-sm font-medium">All Brands</span>
+              <span className="text-xs sm:text-sm font-medium">All Brands</span>
             </button>
             
             {smartphoneBrandOptions.map((brand) => {
@@ -495,34 +495,35 @@ const CategoryPage = () => {
                   key={brand}
                   onClick={() => setSelectedSmartphoneBrand(brand)}
                   style={{ touchAction: 'manipulation' }}
-                  className={`relative flex flex-col items-center justify-center p-3 rounded-md border transition-all duration-200 group ${
+                  className={`relative flex flex-col items-center justify-center p-2.5 sm:p-3 rounded-md border transition-all duration-200 group min-h-[70px] sm:min-h-[80px] ${
                     isActive
                       ? "border-primary bg-primary/5 shadow-md scale-[1.02]"
                       : "border-border hover:border-primary/50 hover:bg-secondary/50"
                   }`}
                 >
                   {isActive && (
-                    <div className="absolute top-1 right-1">
-                      <div className="w-2 h-2 bg-primary rounded-full" />
+                    <div className="absolute top-1 right-1 sm:top-1.5 sm:right-1.5">
+                      <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-primary rounded-full" />
                     </div>
                   )}
                   
                   {logo ? (
-                    <div className="w-full h-8 flex items-center justify-center mb-1">
+                    <div className="w-full h-7 sm:h-8 md:h-9 flex items-center justify-center mb-1 sm:mb-1.5">
                       <img 
                         src={logo} 
                         alt={brand} 
                         className="max-w-full max-h-full object-contain opacity-80 group-hover:opacity-100 transition-opacity" 
+                        loading="lazy"
                       />
                     </div>
                   ) : (
-                    <div className="w-full h-8 flex items-center justify-center mb-1">
-                      <span className="text-xs font-bold text-muted-foreground group-hover:text-foreground">
+                    <div className="w-full h-7 sm:h-8 md:h-9 flex items-center justify-center mb-1 sm:mb-1.5">
+                      <span className="text-xs sm:text-sm font-bold text-muted-foreground group-hover:text-foreground">
                         {brand.charAt(0)}
                       </span>
                     </div>
                   )}
-                  <span className={`text-xs font-medium ${isActive ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground'}`}>
+                  <span className={`text-[10px] sm:text-xs font-medium leading-tight text-center px-1 ${isActive ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground'}`}>
                     {brand}
                   </span>
                 </button>
@@ -571,14 +572,14 @@ const CategoryPage = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2, duration: 0.8, type: "spring" }}
-          className="relative w-full overflow-hidden rounded-2xl mb-10 sm:mb-12 p-8 sm:p-12 text-center"
+          className="relative w-full overflow-hidden rounded-xl sm:rounded-2xl mb-8 sm:mb-10 md:mb-12 p-6 sm:p-8 md:p-12 text-center"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-accent/5 to-primary/5 opacity-50" />
           <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
           
           {/* Decorative Circles */}
-          <div className="absolute top-0 left-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
-          <div className="absolute bottom-0 right-0 w-40 h-40 bg-accent/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
+          <div className="absolute top-0 left-0 w-24 h-24 sm:w-32 sm:h-32 bg-primary/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
+          <div className="absolute bottom-0 right-0 w-32 h-32 sm:w-40 sm:h-40 bg-accent/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
 
           <motion.div
             initial={{ y: 20, opacity: 0 }}
@@ -586,11 +587,11 @@ const CategoryPage = () => {
             transition={{ delay: 0.4, duration: 0.8 }}
             className="relative z-10"
           >
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-light text-elegant mb-4 tracking-wide">
+            <h2 className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-light text-elegant mb-3 sm:mb-4 tracking-wide px-2">
               {categoryQuotes[categoryDisplayName]?.title || "\"Quality is not an act, it is a habit.\""}
             </h2>
-            <div className="w-20 h-1 bg-gradient-to-r from-primary to-transparent mx-auto rounded-full" />
-            <p className="mt-4 text-sm sm:text-base text-muted-foreground font-light italic">
+            <div className="w-16 sm:w-20 h-0.5 sm:h-1 bg-gradient-to-r from-primary to-transparent mx-auto rounded-full" />
+            <p className="mt-3 sm:mt-4 text-xs sm:text-sm md:text-base text-muted-foreground font-light italic px-2">
               {categoryQuotes[categoryDisplayName]?.subtitle || "Experience excellence in every detail."}
             </p>
           </motion.div>

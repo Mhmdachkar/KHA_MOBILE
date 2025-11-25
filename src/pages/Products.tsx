@@ -636,11 +636,15 @@ const Products = () => {
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="mt-12 bg-white border border-primary/20 rounded-sm p-8 text-center"
+              className="mt-8 sm:mt-10 md:mt-12 bg-white border border-primary/20 rounded-sm p-6 sm:p-8 text-center"
             >
-              <p className="text-elegant text-xl mb-2 text-primary">⚡ Top Picks in Smart Accessories</p>
-              <p className="text-sm font-light mb-4 text-primary/80">Grab Yours Today!</p>
-              <Button variant="outline" className="text-elegant border-primary text-primary hover:bg-primary/10">
+              <p className="text-elegant text-lg sm:text-xl md:text-2xl mb-2 text-green-600 font-medium">⚡ Top Picks in Smart Accessories</p>
+              <p className="text-xs sm:text-sm md:text-base font-light mb-4 sm:mb-6 text-green-500">Grab Yours Today!</p>
+              <Button 
+                variant="outline" 
+                className="text-elegant border-primary text-primary hover:bg-primary/10 min-h-[44px] sm:min-h-[48px] text-xs sm:text-sm md:text-base"
+                style={{ touchAction: 'manipulation' }}
+              >
                 Shop Accessories
               </Button>
             </motion.div>

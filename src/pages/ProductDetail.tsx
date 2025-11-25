@@ -476,7 +476,8 @@ const ProductDetail = () => {
                   <button
                     key={index}
                     onClick={() => setSelectedImage(index)}
-                    className={`aspect-square bg-white rounded-sm overflow-hidden border-2 transition-all cursor-pointer ${
+                    style={{ touchAction: 'manipulation' }}
+                    className={`aspect-square bg-white rounded-sm overflow-hidden border-2 transition-all cursor-pointer min-h-[60px] sm:min-h-[70px] ${
                       selectedImage === index
                         ? "border-primary ring-2 ring-primary/20"
                         : "border-border hover:border-primary/40"
@@ -487,6 +488,7 @@ const ProductDetail = () => {
                       src={image}
                       alt={`${product.name} - View ${index + 1}`}
                       className={`h-full w-full ${isSmartphone ? "object-contain p-1" : "object-cover"}`}
+                      loading="lazy"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.src = "/placeholder.svg";
@@ -640,8 +642,8 @@ const ProductDetail = () => {
 
             {variantOptions.length > 0 && (
               <div className="mb-6 sm:mb-8">
-                <h4 className="text-elegant text-base mb-3">Choose your configuration</h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+                <h4 className="text-elegant text-sm sm:text-base mb-3 sm:mb-4">Choose your configuration</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
                   {variantOptions.map((variant) => {
                     const isActive = selectedVariant?.key === variant.key;
                     return (
@@ -649,19 +651,19 @@ const ProductDetail = () => {
                         key={variant.key}
                         onClick={() => setSelectedVariantKey(variant.key)}
                         style={{ touchAction: 'manipulation' }}
-                        className={`text-left border rounded-sm p-3 sm:p-4 flex flex-col gap-1 transition-all duration-300 ${
+                        className={`text-left border rounded-sm p-3 sm:p-4 flex flex-col gap-1.5 sm:gap-2 transition-all duration-300 min-h-[80px] sm:min-h-[100px] ${
                           isActive
-                            ? "border-primary bg-primary/5 shadow-sm"
+                            ? "border-primary bg-primary/5 shadow-sm ring-1 ring-primary/20"
                             : "border-border hover:border-primary/50"
                         }`}
                       >
-                        <span className="text-sm font-semibold text-elegant">{variant.label}</span>
-                        <span className="text-xs text-muted-foreground">
+                        <span className="text-xs sm:text-sm font-semibold text-elegant">{variant.label}</span>
+                        <span className="text-[10px] sm:text-xs text-muted-foreground leading-tight">
                           {variant.ram} · {variant.storage}
                         </span>
-                        <span className="text-sm text-elegant">${variant.price.toFixed(2)}</span>
+                        <span className="text-xs sm:text-sm text-elegant font-medium">${variant.price.toFixed(2)}</span>
                         {variant.description && (
-                          <span className="text-[11px] text-muted-foreground">
+                          <span className="text-[10px] sm:text-[11px] text-muted-foreground leading-tight line-clamp-2">
                             {variant.description}
                           </span>
                         )}
@@ -813,26 +815,26 @@ const ProductDetail = () => {
             className="mt-12 sm:mt-16 md:mt-20 mb-12 sm:mb-16 md:mb-20"
           >
             {/* Section Header */}
-            <div className="text-center mb-8 sm:mb-10 md:mb-12">
+            <div className="text-center mb-6 sm:mb-8 md:mb-10 lg:mb-12 px-2">
               <motion.div
                 initial={{ scale: 0 }}
                 whileInView={{ scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ type: "spring", duration: 0.6 }}
-                className="inline-block mb-4"
+                className="inline-block mb-3 sm:mb-4"
               >
-                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
-                  <ShoppingCart className="h-6 w-6 sm:h-7 sm:w-7 text-primary" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+                  <ShoppingCart className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 text-primary" />
                 </div>
               </motion.div>
-              <h2 className="text-elegant text-2xl sm:text-3xl md:text-4xl mb-3 sm:mb-4">Complete Your Setup</h2>
-              <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto font-light">
+              <h2 className="text-elegant text-xl sm:text-2xl md:text-3xl lg:text-4xl mb-2 sm:mb-3 md:mb-4">Complete Your Setup</h2>
+              <p className="text-xs sm:text-sm md:text-base text-muted-foreground max-w-2xl mx-auto font-light px-2">
                 Essential accessories to enhance your smartphone experience. Handpicked for maximum compatibility and quality.
               </p>
             </div>
 
             {/* Category Tabs for Accessories */}
-            <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-6 sm:mb-8">
+            <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-6 sm:mb-8 px-2">
               {accessoryFilters.map((tab, index) => {
                 const isActive = selectedAccessoryFilter === tab;
                 return (
@@ -844,9 +846,9 @@ const ProductDetail = () => {
                     transition={{ delay: index * 0.1 }}
                     style={{ touchAction: 'manipulation' }}
                     onClick={() => setSelectedAccessoryFilter(tab)}
-                    className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm border transition-all duration-300 ${
+                    className={`px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 rounded-full text-[11px] sm:text-xs md:text-sm border transition-all duration-300 min-h-[36px] sm:min-h-[40px] ${
                       isActive
-                        ? "border-primary bg-primary/5 text-primary shadow-sm"
+                        ? "border-primary bg-primary/5 text-primary shadow-sm font-medium"
                         : "border-border hover:border-primary/60 hover:bg-primary/5"
                     }`}
                   >
@@ -859,10 +861,12 @@ const ProductDetail = () => {
             {/* Accessories Horizontal Scroll */}
             <div className="relative group">
               <div
-                className="flex gap-3 sm:gap-4 md:gap-5 overflow-x-auto scrollbar-hide scroll-smooth snap-x snap-mandatory px-1 sm:px-2"
+                className="flex gap-3 sm:gap-4 md:gap-5 overflow-x-auto scrollbar-hide scroll-smooth snap-x snap-mandatory px-2 sm:px-4 md:px-1"
                 style={{
                   WebkitOverflowScrolling: "touch",
-                  touchAction: "pan-y",
+                  touchAction: "pan-x pan-y",
+                  scrollbarWidth: "none",
+                  msOverflowStyle: "none",
                 }}
               >
                 {filteredAccessories.map((accessory, index) => (
@@ -872,7 +876,7 @@ const ProductDetail = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.05 }}
-                    className="flex-none w-[200px] sm:w-[220px] md:w-[240px] snap-start"
+                    className="flex-none w-[180px] xs:w-[200px] sm:w-[220px] md:w-[240px] snap-start"
                   >
                     <ProductCard
                       id={accessory.id}
@@ -893,17 +897,17 @@ const ProductDetail = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-center mt-8 sm:mt-10 md:mt-12"
+              className="text-center mt-6 sm:mt-8 md:mt-10 lg:mt-12 px-2"
             >
               <Link to="/accessories">
                 <Button 
                   size="lg" 
                   variant="outline" 
-                  className="text-elegant"
+                  className="text-elegant text-xs sm:text-sm md:text-base min-h-[44px] sm:min-h-[48px]"
                   style={{ touchAction: 'manipulation' }}
                 >
                   View All Accessories
-                  <ChevronRight className="ml-2 h-4 w-4" />
+                  <ChevronRight className="ml-2 h-3 w-3 sm:h-4 sm:w-4" />
                 </Button>
               </Link>
             </motion.div>

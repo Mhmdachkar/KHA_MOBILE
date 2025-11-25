@@ -161,7 +161,7 @@ const BrandShowcase = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 md:gap-8"
+            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-6 lg:gap-8"
           >
             {brands.map((brand, index) => (
               <motion.button
@@ -173,16 +173,16 @@ const BrandShowcase = () => {
                 whileHover={window.matchMedia('(hover: hover)').matches ? { scale: 1.05, y: -5 } : undefined}
                 onClick={() => handleBrandClick(brand.name)}
                 style={{ touchAction: 'manipulation' }}
-                className="group relative bg-white rounded-sm border-2 border-border hover:border-primary/60 transition-all duration-300 p-6 sm:p-8 flex flex-col items-center justify-center gap-3 sm:gap-4 shadow-card hover:shadow-elegant overflow-hidden"
+                className="group relative bg-white rounded-sm border-2 border-border hover:border-primary/60 transition-all duration-300 p-4 sm:p-6 md:p-8 flex flex-col items-center justify-center gap-2 sm:gap-3 md:gap-4 shadow-card hover:shadow-elegant overflow-hidden min-h-[140px] sm:min-h-[160px] md:min-h-[180px]"
               >
                 {/* Gradient Background */}
                 <div className={`absolute inset-0 bg-gradient-to-br ${getBrandColor(brand.name)} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
                 
                 {/* Brand Logo */}
-                <div className="relative z-10 flex flex-col items-center justify-center gap-3 sm:gap-4 w-full">
+                <div className="relative z-10 flex flex-col items-center justify-center gap-2 sm:gap-3 md:gap-4 w-full">
                   {brand.logo ? (
                     <>
-                      <div className="relative w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 flex items-center justify-center">
+                      <div className="relative w-16 h-16 xs:w-20 xs:h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 flex items-center justify-center">
                         <motion.img
                           src={brand.logo}
                           alt={brand.name}
@@ -195,30 +195,30 @@ const BrandShowcase = () => {
                         />
                       </div>
                       {/* Brand Name */}
-                      <h3 className="text-elegant text-sm sm:text-base md:text-lg font-semibold group-hover:text-primary transition-colors duration-300 text-center">
+                      <h3 className="text-elegant text-xs sm:text-sm md:text-base lg:text-lg font-semibold group-hover:text-primary transition-colors duration-300 text-center px-1 leading-tight">
                         {brand.name}
                       </h3>
                     </>
                   ) : (
-                    <h3 className="text-elegant text-lg sm:text-xl md:text-2xl font-semibold group-hover:text-primary transition-colors duration-300">
+                    <h3 className="text-elegant text-sm sm:text-lg md:text-xl lg:text-2xl font-semibold group-hover:text-primary transition-colors duration-300 text-center px-1">
                       {brand.name}
                     </h3>
                   )}
                   
                   {/* Product Count */}
-                  <div className="flex items-center justify-center gap-2 text-xs sm:text-sm text-muted-foreground">
-                    <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4" />
-                    <span>{brand.productCount} {brand.productCount === 1 ? 'Product' : 'Products'}</span>
+                  <div className="flex items-center justify-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs md:text-sm text-muted-foreground">
+                    <TrendingUp className="h-2.5 w-2.5 sm:h-3 sm:w-3 md:h-4 md:w-4" />
+                    <span className="leading-tight">{brand.productCount} {brand.productCount === 1 ? 'Product' : 'Products'}</span>
                   </div>
                 </div>
 
                 {/* Arrow Icon - Appears on Hover */}
-                <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 relative z-10">
-                  <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                <div className="absolute bottom-2 right-2 sm:bottom-3 sm:right-3 md:bottom-4 md:right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 relative z-10">
+                  <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-primary" />
                 </div>
 
                 {/* Hover Effect Indicator */}
-                <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center" />
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 sm:h-1 bg-gradient-to-r from-primary via-accent to-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center" />
               </motion.button>
             ))}
           </motion.div>
