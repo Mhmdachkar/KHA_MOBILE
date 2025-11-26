@@ -153,10 +153,10 @@ const NewArrivalShowcase = () => {
               }
             }}
             style={{ touchAction: 'pan-y pinch-zoom' }}
-            className="flex flex-col lg:flex-row items-center gap-4 sm:gap-6 md:gap-8 lg:gap-16 w-full"
+            className="flex flex-col lg:flex-row items-center gap-6 sm:gap-8 md:gap-10 lg:gap-16 w-full"
           >
             {/* Product Image Side */}
-            <div className="w-full lg:w-1/2 relative order-2 lg:order-1">
+            <div className="w-full lg:w-1/2 relative">
               <div className="relative aspect-square max-w-[280px] sm:max-w-md mx-auto lg:max-w-full">
                 {/* Glowing Background behind image */}
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full blur-2xl scale-90" />
@@ -180,28 +180,28 @@ const NewArrivalShowcase = () => {
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.3, duration: 0.5 }}
-                  className="absolute top-2 right-2 sm:top-4 sm:right-4 md:top-8 md:right-8 bg-white/90 backdrop-blur-sm p-1.5 sm:p-2 md:p-3 rounded-lg sm:rounded-xl shadow-lg border border-border/50"
+                  className="absolute top-0 right-0 sm:top-4 sm:right-4 md:top-8 md:right-8 bg-white/90 backdrop-blur-sm p-2 sm:p-3 rounded-xl shadow-lg border border-border/50 z-20"
                 >
                   <div className="flex flex-col items-center text-center">
                     <span className="text-[10px] sm:text-xs font-medium text-muted-foreground uppercase tracking-wider">Trending</span>
-                    <span className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-primary">Product</span>
+                    <span className="text-sm sm:text-base font-bold text-primary">Product</span>
                   </div>
                 </motion.div>
               </div>
             </div>
 
             {/* Content Side */}
-            <div className="w-full lg:w-1/2 space-y-4 sm:space-y-5 md:space-y-6 order-1 lg:order-2">
-              <div>
-                <Badge variant="outline" className="mb-3 sm:mb-4 px-2.5 sm:px-3 py-0.5 sm:py-1 border-primary/30 text-primary bg-primary/5 text-xs sm:text-sm">
-                  <Star className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-1 fill-primary" />
+            <div className="w-full lg:w-1/2 space-y-6 sm:space-y-8 flex flex-col items-center lg:items-start text-center lg:text-left">
+              <div className="flex flex-col items-center lg:items-start w-full">
+                <Badge variant="outline" className="mb-3 sm:mb-4 px-3 py-1 border-primary/30 text-primary bg-primary/5 text-xs sm:text-sm">
+                  <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1.5 fill-primary" />
                   Featured Item
                 </Badge>
                 <motion.h2 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 }}
-                  className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-elegant mb-2 sm:mb-3 md:mb-4 leading-tight"
+                  className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-elegant mb-2 sm:mb-3 leading-tight w-full"
                 >
                   {product.name}
                 </motion.h2>
@@ -209,11 +209,11 @@ const NewArrivalShowcase = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
-                  className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-muted-foreground font-light mb-2 line-clamp-2 sm:line-clamp-none"
+                  className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground font-light mb-4 line-clamp-2 sm:line-clamp-none w-full"
                 >
                   {product.title.split('-')[1]?.trim() || product.title}
                 </motion.p>
-                <div className="h-0.5 sm:h-1 w-12 sm:w-16 md:w-20 bg-gradient-to-r from-primary to-accent rounded-full mb-4 sm:mb-5 md:mb-6" />
+                <div className="h-1 w-16 sm:w-20 bg-gradient-to-r from-primary to-accent rounded-full mb-2" />
               </div>
 
               {/* Why this is a great choice section */}
@@ -221,9 +221,9 @@ const NewArrivalShowcase = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="bg-secondary/30 border border-border/50 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 lg:p-8"
+                className="bg-secondary/30 border border-border/50 rounded-2xl p-5 sm:p-6 md:p-8 w-full text-left"
               >
-                <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 flex items-center gap-2">
+                <h3 className="text-base sm:text-lg font-semibold mb-4 flex items-center gap-2">
                   Why this is a great choice
                 </h3>
                 
@@ -231,26 +231,26 @@ const NewArrivalShowcase = () => {
                   {currentShowcase.highlightFeatures.map((feature, index) => {
                     const IconComponent = feature.icon;
                     return (
-                      <div key={index} className="flex items-start gap-2 sm:gap-3" style={{ touchAction: 'manipulation' }}>
-                        <div className="p-1.5 sm:p-2 rounded-lg bg-primary/10 text-primary mt-0.5 flex-shrink-0">
+                      <div key={index} className="flex items-start gap-3" style={{ touchAction: 'manipulation' }}>
+                        <div className="p-2 rounded-lg bg-primary/10 text-primary mt-0.5 flex-shrink-0">
                           <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />
                         </div>
                       <div className="min-w-0 flex-1">
                         <h4 className="font-medium text-foreground text-sm sm:text-base">{feature.label}</h4>
-                        <p className="text-xs sm:text-sm text-muted-foreground break-words">{feature.value}</p>
+                        <p className="text-xs sm:text-sm text-muted-foreground break-words leading-relaxed">{feature.value}</p>
                       </div>
                     </div>
                     );
                   })}
                 </div>
 
-                <div className="mt-4 sm:mt-5 md:mt-6 pt-4 sm:pt-5 md:pt-6 border-t border-border/50 flex flex-wrap gap-3 sm:gap-4 md:gap-8">
-                  <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-medium text-foreground/80">
-                    <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-500 flex-shrink-0" />
+                <div className="mt-5 pt-5 sm:mt-6 sm:pt-6 border-t border-border/50 flex flex-wrap gap-x-6 gap-y-2">
+                  <div className="flex items-center gap-2 text-xs sm:text-sm font-medium text-foreground/80">
+                    <CheckCircle2 className="w-4 h-4 text-green-500 flex-shrink-0" />
                     <span>Authorized Reseller</span>
                   </div>
-                  <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-medium text-foreground/80">
-                    <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-500 flex-shrink-0" />
+                  <div className="flex items-center gap-2 text-xs sm:text-sm font-medium text-foreground/80">
+                    <ShieldCheck className="w-4 h-4 text-green-500 flex-shrink-0" />
                     <span>1 Year Warranty</span>
                   </div>
                 </div>
@@ -260,23 +260,23 @@ const NewArrivalShowcase = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
-                className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2 sm:pt-3 md:pt-4"
+                className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full pt-2"
               >
-                <Link to={`/product/${product.id}`} className="w-full sm:w-auto">
+                <Link to={`/product/${product.id}`} className="w-full sm:w-auto flex-1 sm:flex-none">
                   <Button 
                     size="lg" 
-                    className="w-full sm:w-auto text-sm sm:text-base md:text-lg px-6 sm:px-7 md:px-8 py-4 sm:py-5 md:py-6 shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all duration-300 min-h-[44px] sm:min-h-[48px] md:min-h-[52px]"
+                    className="w-full text-sm sm:text-base font-semibold px-8 py-6 shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all duration-300 min-h-[52px]"
                     style={{ touchAction: 'manipulation' }}
                   >
                     Shop Now
                     <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
                   </Button>
                 </Link>
-                <Link to="/products" className="w-full sm:w-auto">
+                <Link to="/products" className="w-full sm:w-auto flex-1 sm:flex-none">
                   <Button 
                     variant="outline" 
                     size="lg" 
-                    className="w-full sm:w-auto text-sm sm:text-base md:text-lg px-6 sm:px-7 md:px-8 py-4 sm:py-5 md:py-6 min-h-[44px] sm:min-h-[48px] md:min-h-[52px]"
+                    className="w-full text-sm sm:text-base font-semibold px-8 py-6 min-h-[52px]"
                     style={{ touchAction: 'manipulation' }}
                   >
                     View All Products
