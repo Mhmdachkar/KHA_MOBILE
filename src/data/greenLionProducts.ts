@@ -10,20 +10,20 @@ import massageGun2 from "@/assets/accessories/Green Lion Mini Massage Gun Pro 2.
 import massageGun3 from "@/assets/accessories/Green Lion Mini Massage Gun Pro 3.jpg";
 
 import proTrimDuo from "@/assets/accessories/Green Lion Pro Trim Duo Hair Clipper.webp";
-import proTrimDuo2 from "@/assets/accessories/Green Lion Pro Trim Duo Hair Clipper 2.jpg";
+import proTrimDuo2 from "@/assets/accessories/Green Lion Pro Trim Duo Hair Clipper 2 placeholder.jpg";
 import proTrimDuo3 from "@/assets/accessories/Green Lion Pro Trim Duo Hair Clipper 3.webp";
 import proTrimDuo4 from "@/assets/accessories/Green Lion Pro Trim Duo Hair Clipper 4.webp";
 
-import clipPro from "@/assets/accessories/Green Lion Clip Pro Professional Hair Clipper.webp";
+import clipPro from "@/assets/accessories/Green Lion Clip Pro Professional Hair Clipper placeholder.webp";
 import clipPro1 from "@/assets/accessories/Green Lion Clip Pro Professional Hair Clipper 1.webp";
 import clipPro2 from "@/assets/accessories/Green Lion Clip Pro Professional Hair Clipper 2.webp";
 
 import oneBlade from "@/assets/accessories/Green Lion One Blade Beard Trimmer.jpg";
 import oneBlade1 from "@/assets/accessories/Green Lion One Blade Beard Trimmer 1.webp";
-import oneBlade2 from "@/assets/accessories/Green Lion One Blade Beard Trimmer 2.avif";
+import oneBlade2 from "@/assets/accessories/Green Lion One Blade Beard Trimmer 2 placeholder.avif";
 import oneBlade3 from "@/assets/accessories/Green Lion One Blade Beard Trimmer 3.webp";
 
-import piratesTrimmer from "@/assets/accessories/Green Lion Pirates Hair Trimmer.jpg";
+import piratesTrimmer from "@/assets/accessories/Green Lion Pirates Hair Trimmer placeholder.jpg";
 import piratesTrimmer1 from "@/assets/accessories/Green Lion Pirates Hair Trimmer 1.webp";
 
 import makeupMirror9 from "@/assets/accessories/Green Lion Glam Shine Makeup Mirror 9 LED.jpg";
@@ -38,19 +38,18 @@ import makeupMirror12_3 from "@/assets/accessories/Green Lion Glam Shine Makeup 
 import straightener from "@/assets/accessories/Green Lion Silkwave Straightener.avif";
 import straightener1 from "@/assets/accessories/Green Lion Silkwave Straightener 1.avif";
 import straightener2 from "@/assets/accessories/Green Lion Silkwave Straightener 2.avif";
-import straightener3 from "@/assets/accessories/Green Lion Silkwave Straightener 3.avif";
-import straightenerWebp from "@/assets/accessories/Green Lion Silkwave Straightener.webp";
+import straightener3 from "@/assets/accessories/Green Lion Silkwave Straightener 3 placeholder.avif";
 
 import hairDryer from "@/assets/accessories/Green Lion Blow Wave Hair Dryer 850W.jpg";
-import hairDryer1 from "@/assets/accessories/Green Lion Blow Wave Hair Dryer 850W 1.webp";
+import hairDryer1 from "@/assets/accessories/Green Lion Blow Wave Hair Dryer 850W 1 placeholder.webp";
 import hairDryer2 from "@/assets/accessories/Green Lion Blow Wave Hair Dryer 850W 2.webp";
 
 import luggageScale from "@/assets/accessories/Green Lion Digital Luggage Scale Max 50KG.webp";
-import luggageScale1 from "@/assets/accessories/Green Lion Digital Luggage Scale Max 50KG 1.jpg";
+import luggageScale1 from "@/assets/accessories/Green Lion Digital Luggage Scale Max 50KG 1 placeholder.jpg";
 import luggageScale2 from "@/assets/accessories/Green Lion Digital Luggage Scale Max 50KG 2.webp";
 
 import kitchenScale from "@/assets/accessories/Green Lion Dual Kitchen Scale.webp";
-import kitchenScale1 from "@/assets/accessories/Green Lion Dual Kitchen Scale 1.webp";
+import kitchenScale1 from "@/assets/accessories/Green Lion Dual Kitchen Scale 1 placeholder.webp";
 import kitchenScale2 from "@/assets/accessories/Green Lion Dual Kitchen Scale 2.avif";
 import kitchenScale3 from "@/assets/accessories/Green Lion Dual Kitchen Scale 3.avif";
 
@@ -61,16 +60,16 @@ import sigmaLaptopBag from "@/assets/accessories/Green Lion Sigma Laptop Sleev B
 import orbitLaptopBag from "@/assets/accessories/Green Lion Orbit Sleeve Laptop Bag.jpg";
 
 import ledLamp from "@/assets/accessories/Green Lion Led Table Lamp.avif";
-import ledLamp1 from "@/assets/accessories/Green Lion Led Table Lamp 1.avif";
+import ledLamp1 from "@/assets/accessories/Green Lion Led Table Lamp 1 placeholder.avif";
 import ledLamp2 from "@/assets/accessories/Green Lion Led Table Lamp 2.webp";
 import ledLamp3 from "@/assets/accessories/Green Lion Led Table Lamp 3.avif";
 import ledLamp3jpg from "@/assets/accessories/Green Lion Led Table Lamp 3.jpg";
 import ledLampWebp from "@/assets/accessories/Green Lion Led Table Lamp.webp";
 
 import m6Stand from "@/assets/accessories/Green Lion M6-Rotating Stand.avif";
-import m6Stand1 from "@/assets/accessories/Green Lion M6-Rotating Stand 1.avif";
+import m6Stand1 from "@/assets/accessories/Green Lion M6-Rotating Stand 1 placeholder.avif";
 
-import m5Holder from "@/assets/accessories/Green Lion Strong Hold X Phone.webp";
+import m5Holder from "@/assets/accessories/Green Lion Strong Hold X Phone placeholder.webp";
 import m5Holder1 from "@/assets/accessories/Green Lion Strong Hold X Phone 1.avif";
 import m5Holder2 from "@/assets/accessories/Green Lion Strong Hold X Phone 2.avif";
 
@@ -88,35 +87,35 @@ import gKidTablet from "@/assets/accessories/Green Lion G-Kid 20 Kids Tablet.avi
 import gKidTablet1 from "@/assets/accessories/Green Lion G-Kid 20 Kids Tablet 1.jpg";
 
 import g20Tablet from "@/assets/accessories/Green Lion G-20 Ultra.jpeg";
-import g20Tablet1 from "@/assets/accessories/Green Lion G-20 Ultra 1.jpg";
+import g20Tablet1 from "@/assets/accessories/Green Lion G-20 Ultra 1 placeholder.jpg";
 
 import sevillaNeckband from "@/assets/accessories/Green Lion Sevilla Wireless Neckband.jpg";
-import sevillaNeckband1 from "@/assets/accessories/Green Lion Sevilla Wireless Neckband 1.jpg";
+import sevillaNeckband1 from "@/assets/accessories/Green Lion Sevilla Wireless Neckband 1 placeholder.jpg";
 
-import manchesterEarbuds from "@/assets/accessories/Green Lion Manchester True Wireless Earbuds.webp";
+import manchesterEarbuds from "@/assets/accessories/Green Lion Manchester True Wireless Earbuds placeholder.webp";
 import manchesterEarbuds1 from "@/assets/accessories/Green Lion Manchester True Wireless Earbuds 1.webp";
 import manchesterEarbuds2 from "@/assets/accessories/Green Lion Manchester True Wireless Earbuds 2.webp";
 import manchesterEarbudsSilver from "@/assets/accessories/Green Lion Manchester True Wireless Earbuds silver.jpg";
 
 import riverEarbuds from "@/assets/accessories/Green Lion River True Wireless Earbuds.webp";
 import riverEarbuds1 from "@/assets/accessories/Green Lion River True Wireless Earbuds 1.webp";
-import riverEarbudsBlack from "@/assets/accessories/Green Lion River True Wireless Earbuds black.webp";
+import riverEarbudsBlack from "@/assets/accessories/Green Lion River True Wireless Earbuds black placeholder.webp";
 import riverEarbudsRoseGold from "@/assets/accessories/Green Lion River True Wireless Earbuds rose gold.webp";
 import riverEarbudsWhite from "@/assets/accessories/Green Lion River True Wireless Earbuds white.jpg";
 
 import echoHeadphone from "@/assets/accessories/Green Lion ECHO ANC Zero Sound. Zero Noise.jpg";
-import echoHeadphone1 from "@/assets/accessories/Green Lion ECHO ANC Zero Sound. Zero Noise 1.jpg";
+import echoHeadphone1 from "@/assets/accessories/Green Lion ECHO ANC Zero Sound. Zero Noise 1 placeholder.jpg";
 import echoHeadphoneBeige from "@/assets/accessories/Green Lion ECHO ANC Zero Sound. Zero Noise beige.avif";
 
-import rhythmHeadphone from "@/assets/accessories/Green Lion Rhythm X50 ANC Wireless 1.webp";
-import rhythmHeadphoneBlack from "@/assets/accessories/Green Lion Rhythm X50 ANC Wireless black.webp";
+import rhythmHeadphone from "@/assets/accessories/Green Lion Rhythm X50 ANC Wireless black placeholder.webp";
+import rhythmHeadphoneBlack from "@/assets/accessories/Green Lion Rhythm X50 ANC Wireless black placeholder.webp";
 import rhythmHeadphoneBrown from "@/assets/accessories/Green Lion Rhythm X50 ANC Wireless brown.avif";
 
 import jupiterSpeaker from "@/assets/accessories/Green Lion Jupiter Bluetooth Speaker with.jpg";
 import jupiterSpeakerWebp from "@/assets/accessories/Green Lion Jupiter Bluetooth Speaker with.webp";
 
 import portoSpeaker from "@/assets/accessories/Green Lion Porto Wireless Speaker.jpg";
-import portoSpeaker1 from "@/assets/accessories/Green Lion Porto Wireless Speaker 1.webp";
+import portoSpeaker1 from "@/assets/accessories/Green Lion Porto Wireless Speaker 1 placeholder.webp";
 
 import active49Watch from "@/assets/accessories/Green Lion Active 49 - 49MM Smart Watch.jpg";
 import active49Watch1 from "@/assets/accessories/Green Lion Active 49 - 49MM Smart Watch 1.jpg";
@@ -124,7 +123,7 @@ import active49Watch1 from "@/assets/accessories/Green Lion Active 49 - 49MM Sma
 import ultimate10Watch from "@/assets/accessories/Green Lion Ultimate 10 46MM Smart Watch.webp";
 import ultimate10Watch1 from "@/assets/accessories/Green Lion Ultimate 10 46MM Smart Watch 1.webp";
 
-import trackFitWatch from "@/assets/accessories/Green Lion Track Fit Smart Watch black.webp";
+import trackFitWatch from "@/assets/accessories/Green Lion Track Fit Smart Watch black placeholder.webp";
 import trackFitWatch1 from "@/assets/accessories/Green Lion Track Fit Smart Watch 1.webp";
 import trackFitWatchSilver from "@/assets/accessories/Green Lion Track Fit Smart Watch silver.avif";
 
@@ -132,12 +131,12 @@ import ultimate41Watch from "@/assets/accessories/Green Lion Ultimate 41 Smart W
 import ultimate41WatchBlack from "@/assets/accessories/Green Lion Ultimate 41 Smart Watch black.webp";
 import ultimate41WatchPink from "@/assets/accessories/Green Lion Ultimate 41 Smart Watch pink.webp";
 
-import bedsideClock from "@/assets/accessories/Green Lion Bedside Clock with Wireless.webp";
+import bedsideClock from "@/assets/accessories/Green Lion Bedside Clock with Wireless placeholder.webp";
 import bedsideClock1 from "@/assets/accessories/Green Lion Bedside Clock with Wireless 1.webp";
 import bedsideClock2 from "@/assets/accessories/Green Lion Bedside Clock with Wireless 2.jpg";
 
 import miniUPS from "@/assets/accessories/Green Lion Mini DC UPS 10000mAh.jpg";
-import miniUPSWebp from "@/assets/accessories/Green Lion Mini DC UPS 10000mAh.webp";
+import miniUPSWebp from "@/assets/accessories/Green Lion Mini DC UPS 10000mAh placeholder.webp";
 import miniUPSPlaceholder from "@/assets/accessories/Green Lion Mini DC UPS 10000mAh placeholder.jpg";
 
 export interface GreenLionProduct {
@@ -153,7 +152,7 @@ export interface GreenLionProduct {
   description: string;
   features: string[];
   specifications: Array<{ label: string; value: string }>;
-  colors?: Array<{ name: string; price?: number; stock?: string }>;
+  colors?: Array<{ name: string; price?: number; stock?: string; image?: string }>;
 }
 
 export const greenLionProducts: GreenLionProduct[] = [
@@ -220,7 +219,7 @@ export const greenLionProducts: GreenLionProduct[] = [
     name: "Green Lion Pro Trim Duo Hair Clipper",
     title: "Green Lion Pro Trim Duo 9-in-1 Hair Clipper Set - Corded & Cordless",
     price: 79.99,
-    images: [proTrimDuo, proTrimDuo2, proTrimDuo3, proTrimDuo4],
+    images: [proTrimDuo2, proTrimDuo, proTrimDuo3, proTrimDuo4],
     rating: 4.9,
     category: "Accessories",
     secondaryCategories: ["Grooming"],
@@ -286,7 +285,7 @@ export const greenLionProducts: GreenLionProduct[] = [
     name: "Green Lion One Blade Beard Trimmer",
     title: "Green Lion One Blade Beard Trimmer - IPX5 Waterproof, 120 Min Runtime",
     price: 39.99,
-    images: [oneBlade, oneBlade1, oneBlade2, oneBlade3],
+    images: [oneBlade2, oneBlade, oneBlade1, oneBlade3],
     rating: 4.6,
     category: "Accessories",
     secondaryCategories: ["Grooming"],
@@ -410,7 +409,7 @@ export const greenLionProducts: GreenLionProduct[] = [
     name: "Green Lion Silkwave Straightener",
     title: "Green Lion Silkwave Hair Straightener - 5 Temperature Settings, Ceramic Plates",
     price: 44.99,
-    images: [straightener, straightener1, straightener2, straightener3, straightenerWebp],
+    images: [straightener3, straightener, straightener1, straightener2],
     rating: 4.7,
     category: "Accessories",
     secondaryCategories: ["Beauty", "Grooming"],
@@ -439,7 +438,7 @@ export const greenLionProducts: GreenLionProduct[] = [
     name: "Green Lion Blow Wave Hair Dryer 850W",
     title: "Green Lion Blow Wave Hair Dryer - 850W, 2 Speed Settings, Ultra Quiet",
     price: 39.99,
-    images: [hairDryer, hairDryer1, hairDryer2],
+    images: [hairDryer1, hairDryer, hairDryer2],
     rating: 4.6,
     category: "Accessories",
     secondaryCategories: ["Beauty", "Grooming"],
@@ -476,7 +475,7 @@ export const greenLionProducts: GreenLionProduct[] = [
     name: "Green Lion Digital Luggage Scale Max 50KG",
     title: "Green Lion Digital Luggage Scale - Max 50KG Capacity",
     price: 24.99,
-    images: [luggageScale, luggageScale1, luggageScale2],
+    images: [luggageScale1, luggageScale, luggageScale2],
     rating: 4.7,
     category: "Accessories",
     secondaryCategories: ["Travel"],
@@ -500,7 +499,7 @@ export const greenLionProducts: GreenLionProduct[] = [
     name: "Green Lion Dual Kitchen Scale",
     title: "Green Lion Dual Kitchen Scale - Large & Small Platforms, Tare Function",
     price: 34.99,
-    images: [kitchenScale, kitchenScale1, kitchenScale2, kitchenScale3],
+    images: [kitchenScale1, kitchenScale, kitchenScale2, kitchenScale3],
     rating: 4.8,
     category: "Accessories",
     secondaryCategories: ["Kitchen"],
@@ -618,7 +617,7 @@ export const greenLionProducts: GreenLionProduct[] = [
     name: "Green Lion LED Table Lamp",
     title: "Green Lion LED Table Lamp - Adjustable Brightness",
     price: 34.99,
-    images: [ledLamp, ledLamp1, ledLamp2, ledLamp3, ledLamp3jpg, ledLampWebp],
+    images: [ledLamp1, ledLamp, ledLamp2, ledLamp3, ledLamp3jpg, ledLampWebp],
     rating: 4.8,
     category: "Accessories",
     secondaryCategories: ["Home & Office"],
@@ -643,7 +642,7 @@ export const greenLionProducts: GreenLionProduct[] = [
     name: "Green Lion M6-Rotating Stand",
     title: "Green Lion M6-Rotating Stand - Three-Axis Design",
     price: 22.99,
-    images: [m6Stand, m6Stand1],
+    images: [m6Stand1, m6Stand],
     rating: 4.6,
     category: "Accessories",
     secondaryCategories: ["Phone Accessories"],
@@ -806,7 +805,7 @@ export const greenLionProducts: GreenLionProduct[] = [
     name: "Green Lion G-20 Ultra Tablet",
     title: "Green Lion G-20 Ultra - 10.1\" Full HD Tablet, 6GB+128GB with 4G",
     price: 179.99,
-    images: [g20Tablet, g20Tablet1],
+    images: [g20Tablet1, g20Tablet],
     rating: 4.7,
     category: "Accessories",
     secondaryCategories: ["Tablets"],
@@ -848,7 +847,7 @@ export const greenLionProducts: GreenLionProduct[] = [
     name: "Green Lion Sevilla Wireless Neckband",
     title: "Green Lion Sevilla Wireless Neckband - Bluetooth 5.4, 21 Hours Playtime",
     price: 39.99,
-    images: [sevillaNeckband, sevillaNeckband1],
+    images: [sevillaNeckband1, sevillaNeckband],
     rating: 4.6,
     category: "Accessories",
     secondaryCategories: ["Audio", "Headphones"],
@@ -919,8 +918,8 @@ export const greenLionProducts: GreenLionProduct[] = [
       { label: "Sensitivity", value: "98dB" }
     ],
     colors: [
-      { name: "Black", stock: "available" },
-      { name: "Silver", stock: "available" }
+      { name: "Black", stock: "available", image: manchesterEarbuds },
+      { name: "Silver", stock: "available", image: manchesterEarbudsSilver }
     ]
   },
   {
@@ -928,7 +927,7 @@ export const greenLionProducts: GreenLionProduct[] = [
     name: "Green Lion River True Wireless Earbuds",
     title: "Green Lion River TWS Earbuds - ANC+ENC, Bluetooth 5.4, 6-7 Hours Playtime",
     price: 49.99,
-    images: [riverEarbuds, riverEarbuds1, riverEarbudsBlack, riverEarbudsRoseGold, riverEarbudsWhite],
+    images: [riverEarbudsBlack, riverEarbuds, riverEarbuds1, riverEarbudsRoseGold, riverEarbudsWhite],
     rating: 4.8,
     category: "Accessories",
     secondaryCategories: ["Audio", "Earbuds"],
@@ -972,9 +971,9 @@ export const greenLionProducts: GreenLionProduct[] = [
       { label: "Features", value: "In-Ear Detection, Transparency Mode" }
     ],
     colors: [
-      { name: "Black", stock: "available" },
-      { name: "White", stock: "available" },
-      { name: "Rose Gold", stock: "available" }
+      { name: "Black", stock: "available", image: riverEarbudsBlack },
+      { name: "White", stock: "available", image: riverEarbudsWhite },
+      { name: "Rose Gold", stock: "available", image: riverEarbudsRoseGold }
     ]
   },
   {
@@ -982,7 +981,7 @@ export const greenLionProducts: GreenLionProduct[] = [
     name: "Green Lion ECHO ANC Zero Sound. Zero Noise Headphone",
     title: "Green Lion ECHO ANC Headphone - 36 Hours Playtime, 40mm Driver, AUX Support",
     price: 69.99,
-    images: [echoHeadphone, echoHeadphone1, echoHeadphoneBeige],
+    images: [echoHeadphone1, echoHeadphone, echoHeadphoneBeige],
     rating: 4.8,
     category: "Accessories",
     secondaryCategories: ["Audio", "Headphones"],
@@ -1016,8 +1015,8 @@ export const greenLionProducts: GreenLionProduct[] = [
       { label: "Features", value: "ANC, AUX Support" }
     ],
     colors: [
-      { name: "Black", stock: "available" },
-      { name: "Beige", stock: "available" }
+      { name: "Black", stock: "available", image: echoHeadphone1 },
+      { name: "Beige", stock: "available", image: echoHeadphoneBeige }
     ]
   },
   {
@@ -1025,7 +1024,7 @@ export const greenLionProducts: GreenLionProduct[] = [
     name: "Green Lion Rhythm X50 ANC Wireless Headphone",
     title: "Green Lion Rhythm X50 ANC - Bluetooth 6.0, 30-50 Hours Playtime, Metal Body",
     price: 89.99,
-    images: [rhythmHeadphone, rhythmHeadphoneBlack, rhythmHeadphoneBrown],
+    images: [rhythmHeadphoneBlack, rhythmHeadphoneBrown],
     rating: 4.9,
     category: "Accessories",
     secondaryCategories: ["Audio", "Headphones"],
@@ -1067,8 +1066,8 @@ export const greenLionProducts: GreenLionProduct[] = [
       { label: "Features", value: "Voice Assistant, Type-C Charging" }
     ],
     colors: [
-      { name: "Black", stock: "available" },
-      { name: "Brown", stock: "available" }
+      { name: "Black", stock: "available", image: rhythmHeadphoneBlack },
+      { name: "Brown", stock: "available", image: rhythmHeadphoneBrown }
     ]
   },
   {
@@ -1111,7 +1110,7 @@ export const greenLionProducts: GreenLionProduct[] = [
     name: "Green Lion Porto Wireless Speaker",
     title: "Green Lion Porto Speaker - IPX6 Waterproof, 8W Output, RGB Light, Extra Bass",
     price: 44.99,
-    images: [portoSpeaker, portoSpeaker1],
+    images: [portoSpeaker1, portoSpeaker],
     rating: 4.7,
     category: "Accessories",
     secondaryCategories: ["Audio", "Speakers"],
@@ -1240,8 +1239,8 @@ export const greenLionProducts: GreenLionProduct[] = [
       { label: "Water Resistance", value: "Yes" }
     ],
     colors: [
-      { name: "Black", stock: "available" },
-      { name: "Silver", stock: "available" }
+      { name: "Black", stock: "available", image: trackFitWatch },
+      { name: "Silver", stock: "available", image: trackFitWatchSilver }
     ]
   },
   {
@@ -1283,9 +1282,9 @@ export const greenLionProducts: GreenLionProduct[] = [
       { label: "Features", value: "Always On Display, Gesture Operation, Extra Strap" }
     ],
     colors: [
-      { name: "Silver", price: 89.99, stock: "available" },
-      { name: "Black", price: 89.99, stock: "available" },
-      { name: "Pink", price: 89.99, stock: "available" },
+      { name: "Silver", price: 89.99, stock: "available", image: ultimate41Watch },
+      { name: "Black", price: 89.99, stock: "available", image: ultimate41WatchBlack },
+      { name: "Pink", price: 89.99, stock: "available", image: ultimate41WatchPink },
       { name: "Rose Gold", price: 89.99, stock: "out of stock" }
     ]
   },
@@ -1332,7 +1331,7 @@ export const greenLionProducts: GreenLionProduct[] = [
     name: "Green Lion Mini DC UPS 10000mAh",
     title: "Green Lion Mini DC UPS - 10000mAh with AC Input, Universal Compatibility",
     price: 89.99,
-    images: [miniUPS, miniUPSWebp, miniUPSPlaceholder],
+    images: [miniUPSPlaceholder, miniUPS, miniUPSWebp],
     rating: 4.7,
     category: "Accessories",
     secondaryCategories: ["Charging", "Power"],

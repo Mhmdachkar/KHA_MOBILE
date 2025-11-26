@@ -6,7 +6,7 @@ import Header from "@/components/Header";
 import CategoryCard from "@/components/CategoryCard";
 import ProductCarousel from "@/components/ProductCarousel";
 import PersonalizedRecommendations from "@/components/PersonalizedRecommendations";
-import FlashDeals from "@/components/FlashDeals";
+import NewArrivalShowcase from "@/components/NewArrivalShowcase";
 import WhyShopWithUs from "@/components/WhyShopWithUs";
 import BrandShowcase from "@/components/BrandShowcase";
 import { Button } from "@/components/ui/button";
@@ -44,6 +44,7 @@ const Home = () => {
   ];
 
   const trendingSmartphones = getProductsByCategory("Smartphones")
+    .reverse()
     .slice(0, 10)
     .map(product => ({
       id: product.id,
@@ -708,8 +709,8 @@ const Home = () => {
       {/* Personalized Recommendations */}
       <PersonalizedRecommendations />
 
-      {/* Flash Deals Section */}
-      <FlashDeals />
+      {/* New Arrival Showcase - Replaces Flash Deals */}
+      <NewArrivalShowcase />
 
       {/* Shop by Brand */}
       <BrandShowcase />

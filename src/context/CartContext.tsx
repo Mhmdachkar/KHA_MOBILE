@@ -10,13 +10,15 @@ export interface CartProduct {
   quantity: number;
   variantKey?: string;
   variantLabel?: string;
+  color?: string;
+  colorImage?: string;
 }
 
 interface CartContextType {
   cart: CartProduct[];
   addToCart: (product: CartProduct) => void;
-  removeFromCart: (id: number, variantKey?: string) => void;
-  updateQuantity: (id: number, quantity: number, variantKey?: string) => void;
+  removeFromCart: (id: number, variantKey?: string, color?: string) => void;
+  updateQuantity: (id: number, quantity: number, variantKey?: string, color?: string) => void;
   clearCart: () => void;
   isOpen: boolean;
   openCart: () => void;
@@ -62,20 +64,25 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [cart]);
 
-  const isSameCartItem = (item: CartProduct, id: number, variantKey?: string) => {
+  const isSameCartItem = (item: CartProduct, id: number, variantKey?: string, color?: string) => {
     const normalizedVariant = variantKey || "";
-    return item.id === id && (item.variantKey || "") === normalizedVariant;
+    const normalizedColor = color || "";
+    return item.id === id && 
+           (item.variantKey || "") === normalizedVariant && 
+           (item.color || "") === normalizedColor;
   };
 
   const addToCart = (product: CartProduct) => {
     setCart((prev) => {
-      // Check if product already exists
-      const existingProduct = prev.find((item) => isSameCartItem(item, product.id, product.variantKey));
+      // Check if product already exists (same id, variant, and color)
+      const existingProduct = prev.find((item) => 
+        isSameCartItem(item, product.id, product.variantKey, product.color)
+      );
       
       if (existingProduct) {
         // Update quantity if product exists
         return prev.map((item) =>
-          isSameCartItem(item, product.id, product.variantKey)
+          isSameCartItem(item, product.id, product.variantKey, product.color)
             ? { ...item, quantity: item.quantity + product.quantity }
             : item
         );
@@ -89,19 +96,19 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     setIsOpen(true);
   };
 
-  const removeFromCart = (id: number, variantKey?: string) => {
-    setCart((prev) => prev.filter((item) => !isSameCartItem(item, id, variantKey)));
+  const removeFromCart = (id: number, variantKey?: string, color?: string) => {
+    setCart((prev) => prev.filter((item) => !isSameCartItem(item, id, variantKey, color)));
   };
 
-  const updateQuantity = (id: number, quantity: number, variantKey?: string) => {
+  const updateQuantity = (id: number, quantity: number, variantKey?: string, color?: string) => {
     if (quantity <= 0) {
-      removeFromCart(id, variantKey);
+      removeFromCart(id, variantKey, color);
       return;
     }
     
     setCart((prev) =>
       prev.map((item) =>
-        isSameCartItem(item, id, variantKey) ? { ...item, quantity } : item
+        isSameCartItem(item, id, variantKey, color) ? { ...item, quantity } : item
       )
     );
   };

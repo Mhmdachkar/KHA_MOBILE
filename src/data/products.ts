@@ -15,7 +15,7 @@ import waterproofSpeakerBlack from "@/assets/audio/3INCH SPAKER WATER PROOF blac
 import waterproofSpeakerBlue from "@/assets/audio/3INCH SPAKER WATER PROOF blue.png";
 import waterproofSpeakerGrey from "@/assets/audio/3INCH SPAKER WATER PROOF grey.png";
 import waterproofSpeakerRed from "@/assets/audio/3INCH SPAKER WATER PROOF red.png";
-import yesidoHeadset from "@/assets/audio/YESIDO WIRED GAMING HEADSET EK05.webp";
+import yesidoHeadset from "@/assets/audio/YESIDO WIRED GAMING HEADSET EK05 placeholder.webp";
 import yesidoHeadset1 from "@/assets/audio/YESIDO WIRED GAMING HEADSET EK05 1.webp";
 import yesidoHeadset2 from "@/assets/audio/YESIDO WIRED GAMING HEADSET EK05 2.webp";
 import hoco22_5W from "@/assets/phone_accessories/powerbank hoco 22.5W-10000MAH.png";
@@ -81,6 +81,14 @@ import smart10PlusBlack from "@/assets/phones/smart 10 plus/smart 10 plus black.
 import smart10PlusBlue from "@/assets/phones/smart 10 plus/smart 10 plus blue.webp";
 import smart10PlusPink from "@/assets/phones/smart 10 plus/smart 10 plus pink.webp";
 import smart10PlusSilver from "@/assets/phones/smart 10 plus/smart 10 plus silver.webp";
+import camon30Black from "@/assets/phones/tecno camon 30 5g (CL7)/tecno camon 30 5g (CL7) black placeholder.webp";
+import camon30White from "@/assets/phones/tecno camon 30 5g (CL7)/tecno camon 30 5g (CL7) white.jpg";
+import camon40ProPlaceholder from "@/assets/phones/tecno camon 40 pro 4g/tecno camon 40 pro 4g placeholder.png";
+import camon40ProBlack from "@/assets/phones/tecno camon 40 pro 4g/tecno camon 40 pro 4g black.jpg";
+import camon40ProGreen from "@/assets/phones/tecno camon 40 pro 4g/tecno camon 40 pro 4g green.jpg";
+import camon40Pro5gPlaceholder from "@/assets/phones/tecno camon 40 pro 5g (CM5)/tecno camon 40 pro 5g (CM5) BLACK placeholder.png";
+import camon40Pro5gWhite from "@/assets/phones/tecno camon 40 pro 5g (CM5)/tecno camon 40 pro 5g (CM5) glacier white.png";
+import camon40Pro5gGreen from "@/assets/phones/tecno camon 40 pro 5g (CM5)/tecno camon 40 pro 5g (CM5) lake green.png";
 
 export interface ProductVariant {
   key: string;
@@ -1181,8 +1189,8 @@ export const smartphoneProducts: Product[] = [
     name: "Smart 10 HD",
     title: "Smart 10 HD (2GB RAM + 64GB Storage)",
     price: 129.99,
-    image: smart10HdBlack,
-    images: [smart10HdBlack, smart10HdGold, smart10HdGreen, smart10HdGrey, smart10HdPlaceholder],
+    image: smart10HdPlaceholder,
+    images: [smart10HdPlaceholder, smart10HdBlack, smart10HdGold, smart10HdGreen, smart10HdGrey],
     rating: 4.5,
     category: "Smartphones",
     brand: "Smart",
@@ -1497,6 +1505,166 @@ export const smartphoneProducts: Product[] = [
       }
     ]
   },
+  {
+    id: 315,
+    name: "Tecno Camon 40 Pro 4G",
+    title: "Tecno Camon 40 Pro 4G – 120Hz AMOLED & 50MP OIS Camera",
+    price: 329.99,
+    image: camon40ProPlaceholder,
+    images: [camon40ProPlaceholder, camon40ProBlack, camon40ProGreen],
+    rating: 4.7,
+    category: "Smartphones",
+    brand: "Tecno",
+    description: "The Tecno Camon 40 Pro 4G redefines camera performance with a 50MP main sensor featuring OIS, an 8MP ultrawide lens, and a stunning 6.78\" 120Hz AMOLED display. Powered by the Mediatek Helio G100 Ultimate chipset and equipped with a 5200mAh battery with 45W fast charging, this phone delivers flagship-level features at an accessible price. With IP68/IP69 dust and water resistance, Corning Gorilla Glass 7i protection, and support for Circle to Search, it's built for creators and power users who demand the best.",
+    features: [
+      "6.78\" AMOLED display with 120Hz refresh rate and 1080×2436 resolution for stunning visuals.",
+      "50MP main camera with OIS and PDAF for crystal-clear photos in any lighting condition.",
+      "8MP ultrawide camera expands your creative possibilities for landscape and group shots.",
+      "50MP front camera with PDAF ensures sharp, detailed selfies and video calls.",
+      "Mediatek Helio G100 Ultimate (6nm) chipset delivers fast, efficient performance.",
+      "8GB RAM with 256GB storage provides ample space for apps, photos, and videos.",
+      "5200mAh battery with 45W fast charging reaches 50% in 23 minutes, 100% in 43 minutes.",
+      "IP68/IP69 rating protects against dust, water immersion up to 2m for 30 minutes, and high-pressure water jets.",
+      "Corning Gorilla Glass 7i and HDR support for enhanced screen protection and visual quality.",
+      "Under-display optical fingerprint sensor, stereo speakers, and 24-bit/192kHz Hi-Res audio.",
+      "Circle to Search, NFC, Infrared port, FM radio, and USB Type-C with OTG support."
+    ],
+    specifications: [
+      { label: "Display", value: "6.78\" AMOLED, 120Hz, 1080×2436, HDR, Gorilla Glass 7i" },
+      { label: "Processor", value: "Mediatek Helio G100 Ultimate (6nm)" },
+      { label: "RAM/Storage", value: "8GB RAM, 256GB storage" },
+      { label: "Rear Camera", value: "50MP (f/1.9, OIS, PDAF) + 8MP ultrawide" },
+      { label: "Front Camera", value: "50MP (f/2.5, PDAF)" },
+      { label: "Video", value: "4K@30/60fps (HDR), 1080p@30fps" },
+      { label: "Battery", value: "5200mAh, 45W wired (50% in 23min, 100% in 43min)" },
+      { label: "Durability", value: "IP68/IP69 dust/water resistant (up to 2m for 30min)" },
+      { label: "Audio", value: "Stereo speakers, 24-bit/192kHz Hi-Res audio, no 3.5mm jack" },
+      { label: "Security", value: "Under-display optical fingerprint, accelerometer, gyro, proximity, compass" },
+      { label: "Connectivity", value: "Dual Nano-SIM, GPS, NFC, Infrared, FM radio, USB Type-C 2.0 with OTG" },
+      { label: "Dimensions", value: "164.4 x 74.3 x 7.3mm, 178g" },
+      { label: "OS", value: "Android 15, up to 3 major upgrades, HIOS 15" }
+    ],
+    variants: [
+      {
+        key: "camon40pro-8-256",
+        ram: "8GB RAM",
+        storage: "256GB Storage",
+        label: "8GB + 256GB",
+        price: 329.99,
+        description: "Premium configuration with flagship camera system and IP68/IP69 protection."
+      }
+    ],
+    colors: [
+      { name: "Emerald Lake Green", image: camon40ProGreen },
+      { name: "Galaxy Black", image: camon40ProBlack },
+      { name: "Glacier White", stock: "Coming Soon" }
+    ]
+  },
+  {
+    id: 316,
+    name: "Tecno Camon 30 5G",
+    title: "Tecno Camon 30 5G (CL7) – Fast 5G Connectivity",
+    price: 289.99,
+    image: camon30Black,
+    images: [camon30Black, camon30White],
+    rating: 4.5,
+    category: "Smartphones",
+    brand: "Tecno",
+    description: "The Tecno Camon 30 5G brings next-generation connectivity and reliable performance to the Camon series. With 5G support, a vibrant AMOLED display, and a capable camera system, it's designed for users who want to stay connected at high speeds without compromising on features or build quality.",
+    features: [
+      "6.78\" AMOLED display with smooth 120Hz refresh rate for fluid scrolling and gaming.",
+      "5G connectivity ensures ultra-fast download and streaming speeds.",
+      "50MP main camera captures detailed photos in various lighting conditions.",
+      "Large battery with fast charging keeps you powered throughout the day.",
+      "Modern design with premium finish available in black and white.",
+      "Ample storage and RAM for multitasking and media storage."
+    ],
+    specifications: [
+      { label: "Display", value: "6.78\" AMOLED, 120Hz" },
+      { label: "Connectivity", value: "5G, Dual SIM" },
+      { label: "Camera", value: "50MP main camera" },
+      { label: "Processor", value: "Advanced 5G chipset" },
+      { label: "Battery", value: "Large capacity with fast charging" },
+      { label: "OS", value: "Android with HIOS" }
+    ],
+    variants: [
+      {
+        key: "camon30-5g-standard",
+        ram: "8GB RAM",
+        storage: "256GB Storage",
+        label: "8GB + 256GB",
+        price: 289.99,
+        description: "Standard 5G configuration with ample storage and memory."
+      }
+    ],
+    colors: [
+      { name: "Black", image: camon30Black },
+      { name: "White", image: camon30White }
+    ]
+  },
+  {
+    id: 317,
+    name: "Tecno Camon 40 Pro 5G",
+    title: "Tecno Camon 40 Pro 5G (CM5) – Advanced Performance & Pro Photography",
+    price: 349.99,
+    image: camon40Pro5gPlaceholder,
+    images: [camon40Pro5gPlaceholder, camon40Pro5gWhite, camon40Pro5gGreen],
+    rating: 4.8,
+    category: "Smartphones",
+    brand: "Tecno",
+    description: "The Tecno CAMON 40 Pro 5G is designed to deliver advanced performance, superior photography, and a premium smartphone experience. Powered by the MediaTek Helio G100 Ultimate Processor and running on Android 15, this device ensures smooth multitasking and seamless app performance. With its sleek 7.31mm body and a vibrant 6.78-inch AMOLED display featuring a 120Hz refresh rate, an immersive viewing experience is guaranteed whether for gaming, streaming, or browsing.",
+    features: [
+      "6.78\" Full HD+ AMOLED display with 120Hz refresh rate provides fluid scrolling, vivid colors, and immersive visuals.",
+      "50MP OIS main sensor with 1/1.56\" aperture ensures stable and detailed shots even in low light conditions.",
+      "8MP wide-angle lens captures more in every frame with dual flash and flicker sensor support.",
+      "50MP autofocus front camera brings clarity to selfies and video calls with sharp detail.",
+      "MediaTek Helio G100 Ultimate Processor delivers fast, efficient performance for all tasks.",
+      "Extended RAM Technology: 16GB RAM (8GB + 8GB extended) for effortless multitasking and gaming.",
+      "256GB storage provides ample space for apps, files, and media with expandable options.",
+      "5200mAh battery keeps the phone powered through heavy use with 45W Super Charge for rapid recharging.",
+      "Dual speakers with Dolby Atmos deliver immersive sound for entertainment and calls.",
+      "5G connectivity ensures ultra-fast download and streaming speeds for next-generation networks.",
+      "Smart sensors including geomagnetic, electronic compass, infrared remote control, and ambient light improve functionality.",
+      "Comprehensive connectivity: Wi-Fi, Bluetooth, GPS, NFC, OTG, and Type-C support."
+    ],
+    specifications: [
+      { label: "Display", value: "6.78\" AMOLED, 120Hz, 1080×2436 pixels" },
+      { label: "Processor", value: "MediaTek Helio G100 Ultimate" },
+      { label: "OS", value: "Android 15" },
+      { label: "Network", value: "2G, 3G, 4G, 5G" },
+      { label: "Dimensions", value: "164.44 x 74.32 x 7.31 mm" },
+      { label: "Rear Camera", value: "50MP OIS (1/1.56\") + 8MP Wide-angle, Dual Flash, Flicker Sensor" },
+      { label: "Front Camera", value: "50MP AF" },
+      { label: "Memory", value: "256GB ROM + 16GB RAM (8GB + 8GB Extended) or 12GB RAM" },
+      { label: "Battery", value: "5200mAh, 45W Super Charge" },
+      { label: "Audio", value: "Dual Speakers with Dolby Atmos" },
+      { label: "Connectivity", value: "Wi-Fi, Bluetooth, FM, GPS, NFC, Type-C Port, OTG" },
+      { label: "Sensors", value: "Geomagnetic, A+G Sensor, Ambient Light, Distance Sensor, Infrared Remote Control, Electronic Compass" }
+    ],
+    variants: [
+      {
+        key: "camon40pro5g-16-256",
+        ram: "16GB RAM (8GB + 8GB Extended)",
+        storage: "256GB Storage",
+        label: "16GB + 256GB",
+        price: 349.99,
+        description: "Premium configuration with extended RAM technology for maximum performance."
+      },
+      {
+        key: "camon40pro5g-12-256",
+        ram: "12GB RAM",
+        storage: "256GB Storage",
+        label: "12GB + 256GB",
+        price: 339.99,
+        description: "High-performance configuration with ample RAM and storage."
+      }
+    ],
+    colors: [
+      { name: "Black", image: camon40Pro5gPlaceholder },
+      { name: "Glacier White", image: camon40Pro5gWhite },
+      { name: "Lake Green", image: camon40Pro5gGreen }
+    ]
+  }
 ];
 
 // Wearables products

@@ -418,6 +418,49 @@ const Products = () => {
                     ))}
                   </div>
                 </div>
+
+                {/* Availability */}
+                <div>
+                  <h4 className="text-elegant text-sm mb-3">Availability</h4>
+                  <div className="space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox id="mobile-in-stock" defaultChecked />
+                      <Label
+                        htmlFor="mobile-in-stock"
+                        className="text-sm font-light cursor-pointer"
+                      >
+                        In Stock
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox id="mobile-out-of-stock" />
+                      <Label
+                        htmlFor="mobile-out-of-stock"
+                        className="text-sm font-light cursor-pointer"
+                      >
+                        Out of Stock
+                      </Label>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Rating */}
+                <div>
+                  <h4 className="text-elegant text-sm mb-3">Minimum Rating</h4>
+                  <div className="space-y-3">
+                    {[5, 4, 3, 2].map((rating) => (
+                      <div key={rating} className="flex items-center space-x-2">
+                        <Checkbox id={`mobile-rating-${rating}`} />
+                        <Label
+                          htmlFor={`mobile-rating-${rating}`}
+                          className="text-sm font-light cursor-pointer flex items-center gap-1"
+                        >
+                          {rating}+ ⭐
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </SheetContent>
           </Sheet>
@@ -602,7 +645,7 @@ const Products = () => {
 
             {/* Products */}
             {filteredAndSortedProducts.length > 0 ? (
-              <div className={`grid gap-2 sm:gap-3 md:gap-4 lg:gap-6 ${viewMode === "grid" ? "grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5" : "grid-cols-1"}`}>
+              <div className={`grid gap-2 sm:gap-3 md:gap-4 lg:gap-6 ${viewMode === "grid" ? "grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5" : "grid-cols-1"}`}>
                 {filteredAndSortedProducts.map((product, index) => (
                   <motion.div
                     key={product.id}

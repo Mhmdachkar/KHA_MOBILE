@@ -117,6 +117,10 @@ const Checkout = () => {
   const requiresAccountType =
     isStreamingServiceCheckout && (productBrand === "Netflix" || productBrand === "Shahid");
   
+  // Check if this is a gift card (not a recharge card)
+  const isGiftCard = productCategory === "Gift Cards" || productName.toLowerCase().includes("gift card");
+  const isRechargeCard = isRechargeCheckout && !isGiftCard && !isStreamingServiceCheckout;
+  
   // Monthly fee for streaming services
   const STREAMING_MONTHLY_FEE = 8.00;
   
@@ -356,7 +360,8 @@ const Checkout = () => {
         total += card.price;
       });
       
-      if (formData.separateDollars && formData.dollarsAmount) {
+      // Only add separate dollars for recharge cards, not gift cards
+      if (isRechargeCard && formData.separateDollars && formData.dollarsAmount) {
         total += parseFloat(formData.dollarsAmount);
       }
       return total;
@@ -395,7 +400,8 @@ const Checkout = () => {
     } else if (isRechargeCheckout) {
       // Recharge/gift card checkout validation
       const isPhoneValid = validatePhoneNumber(formData.phoneNumber);
-      const isDollarsValid = validateDollarsAmount(formData.dollarsAmount);
+      // Only validate separate dollars for recharge cards, not gift cards
+      const isDollarsValid = isRechargeCard ? validateDollarsAmount(formData.dollarsAmount) : true;
       isValid = isPhoneValid && isDollarsValid;
     } else {
       // Product checkout validation
@@ -457,7 +463,8 @@ const Checkout = () => {
       
       message += `\n• *Phone Number:* ${formData.phoneNumber}\n`;
       
-      if (formData.separateDollars && formData.dollarsAmount) {
+      // Only include separate dollars for recharge cards, not gift cards
+      if (isRechargeCard && formData.separateDollars && formData.dollarsAmount) {
         message += `• *Separate Dollars:* $${parseFloat(formData.dollarsAmount).toFixed(2)}\n`;
       }
     } else {
@@ -468,7 +475,13 @@ const Checkout = () => {
       
       message += `• *Order Items:*\n`;
       cart.forEach((item) => {
-        const itemLabel = item.variantLabel ? `${item.name} - ${item.variantLabel}` : item.name;
+        let itemLabel = item.name;
+        if (item.variantLabel) {
+          itemLabel += ` - ${item.variantLabel}`;
+        }
+        if (item.color) {
+          itemLabel += ` (Color: ${item.color})`;
+        }
         message += `  - ${itemLabel} (Qty: ${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}\n`;
       });
       
@@ -600,63 +613,73 @@ const Checkout = () => {
                 <>
                   {/* Cart Items */}
                   <div className="space-y-4 mb-6">
-                    {getCartItemsWithDetails().map((item) => (
-                      <motion.div
-                        key={`${item.id}-${item.variantKey || "base"}`}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="flex gap-2 sm:gap-3 md:gap-4 p-3 sm:p-4 border border-border rounded-lg bg-gradient-to-r from-primary/5 to-accent/5"
-                      >
-                        {/* Product Image */}
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-lg overflow-hidden bg-white border border-border flex-shrink-0">
-                          <img
-                            src={item.image}
-                            alt={item.name}
-                            className="w-full h-full object-cover"
-                            onError={(e) => {
-                              const target = e.target as HTMLImageElement;
-                              target.src = "/placeholder.svg";
-                            }}
-                          />
-                        </div>
+                    {getCartItemsWithDetails().map((item) => {
+                      // Use color image if available, otherwise use regular image
+                      const displayImage = (item as any).colorImage || item.image;
+                      const uniqueKey = `${item.id}-${item.variantKey || "base"}-${(item as any).color || "no-color"}`;
+                      
+                      return (
+                        <motion.div
+                          key={uniqueKey}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="flex gap-2 sm:gap-3 md:gap-4 p-3 sm:p-4 border border-border rounded-lg bg-gradient-to-r from-primary/5 to-accent/5"
+                        >
+                          {/* Product Image - Shows color-specific image if available */}
+                          <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-lg overflow-hidden bg-white border border-border flex-shrink-0">
+                            <img
+                              src={displayImage}
+                              alt={item.name}
+                              className="w-full h-full object-contain p-1"
+                              onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.src = "/placeholder.svg";
+                              }}
+                            />
+                          </div>
 
-                        {/* Product Info */}
-                        <div className="flex-1 min-w-0">
-                          <Link to={`/product/${item.id}`} className="hover:underline">
-                            <h3 className="text-xs sm:text-sm font-medium text-elegant line-clamp-2 mb-1">
-                              {item.name}
-                            </h3>
-                          </Link>
-                          {item.variantLabel && (
-                            <p className="text-[10px] sm:text-xs text-primary/80 mb-1">
-                              {item.variantLabel}
-                            </p>
-                          )}
-                          {item.category && (
-                            <p className="text-[10px] sm:text-xs text-muted-foreground mb-1 sm:mb-2">{item.category}</p>
-                          )}
-                          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mt-1 sm:mt-2">
-                            <div className="flex items-center gap-1 sm:gap-2 border border-border rounded-lg">
-                              <motion.button
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.9 }}
-                                onClick={() => updateQuantity(item.id, item.quantity - 1, item.variantKey)}
-                                className="h-6 w-6 sm:h-7 sm:w-7 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
-                              >
-                                <Minus className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
-                              </motion.button>
-                              <span className="text-xs sm:text-sm font-medium w-6 sm:w-8 text-center">
-                                {item.quantity}
-                              </span>
-                              <motion.button
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.9 }}
-                                onClick={() => updateQuantity(item.id, item.quantity + 1, item.variantKey)}
-                                className="h-6 w-6 sm:h-7 sm:w-7 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
-                              >
-                                <Plus className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
-                              </motion.button>
-                            </div>
+                          {/* Product Info */}
+                          <div className="flex-1 min-w-0">
+                            <Link to={`/product/${item.id}`} className="hover:underline">
+                              <h3 className="text-xs sm:text-sm font-medium text-elegant line-clamp-2 mb-1">
+                                {item.name}
+                              </h3>
+                            </Link>
+                            {item.variantLabel && (
+                              <p className="text-[10px] sm:text-xs text-primary/80 mb-1">
+                                {item.variantLabel}
+                              </p>
+                            )}
+                            {(item as any).color && (
+                              <p className="text-[10px] sm:text-xs text-accent/80 mb-1 font-medium">
+                                Color: {(item as any).color}
+                              </p>
+                            )}
+                            {item.category && (
+                              <p className="text-[10px] sm:text-xs text-muted-foreground mb-1 sm:mb-2">{item.category}</p>
+                            )}
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mt-1 sm:mt-2">
+                              <div className="flex items-center gap-1 sm:gap-2 border border-border rounded-lg">
+                                <motion.button
+                                  whileHover={{ scale: 1.1 }}
+                                  whileTap={{ scale: 0.9 }}
+                                  onClick={() => updateQuantity(item.id, item.quantity - 1, item.variantKey, (item as any).color)}
+                                  className="h-6 w-6 sm:h-7 sm:w-7 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
+                                >
+                                  <Minus className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
+                                </motion.button>
+                                <span className="text-xs sm:text-sm font-medium w-6 sm:w-8 text-center">
+                                  {item.quantity}
+                                </span>
+                                <motion.button
+                                  whileHover={{ scale: 1.1 }}
+                                  whileTap={{ scale: 0.9 }}
+                                  onClick={() => updateQuantity(item.id, item.quantity + 1, item.variantKey, (item as any).color)}
+                                  className="h-6 w-6 sm:h-7 sm:w-7 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
+                                >
+                                  <Plus className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
+                                </motion.button>
+                              </div>
                             <div className="text-left sm:text-right">
                               <p className="text-base sm:text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                                 ${(item.price * item.quantity).toFixed(2)}
@@ -672,13 +695,14 @@ const Checkout = () => {
                         <motion.button
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
-                          onClick={() => removeFromCart(item.id, item.variantKey)}
+                          onClick={() => removeFromCart(item.id, item.variantKey, (item as any).color)}
                           className="h-6 w-6 sm:h-8 sm:w-8 rounded-full hover:bg-destructive hover:text-destructive-foreground transition-all flex items-center justify-center self-start"
                         >
                           <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
                         </motion.button>
                       </motion.div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </>
               )}
@@ -728,8 +752,8 @@ const Checkout = () => {
                   </div>
                 )}
 
-                {/* Separate Dollars - Only for recharge checkout (not streaming services) */}
-                {isRechargeCheckout && !isStreamingServiceCheckout && formData.separateDollars && formData.dollarsAmount && (
+                {/* Separate Dollars - Only for recharge cards (not gift cards or streaming services) */}
+                {isRechargeCard && formData.separateDollars && formData.dollarsAmount && (
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
@@ -773,7 +797,7 @@ const Checkout = () => {
                       </div>
                     </>
                   )}
-                  {isRechargeCheckout && !isStreamingServiceCheckout && formData.separateDollars && formData.dollarsAmount && (
+                  {isRechargeCard && formData.separateDollars && formData.dollarsAmount && (
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-muted-foreground">Additional Dollars</span>
                       <span className="font-medium">${parseFloat(formData.dollarsAmount).toFixed(2)}</span>
@@ -1043,8 +1067,8 @@ const Checkout = () => {
                   </div>
                 )}
 
-                {/* Separate Dollars Option - Only for recharge/gift card checkout (not streaming services) */}
-                {isRechargeCheckout && !isStreamingServiceCheckout && (
+                {/* Separate Dollars Option - Only for recharge cards (not gift cards or streaming services) */}
+                {isRechargeCard && (
                   <div className="pt-4 border-t border-border">
                     <div className="flex items-center space-x-2 mb-4">
                       <Checkbox
