@@ -9,6 +9,7 @@ import PersonalizedRecommendations from "@/components/PersonalizedRecommendation
 import NewArrivalShowcase from "@/components/NewArrivalShowcase";
 import WhyShopWithUs from "@/components/WhyShopWithUs";
 import BrandShowcase from "@/components/BrandShowcase";
+import ThisWeeksFavorites from "@/components/ThisWeeksFavorites";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import heroProduct from "@/assets/Gemini_Generated_Image_3qc0nc3qc0nc3qc0.png";
@@ -59,15 +60,6 @@ const Home = () => {
 
   // Get real audio products from phone accessories
   const trendingAudio = getProductsByCategory("Audio");
-
-  const giftCards = [
-    { name: "iTunes", denominations: ["$25", "$50", "$100"], logo: "🎵" },
-    { name: "Google Play", denominations: ["$25", "$50", "$100"], logo: "▶️" },
-    { name: "PlayStation", denominations: ["$25", "$50", "$100"], logo: "🎮" },
-    { name: "Xbox", denominations: ["$25", "$50", "$100"], logo: "🎯" },
-    { name: "Steam", denominations: ["$25", "$50", "$100"], logo: "🎲" },
-    { name: "Netflix", denominations: ["$25", "$50", "$100"], logo: "📺" },
-  ];
 
   return (
     <div className="min-h-screen overflow-x-hidden">
@@ -716,52 +708,8 @@ const Home = () => {
       {/* Shop by Brand */}
       <BrandShowcase />
 
-      {/* This Week's Favorites - Gift Cards */}
-      <section className="py-24 bg-secondary">
-        <div className="container mx-auto px-6">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-elegant text-3xl mb-12"
-          >
-            This Week's Favorites
-          </motion.h2>
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-          >
-            {giftCards.map((card, index) => (
-              <motion.div
-                key={card.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="bg-card border border-border rounded-sm p-8 hover:border-foreground/40 transition-all hover-lift"
-              >
-                <div className="text-5xl mb-4">{card.logo}</div>
-                <h3 className="text-elegant text-lg mb-4">{card.name}</h3>
-                <div className="flex gap-2 mb-6">
-                  {card.denominations.map((denom) => (
-                    <span
-                      key={denom}
-                      className="text-xs px-3 py-1 border border-border rounded-full"
-                    >
-                      {denom}
-                    </span>
-                  ))}
-                </div>
-                <Button variant="outline" className="w-full text-elegant">
-                  Add to Cart
-                </Button>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+      {/* This Week's Favorites - Sales-Focused Product Showcase */}
+      <ThisWeeksFavorites />
 
       {/* Why Shop With Us Section */}
       <WhyShopWithUs />

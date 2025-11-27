@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { Grid3x3, List, SlidersHorizontal, ShoppingCart } from "lucide-react";
+import { Grid3x3, List, SlidersHorizontal, ShoppingCart, X } from "lucide-react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -265,6 +265,8 @@ interface FilterSidebarProps {
 }
 
 const FilterSidebar = ({ filters, onUpdateFilters, onClearFilters }: FilterSidebarProps) => {
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+
   const handleCategoryChange = (category: string, checked: boolean) => {
     const newCategories = checked
       ? [...filters.categories, category]
@@ -279,91 +281,150 @@ const FilterSidebar = ({ filters, onUpdateFilters, onClearFilters }: FilterSideb
     onUpdateFilters({ selectedPriceRanges: newRanges });
   };
 
-  return (
-    <motion.aside
-      initial={{ opacity: 0, x: -50 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: 0.2 }}
-      className="lg:col-span-1"
-    >
-      <div className="sticky top-24 space-y-8">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-elegant text-lg">Filters</h2>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="text-elegant text-xs"
-            onClick={onClearFilters}
-          >
-            Clear All
-          </Button>
-        </div>
+  const FilterContent = () => (
+    <div className="space-y-6 sm:space-y-8">
+      <div className="flex items-center justify-between mb-4 sm:mb-6">
+        <h2 className="text-elegant text-base sm:text-lg">Filters</h2>
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          className="text-elegant text-xs"
+          onClick={onClearFilters}
+        >
+          Clear All
+        </Button>
+      </div>
 
-        {/* Category */}
-        <div>
-          <h3 className="text-elegant text-sm mb-4">Category</h3>
-          <div className="space-y-3">
-            {CATEGORIES.map((category) => (
-              <div key={category} className="flex items-center space-x-2">
-                <Checkbox 
-                  id={category} 
-                  checked={filters.categories.includes(category)}
-                  onCheckedChange={(checked) => 
-                    handleCategoryChange(category, checked as boolean)
-                  }
-                />
-                <Label
-                  htmlFor={category}
-                  className="text-sm font-light cursor-pointer"
-                >
-                  {category}
-                </Label>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Price Range Slider */}
-        <div>
-          <h3 className="text-elegant text-sm mb-4">Price Range</h3>
-          <Slider
-            value={filters.priceRange}
-            onValueChange={(value) => onUpdateFilters({ priceRange: value })}
-            max={100}
-            step={5}
-            className="mb-4"
-          />
-          <div className="flex items-center justify-between text-sm">
-            <span>${filters.priceRange[0]}</span>
-            <span>${filters.priceRange[1]}</span>
-          </div>
-        </div>
-
-        {/* Quick Price Filters */}
-        <div>
-          <h3 className="text-elegant text-sm mb-4">Quick Filters</h3>
-          <div className="space-y-3">
-            {PRICE_RANGES.map((range) => (
-              <div key={range.label} className="flex items-center space-x-2">
-                <Checkbox 
-                  id={range.label}
-                  checked={filters.selectedPriceRanges.includes(range.label)}
-                  onCheckedChange={(checked) => 
-                    handlePriceRangeChange(range.label, checked as boolean)
-                  }
-                />
-                <Label
-                  htmlFor={range.label}
-                  className="text-sm font-light cursor-pointer"
-                >
-                  {range.label}
-                </Label>
-              </div>
-            ))}
-          </div>
+      {/* Category */}
+      <div>
+        <h3 className="text-elegant text-xs sm:text-sm mb-3 sm:mb-4">Category</h3>
+        <div className="space-y-2 sm:space-y-3">
+          {CATEGORIES.map((category) => (
+            <div key={category} className="flex items-center space-x-2">
+              <Checkbox 
+                id={category} 
+                checked={filters.categories.includes(category)}
+                onCheckedChange={(checked) => 
+                  handleCategoryChange(category, checked as boolean)
+                }
+              />
+              <Label
+                htmlFor={category}
+                className="text-xs sm:text-sm font-light cursor-pointer"
+              >
+                {category}
+              </Label>
+            </div>
+          ))}
         </div>
       </div>
-    </motion.aside>
+
+      {/* Price Range Slider */}
+      <div>
+        <h3 className="text-elegant text-xs sm:text-sm mb-3 sm:mb-4">Price Range</h3>
+        <Slider
+          value={filters.priceRange}
+          onValueChange={(value) => onUpdateFilters({ priceRange: value })}
+          max={100}
+          step={5}
+          className="mb-3 sm:mb-4"
+        />
+        <div className="flex items-center justify-between text-xs sm:text-sm">
+          <span>${filters.priceRange[0]}</span>
+          <span>${filters.priceRange[1]}</span>
+        </div>
+      </div>
+
+      {/* Quick Price Filters */}
+      <div>
+        <h3 className="text-elegant text-xs sm:text-sm mb-3 sm:mb-4">Quick Filters</h3>
+        <div className="space-y-2 sm:space-y-3">
+          {PRICE_RANGES.map((range) => (
+            <div key={range.label} className="flex items-center space-x-2">
+              <Checkbox 
+                id={range.label}
+                checked={filters.selectedPriceRanges.includes(range.label)}
+                onCheckedChange={(checked) => 
+                  handlePriceRangeChange(range.label, checked as boolean)
+                }
+              />
+              <Label
+                htmlFor={range.label}
+                className="text-xs sm:text-sm font-light cursor-pointer"
+              >
+                {range.label}
+              </Label>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <>
+      {/* Mobile Filter Button */}
+      <div className="lg:hidden mb-4">
+        <Button
+          variant="outline"
+          className="w-full sm:w-auto"
+          onClick={() => setIsMobileOpen(true)}
+        >
+          <SlidersHorizontal className="mr-2 h-4 w-4" />
+          Filters
+        </Button>
+      </div>
+
+      {/* Mobile Filter Overlay */}
+      <AnimatePresence>
+        {isMobileOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+              onClick={() => setIsMobileOpen(false)}
+            />
+            <motion.aside
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="fixed left-0 top-0 h-full w-[280px] sm:w-[320px] bg-white z-50 overflow-y-auto lg:hidden shadow-2xl"
+              style={{ touchAction: 'pan-y' }}
+            >
+              <div className="sticky top-0 bg-white border-b border-border p-4 flex items-center justify-between z-10">
+                <h2 className="text-elegant text-lg font-semibold">Filters</h2>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setIsMobileOpen(false)}
+                  className="h-8 w-8"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+              <div className="p-4">
+                <FilterContent />
+              </div>
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* Desktop Filter Sidebar */}
+      <motion.aside
+        initial={{ opacity: 0, x: -50 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.2 }}
+        className="hidden lg:block lg:col-span-1"
+      >
+        <div className="sticky top-24">
+          <FilterContent />
+        </div>
+      </motion.aside>
+    </>
   );
 };
 
@@ -377,13 +438,13 @@ interface ControlsProps {
 
 const Controls = ({ viewMode, onViewModeChange, sortBy, onSortChange, totalCount }: ControlsProps) => {
   return (
-    <div className="flex items-center justify-between mb-8">
-      <p className="text-sm text-muted-foreground">
+    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-4 sm:mb-6 md:mb-8">
+      <p className="text-xs sm:text-sm text-muted-foreground">
         Showing {totalCount} recharge cards
       </p>
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 sm:gap-4">
         <Select value={sortBy} onValueChange={onSortChange}>
-          <SelectTrigger className="w-[180px] text-elegant text-xs">
+          <SelectTrigger className="w-full sm:w-[160px] md:w-[180px] text-elegant text-xs h-9 sm:h-10">
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
           <SelectContent>
@@ -394,10 +455,11 @@ const Controls = ({ viewMode, onViewModeChange, sortBy, onSortChange, totalCount
             ))}
           </SelectContent>
         </Select>
-        <div className="flex gap-2">
+        <div className="flex gap-1 sm:gap-2">
           <Button
             variant={viewMode === "grid" ? "default" : "outline"}
             size="icon"
+            className="h-9 w-9 sm:h-10 sm:w-10"
             onClick={() => onViewModeChange("grid")}
           >
             <Grid3x3 className="h-4 w-4" />
@@ -405,6 +467,7 @@ const Controls = ({ viewMode, onViewModeChange, sortBy, onSortChange, totalCount
           <Button
             variant={viewMode === "list" ? "default" : "outline"}
             size="icon"
+            className="h-9 w-9 sm:h-10 sm:w-10"
             onClick={() => onViewModeChange("list")}
           >
             <List className="h-4 w-4" />
@@ -495,11 +558,11 @@ const Recharges = () => {
     <div className="min-h-screen bg-white no-horizontal-scroll overflow-x-hidden">
       <Header />
 
-      <div className="container mx-auto px-6 py-12">
+      <div className="container mx-auto px-3 sm:px-4 md:px-6 py-6 sm:py-8 md:py-12">
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-elegant text-4xl mb-4"
+          className="text-elegant text-2xl sm:text-3xl md:text-4xl mb-2 sm:mb-3 md:mb-4"
         >
           Touch Cards
         </motion.h1>
@@ -508,12 +571,12 @@ const Recharges = () => {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="text-muted-foreground mb-12"
+          className="text-xs sm:text-sm md:text-base text-muted-foreground mb-4 sm:mb-6 md:mb-8"
         >
           Premium recharge cards for your mobile needs
         </motion.p>
 
-        <div className="grid lg:grid-cols-4 gap-8">
+        <div className="grid lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
           <FilterSidebar 
             filters={filters}
             onUpdateFilters={updateFilters}
@@ -535,9 +598,9 @@ const Recharges = () => {
             />
 
             {/* Recharge Cards */}
-            <div className={`grid gap-2 sm:gap-3 md:gap-4 lg:gap-6 ${
+            <div className={`grid gap-3 sm:gap-4 md:gap-5 lg:gap-6 ${
               viewMode === "grid" 
-                ? "grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5" 
+                ? "grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5" 
                 : "grid-cols-1"
             }`}>
               {filteredCards.map((card, index) => (
@@ -577,11 +640,11 @@ const Recharges = () => {
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="mt-12 bg-gradient-to-r from-primary to-accent text-white rounded-sm p-8 text-center"
+              className="mt-8 sm:mt-10 md:mt-12 bg-gradient-to-r from-primary to-accent text-white rounded-sm p-4 sm:p-6 md:p-8 text-center"
             >
-              <p className="text-elegant text-xl mb-2">⚡ Instant Delivery</p>
-              <p className="text-sm font-light mb-4">Get your recharge codes instantly via email</p>
-              <Button variant="outline" className="bg-white text-primary hover:bg-white/90 border-white">
+              <p className="text-elegant text-lg sm:text-xl mb-2">⚡ Instant Delivery</p>
+              <p className="text-xs sm:text-sm font-light mb-3 sm:mb-4">Get your recharge codes instantly via email</p>
+              <Button variant="outline" className="bg-white text-primary hover:bg-white/90 border-white text-xs sm:text-sm">
                 Learn More
               </Button>
             </motion.div>

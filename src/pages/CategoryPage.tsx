@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Grid3x3, List, Check } from "lucide-react";
+import { Grid3x3, List, Filter, Check } from "lucide-react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import ProductCard from "@/components/ProductCard";
@@ -13,6 +13,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { getProductsByCategory } from "@/data/products";
 import { greenLionProducts, getGreenLionProductsByCategory } from "@/data/greenLionProducts";
 
@@ -121,6 +129,7 @@ const CategoryPage = () => {
   const navigate = useNavigate();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [sortBy, setSortBy] = useState<string>("default");
+  const [showFilters, setShowFilters] = useState(false);
   const [selectedSmartphoneBrand, setSelectedSmartphoneBrand] = useState<string>("All");
 
   // Scroll to top on mount and when category changes
@@ -324,8 +333,8 @@ const CategoryPage = () => {
       });
     } else {
       // User-selected sort
-      switch (sortBy) {
-        case "price-low":
+    switch (sortBy) {
+      case "price-low":
           filtered.sort((a, b) => {
             const aIsGreenLion = isGreenLionProduct(a);
             const bIsGreenLion = isGreenLionProduct(b);
@@ -336,8 +345,8 @@ const CategoryPage = () => {
             
             return a.price - b.price;
           });
-          break;
-        case "price-high":
+        break;
+      case "price-high":
           filtered.sort((a, b) => {
             const aIsGreenLion = isGreenLionProduct(a);
             const bIsGreenLion = isGreenLionProduct(b);
@@ -348,8 +357,8 @@ const CategoryPage = () => {
             
             return b.price - a.price;
           });
-          break;
-        case "rating":
+        break;
+      case "rating":
           filtered.sort((a, b) => {
             const aIsGreenLion = isGreenLionProduct(a);
             const bIsGreenLion = isGreenLionProduct(b);
@@ -360,8 +369,8 @@ const CategoryPage = () => {
             
             return (b.rating || 0) - (a.rating || 0);
           });
-          break;
-        case "name":
+        break;
+      case "name":
           filtered.sort((a, b) => {
             const aIsGreenLion = isGreenLionProduct(a);
             const bIsGreenLion = isGreenLionProduct(b);
@@ -372,8 +381,8 @@ const CategoryPage = () => {
             
             return a.name.localeCompare(b.name);
           });
-          break;
-        default:
+        break;
+      default:
           // Default: Green Lion first, then by rating
           filtered.sort((a, b) => {
             const aIsGreenLion = isGreenLionProduct(a);
@@ -384,7 +393,7 @@ const CategoryPage = () => {
             
             return (b.rating || 0) - (a.rating || 0);
           });
-          break;
+        break;
       }
     }
 
@@ -448,9 +457,9 @@ const CategoryPage = () => {
 
   // Filter sidebar component
   const FilterSidebar = () => (
-    <div className="space-y-3 sm:space-y-4 md:space-y-6 lg:space-y-8">
-      <div className="flex flex-col gap-2 mb-3 sm:mb-4">
-        <h2 className="text-elegant text-[10px] sm:text-xs md:text-sm lg:text-lg font-semibold">Filters</h2>
+    <div className="space-y-8">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-lg font-semibold text-foreground">Filters</h2>
         <Button
           variant="ghost"
           size="sm"
@@ -458,7 +467,7 @@ const CategoryPage = () => {
             setSortBy("default");
             setSelectedSmartphoneBrand("All");
           }}
-          className="text-[9px] sm:text-[10px] md:text-xs h-6 sm:h-7 px-2"
+          className="text-xs"
         >
           Clear All
         </Button>
@@ -466,9 +475,9 @@ const CategoryPage = () => {
 
       {/* Sort By */}
       <div>
-        <Label className="text-[9px] sm:text-[10px] md:text-xs lg:text-sm font-medium mb-2 sm:mb-3 block">Sort By</Label>
+        <Label className="text-sm font-medium mb-3 block">Sort By</Label>
         <Select value={sortBy} onValueChange={setSortBy}>
-          <SelectTrigger className="w-full h-7 sm:h-8 md:h-10 text-[9px] sm:text-[10px] md:text-xs">
+          <SelectTrigger className="w-full">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -484,18 +493,18 @@ const CategoryPage = () => {
       {/* Brand Filter (For All Categories) */}
       {smartphoneBrandOptions.length > 0 && (
         <div>
-          <Label className="text-[9px] sm:text-[10px] md:text-xs lg:text-sm font-medium mb-2 sm:mb-3 md:mb-4 block">Brands</Label>
-          <div className="grid grid-cols-1 gap-1.5 sm:gap-2">
+          <Label className="text-xs sm:text-sm font-medium mb-3 sm:mb-4 block">Brands</Label>
+          <div className="grid grid-cols-2 gap-2 sm:gap-2.5">
             <button
               onClick={() => setSelectedSmartphoneBrand("All")}
               style={{ touchAction: 'manipulation' }}
-              className={`w-full flex items-center justify-center p-1.5 sm:p-2 md:p-2.5 lg:p-3 rounded-md border transition-all duration-200 min-h-[36px] sm:min-h-[40px] md:min-h-[44px] ${
+              className={`col-span-2 flex items-center justify-center p-2.5 sm:p-3 rounded-md border transition-all duration-200 min-h-[44px] ${
                 selectedSmartphoneBrand === "All"
                   ? "border-primary bg-primary/5 text-primary shadow-sm"
                   : "border-border hover:border-primary/50 hover:bg-secondary/50"
               }`}
             >
-              <span className="text-[9px] sm:text-[10px] md:text-xs lg:text-sm font-medium">All Brands</span>
+              <span className="text-xs sm:text-sm font-medium">All Brands</span>
             </button>
             
             {smartphoneBrandOptions.map((brand) => {
@@ -507,20 +516,20 @@ const CategoryPage = () => {
                   key={brand}
                   onClick={() => setSelectedSmartphoneBrand(brand)}
                   style={{ touchAction: 'manipulation' }}
-                  className={`relative flex flex-row items-center justify-start gap-2 p-1.5 sm:p-2 md:p-2.5 lg:p-3 rounded-md border transition-all duration-200 group min-h-[32px] sm:min-h-[36px] md:min-h-[40px] lg:min-h-[48px] ${
+                  className={`relative flex flex-col items-center justify-center p-2.5 sm:p-3 rounded-md border transition-all duration-200 group min-h-[70px] sm:min-h-[80px] ${
                     isActive
                       ? "border-primary bg-primary/5 shadow-md scale-[1.02]"
                       : "border-border hover:border-primary/50 hover:bg-secondary/50"
                   }`}
                 >
                   {isActive && (
-                    <div className="absolute top-0.5 right-0.5 sm:top-1 sm:right-1">
-                      <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-primary rounded-full" />
+                    <div className="absolute top-1 right-1 sm:top-1.5 sm:right-1.5">
+                      <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-primary rounded-full" />
                     </div>
                   )}
                   
                   {logo ? (
-                    <div className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 flex items-center justify-center flex-shrink-0">
+                    <div className="w-full h-7 sm:h-8 md:h-9 flex items-center justify-center mb-1 sm:mb-1.5">
                       <img 
                         src={logo} 
                         alt={brand} 
@@ -529,13 +538,13 @@ const CategoryPage = () => {
                       />
                     </div>
                   ) : (
-                    <div className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 flex items-center justify-center flex-shrink-0">
-                      <span className="text-[10px] sm:text-xs md:text-sm font-bold text-muted-foreground group-hover:text-foreground">
+                    <div className="w-full h-7 sm:h-8 md:h-9 flex items-center justify-center mb-1 sm:mb-1.5">
+                      <span className="text-xs sm:text-sm font-bold text-muted-foreground group-hover:text-foreground">
                         {brand.charAt(0)}
                       </span>
                     </div>
                   )}
-                  <span className={`text-[9px] sm:text-[10px] md:text-xs lg:text-sm font-medium leading-tight ${isActive ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground'}`}>
+                  <span className={`text-[10px] sm:text-xs font-medium leading-tight text-center px-1 ${isActive ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground'}`}>
                     {brand}
                   </span>
                 </button>
@@ -609,36 +618,57 @@ const CategoryPage = () => {
           </motion.div>
         </motion.div>
 
-        {/* View Mode Toggle - Mobile */}
-        <div className="lg:hidden mb-4 flex items-center justify-end gap-2">
-          <Button
-            variant={viewMode === "grid" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setViewMode("grid")}
-            className="h-9 w-9 p-0"
-          >
-            <Grid3x3 className="h-4 w-4" />
-          </Button>
-          <Button
-            variant={viewMode === "list" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setViewMode("list")}
-            className="h-9 w-9 p-0"
-          >
-            <List className="h-4 w-4" />
-          </Button>
+        {/* Mobile Filter Button */}
+        <div className="lg:hidden mb-4 flex items-center justify-between gap-3">
+          <Sheet open={showFilters} onOpenChange={setShowFilters}>
+            <SheetTrigger asChild>
+              <Button variant="outline" size="sm" className="flex items-center gap-2">
+                <Filter className="h-4 w-4" />
+                Filters
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-[300px] sm:w-[400px] overflow-y-auto">
+              <SheetHeader>
+                <SheetTitle>Filters</SheetTitle>
+                <SheetDescription>Filter products by your preferences</SheetDescription>
+              </SheetHeader>
+              <div className="mt-6">
+                <FilterSidebar />
+              </div>
+            </SheetContent>
+          </Sheet>
+
+          {/* View Mode Toggle */}
+          <div className="flex items-center gap-2">
+            <Button
+              variant={viewMode === "grid" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setViewMode("grid")}
+              className="h-9 w-9 p-0"
+            >
+              <Grid3x3 className="h-4 w-4" />
+            </Button>
+            <Button
+              variant={viewMode === "list" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setViewMode("list")}
+              className="h-9 w-9 p-0"
+            >
+              <List className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
 
         {/* Main Content */}
-        <div className="grid grid-cols-[140px_1fr] sm:grid-cols-[160px_1fr] md:grid-cols-[180px_1fr] lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8">
-          {/* Filter Sidebar - Always visible, compact on mobile */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
+          {/* Desktop Filter Sidebar */}
           <motion.aside
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
-            className="col-span-1"
+            className="hidden lg:block lg:col-span-1"
           >
-            <div className="sticky top-20 sm:top-24 max-h-[calc(100vh-5rem)] overflow-y-auto pr-2" style={{ touchAction: 'pan-y' }}>
+            <div className="sticky top-24">
               <FilterSidebar />
             </div>
           </motion.aside>
@@ -650,12 +680,12 @@ const CategoryPage = () => {
             transition={{ delay: 0.3 }}
             className="lg:col-span-3"
           >
-            {/* Controls */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4 sm:mb-6">
-              <p className="text-[10px] sm:text-xs md:text-sm text-muted-foreground">
+            {/* Desktop View Controls */}
+            <div className="hidden lg:flex items-center justify-between mb-6">
+              <p className="text-sm text-muted-foreground">
                 Showing {filteredAndSortedProducts.length} of {categoryProducts.length} products
               </p>
-              <div className="hidden lg:flex items-center gap-2">
+              <div className="flex items-center gap-2">
                 <Button
                   variant={viewMode === "grid" ? "default" : "outline"}
                   size="sm"
@@ -680,7 +710,7 @@ const CategoryPage = () => {
               <div
                 className={`grid gap-2 sm:gap-3 md:gap-4 lg:gap-6 ${
                   viewMode === "grid"
-                    ? "grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+                    ? "grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
                     : "grid-cols-1"
                 }`}
               >
