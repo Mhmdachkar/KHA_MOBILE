@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Grid3x3, List, SlidersHorizontal, Filter } from "lucide-react";
+import { Grid3x3, List } from "lucide-react";
 import { useLocation, useSearchParams } from "react-router-dom";
 import Header from "@/components/Header";
 import ProductCard from "@/components/ProductCard";
@@ -14,14 +14,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
 import { phoneAccessories, wearablesProducts, smartphoneProducts, tabletProducts } from "@/data/products";
 import { greenLionProducts } from "@/data/greenLionProducts";
 
@@ -352,161 +344,43 @@ const Products = () => {
           )}
         </div>
 
-        {/* Mobile Filter Button */}
-        <div className="lg:hidden mb-4 flex items-center justify-between gap-3">
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="outline" size="sm" className="flex items-center gap-2">
-                <Filter className="h-4 w-4" />
-                Filters
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="w-[300px] sm:w-[400px] overflow-y-auto">
-              <SheetHeader>
-                <SheetTitle>Filters</SheetTitle>
-                <SheetDescription>Filter products by category, brand, and more</SheetDescription>
-              </SheetHeader>
-              <div className="mt-6 space-y-6">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-elegant text-base">Filters</h3>
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    className="text-elegant text-xs"
-                    onClick={handleClearFilters}
-                  >
-                    Clear All
-                  </Button>
-                </div>
-
-                {/* Category */}
-                <div>
-                  <h4 className="text-elegant text-sm mb-3">Category</h4>
-                  <div className="space-y-2">
-                    {categories.map((category) => (
-                      <div key={category} className="flex items-center space-x-2">
-                        <Checkbox 
-                          id={`mobile-category-${category}`}
-                          checked={selectedCategories.includes(category)}
-                          onCheckedChange={() => handleCategoryToggle(category)}
-                        />
-                        <Label
-                          htmlFor={`mobile-category-${category}`}
-                          className="text-sm font-light cursor-pointer"
-                        >
-                          {category}
-                        </Label>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Brand */}
-                <div>
-                  <h4 className="text-elegant text-sm mb-3">Brand</h4>
-                  <div className="space-y-2">
-                    {brands.map((brand) => (
-                      <div key={brand} className="flex items-center space-x-2">
-                        <Checkbox 
-                          id={`mobile-brand-${brand}`}
-                          checked={selectedBrands.includes(brand)}
-                          onCheckedChange={() => handleBrandToggle(brand)}
-                        />
-                        <Label
-                          htmlFor={`mobile-brand-${brand}`}
-                          className="text-sm font-light cursor-pointer"
-                        >
-                          {brand}
-                        </Label>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Availability */}
-                <div>
-                  <h4 className="text-elegant text-sm mb-3">Availability</h4>
-                  <div className="space-y-2">
-                    <div className="flex items-center space-x-2">
-                      <Checkbox id="mobile-in-stock" defaultChecked />
-                      <Label
-                        htmlFor="mobile-in-stock"
-                        className="text-sm font-light cursor-pointer"
-                      >
-                        In Stock
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Checkbox id="mobile-out-of-stock" />
-                      <Label
-                        htmlFor="mobile-out-of-stock"
-                        className="text-sm font-light cursor-pointer"
-                      >
-                        Out of Stock
-                      </Label>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Rating */}
-                <div>
-                  <h4 className="text-elegant text-sm mb-3">Minimum Rating</h4>
-                  <div className="space-y-3">
-                    {[5, 4, 3, 2].map((rating) => (
-                      <div key={rating} className="flex items-center space-x-2">
-                        <Checkbox id={`mobile-rating-${rating}`} />
-                        <Label
-                          htmlFor={`mobile-rating-${rating}`}
-                          className="text-sm font-light cursor-pointer flex items-center gap-1"
-                        >
-                          {rating}+ ⭐
-                        </Label>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </SheetContent>
-          </Sheet>
-
-          {/* View Mode Toggle */}
-          <div className="flex items-center gap-2">
-            <Button
-              variant={viewMode === "grid" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setViewMode("grid")}
-              className="h-9 w-9 p-0"
-              aria-label="Grid view"
-            >
-              <Grid3x3 className="h-4 w-4" />
-            </Button>
-            <Button
-              variant={viewMode === "list" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setViewMode("list")}
-              className="h-9 w-9 p-0"
-              aria-label="List view"
-            >
-              <List className="h-4 w-4" />
-            </Button>
-          </div>
+        {/* View Mode Toggle - Mobile */}
+        <div className="lg:hidden mb-4 flex items-center justify-end gap-2">
+          <Button
+            variant={viewMode === "grid" ? "default" : "outline"}
+            size="sm"
+            onClick={() => setViewMode("grid")}
+            className="h-9 w-9 p-0"
+            aria-label="Grid view"
+          >
+            <Grid3x3 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant={viewMode === "list" ? "default" : "outline"}
+            size="sm"
+            onClick={() => setViewMode("list")}
+            className="h-9 w-9 p-0"
+            aria-label="List view"
+          >
+            <List className="h-4 w-4" />
+          </Button>
         </div>
 
-        <div className="grid lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
-          {/* Filters Sidebar - Hidden on mobile, visible on lg+ */}
+        <div className="grid grid-cols-[140px_1fr] sm:grid-cols-[160px_1fr] md:grid-cols-[180px_1fr] lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8">
+          {/* Filters Sidebar - Always visible, compact on mobile */}
           <motion.aside
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
-            className="hidden lg:block lg:col-span-1"
+            className="col-span-1"
           >
-            <div className="sticky top-20 sm:top-24 space-y-6 sm:space-y-8">
-              <div className="flex items-center justify-between mb-4 sm:mb-6">
-                <h2 className="text-elegant text-base sm:text-lg">Filters</h2>
+            <div className="sticky top-20 sm:top-24 space-y-3 sm:space-y-4 md:space-y-6 lg:space-y-8 max-h-[calc(100vh-5rem)] overflow-y-auto pr-2" style={{ touchAction: 'pan-y' }}>
+              <div className="flex flex-col gap-2 mb-3 sm:mb-4 lg:mb-6">
+                <h2 className="text-elegant text-[10px] sm:text-xs md:text-sm lg:text-base font-semibold">Filters</h2>
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  className="text-elegant text-xs"
+                  className="text-elegant text-[9px] sm:text-[10px] md:text-xs h-6 sm:h-7 px-2"
                   onClick={handleClearFilters}
                 >
                   Clear All
@@ -515,18 +389,19 @@ const Products = () => {
 
               {/* Category */}
               <div>
-                <h3 className="text-elegant text-xs sm:text-sm mb-3 sm:mb-4">Category</h3>
-                <div className="space-y-2 sm:space-y-3">
+                <h3 className="text-elegant text-[9px] sm:text-[10px] md:text-xs lg:text-sm mb-2 sm:mb-3 font-medium">Category</h3>
+                <div className="space-y-1.5 sm:space-y-2">
                   {categories.map((category) => (
-                    <div key={category} className="flex items-center space-x-2">
+                    <div key={category} className="flex items-start space-x-1.5">
                       <Checkbox 
                         id={category}
                         checked={selectedCategories.includes(category)}
                         onCheckedChange={() => handleCategoryToggle(category)}
+                        className="mt-0.5"
                       />
                       <Label
                         htmlFor={category}
-                        className="text-sm font-light cursor-pointer"
+                        className="text-[9px] sm:text-[10px] md:text-xs lg:text-sm font-light cursor-pointer leading-tight"
                       >
                         {category}
                       </Label>
@@ -537,18 +412,19 @@ const Products = () => {
 
               {/* Brand */}
               <div>
-                <h3 className="text-elegant text-xs sm:text-sm mb-3 sm:mb-4">Brand</h3>
-                <div className="space-y-2 sm:space-y-3">
+                <h3 className="text-elegant text-[9px] sm:text-[10px] md:text-xs lg:text-sm mb-2 sm:mb-3 font-medium">Brand</h3>
+                <div className="space-y-1.5 sm:space-y-2">
                   {brands.map((brand) => (
-                    <div key={brand} className="flex items-center space-x-2">
+                    <div key={brand} className="flex items-start space-x-1.5">
                       <Checkbox 
                         id={brand}
                         checked={selectedBrands.includes(brand)}
                         onCheckedChange={() => handleBrandToggle(brand)}
+                        className="mt-0.5"
                       />
                       <Label
                         htmlFor={brand}
-                        className="text-sm font-light cursor-pointer"
+                        className="text-[9px] sm:text-[10px] md:text-xs lg:text-sm font-light cursor-pointer leading-tight"
                       >
                         {brand}
                       </Label>
@@ -557,24 +433,24 @@ const Products = () => {
                 </div>
               </div>
 
-              {/* Availability */}
-              <div>
-                <h3 className="text-elegant text-xs sm:text-sm mb-3 sm:mb-4">Availability</h3>
-                <div className="space-y-2 sm:space-y-3">
-                  <div className="flex items-center space-x-2">
+              {/* Availability - Hidden on mobile to save space */}
+              <div className="hidden md:block">
+                <h3 className="text-elegant text-xs lg:text-sm mb-2 lg:mb-3 font-medium">Availability</h3>
+                <div className="space-y-1.5 lg:space-y-2">
+                  <div className="flex items-center space-x-1.5">
                     <Checkbox id="in-stock" defaultChecked />
                     <Label
                       htmlFor="in-stock"
-                      className="text-sm font-light cursor-pointer"
+                      className="text-xs lg:text-sm font-light cursor-pointer"
                     >
                       In Stock
                     </Label>
                   </div>
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-1.5">
                     <Checkbox id="out-of-stock" />
                     <Label
                       htmlFor="out-of-stock"
-                      className="text-sm font-light cursor-pointer"
+                      className="text-xs lg:text-sm font-light cursor-pointer"
                     >
                       Out of Stock
                     </Label>
@@ -582,16 +458,16 @@ const Products = () => {
                 </div>
               </div>
 
-              {/* Rating */}
-              <div>
-                <h3 className="text-elegant text-sm mb-4">Minimum Rating</h3>
-                <div className="space-y-3">
+              {/* Rating - Hidden on mobile to save space */}
+              <div className="hidden md:block">
+                <h3 className="text-elegant text-xs lg:text-sm mb-2 lg:mb-3 font-medium">Rating</h3>
+                <div className="space-y-1.5 lg:space-y-2">
                   {[5, 4, 3, 2].map((rating) => (
-                    <div key={rating} className="flex items-center space-x-2">
+                    <div key={rating} className="flex items-center space-x-1.5">
                       <Checkbox id={`rating-${rating}`} />
                       <Label
                         htmlFor={`rating-${rating}`}
-                        className="text-sm font-light cursor-pointer flex items-center gap-1"
+                        className="text-xs lg:text-sm font-light cursor-pointer flex items-center gap-1"
                       >
                         {rating}+ ⭐
                       </Label>
@@ -610,13 +486,13 @@ const Products = () => {
             className="w-full lg:col-span-3"
           >
             {/* Controls */}
-            <div className="flex items-center justify-between mb-8">
-              <p className="text-sm text-muted-foreground">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4 sm:mb-6 md:mb-8">
+              <p className="text-[10px] sm:text-xs md:text-sm text-muted-foreground">
                 Showing {filteredAndSortedProducts.length} of {allProducts.length} products
               </p>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto">
                 <Select value={sortBy} onValueChange={setSortBy}>
-                  <SelectTrigger className="w-[180px] text-elegant text-xs">
+                  <SelectTrigger className="w-full sm:w-[160px] md:w-[180px] text-elegant text-[10px] sm:text-xs h-8 sm:h-10">
                     <SelectValue placeholder="Sort by" />
                   </SelectTrigger>
                   <SelectContent>
@@ -628,11 +504,12 @@ const Products = () => {
                     <SelectItem value="newest">Newest</SelectItem>
                   </SelectContent>
                 </Select>
-                <div className="flex gap-2">
+                <div className="flex gap-2 hidden sm:flex">
                   <Button
                     variant={viewMode === "grid" ? "default" : "outline"}
                     size="icon"
                     onClick={() => setViewMode("grid")}
+                    className="h-8 sm:h-10"
                   >
                     <Grid3x3 className="h-4 w-4" />
                   </Button>
@@ -640,6 +517,7 @@ const Products = () => {
                     variant={viewMode === "list" ? "default" : "outline"}
                     size="icon"
                     onClick={() => setViewMode("list")}
+                    className="h-8 sm:h-10"
                   >
                     <List className="h-4 w-4" />
                   </Button>
@@ -649,7 +527,7 @@ const Products = () => {
 
             {/* Products */}
             {filteredAndSortedProducts.length > 0 ? (
-              <div className={`grid gap-2 sm:gap-3 md:gap-4 lg:gap-6 ${viewMode === "grid" ? "grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5" : "grid-cols-1"}`}>
+              <div className={`grid gap-2 sm:gap-3 md:gap-4 lg:gap-6 ${viewMode === "grid" ? "grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5" : "grid-cols-1"}`}>
                 {filteredAndSortedProducts.map((product, index) => (
                   <motion.div
                     key={product.id}
