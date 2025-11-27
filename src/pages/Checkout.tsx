@@ -621,32 +621,32 @@ const Checkout = () => {
                       const uniqueKey = `${item.id}-${item.variantKey || "base"}-${(item as any).color || "no-color"}`;
                       
                       return (
-                        <motion.div
+                      <motion.div
                           key={uniqueKey}
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="flex gap-2 sm:gap-3 md:gap-4 p-3 sm:p-4 border border-border rounded-lg bg-gradient-to-r from-primary/5 to-accent/5"
-                        >
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="flex gap-2 sm:gap-3 md:gap-4 p-3 sm:p-4 border border-border rounded-lg bg-gradient-to-r from-primary/5 to-accent/5"
+                      >
                           {/* Product Image - Shows color-specific image if available */}
-                          <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-lg overflow-hidden bg-white border border-border flex-shrink-0">
-                            <img
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-lg overflow-hidden bg-white border border-border flex-shrink-0">
+                          <img
                               src={displayImage}
-                              alt={item.name}
+                            alt={item.name}
                               className="w-full h-full object-contain p-1"
-                              onError={(e) => {
-                                const target = e.target as HTMLImageElement;
-                                target.src = "/placeholder.svg";
-                              }}
-                            />
-                          </div>
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.src = "/placeholder.svg";
+                            }}
+                          />
+                        </div>
 
-                          {/* Product Info */}
-                          <div className="flex-1 min-w-0">
-                            <Link to={`/product/${item.id}`} className="hover:underline">
-                              <h3 className="text-xs sm:text-sm font-medium text-elegant line-clamp-2 mb-1">
-                                {item.name}
-                              </h3>
-                            </Link>
+                        {/* Product Info */}
+                        <div className="flex-1 min-w-0">
+                          <Link to={`/product/${item.id}`} className="hover:underline">
+                            <h3 className="text-xs sm:text-sm font-medium text-elegant line-clamp-2 mb-1">
+                              {item.name}
+                            </h3>
+                          </Link>
                             {item.variantLabel && (
                               <p className="text-[10px] sm:text-xs text-primary/80 mb-1">
                                 {item.variantLabel}
@@ -657,31 +657,31 @@ const Checkout = () => {
                                 Color: {(item as any).color}
                               </p>
                             )}
-                            {item.category && (
-                              <p className="text-[10px] sm:text-xs text-muted-foreground mb-1 sm:mb-2">{item.category}</p>
-                            )}
-                            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mt-1 sm:mt-2">
-                              <div className="flex items-center gap-1 sm:gap-2 border border-border rounded-lg">
-                                <motion.button
-                                  whileHover={{ scale: 1.1 }}
-                                  whileTap={{ scale: 0.9 }}
+                          {item.category && (
+                            <p className="text-[10px] sm:text-xs text-muted-foreground mb-1 sm:mb-2">{item.category}</p>
+                          )}
+                          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mt-1 sm:mt-2">
+                            <div className="flex items-center gap-1 sm:gap-2 border border-border rounded-lg">
+                              <motion.button
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
                                   onClick={() => updateQuantity(item.id, item.quantity - 1, item.variantKey, (item as any).color)}
-                                  className="h-6 w-6 sm:h-7 sm:w-7 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
-                                >
-                                  <Minus className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
-                                </motion.button>
-                                <span className="text-xs sm:text-sm font-medium w-6 sm:w-8 text-center">
-                                  {item.quantity}
-                                </span>
-                                <motion.button
-                                  whileHover={{ scale: 1.1 }}
-                                  whileTap={{ scale: 0.9 }}
+                                className="h-6 w-6 sm:h-7 sm:w-7 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
+                              >
+                                <Minus className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
+                              </motion.button>
+                              <span className="text-xs sm:text-sm font-medium w-6 sm:w-8 text-center">
+                                {item.quantity}
+                              </span>
+                              <motion.button
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
                                   onClick={() => updateQuantity(item.id, item.quantity + 1, item.variantKey, (item as any).color)}
-                                  className="h-6 w-6 sm:h-7 sm:w-7 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
-                                >
-                                  <Plus className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
-                                </motion.button>
-                              </div>
+                                className="h-6 w-6 sm:h-7 sm:w-7 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
+                              >
+                                <Plus className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
+                              </motion.button>
+                            </div>
                             <div className="text-left sm:text-right">
                               <p className="text-base sm:text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                                 ${(item.price * item.quantity).toFixed(2)}

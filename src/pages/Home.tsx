@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Smartphone, Headphones, Gamepad2, CreditCard, Gift, Tv, Watch, Zap, ArrowRight, Star, Sparkles, ShoppingCart } from "lucide-react";
+import { Smartphone, Headphones, Gamepad2, CreditCard, Gift, Tv, Watch, Zap, ArrowRight, Star, Sparkles, ShoppingCart, Tablet } from "lucide-react";
 import { Link } from "react-router-dom";
 import rechargeLogo from "@/assets/recharges/logo.png";
 import Header from "@/components/Header";
@@ -35,6 +35,7 @@ const Home = () => {
   const categories = [
     { icon: Smartphone, name: "Smartphones", linkTo: "/smartphones" },
     { icon: Headphones, name: "Audio", linkTo: "/audio" },
+    { icon: Tablet, name: "Tablets", linkTo: "/tablets" },
     { icon: Tv, name: "Netflix, Shahid & IPTV", linkTo: "/streaming-services" },
     { icon: Watch, name: "Wearables", linkTo: "/wearables" },
     { icon: Gamepad2, name: "Gaming", linkTo: "/gaming" },

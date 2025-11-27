@@ -13,9 +13,10 @@ interface ProductCardProps {
   images?: string[]; // Optional images array for hover switching
   rating?: number;
   category?: string;
+  colors?: Array<{ name: string; image?: string; stock?: string }>;
 }
 
-const ProductCard = ({ id, name, price, image, images, rating = 4.5, category }: ProductCardProps) => {
+const ProductCard = ({ id, name, price, image, images, rating = 4.5, category, colors }: ProductCardProps) => {
   const { isFavorite, toggleFavorite } = useFavorites();
   const { addToCart } = useCart();
   const favorite = isFavorite(id);
@@ -154,6 +155,11 @@ const ProductCard = ({ id, name, price, image, images, rating = 4.5, category }:
             </span>
           </div>
           <p className="text-elegant text-xs sm:text-sm font-normal bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">${price.toFixed(2)}</p>
+          {colors && colors.length > 0 && (
+            <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-1">
+              {colors.length} color{colors.length > 1 ? "s" : ""} available
+            </p>
+          )}
         </div>
       </Link>
       

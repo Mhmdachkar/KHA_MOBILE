@@ -89,6 +89,17 @@ import camon40ProGreen from "@/assets/phones/tecno camon 40 pro 4g/tecno camon 4
 import camon40Pro5gPlaceholder from "@/assets/phones/tecno camon 40 pro 5g (CM5)/tecno camon 40 pro 5g (CM5) BLACK placeholder.png";
 import camon40Pro5gWhite from "@/assets/phones/tecno camon 40 pro 5g (CM5)/tecno camon 40 pro 5g (CM5) glacier white.png";
 import camon40Pro5gGreen from "@/assets/phones/tecno camon 40 pro 5g (CM5)/tecno camon 40 pro 5g (CM5) lake green.png";
+import galaxyTabA9BlackPlaceholder from "@/assets/Tablets/Samsung Galaxy Tab A9/Samsung Galaxy Tab A9 Black placeholder.webp";
+import galaxyTabA9Blue from "@/assets/Tablets/Samsung Galaxy Tab A9/Samsung Galaxy Tab A9 BLUE.webp";
+import galaxyTabA9White from "@/assets/Tablets/Samsung Galaxy Tab A9/Samsung Galaxy Tab A9 WHITE.webp";
+import galaxyTabA11GreyPlaceholder from "@/assets/Tablets/SAMSUNG Galaxy Tab A11/SAMSUNG Galaxy Tab A11 grey placeholder.webp";
+import galaxyTabA11Grey from "@/assets/Tablets/SAMSUNG Galaxy Tab A11/SAMSUNG Galaxy Tab A11 grey.webp";
+import galaxyTabA11Blue from "@/assets/Tablets/SAMSUNG Galaxy Tab A11/SAMSUNG Galaxy Tab A11 blue.webp";
+import galaxyTabA11Silver from "@/assets/Tablets/SAMSUNG Galaxy Tab A11/SAMSUNG Galaxy Tab A11 silver.webp";
+import galaxyTabA11X135SilverPlaceholder from "@/assets/Tablets/Samsung Galaxy Tab A11 X135 4G/Samsung Galaxy Tab 4g LTE 8GB 128GB silver placeholder.webp";
+import galaxyTabA11X135Grey from "@/assets/Tablets/Samsung Galaxy Tab A11 X135 4G/Samsung Galaxy Tab grey.webp";
+import galaxyTabA11X135DarkGrey from "@/assets/Tablets/Samsung Galaxy Tab A11 X135 4G/Samsung Galaxy Tab greyy.webp";
+import galaxyTabA11X135Silver from "@/assets/Tablets/Samsung Galaxy Tab A11 X135 4G/Samsung Galaxy Tab silver.webp";
 
 export interface ProductVariant {
   key: string;
@@ -113,6 +124,8 @@ export interface Product {
   features: string[];
   specifications?: Array<{ label: string; value: string }>;
   variants?: ProductVariant[];
+  colors?: Array<{ name: string; image?: string; stock?: string }>;
+  connectivityOptions?: string[];
 }
 
 export const phoneAccessories: Product[] = [
@@ -931,6 +944,11 @@ export const smartphoneProducts: Product[] = [
         price: 229.99,
         description: "Maximum RAM for gamers and social storytellers."
       }
+    ],
+    colors: [
+      { name: "Lavender Purple", image: a075Purple },
+      { name: "Titan Grey", image: a075Grey },
+      { name: "Arctic Silver", image: a075Silver }
     ]
   },
   {
@@ -986,6 +1004,10 @@ export const smartphoneProducts: Product[] = [
         price: 279.99,
         description: "Ultimate storage + RAM combo for power users."
       }
+    ],
+    colors: [
+      { name: "Graphite Black", image: a16Black },
+      { name: "Frosted Silver", image: a16Silver }
     ]
   },
   {
@@ -1041,6 +1063,10 @@ export const smartphoneProducts: Product[] = [
         price: 309.99,
         description: "Maximum storage for 4K video lovers."
       }
+    ],
+    colors: [
+      { name: "Phantom Black", image: a17Hero },
+      { name: "Skyline Blue", image: a17Blue }
     ]
   },
   {
@@ -1221,6 +1247,12 @@ export const smartphoneProducts: Product[] = [
         price: 129.99,
         description: "Includes up to 4GB extended RAM for smooth everyday use."
       }
+    ],
+    colors: [
+      { name: "Midnight Black", image: smart10HdBlack },
+      { name: "Champagne Gold", image: smart10HdGold },
+      { name: "Emerald Green", image: smart10HdGreen },
+      { name: "Slate Grey", image: smart10HdGrey }
     ]
   },
   {
@@ -1276,6 +1308,11 @@ export const smartphoneProducts: Product[] = [
         price: 179.99,
         description: "Extra storage for video libraries and offline playlists."
       }
+    ],
+    colors: [
+      { name: "Midnight Black", image: smart10HdBlack },
+      { name: "Champagne Gold", image: smart10HdGold },
+      { name: "Emerald Green", image: smart10HdGreen }
     ]
   },
   {
@@ -1323,6 +1360,12 @@ export const smartphoneProducts: Product[] = [
         price: 229.99,
         description: "Ships with 8GB physical RAM and up to 16GB extended."
       }
+    ],
+    colors: [
+      { name: "Midnight Black", image: smart10PlusBlack },
+      { name: "Ocean Blue", image: smart10PlusBlue },
+      { name: "Blush Pink", image: smart10PlusPink },
+      { name: "Lunar Silver", image: smart10PlusSilver }
     ]
   },
   {
@@ -1381,6 +1424,12 @@ export const smartphoneProducts: Product[] = [
         price: 189.99,
         description: "Maximum onboard storage while keeping the price approachable."
       }
+    ],
+    colors: [
+      { name: "Carbon Black", image: sparkGo2Black },
+      { name: "Titanium Grey", image: sparkGo2Grey },
+      { name: "Turquoise Green", image: sparkGo2Green },
+      { name: "Viel White", image: sparkGo2White }
     ]
   },
   {
@@ -1422,6 +1471,11 @@ export const smartphoneProducts: Product[] = [
         price: 429.99,
         description: "Single premium configuration with AI features and 45W super charging."
       }
+    ],
+    colors: [
+      { name: "Obsidian Black", image: sparkSlimBlack },
+      { name: "Glacier Blue", image: sparkSlimBlue },
+      { name: "Pearl White", image: sparkSlimWhite }
     ]
   },
   {
@@ -1463,6 +1517,12 @@ export const smartphoneProducts: Product[] = [
         price: 219.99,
         description: "Standard configuration with maximum storage and memory fusion."
       }
+    ],
+    colors: [
+      { name: "Carbon Black", image: spark40CBlack },
+      { name: "Ripple Blue", image: spark40CBlue },
+      { name: "Viel White", image: spark40CWhite },
+      { name: "Titanium Grey", image: spark40CGrey }
     ]
   },
   {
@@ -1503,6 +1563,12 @@ export const smartphoneProducts: Product[] = [
         price: 249.99,
         description: "Single configuration with 45W charging and IP64 protection."
       }
+    ],
+    colors: [
+      { name: "Carbon Black", image: spark40Black },
+      { name: "Mirage Blue", image: spark40Blue },
+      { name: "Titanium Grey", image: spark40Grey },
+      { name: "Viel White", image: spark40White }
     ]
   },
   {
@@ -1667,6 +1733,184 @@ export const smartphoneProducts: Product[] = [
   }
 ];
 
+// Tablet products
+export const tabletProducts: Product[] = [
+  {
+    id: 401,
+    name: "Samsung Galaxy Tab A9",
+    title: "Samsung Galaxy Tab A9 X110 – Expand Your Horizons",
+    price: 229.99,
+    image: galaxyTabA9BlackPlaceholder,
+    images: [galaxyTabA9BlackPlaceholder, galaxyTabA9Blue, galaxyTabA9White],
+    rating: 4.7,
+    category: "Tablets",
+    brand: "Samsung",
+    description: "The Samsung Galaxy Tab A9 pairs an 8.7-inch WXGA+ display with a Helio G99 octa-core processor, generous storage configurations, and seamless Galaxy ecosystem features like Auto Sync and Continue Apps on other devices. Whether you’re drafting presentations, editing on the go, or catching up on entertainment, its 5100mAh battery, Dolby-ready audio, and microSD expansion up to 1TB keep creativity moving beyond borders.",
+    features: [
+      "8.7\" WXGA+ (1340×800) TFT display delivers bright, portable entertainment.",
+      "MediaTek Helio G99 processor with up to 8GB RAM keeps multitasking smooth.",
+      "Auto Sync and Continue Apps let clipboard data and Samsung Notes jump between Galaxy devices instantly.",
+      "5100mAh battery paired with USB-C 2.0 charging supports full-day productivity and streaming.",
+      "Expandable storage via microSD (up to 1TB) for large decks, media libraries, and offline projects.",
+      "Dual stereo speakers, Bluetooth 5.3, and 3.5mm audio jack cover every listening scenario."
+    ],
+    specifications: [
+      { label: "Processor", value: "MediaTek Helio G99, Octa-core (2x 2.2GHz + 6x 2.0GHz)" },
+      { label: "Display", value: "8.7\" TFT, 1340 x 800 (WXGA+), 16M colors" },
+      { label: "Rear Camera", value: "8MP with autofocus, FHD 1080p @30fps video" },
+      { label: "Front Camera", value: "2MP selfie camera" },
+      { label: "Memory", value: "4GB or 8GB RAM options" },
+      { label: "Storage", value: "64GB or 128GB, microSD support up to 1TB" },
+      { label: "Connectivity", value: "USB 2.0, Wi-Fi 802.11 a/b/g/n/ac (2.4/5GHz), Bluetooth 5.3, GPS/GLONASS/Beidou/Galileo/QZSS" },
+      { label: "Audio", value: "3.5mm earjack, Bluetooth audio profiles A2DP/AVRCP/DI/HID/HOGP/OPP/PAN" },
+      { label: "Sensors", value: "Accelerometer, Geomagnetic, Light, Proximity" },
+      { label: "Dimensions", value: "211.0 x 124.7 x 8.0 mm, 332 g" },
+      { label: "Battery", value: "5100mAh (typical), non-removable" },
+      { label: "OS", value: "Android with One UI 5.1" }
+    ],
+    variants: [
+      {
+        key: "tabA9-4-64",
+        ram: "4GB RAM",
+        storage: "64GB Storage",
+        label: "4GB + 64GB",
+        price: 199.99,
+        description: "Everyday configuration with quick access to microSD expansion up to 1TB."
+      },
+      {
+        key: "tabA9-8-128",
+        ram: "8GB RAM",
+        storage: "128GB Storage",
+        label: "8GB + 128GB",
+        price: 249.99,
+        description: "Maximum RAM and storage for heavy multitasking and creative workflows."
+      }
+    ],
+    colors: [
+      { name: "Graphite Black ", image: galaxyTabA9BlackPlaceholder },
+      { name: "Navy Blue", image: galaxyTabA9Blue },
+      { name: "Arctic White", image: galaxyTabA9White }
+    ],
+    connectivityOptions: ["Wi-Fi only", "Wi-Fi + LTE"]
+  },
+  {
+    id: 402,
+    name: "Samsung Galaxy Tab A11 X133",
+    title: "Samsung Galaxy Tab A11 X133 – 8.7\" Wi-Fi-Only Productivity Tablet",
+    price: 259.99,
+    image: galaxyTabA11GreyPlaceholder,
+    images: [galaxyTabA11GreyPlaceholder, galaxyTabA11Blue, galaxyTabA11Grey, galaxyTabA11Silver],
+    rating: 4.6,
+    category: "Tablets",
+    brand: "Samsung",
+    description: "The X133 variant of the Galaxy Tab A11 focuses on ultra-portable productivity with Wi-Fi-only connectivity, an 8.7-inch 90Hz TFT LCD, and the efficient MediaTek Helio G99 platform. Running Android 15 with One UI 7, it keeps your Samsung ecosystem synced while dual Dolby Atmos speakers, a 5100mAh battery, and USB-C charging support full days of research, note taking, and streaming.",
+    features: [
+      "8.7\" WXGA+ TFT LCD with 90Hz refresh rate keeps scrolling, sketching, and reading fluid.",
+      "MediaTek Helio G99 octa-core chipset balances performance and battery efficiency for study or travel.",
+      "Ships with Android 15 + One UI 7 for the latest privacy tools, split-screen multitasking, and seamless Samsung account syncing.",
+      "Dual Dolby Atmos tuned speakers and a 3.5mm headphone jack cover private listening or classroom presentations.",
+      "Wi-Fi 802.11 a/b/g/n/ac, Bluetooth 5.3, GPS, and USB-C cover every essential connection minus cellular radios.",
+      "Available in 4GB/64GB or 8GB/128GB configurations with microSD expansion (up to 1TB) for offline libraries."
+    ],
+    specifications: [
+      { label: "Display", value: "8.7\" TFT LCD, 800 × 1340, 90Hz" },
+      { label: "Processor", value: "MediaTek Helio G99, Octa-core" },
+      { label: "Memory", value: "4GB RAM / 8GB RAM options" },
+      { label: "Storage", value: "64GB or 128GB, microSD up to 1TB" },
+      { label: "Rear Camera", value: "8MP AF, FHD 1080p @30fps video" },
+      { label: "Front Camera", value: "5MP" },
+      { label: "Audio", value: "Dual Dolby Atmos speakers, 3.5mm headphone jack" },
+      { label: "Connectivity", value: "Wi-Fi 802.11 a/b/g/n/ac, Bluetooth 5.3, GPS, USB Type-C" },
+      { label: "Battery", value: "5100mAh, 15W wired charging" },
+      { label: "OS", value: "Android 15 with One UI 7" },
+      { label: "Dimensions", value: "211 x 124.7 x 8.0 mm, 335 g" }
+    ],
+    variants: [
+      {
+        key: "tabA11-4-64",
+        ram: "4GB RAM",
+        storage: "64GB Storage",
+        label: "4GB + 64GB",
+        price: 229.99,
+        description: "Wi-Fi-only base model that’s perfect for digital textbooks and streaming."
+      },
+      {
+        key: "tabA11-8-128",
+        ram: "8GB RAM",
+        storage: "128GB Storage",
+        label: "8GB + 128GB",
+        price: 279.99,
+        description: "Extra RAM and storage for heavier multitasking, sketching apps, or larger offline files."
+      }
+    ],
+    colors: [
+      { name: "Graphite Grey ", image: galaxyTabA11GreyPlaceholder },
+      { name: "Storm Grey", image: galaxyTabA11Grey },
+      { name: "Navy Blue", image: galaxyTabA11Blue },
+      { name: "Silver Mist", image: galaxyTabA11Silver }
+    ],
+    connectivityOptions: ["Wi-Fi only"]
+  },
+  {
+    id: 403,
+    name: "Samsung Galaxy Tab A11 X135 4G",
+    title: "Samsung Galaxy Tab A11 X135 4G – 8.7\" LTE Companion Tablet",
+    price: 309.99,
+    image: galaxyTabA11X135SilverPlaceholder,
+    images: [
+      galaxyTabA11X135SilverPlaceholder,
+      galaxyTabA11X135Grey,
+      galaxyTabA11X135DarkGrey,
+      galaxyTabA11X135Silver
+    ],
+    rating: 4.7,
+    category: "Tablets",
+    brand: "Samsung",
+    description: "The Galaxy Tab A11 X135 adds LTE to Samsung’s ultra-portable 8.7-inch platform, pairing a 90Hz TFT LCD with the Helio G99 chipset, dual Dolby Atmos speakers, and Android 15 / One UI 7 continuity. With GPS-grade positioning, Wi-Fi Direct, and a 5100mAh battery with 15W charging, it is built for travelers and field teams that need dependable 4G data without tethering.",
+    features: [
+      "8.7\" 800×1340 TFT LCD with 90Hz refresh ensures smooth browsing, drawing, and split-screen note taking.",
+      "MediaTek Helio G99 octa-core CPU (2×2.2GHz + 6×2.0GHz) with Mali-G57 MC2 GPU balances power and efficiency for productivity apps.",
+      "Native Android 15 with One UI 7 delivers secure workspace profiles, updated privacy controls, and multi-window enhancements.",
+      "Integrated LTE modem with Nano-SIM slot plus Wi-Fi 802.11 a/b/g/n/ac and Bluetooth 5.3 keep you connected anywhere.",
+      "Dual Dolby Atmos stereo speakers and a 3.5mm headphone jack cover both presentations and private monitoring.",
+      "128GB storage + 8GB RAM standard, with a dedicated microSD slot supporting up to 1TB for offline libraries."
+    ],
+    specifications: [
+      { label: "Dimensions", value: "211 x 124.7 x 8.0 mm (335–337 g)" },
+      { label: "Display", value: "8.7\" TFT LCD, 800 × 1340, 90Hz (~179 ppi)" },
+      { label: "Processor", value: "MediaTek Helio G99 (6nm), Octa-core 2×2.2GHz Cortex-A76 + 6×2.0GHz Cortex-A55" },
+      { label: "GPU", value: "Mali-G57 MC2" },
+      { label: "Memory", value: "8GB RAM" },
+      { label: "Storage", value: "128GB internal, microSDXC (dedicated slot)" },
+      { label: "Rear Camera", value: "8MP AF, 1080p@30fps" },
+      { label: "Front Camera", value: "5MP" },
+      { label: "Audio", value: "Dual stereo speakers with Dolby Atmos, 3.5mm jack" },
+      { label: "Connectivity", value: "LTE (Nano-SIM), Wi-Fi 802.11 a/b/g/n/ac dual-band, Wi-Fi Direct, Bluetooth 5.3, USB Type-C 2.0" },
+      { label: "Positioning", value: "GPS, GLONASS, BDS, GALILEO, QZSS" },
+      { label: "Sensors", value: "Accelerometer, proximity, compass" },
+      { label: "Battery", value: "5100 mAh, 15W wired charging" },
+      { label: "OS", value: "Android 15, One UI 7" }
+    ],
+    variants: [
+      {
+        key: "tabA11-4g-8-128",
+        ram: "8GB RAM",
+        storage: "128GB Storage",
+        label: "8GB + 128GB LTE",
+        price: 309.99,
+        description: "LTE-enabled configuration with full GPS suite for mobile professionals."
+      }
+    ],
+    colors: [
+      { name: "Silver", image: galaxyTabA11X135SilverPlaceholder },
+      { name: "Matte Grey", image: galaxyTabA11X135Grey },
+      { name: "Graphite Grey", image: galaxyTabA11X135DarkGrey },
+      { name: "Polished Silver", image: galaxyTabA11X135Silver }
+    ],
+    connectivityOptions: ["Wi-Fi + LTE (Nano-SIM)"]
+  }
+];
+
 // Wearables products
 export const wearablesProducts: Product[] = [
   {
@@ -1797,13 +2041,13 @@ export const wearablesProducts: Product[] = [
 
 // Helper function to get product by ID
 export const getProductById = (id: number): Product | undefined => {
-  const allProducts = [...phoneAccessories, ...wearablesProducts, ...smartphoneProducts];
+  const allProducts = [...phoneAccessories, ...wearablesProducts, ...smartphoneProducts, ...tabletProducts];
   return allProducts.find(product => product.id === id);
 };
 
 // Helper function to get products by category
 export const getProductsByCategory = (category: string): Product[] => {
-  const allProducts = [...phoneAccessories, ...wearablesProducts, ...smartphoneProducts];
+  const allProducts = [...phoneAccessories, ...wearablesProducts, ...smartphoneProducts, ...tabletProducts];
   return allProducts.filter(product => product.category === category);
 };
 

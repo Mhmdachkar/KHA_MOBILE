@@ -10,6 +10,7 @@ interface Product {
   images?: string[];
   rating?: number;
   category?: string;
+  colors?: Array<{ name: string; image?: string; stock?: string }>;
 }
 
 interface ProductCarouselProps {
@@ -132,6 +133,7 @@ const ProductCarousel = ({ title, products }: ProductCarouselProps) => {
               images={product.images || [product.image]}
               rating={product.rating}
               category={product.category}
+              colors={product.colors}
             />
           </div>
         ))}

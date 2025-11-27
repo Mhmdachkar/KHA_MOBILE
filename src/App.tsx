@@ -74,6 +74,7 @@ const App = () => (
                 <Route path="/computers" element={<CategoryPage />} />
                 <Route path="/wearables" element={<CategoryPage />} />
                 <Route path="/gaming" element={<CategoryPage />} />
+                <Route path="/tablets" element={<CategoryPage />} />
                 <Route path="/recharges" element={<Recharges />} />
                 <Route path="/gift-cards" element={<GiftCards />} />
                 <Route path="/streaming-services" element={<StreamingServices />} />

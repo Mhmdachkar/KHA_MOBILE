@@ -22,7 +22,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { phoneAccessories, wearablesProducts, smartphoneProducts } from "@/data/products";
+import { phoneAccessories, wearablesProducts, smartphoneProducts, tabletProducts } from "@/data/products";
 import { greenLionProducts } from "@/data/greenLionProducts";
 
 const Products = () => {
@@ -60,6 +60,10 @@ const Products = () => {
       images: [p.image]
     })),
     ...smartphoneProducts.map(p => ({
+      ...p,
+      images: p.images && p.images.length > 0 ? p.images : [p.image]
+    })),
+    ...tabletProducts.map(p => ({
       ...p,
       images: p.images && p.images.length > 0 ? p.images : [p.image]
     })),
@@ -661,6 +665,7 @@ const Products = () => {
                       images={product.images || [product.image]}
                       rating={product.rating}
                       category={product.category}
+                      colors={product.colors}
                     />
                   </motion.div>
                 ))}

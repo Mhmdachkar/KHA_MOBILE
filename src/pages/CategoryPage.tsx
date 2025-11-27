@@ -68,6 +68,10 @@ const categoryQuotes: Record<string, { title: string; subtitle: string }> = {
   "Computers": {
     title: "\"Power and performance for every ambition.\"",
     subtitle: "Create, work, and play without limits."
+  },
+  "Tablets": {
+    title: "\"Expand your horizons with effortless mobility.\"",
+    subtitle: "Portable canvases built for creativity and on-the-go work."
   }
 };
 
@@ -117,6 +121,7 @@ const categoryMap: Record<string, string> = {
   "/computers": "Computers",
   "/wearables": "Wearables",
   "/gaming": "Gaming",
+  "/tablets": "Tablets",
 };
 
 const CategoryPage = () => {
@@ -245,6 +250,17 @@ const CategoryPage = () => {
             rating: p.rating,
             category: p.category
           }))];
+        }
+      } else if (categoryDisplayName === "Tablets") {
+        const tablets = getProductsByCategory("Tablets");
+        if (Array.isArray(tablets) && tablets.length > 0) {
+          products = [
+            ...products,
+            ...tablets.map(p => ({
+              ...p,
+              images: p.images && p.images.length > 0 ? p.images : [p.image],
+            }))
+          ];
         }
       }
     } catch (error) {
@@ -720,6 +736,7 @@ const CategoryPage = () => {
                         images={product.images || [product.image]}
                         rating={product.rating}
                         category={product.category}
+                        colors={product.colors}
                       />
                       {isSmartphoneCategory && product.variants?.length > 0 && (
                         <div className="flex flex-wrap gap-1.5">

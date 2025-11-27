@@ -6,7 +6,7 @@ import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { useFavorites } from "@/context/FavoritesContext";
 import { useCart } from "@/context/CartContext";
-import { getProductById, phoneAccessories, wearablesProducts, smartphoneProducts } from "@/data/products";
+import { getProductById, phoneAccessories, wearablesProducts, smartphoneProducts, tabletProducts } from "@/data/products";
 import { getGreenLionProductById, greenLionProducts } from "@/data/greenLionProducts";
 import ProductCard from "@/components/ProductCard";
 import ProductCarousel from "@/components/ProductCarousel";
@@ -297,6 +297,7 @@ const ProductDetail = () => {
       category: p.category,
       brand: p.brand || extractBrand(p.name),
       secondaryCategories: [],
+      colors: p.colors,
     })),
     ...wearablesProducts.map(p => ({
       id: p.id,
@@ -308,6 +309,7 @@ const ProductDetail = () => {
       category: p.category,
       brand: p.brand || extractBrand(p.name),
       secondaryCategories: [],
+      colors: p.colors,
     })),
     ...smartphoneProducts.map(p => ({
       id: p.id,
@@ -319,6 +321,19 @@ const ProductDetail = () => {
       category: p.category,
       brand: p.brand || extractBrand(p.name),
       secondaryCategories: [],
+      colors: p.colors,
+    })),
+    ...tabletProducts.map(p => ({
+      id: p.id,
+      name: p.name,
+      price: p.price,
+      image: p.image,
+      images: p.images && p.images.length > 0 ? p.images : [p.image],
+      rating: p.rating,
+      category: p.category,
+      brand: p.brand || extractBrand(p.name),
+      secondaryCategories: [],
+      colors: p.colors,
     })),
     ...greenLionProducts.map((p) => ({
       id: p.id,
@@ -330,6 +345,7 @@ const ProductDetail = () => {
       category: p.category,
       brand: p.brand,
       secondaryCategories: p.secondaryCategories || [],
+      colors: p.colors || [],
     })),
   ];
 
@@ -686,7 +702,7 @@ const ProductDetail = () => {
                   Why this is a great choice
                 </h4>
                 
-                <div className="space-y-3 relative z-10">
+                <div className="flex flex-col gap-3 relative z-10">
                   {product.features?.slice(0, 3).map((feature, i) => (
                     <div key={i} className="flex items-start gap-2.5">
                       <div className="w-1.5 h-1.5 rounded-full bg-primary/40 mt-1.5 shrink-0" />
@@ -807,6 +823,52 @@ const ProductDetail = () => {
               </span>
             </div>
 
+            {(colorOptions.length > 0 || variantOptions.length > 0) && (
+              <div
+                className="mb-6 sm:mb-8 border border-border rounded-sm bg-secondary/20 p-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+                style={{ touchAction: 'pan-y' }}
+              >
+                {colorOptions.length > 0 && (
+                  <div>
+                    <p className="text-[11px] uppercase tracking-wide text-muted-foreground">Selected Color</p>
+                    <p className="text-sm font-medium text-elegant">
+                      {selectedColor || colorOptions[0].name}
+                    </p>
+                  </div>
+                )}
+                {variantOptions.length > 0 && (
+                  <div>
+                    <p className="text-[11px] uppercase tracking-wide text-muted-foreground">Selected Type</p>
+                    <p className="text-sm font-medium text-elegant">
+                      {selectedVariant?.label || variantOptions[0].label}
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {product.connectivityOptions?.length ? (
+              <div className="mb-6 sm:mb-8 border border-primary/30 bg-primary/5 rounded-sm p-4 sm:p-5">
+                <p className="text-xs sm:text-sm font-semibold text-primary flex items-center gap-2 mb-3">
+                  <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                  Connectivity Versions Available
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {product.connectivityOptions.map((option) => (
+                    <span
+                      key={option}
+                      className="px-3 py-1.5 text-xs sm:text-sm rounded-full border border-primary/40 bg-white text-primary font-medium"
+                    >
+                      {option}
+                    </span>
+                  ))}
+                </div>
+                <p className="text-[11px] sm:text-xs text-muted-foreground mt-3">
+                  Choose the Wi-Fi + LTE version if you need cellular data on the go, or stick with Wi-Fi only for home and office use.
+                </p>
+              </div>
+            ) : null}
+
             {colorOptions.length > 0 && (
               <div className="mb-6">
                 <h4 className="text-elegant text-sm sm:text-base mb-3 font-medium">Select Color</h4>
@@ -874,7 +936,7 @@ const ProductDetail = () => {
               {product.features && product.features.length > 0 && (
                 <div className="mt-6">
                   <h4 className="text-elegant text-base mb-3 font-medium">Key Features</h4>
-                  <ul className="space-y-2">
+                  <ul className="flex flex-col gap-2">
                     {product.features.map((feature, index) => (
                       <li key={index} className="flex items-start gap-2 text-sm text-muted-foreground">
                         <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
@@ -1001,7 +1063,7 @@ const ProductDetail = () => {
           </div>
 
           {/* Individual Reviews */}
-          <div className="space-y-4">
+          <div className="flex flex-col gap-4">
             {productReviews.map((review) => (
               <motion.div
                 key={review.id}
@@ -1130,6 +1192,7 @@ const ProductDetail = () => {
                       images={accessory.images}
                       rating={accessory.rating}
                       category={accessory.category}
+                      colors={accessory.colors}
                     />
                   </motion.div>
                 ))}
@@ -1176,6 +1239,7 @@ const ProductDetail = () => {
                 images: p.images,
                 rating: p.rating,
                 category: p.category,
+                colors: p.colors,
               }))}
             />
           </motion.section>

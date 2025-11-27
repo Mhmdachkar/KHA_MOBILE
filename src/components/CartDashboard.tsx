@@ -232,27 +232,27 @@ const CartDashboard = () => {
                   const uniqueKey = `${item.id}-${item.variantKey || "base"}-${item.color || "no-color"}`;
                   
                   return (
-                    <motion.div
+                  <motion.div
                       key={uniqueKey}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.05 }}
-                      className="flex gap-3 p-3 sm:p-4 border border-border rounded-lg hover:border-primary/40 transition-all duration-300 bg-white"
-                    >
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                    className="flex gap-3 p-3 sm:p-4 border border-border rounded-lg hover:border-primary/40 transition-all duration-300 bg-white"
+                  >
                       {/* Product Image - Shows color-specific image if available */}
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden bg-white border border-border flex-shrink-0">
-                        <img
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden bg-white border border-border flex-shrink-0">
+                      <img
                           src={displayImage}
-                          alt={item.name}
+                        alt={item.name}
                           className="w-full h-full object-contain p-1"
-                        />
-                      </div>
+                      />
+                    </div>
 
-                      {/* Product Info */}
-                      <div className="flex-1 min-w-0">
-                        <h3 className="text-sm sm:text-base font-medium text-elegant line-clamp-2 mb-1">
-                          {item.name}
-                        </h3>
+                    {/* Product Info */}
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-sm sm:text-base font-medium text-elegant line-clamp-2 mb-1">
+                        {item.name}
+                      </h3>
                         {item.variantLabel && (
                           <p className="text-[10px] sm:text-xs text-primary/80 mb-1">
                             {item.variantLabel}
@@ -263,50 +263,50 @@ const CartDashboard = () => {
                             Color: {item.color}
                           </p>
                         )}
-                        {item.category && (
-                          <p className="text-xs text-muted-foreground mb-1">{item.category}</p>
-                        )}
-                        <p className="text-base sm:text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                          ${item.price.toFixed(2)}
-                        </p>
-                      </div>
+                      {item.category && (
+                        <p className="text-xs text-muted-foreground mb-1">{item.category}</p>
+                      )}
+                      <p className="text-base sm:text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                        ${item.price.toFixed(2)}
+                      </p>
+                    </div>
 
-                      {/* Quantity Controls */}
-                      <div className="flex flex-col items-end gap-2">
+                    {/* Quantity Controls */}
+                    <div className="flex flex-col items-end gap-2">
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                          onClick={() => removeFromCart(item.id, item.variantKey, item.color)}
+                        className="h-6 w-6 rounded-full hover:bg-destructive hover:text-destructive-foreground transition-all duration-300 flex items-center justify-center"
+                      >
+                        <Trash2 className="h-3 w-3" />
+                      </motion.button>
+                      
+                      <div className="flex items-center gap-2 border border-border rounded-lg">
                         <motion.button
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
-                          onClick={() => removeFromCart(item.id, item.variantKey, item.color)}
-                          className="h-6 w-6 rounded-full hover:bg-destructive hover:text-destructive-foreground transition-all duration-300 flex items-center justify-center"
+                            onClick={() => updateQuantity(item.id, item.quantity - 1, item.variantKey, item.color)}
+                          className="h-8 w-8 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all duration-300"
                         >
-                          <Trash2 className="h-3 w-3" />
+                          <Minus className="h-3 w-3" />
                         </motion.button>
                         
-                        <div className="flex items-center gap-2 border border-border rounded-lg">
-                          <motion.button
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
-                            onClick={() => updateQuantity(item.id, item.quantity - 1, item.variantKey, item.color)}
-                            className="h-8 w-8 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all duration-300"
-                          >
-                            <Minus className="h-3 w-3" />
-                          </motion.button>
-                          
-                          <span className="text-sm font-medium w-8 text-center">
-                            {item.quantity}
-                          </span>
-                          
-                          <motion.button
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
+                        <span className="text-sm font-medium w-8 text-center">
+                          {item.quantity}
+                        </span>
+                        
+                        <motion.button
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
                             onClick={() => updateQuantity(item.id, item.quantity + 1, item.variantKey, item.color)}
-                            className="h-8 w-8 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all duration-300"
-                          >
-                            <Plus className="h-3 w-3" />
-                          </motion.button>
-                        </div>
+                          className="h-8 w-8 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+                        >
+                          <Plus className="h-3 w-3" />
+                        </motion.button>
                       </div>
-                    </motion.div>
+                    </div>
+                  </motion.div>
                   );
                 })}
               </motion.div>

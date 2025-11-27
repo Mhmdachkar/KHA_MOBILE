@@ -116,6 +116,7 @@ const HorizontalScrollContainer = ({ products }: { products: any[] }) => {
               images={product.images || [product.image]}
               rating={product.rating}
               category={product.category}
+              colors={product.colors}
             />
           </div>
         ))}
