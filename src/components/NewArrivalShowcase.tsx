@@ -21,8 +21,12 @@ import {
 import { getGreenLionProductById } from "@/data/greenLionProducts";
 import { useState, useEffect } from "react";
 
+const ROTATION_INTERVAL = 7 * 1000; // 7 seconds
+
+const isBrowser = typeof window !== "undefined";
+const canHover = isBrowser && window.matchMedia("(hover: hover)").matches;
+
 const NewArrivalShowcase = () => {
-  const ROTATION_INTERVAL = 3 * 1000; // 3 seconds
 
   const showcases = [
     {
@@ -114,7 +118,10 @@ const NewArrivalShowcase = () => {
   };
 
   return (
-    <section className="py-8 sm:py-12 md:py-16 lg:py-24 bg-background relative overflow-hidden min-h-[500px] sm:min-h-[600px] md:min-h-[700px] flex items-center">
+    <section
+      className="py-8 sm:py-12 md:py-16 lg:py-24 bg-background relative overflow-hidden min-h-[500px] sm:min-h-[600px] md:min-h-[700px] flex items-center"
+      style={{ touchAction: "pan-y pinch-zoom" }}
+    >
       {/* Background Decorative Elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         <div className="absolute top-[10%] left-[5%] w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 bg-primary/5 rounded-full blur-3xl" />
@@ -139,7 +146,7 @@ const NewArrivalShowcase = () => {
               opacity: { duration: isMobile ? 0.3 : 0.4 },
               scale: { duration: isMobile ? 0.3 : 0.4 }
             }}
-            drag="x"
+            drag={isMobile ? false : "x"}
             dragConstraints={{ left: 0, right: 0 }}
             dragElastic={1}
             dragMomentum={false}
@@ -153,16 +160,32 @@ const NewArrivalShowcase = () => {
               }
             }}
             style={{ touchAction: 'pan-y pinch-zoom' }}
-            className="flex flex-col lg:flex-row items-center gap-6 sm:gap-8 md:gap-10 lg:gap-16 w-full"
+            className="w-full grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] items-center gap-6 sm:gap-8 lg:gap-12"
           >
+            {/* Title / Badge */}
+            <div className="order-1 flex flex-col items-center lg:items-start text-center lg:text-left w-full lg:col-span-1 lg:col-start-1">
+              <Badge variant="outline" className="mb-3 sm:mb-4 px-3 py-1 border-primary/30 text-primary bg-primary/5 text-xs sm:text-sm">
+                <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1.5 fill-primary" />
+                Featured Item
+              </Badge>
+              <motion.h2 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-elegant mb-2 sm:mb-3 leading-tight w-full"
+              >
+                {product.name}
+              </motion.h2>
+            </div>
+
             {/* Product Image Side */}
-            <div className="w-full lg:w-1/2 relative">
+            <div className="order-2 lg:order-2 w-full relative lg:col-span-1 lg:col-start-2 lg:row-span-3">
               <div className="relative aspect-square max-w-[280px] sm:max-w-md mx-auto lg:max-w-full">
                 {/* Glowing Background behind image */}
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full blur-2xl scale-90" />
                 
                 <motion.div
-                  whileHover={window.matchMedia('(hover: hover)').matches ? { scale: 1.05, rotate: -2 } : undefined}
+                  whileHover={canHover ? { scale: 1.05, rotate: -2 } : undefined}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
                   className="relative z-10 w-full h-full flex items-center justify-center"
                   style={{ touchAction: 'manipulation' }}
@@ -190,100 +213,87 @@ const NewArrivalShowcase = () => {
               </div>
             </div>
 
-            {/* Content Side */}
-            <div className="w-full lg:w-1/2 space-y-6 sm:space-y-8 flex flex-col items-center lg:items-start text-center lg:text-left">
-              <div className="flex flex-col items-center lg:items-start w-full">
-                <Badge variant="outline" className="mb-3 sm:mb-4 px-3 py-1 border-primary/30 text-primary bg-primary/5 text-xs sm:text-sm">
-                  <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1.5 fill-primary" />
-                  Featured Item
-                </Badge>
-                <motion.h2 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 }}
-                  className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-elegant mb-2 sm:mb-3 leading-tight w-full"
-                >
-                  {product.name}
-                </motion.h2>
-                <motion.p 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
-                  className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground font-light mb-4 line-clamp-2 sm:line-clamp-none w-full"
-                >
-                  {product.title.split('-')[1]?.trim() || product.title}
-                </motion.p>
-                <div className="h-1 w-16 sm:w-20 bg-gradient-to-r from-primary to-accent rounded-full mb-2" />
-              </div>
+            {/* Description */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="order-3 w-full text-center flex flex-col items-center lg:items-start lg:text-left lg:col-span-2"
+            >
+              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground font-light mb-4 max-w-3xl">
+                {product.title.split('-')[1]?.trim() || product.title}
+              </p>
+              <div className="h-1 w-16 sm:w-20 bg-gradient-to-r from-primary to-accent rounded-full mb-2" />
+            </motion.div>
 
-              {/* Why this is a great choice section */}
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="bg-secondary/30 border border-border/50 rounded-2xl p-5 sm:p-6 md:p-8 w-full text-left"
-              >
-                <h3 className="text-base sm:text-lg font-semibold mb-4 flex items-center gap-2">
-                  Why this is a great choice
-                </h3>
-                
-                <div className="grid gap-3 sm:gap-4">
-                  {currentShowcase.highlightFeatures.map((feature, index) => {
-                    const IconComponent = feature.icon;
-                    return (
-                      <div key={index} className="flex items-start gap-3" style={{ touchAction: 'manipulation' }}>
-                        <div className="p-2 rounded-lg bg-primary/10 text-primary mt-0.5 flex-shrink-0">
-                          <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />
-                        </div>
+            {/* Why this is a great choice section */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="order-4 bg-secondary/30 border border-border/50 rounded-2xl p-5 sm:p-6 md:p-8 w-full text-left lg:col-span-2"
+            >
+              <h3 className="text-base sm:text-lg font-semibold mb-4 flex items-center gap-2">
+                Why this is a great choice
+              </h3>
+              
+              <div className="grid gap-3 sm:gap-4">
+                {currentShowcase.highlightFeatures.map((feature, index) => {
+                  const IconComponent = feature.icon;
+                  return (
+                    <div key={index} className="flex items-start gap-3" style={{ touchAction: 'manipulation' }}>
+                      <div className="p-2 rounded-lg bg-primary/10 text-primary mt-0.5 flex-shrink-0">
+                        <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />
+                      </div>
                       <div className="min-w-0 flex-1">
                         <h4 className="font-medium text-foreground text-sm sm:text-base">{feature.label}</h4>
                         <p className="text-xs sm:text-sm text-muted-foreground break-words leading-relaxed">{feature.value}</p>
                       </div>
                     </div>
-                    );
-                  })}
-                </div>
+                  );
+                })}
+              </div>
 
-                <div className="mt-5 pt-5 sm:mt-6 sm:pt-6 border-t border-border/50 flex flex-wrap gap-x-6 gap-y-2">
-                  <div className="flex items-center gap-2 text-xs sm:text-sm font-medium text-foreground/80">
-                    <CheckCircle2 className="w-4 h-4 text-green-500 flex-shrink-0" />
-                    <span>Authorized Reseller</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs sm:text-sm font-medium text-foreground/80">
-                    <ShieldCheck className="w-4 h-4 text-green-500 flex-shrink-0" />
-                    <span>1 Year Warranty</span>
-                  </div>
+              <div className="mt-5 pt-5 sm:mt-6 sm:pt-6 border-t border-border/50 flex flex-wrap gap-x-6 gap-y-2">
+                <div className="flex items-center gap-2 text-xs sm:text-sm font-medium text-foreground/80">
+                  <CheckCircle2 className="w-4 h-4 text-green-500 flex-shrink-0" />
+                  <span>Authorized Reseller</span>
                 </div>
-              </motion.div>
+                <div className="flex items-center gap-2 text-xs sm:text-sm font-medium text-foreground/80">
+                  <ShieldCheck className="w-4 h-4 text-green-500 flex-shrink-0" />
+                  <span>1 Year Warranty</span>
+                </div>
+              </div>
+            </motion.div>
 
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-                className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full pt-2"
-              >
-                <Link to={`/product/${product.id}`} className="w-full sm:w-auto flex-1 sm:flex-none">
-                  <Button 
-                    size="lg" 
-                    className="w-full text-sm sm:text-base font-semibold px-8 py-6 shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all duration-300 min-h-[52px]"
-                    style={{ touchAction: 'manipulation' }}
-                  >
-                    Shop Now
-                    <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
-                  </Button>
-                </Link>
-                <Link to="/products" className="w-full sm:w-auto flex-1 sm:flex-none">
-                  <Button 
-                    variant="outline" 
-                    size="lg" 
-                    className="w-full text-sm sm:text-base font-semibold px-8 py-6 min-h-[52px]"
-                    style={{ touchAction: 'manipulation' }}
-                  >
-                    View All Products
-                  </Button>
-                </Link>
-              </motion.div>
-            </div>
+            {/* CTA */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="order-5 flex flex-col sm:flex-row gap-3 sm:gap-4 w-full pt-4 lg:col-span-2"
+            >
+              <Link to={`/product/${product.id}`} className="w-full sm:w-auto flex-1 sm:flex-none">
+                <Button 
+                  size="lg" 
+                  className="w-full text-sm sm:text-base font-semibold px-8 py-6 shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all duration-300 min-h-[52px]"
+                  style={{ touchAction: 'manipulation' }}
+                >
+                  Shop Now
+                  <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
+                </Button>
+              </Link>
+              <Link to="/products" className="w-full sm:w-auto flex-1 sm:flex-none">
+                <Button 
+                  variant="outline" 
+                  size="lg" 
+                  className="w-full text-sm sm:text-base font-semibold px-8 py-6 min-h-[52px]"
+                  style={{ touchAction: 'manipulation' }}
+                >
+                  View All Products
+                </Button>
+              </Link>
+            </motion.div>
           </motion.div>
         </AnimatePresence>
         
