@@ -842,7 +842,7 @@ const Checkout = () => {
                     {/* Account Type Dropdown - Only for Netflix and Shahid */}
                     {requiresAccountType && (
                       <div>
-                        <Label htmlFor="accountType" className="text-elegant text-sm mb-2 flex items-center gap-2">
+                        <Label className="text-elegant text-sm mb-2 flex items-center gap-2">
                           Account Type
                           <span className="text-red-500">*</span>
                         </Label>
@@ -854,8 +854,9 @@ const Checkout = () => {
                         >
                           <SelectTrigger 
                             className="mt-2"
+                            id="accountType"
+                            type="button"
                             onClick={(e) => {
-                              // Prevent scroll-to-top when clicking dropdown
                               e.stopPropagation();
                             }}
                           >

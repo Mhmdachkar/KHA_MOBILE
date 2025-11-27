@@ -22,7 +22,7 @@ import { getGreenLionProductById } from "@/data/greenLionProducts";
 import { useState, useEffect } from "react";
 
 const NewArrivalShowcase = () => {
-  const ROTATION_INTERVAL = 3 * 60 * 1000; // 3 minutes
+  const ROTATION_INTERVAL = 3 * 1000; // 3 seconds
 
   const showcases = [
     {

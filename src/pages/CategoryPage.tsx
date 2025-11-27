@@ -300,6 +300,11 @@ const CategoryPage = () => {
     // Always sort to put Green Lion products first (unless user selects a specific sort)
     if (sortBy === "default") {
       filtered.sort((a, b) => {
+        // For Smartphones, strictly sort by Newest First (ID Descending)
+        if (isSmartphoneCategory) {
+          return b.id - a.id;
+        }
+
         const aIsGreenLion = isGreenLionProduct(a);
         const bIsGreenLion = isGreenLionProduct(b);
         
