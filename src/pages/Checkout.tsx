@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useCart } from "@/context/CartContext";
 import { getProductById } from "@/data/products";
 import { getGreenLionProductById } from "@/data/greenLionProducts";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // Import recharge images for display
 import recharge1_67 from "@/assets/recharges/1.67$.png";
@@ -96,6 +97,7 @@ const Checkout = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
+  const isMobile = useIsMobile();
   
   // Check if this is a recharge/gift card checkout (has URL params) or cart checkout
   const isRechargeCheckout = searchParams.has("name") || searchParams.has("price");
@@ -846,38 +848,47 @@ const Checkout = () => {
                           Account Type
                           <span className="text-red-500">*</span>
                         </Label>
-                        <Select
-                          value={formData.accountType}
-                          onValueChange={(value) => {
-                            setFormData({ ...formData, accountType: value });
-                          }}
-                        >
-                          <SelectTrigger 
-                            className="mt-2"
-                            id="accountType"
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
+                        {isMobile ? (
+                          <select
+                            value={formData.accountType}
+                            onChange={(event) =>
+                              setFormData({ ...formData, accountType: event.target.value })
+                            }
+                            className="mt-2 w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+                            style={{ touchAction: "manipulation" }}
+                          >
+                            <option value="1 user">1 User</option>
+                            <option value="full account">Full Account</option>
+                          </select>
+                        ) : (
+                          <Select
+                            value={formData.accountType}
+                            onValueChange={(value) => {
+                              setFormData({ ...formData, accountType: value });
                             }}
                           >
-                            <SelectValue placeholder="Select account type" />
-                          </SelectTrigger>
-                          <SelectContent 
-                            position="popper" 
-                            className="z-[100]"
-                            onCloseAutoFocus={(e) => {
-                              // Prevent auto-focus from causing scroll
-                              e.preventDefault();
-                            }}
-                            onEscapeKeyDown={(e) => {
-                              // Prevent escape key from causing scroll
-                              e.stopPropagation();
-                            }}
-                          >
-                            <SelectItem value="1 user">1 User</SelectItem>
-                            <SelectItem value="full account">Full Account</SelectItem>
-                          </SelectContent>
-                        </Select>
+                            <SelectTrigger 
+                              className="mt-2"
+                              id="accountType"
+                              type="button"
+                            >
+                              <SelectValue placeholder="Select account type" />
+                            </SelectTrigger>
+                            <SelectContent 
+                              position="popper" 
+                              className="z-[100]"
+                              onCloseAutoFocus={(e) => {
+                                e.preventDefault();
+                              }}
+                              onEscapeKeyDown={(e) => {
+                                e.stopPropagation();
+                              }}
+                            >
+                              <SelectItem value="1 user">1 User</SelectItem>
+                              <SelectItem value="full account">Full Account</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        )}
                         <p className="text-xs text-muted-foreground mt-2">
                           Choose between single user access or full account access
                         </p>

@@ -219,7 +219,7 @@ export const greenLionProducts: GreenLionProduct[] = [
     name: "Green Lion Pro Trim Duo Hair Clipper",
     title: "Green Lion Pro Trim Duo 9-in-1 Hair Clipper Set - Corded & Cordless",
     price: 79.99,
-    images: [proTrimDuo2, proTrimDuo, proTrimDuo3, proTrimDuo4],
+    images: [proTrimDuo, proTrimDuo2, proTrimDuo3, proTrimDuo4],
     rating: 4.9,
     category: "Accessories",
     secondaryCategories: ["Grooming"],
@@ -285,7 +285,7 @@ export const greenLionProducts: GreenLionProduct[] = [
     name: "Green Lion One Blade Beard Trimmer",
     title: "Green Lion One Blade Beard Trimmer - IPX5 Waterproof, 120 Min Runtime",
     price: 39.99,
-    images: [oneBlade2, oneBlade, oneBlade1, oneBlade3],
+    images: [oneBlade, oneBlade1, oneBlade2, oneBlade3],
     rating: 4.6,
     category: "Accessories",
     secondaryCategories: ["Grooming"],
@@ -409,7 +409,7 @@ export const greenLionProducts: GreenLionProduct[] = [
     name: "Green Lion Silkwave Straightener",
     title: "Green Lion Silkwave Hair Straightener - 5 Temperature Settings, Ceramic Plates",
     price: 44.99,
-    images: [straightener3, straightener, straightener1, straightener2],
+    images: [straightener, straightener1, straightener2, straightener3],
     rating: 4.7,
     category: "Accessories",
     secondaryCategories: ["Beauty", "Grooming"],
@@ -438,7 +438,7 @@ export const greenLionProducts: GreenLionProduct[] = [
     name: "Green Lion Blow Wave Hair Dryer 850W",
     title: "Green Lion Blow Wave Hair Dryer - 850W, 2 Speed Settings, Ultra Quiet",
     price: 39.99,
-    images: [hairDryer1, hairDryer, hairDryer2],
+    images: [hairDryer, hairDryer1, hairDryer2],
     rating: 4.6,
     category: "Accessories",
     secondaryCategories: ["Beauty", "Grooming"],
@@ -475,7 +475,7 @@ export const greenLionProducts: GreenLionProduct[] = [
     name: "Green Lion Digital Luggage Scale Max 50KG",
     title: "Green Lion Digital Luggage Scale - Max 50KG Capacity",
     price: 24.99,
-    images: [luggageScale1, luggageScale, luggageScale2],
+    images: [luggageScale, luggageScale1, luggageScale2],
     rating: 4.7,
     category: "Accessories",
     secondaryCategories: ["Travel"],
@@ -499,7 +499,7 @@ export const greenLionProducts: GreenLionProduct[] = [
     name: "Green Lion Dual Kitchen Scale",
     title: "Green Lion Dual Kitchen Scale - Large & Small Platforms, Tare Function",
     price: 34.99,
-    images: [kitchenScale1, kitchenScale, kitchenScale2, kitchenScale3],
+    images: [kitchenScale, kitchenScale1, kitchenScale2, kitchenScale3],
     rating: 4.8,
     category: "Accessories",
     secondaryCategories: ["Kitchen"],
@@ -617,7 +617,7 @@ export const greenLionProducts: GreenLionProduct[] = [
     name: "Green Lion LED Table Lamp",
     title: "Green Lion LED Table Lamp - Adjustable Brightness",
     price: 34.99,
-    images: [ledLamp1, ledLamp, ledLamp2, ledLamp3, ledLamp3jpg, ledLampWebp],
+    images: [ledLamp, ledLamp1, ledLamp2, ledLamp3, ledLamp3jpg, ledLampWebp],
     rating: 4.8,
     category: "Accessories",
     secondaryCategories: ["Home & Office"],
@@ -642,7 +642,7 @@ export const greenLionProducts: GreenLionProduct[] = [
     name: "Green Lion M6-Rotating Stand",
     title: "Green Lion M6-Rotating Stand - Three-Axis Design",
     price: 22.99,
-    images: [m6Stand1, m6Stand],
+    images: [m6Stand, m6Stand1],
     rating: 4.6,
     category: "Accessories",
     secondaryCategories: ["Phone Accessories"],
@@ -805,7 +805,7 @@ export const greenLionProducts: GreenLionProduct[] = [
     name: "Green Lion G-20 Ultra Tablet",
     title: "Green Lion G-20 Ultra - 10.1\" Full HD Tablet, 6GB+128GB with 4G",
     price: 179.99,
-    images: [g20Tablet1, g20Tablet],
+    images: [g20Tablet, g20Tablet1],
     rating: 4.7,
     category: "Accessories",
     secondaryCategories: ["Tablets"],
@@ -847,7 +847,7 @@ export const greenLionProducts: GreenLionProduct[] = [
     name: "Green Lion Sevilla Wireless Neckband",
     title: "Green Lion Sevilla Wireless Neckband - Bluetooth 5.4, 21 Hours Playtime",
     price: 39.99,
-    images: [sevillaNeckband1, sevillaNeckband],
+    images: [sevillaNeckband, sevillaNeckband1],
     rating: 4.6,
     category: "Accessories",
     secondaryCategories: ["Audio", "Headphones"],
@@ -918,8 +918,8 @@ export const greenLionProducts: GreenLionProduct[] = [
       { label: "Sensitivity", value: "98dB" }
     ],
     colors: [
-      { name: "Black", stock: "available", image: manchesterEarbuds },
-      { name: "Silver", stock: "available", image: manchesterEarbudsSilver }
+      { name: "Black", stock: "available" },
+      { name: "Silver", stock: "available" }
     ]
   },
   {
@@ -927,7 +927,7 @@ export const greenLionProducts: GreenLionProduct[] = [
     name: "Green Lion River True Wireless Earbuds",
     title: "Green Lion River TWS Earbuds - ANC+ENC, Bluetooth 5.4, 6-7 Hours Playtime",
     price: 49.99,
-    images: [riverEarbudsBlack, riverEarbuds, riverEarbuds1, riverEarbudsRoseGold, riverEarbudsWhite],
+    images: [riverEarbuds, riverEarbuds1, riverEarbudsBlack, riverEarbudsRoseGold, riverEarbudsWhite],
     rating: 4.8,
     category: "Accessories",
     secondaryCategories: ["Audio", "Earbuds"],
@@ -981,7 +981,7 @@ export const greenLionProducts: GreenLionProduct[] = [
     name: "Green Lion ECHO ANC Zero Sound. Zero Noise Headphone",
     title: "Green Lion ECHO ANC Headphone - 36 Hours Playtime, 40mm Driver, AUX Support",
     price: 69.99,
-    images: [echoHeadphone1, echoHeadphone, echoHeadphoneBeige],
+    images: [echoHeadphone, echoHeadphone1, echoHeadphoneBeige],
     rating: 4.8,
     category: "Accessories",
     secondaryCategories: ["Audio", "Headphones"],
@@ -1024,7 +1024,7 @@ export const greenLionProducts: GreenLionProduct[] = [
     name: "Green Lion Rhythm X50 ANC Wireless Headphone",
     title: "Green Lion Rhythm X50 ANC - Bluetooth 6.0, 30-50 Hours Playtime, Metal Body",
     price: 89.99,
-    images: [rhythmHeadphoneBlack, rhythmHeadphoneBrown],
+    images: [rhythmHeadphone, rhythmHeadphoneBlack, rhythmHeadphoneBrown],
     rating: 4.9,
     category: "Accessories",
     secondaryCategories: ["Audio", "Headphones"],
@@ -1110,7 +1110,7 @@ export const greenLionProducts: GreenLionProduct[] = [
     name: "Green Lion Porto Wireless Speaker",
     title: "Green Lion Porto Speaker - IPX6 Waterproof, 8W Output, RGB Light, Extra Bass",
     price: 44.99,
-    images: [portoSpeaker1, portoSpeaker],
+    images: [portoSpeaker, portoSpeaker1],
     rating: 4.7,
     category: "Accessories",
     secondaryCategories: ["Audio", "Speakers"],
@@ -1239,8 +1239,8 @@ export const greenLionProducts: GreenLionProduct[] = [
       { label: "Water Resistance", value: "Yes" }
     ],
     colors: [
-      { name: "Black", stock: "available", image: trackFitWatch },
-      { name: "Silver", stock: "available", image: trackFitWatchSilver }
+      { name: "Black", stock: "available" },
+      { name: "Silver", stock: "available" }
     ]
   },
   {
@@ -1282,9 +1282,9 @@ export const greenLionProducts: GreenLionProduct[] = [
       { label: "Features", value: "Always On Display, Gesture Operation, Extra Strap" }
     ],
     colors: [
-      { name: "Silver", price: 89.99, stock: "available", image: ultimate41Watch },
-      { name: "Black", price: 89.99, stock: "available", image: ultimate41WatchBlack },
-      { name: "Pink", price: 89.99, stock: "available", image: ultimate41WatchPink },
+      { name: "Silver", price: 89.99, stock: "available" },
+      { name: "Black", price: 89.99, stock: "available" },
+      { name: "Pink", price: 89.99, stock: "available" },
       { name: "Rose Gold", price: 89.99, stock: "out of stock" }
     ]
   },
@@ -1331,7 +1331,7 @@ export const greenLionProducts: GreenLionProduct[] = [
     name: "Green Lion Mini DC UPS 10000mAh",
     title: "Green Lion Mini DC UPS - 10000mAh with AC Input, Universal Compatibility",
     price: 89.99,
-    images: [miniUPSPlaceholder, miniUPS, miniUPSWebp],
+    images: [miniUPS, miniUPSWebp, miniUPSPlaceholder],
     rating: 4.7,
     category: "Accessories",
     secondaryCategories: ["Charging", "Power"],

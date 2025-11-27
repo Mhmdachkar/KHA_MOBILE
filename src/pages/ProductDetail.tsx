@@ -567,7 +567,10 @@ const ProductDetail = () => {
             <div className="absolute -top-20 -left-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl opacity-50 pointer-events-none animate-pulse" />
             <div className="absolute -bottom-10 -right-10 w-48 h-48 bg-accent/5 rounded-full blur-3xl opacity-50 pointer-events-none" />
 
-            <div className="relative aspect-square bg-white rounded-sm mb-4 sm:mb-6 overflow-hidden group border border-border">
+            <div
+              className="relative aspect-square bg-white rounded-sm mb-4 sm:mb-6 overflow-hidden group border border-border"
+              style={{ touchAction: "pan-y pinch-zoom" }}
+            >
               {/* Dynamic Background Animation behind the product */}
               <motion.div 
                 className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary/5 to-transparent opacity-30"
@@ -600,7 +603,7 @@ const ProductDetail = () => {
                 src={productImages[selectedImage]}
                 alt={product.name}
                 className="h-full w-full object-contain p-4 sm:p-6 md:p-8 transition-opacity duration-300 relative z-10"
-                style={{ maxHeight: '100%', maxWidth: '100%', margin: '0 auto' }}
+                style={{ maxHeight: "100%", maxWidth: "100%", margin: "0 auto", touchAction: "pan-y pinch-zoom" }}
                 onError={(e) => {
                   // Fallback if image fails to load
                   const target = e.target as HTMLImageElement;
@@ -631,13 +634,15 @@ const ProductDetail = () => {
 
             {/* Thumbnails */}
             {productImages.length > 1 && (
-              <div className="grid grid-cols-4 gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6">
+              <div
+                className="grid grid-cols-4 gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6"
+                style={{ touchAction: "pan-y pinch-zoom" }}
+              >
                 {productImages.map((image, index) => (
                   <button
                     key={index}
                     onClick={() => setSelectedImage(index)}
-                    style={{ touchAction: 'manipulation' }}
-                    style={{ touchAction: 'manipulation', minHeight: '60px', minWidth: '60px' }}
+                    style={{ touchAction: "manipulation", minHeight: "60px", minWidth: "60px" }}
                     className={`aspect-square bg-white rounded-sm overflow-hidden border-2 transition-all cursor-pointer min-h-[70px] sm:min-h-[80px] md:min-h-[90px] ${
                       selectedImage === index
                         ? "border-primary ring-2 ring-primary/30 shadow-md"
@@ -805,7 +810,7 @@ const ProductDetail = () => {
             {colorOptions.length > 0 && (
               <div className="mb-6">
                 <h4 className="text-elegant text-sm sm:text-base mb-3 font-medium">Select Color</h4>
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-3" style={{ touchAction: "pan-y" }}>
                   {colorOptions.map((color) => (
                     <button
                       key={color.name}
@@ -827,7 +832,7 @@ const ProductDetail = () => {
             {variantOptions.length > 0 && (
               <div className="mb-6 sm:mb-8">
                 <h4 className="text-elegant text-sm sm:text-base mb-3 sm:mb-4 font-medium">Choose your configuration</h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3" style={{ touchAction: "pan-y" }}>
                   {variantOptions.map((variant) => {
                     const isActive = selectedVariant?.key === variant.key;
                     return (

@@ -123,12 +123,12 @@ export const computersProducts: Product[] = [
 // Wearables products - using real products from products.ts + Green Lion smartwatches
 export const wearablesProducts: Product[] = [
   ...realWearables.map(product => ({
-    id: product.id,
-    name: product.name,
-    price: product.price,
-    image: product.image,
-    rating: product.rating,
-    category: product.category,
+  id: product.id,
+  name: product.name,
+  price: product.price,
+  image: product.image,
+  rating: product.rating,
+  category: product.category,
   })),
   // Green Lion smartwatches
   ...getGreenLionProductsByCategory("Wearables").map(product => ({
