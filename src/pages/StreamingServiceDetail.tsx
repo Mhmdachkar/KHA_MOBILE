@@ -157,7 +157,7 @@ const StreamingServiceDetail = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white no-horizontal-scroll overflow-x-hidden">
+    <div className="min-h-screen bg-white no-horizontal-scroll overflow-x-hidden" style={{ touchAction: "pan-y" }}>
       <Header />
 
       <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12">
@@ -191,18 +191,20 @@ const StreamingServiceDetail = () => {
         </motion.div>
 
         {/* Service Detail Section */}
-        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 md:gap-16 mb-12">
+        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 md:gap-16 mb-12" style={{ touchAction: "pan-y" }}>
           {/* Image */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
+            style={{ touchAction: "pan-y" }}
           >
             <div className="relative aspect-square bg-white rounded-sm overflow-hidden border border-border">
               <img
                 src={service.image}
                 alt={service.name}
                 className="h-full w-full object-cover p-6"
+                style={{ touchAction: "pan-y" }}
               />
             </div>
           </motion.div>
@@ -212,6 +214,7 @@ const StreamingServiceDetail = () => {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
+            style={{ touchAction: "pan-y" }}
           >
             <motion.span
               initial={{ opacity: 0.7 }}
@@ -264,7 +267,7 @@ const StreamingServiceDetail = () => {
             )}
 
             {/* Subscription Plans */}
-            <div id="subscription-plans" className="mb-6 sm:mb-8 scroll-mt-24">
+            <div id="subscription-plans" className="mb-6 sm:mb-8 scroll-mt-24" style={{ touchAction: "pan-y" }}>
               <h2 className="text-elegant text-xl sm:text-2xl mb-3 sm:mb-4">Subscription Plans</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 {service.plans.map((plan) => {
@@ -284,6 +287,7 @@ const StreamingServiceDetail = () => {
                             ? "bg-accent/10 border-accent/30 hover:border-accent/50 hover:bg-accent/20"
                             : "bg-primary/5 border-primary/20 hover:border-primary/40 hover:bg-primary/10"
                       }`}
+                      style={{ touchAction: "manipulation" }}
                     >
                       <div className="flex items-center justify-between gap-2">
                         <span className={`text-sm sm:text-base font-medium ${

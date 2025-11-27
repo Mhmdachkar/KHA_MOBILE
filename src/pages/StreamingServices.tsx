@@ -91,13 +91,15 @@ const ServiceCard = ({ service }: ServiceCardProps) => {
       whileHover={{ y: -12 }}
       transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
       className="group relative bg-white rounded-sm overflow-hidden border border-border hover:border-primary/40 transition-all duration-500 shadow-card hover:shadow-elegant"
+      style={{ touchAction: "pan-y" }}
     >
       <Link to={`/streaming-service/${service.id}`}>
-        <div className="aspect-[4/3] overflow-hidden bg-white relative border-b border-border cursor-pointer">
+        <div className="aspect-[4/3] overflow-hidden bg-white relative border-b border-border cursor-pointer" style={{ touchAction: "pan-y" }}>
           <motion.img
             src={service.image}
             alt={service.name}
             className="h-full w-full object-cover p-4 transition-transform duration-700 group-hover:scale-110"
+            style={{ touchAction: "pan-y" }}
           />
         </div>
       </Link>
@@ -127,7 +129,7 @@ const ServiceCard = ({ service }: ServiceCardProps) => {
         </Link>
         
         {/* Subscription Plans */}
-        <div className="space-y-2 mb-4">
+        <div className="space-y-2 mb-4" style={{ touchAction: "pan-y" }}>
           <p className="text-elegant text-xs font-medium mb-3">Subscription Plans:</p>
           {service.plans.map((plan) => (
             <motion.button
@@ -144,6 +146,7 @@ const ServiceCard = ({ service }: ServiceCardProps) => {
                   ? "bg-accent/10 border-accent/30 hover:border-accent/50 hover:bg-accent/20"
                   : "bg-primary/5 border-primary/20 hover:border-primary/40 hover:bg-primary/10"
               }`}
+              style={{ touchAction: "manipulation" }}
             >
               <div className="flex items-center justify-between">
                 <span className={`text-sm font-medium ${
@@ -175,10 +178,10 @@ const StreamingServices = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white no-horizontal-scroll overflow-x-hidden">
+    <div className="min-h-screen bg-white no-horizontal-scroll overflow-x-hidden" style={{ touchAction: "pan-y" }}>
       <Header />
 
-      <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-12">
+      <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-12" style={{ touchAction: "pan-y" }}>
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -197,7 +200,7 @@ const StreamingServices = () => {
         </motion.p>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12" style={{ touchAction: "pan-y" }}>
           {STREAMING_SERVICES.map((service, index) => (
             <motion.div
               key={service.id}
