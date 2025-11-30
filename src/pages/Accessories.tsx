@@ -44,9 +44,9 @@ const Accessories = () => {
       .filter((product) => {
         const category = product.category?.toLowerCase();
         // Exclude Audio, Gaming, and Wearables
-        return category !== "audio" && 
-               category !== "gaming" && 
-               category !== "wearables";
+        return category !== "audio" &&
+          category !== "gaming" &&
+          category !== "wearables";
       })
       .map((product) => ({
         id: product.id,
@@ -63,44 +63,44 @@ const Accessories = () => {
       .filter((product) => {
         // Exclude if it has Audio, Gaming, or Wearables in secondary categories
         const hasAudio = product.secondaryCategories?.some(
-          (cat) => cat.toLowerCase() === "audio" || 
-                   cat.toLowerCase() === "headphones" || 
-                   cat.toLowerCase() === "earbuds" || 
-                   cat.toLowerCase() === "speakers" ||
-                   cat.toLowerCase() === "neckbands"
+          (cat) => cat.toLowerCase() === "audio" ||
+            cat.toLowerCase() === "headphones" ||
+            cat.toLowerCase() === "earbuds" ||
+            cat.toLowerCase() === "speakers" ||
+            cat.toLowerCase() === "neckbands"
         );
         const hasGaming = product.secondaryCategories?.some(
           (cat) => cat.toLowerCase() === "gaming"
         );
         const hasWearables = product.secondaryCategories?.some(
-          (cat) => cat.toLowerCase() === "wearables" || 
-                   cat.toLowerCase() === "smartwatches" ||
-                   cat.toLowerCase() === "watch"
+          (cat) => cat.toLowerCase() === "wearables" ||
+            cat.toLowerCase() === "smartwatches" ||
+            cat.toLowerCase() === "watch"
         );
-        
+
         // Also check product name for audio/gaming/wearable keywords
         const nameLower = product.name.toLowerCase();
-        const isAudioProduct = nameLower.includes("earbud") || 
-                              nameLower.includes("headphone") || 
-                              nameLower.includes("speaker") || 
-                              nameLower.includes("neckband") ||
-                              nameLower.includes("river") ||
-                              nameLower.includes("manchester") ||
-                              nameLower.includes("porto") ||
-                              nameLower.includes("jupiter") ||
-                              nameLower.includes("rhythm") ||
-                              nameLower.includes("echo") ||
-                              nameLower.includes("sevilla");
+        const isAudioProduct = nameLower.includes("earbud") ||
+          nameLower.includes("headphone") ||
+          nameLower.includes("speaker") ||
+          nameLower.includes("neckband") ||
+          nameLower.includes("river") ||
+          nameLower.includes("manchester") ||
+          nameLower.includes("porto") ||
+          nameLower.includes("jupiter") ||
+          nameLower.includes("rhythm") ||
+          nameLower.includes("echo") ||
+          nameLower.includes("sevilla");
         const isGamingProduct = nameLower.includes("gaming");
-        const isWearableProduct = nameLower.includes("watch") || 
-                                 nameLower.includes("smartwatch") ||
-                                 nameLower.includes("track fit") ||
-                                 (nameLower.includes("ultimate") && (nameLower.includes("46mm") || nameLower.includes("41"))) ||
-                                 nameLower.includes("active 49");
-        
+        const isWearableProduct = nameLower.includes("watch") ||
+          nameLower.includes("smartwatch") ||
+          nameLower.includes("track fit") ||
+          (nameLower.includes("ultimate") && (nameLower.includes("46mm") || nameLower.includes("41"))) ||
+          nameLower.includes("active 49");
+
         // Only include if it's NOT audio, gaming, or wearable
-        return !hasAudio && !hasGaming && !hasWearables && 
-               !isAudioProduct && !isGamingProduct && !isWearableProduct;
+        return !hasAudio && !hasGaming && !hasWearables &&
+          !isAudioProduct && !isGamingProduct && !isWearableProduct;
       })
       .map((product) => ({
         id: product.id,
@@ -148,11 +148,11 @@ const Accessories = () => {
     products.sort((a: any, b: any) => {
       const aIsGreenLion = isGreenLionProduct(a);
       const bIsGreenLion = isGreenLionProduct(b);
-      
+
       // Green Lion products first
       if (aIsGreenLion && !bIsGreenLion) return -1;
       if (!aIsGreenLion && bIsGreenLion) return 1;
-      
+
       // Within same type, sort by rating (high to low)
       return (b.rating || 0) - (a.rating || 0);
     });
@@ -163,7 +163,7 @@ const Accessories = () => {
   const filteredProducts = getFilteredProducts();
 
   return (
-    <div className="min-h-screen bg-background no-horizontal-scroll overflow-x-hidden">
+    <div className="min-h-screen bg-background w-full">
       <Header />
 
       <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
@@ -269,11 +269,10 @@ const Accessories = () => {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-            className={`grid gap-2 sm:gap-3 md:gap-4 lg:gap-6 ${
-            viewMode === "grid"
+          className={`grid gap-2 sm:gap-3 md:gap-4 lg:gap-6 ${viewMode === "grid"
               ? "grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
               : "grid-cols-1"
-          }`}
+            }`}
         >
           {filteredProducts.length > 0 ? (
             filteredProducts.map((product, index) => (

@@ -19,7 +19,7 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen bg-white no-horizontal-scroll overflow-x-hidden">
+    <div className="min-h-screen bg-white w-full">
       <Header />
       <div className="flex min-h-[calc(100vh-200px)] items-center justify-center px-4 sm:px-6">
         <motion.div

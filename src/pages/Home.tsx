@@ -62,7 +62,7 @@ const Home = () => {
   const trendingAudio = getProductsByCategory("Audio");
 
   return (
-    <div className="min-h-screen overflow-x-hidden">
+    <div className="min-h-screen w-full">
       <Header />
 
       {/* Revolutionary Hero Section */}
@@ -79,16 +79,16 @@ const Home = () => {
         }}
       >
         {/* Perfect White Background to match the image */}
-        <div 
-          className="absolute inset-0 -z-10" 
-            style={{
+        <div
+          className="absolute inset-0 -z-10"
+          style={{
             backgroundColor: "#ffffff",
             backgroundImage: `
               linear-gradient(45deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 100%)
             `,
             isolation: "isolate"
-            }}
-          />
+          }}
+        />
 
 
         <motion.div style={{ opacity, scale }} className="container mx-auto px-4 sm:px-6 relative z-10 w-full">
@@ -97,8 +97,8 @@ const Home = () => {
             <motion.div
               initial={{ opacity: 0, x: -150, rotateY: 30 }}
               animate={{ opacity: 1, x: 0, rotateY: 0 }}
-              transition={{ 
-                duration: 1.5, 
+              transition={{
+                duration: 1.5,
                 ease: [0.4, 0, 0.2, 1],
                 type: "spring",
                 stiffness: 80,
@@ -110,7 +110,7 @@ const Home = () => {
               <motion.div
                 initial={{ opacity: 0, y: 50, scale: 0.5, rotate: -10 }}
                 animate={{ opacity: 1, y: 0, scale: 1, rotate: 0 }}
-                transition={{ 
+                transition={{
                   delay: 0.3,
                   duration: 1,
                   ease: [0.4, 0, 0.2, 1],
@@ -118,7 +118,7 @@ const Home = () => {
                   stiffness: 150,
                   damping: 15
                 }}
-                whileHover={{ 
+                whileHover={{
                   scale: 1.08,
                   rotate: [0, -2, 2, 0],
                   y: -5,
@@ -129,7 +129,7 @@ const Home = () => {
                   <motion.div
                     initial={{ x: "-100%" }}
                     animate={{ x: "100%" }}
-                    transition={{ 
+                    transition={{
                       delay: 0.8,
                       duration: 1.5,
                       ease: "easeInOut"
@@ -149,11 +149,11 @@ const Home = () => {
               >
                 <motion.h1
                   className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-7xl 2xl:text-8xl font-bold leading-tight"
-              >
-                  <motion.span 
+                >
+                  <motion.span
                     initial={{ opacity: 0, y: 80, rotateX: -120, scale: 0.5 }}
                     animate={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }}
-                    transition={{ 
+                    transition={{
                       delay: 0.6,
                       duration: 1.2,
                       ease: [0.4, 0, 0.2, 1],
@@ -166,10 +166,10 @@ const Home = () => {
                   >
                     Future
                   </motion.span>
-                  <motion.span 
+                  <motion.span
                     initial={{ opacity: 0, y: 80, rotateX: -120, scale: 0.5 }}
                     animate={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }}
-                    transition={{ 
+                    transition={{
                       delay: 0.8,
                       duration: 1.2,
                       ease: [0.4, 0, 0.2, 1],
@@ -182,14 +182,14 @@ const Home = () => {
                   >
                     Is Now
                   </motion.span>
-              </motion.h1>
+                </motion.h1>
               </motion.div>
 
               {/* Description with Powerful Entrance */}
               <motion.div
                 initial={{ opacity: 0, y: 50, x: -20 }}
                 animate={{ opacity: 1, y: 0, x: 0 }}
-                transition={{ 
+                transition={{
                   delay: 1,
                   duration: 1,
                   ease: [0.4, 0, 0.2, 1]
@@ -200,17 +200,17 @@ const Home = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 1.2, duration: 1 }}
                   className="text-xs sm:text-sm md:text-base lg:text-lg text-muted-foreground max-w-lg mx-auto lg:mx-0 font-light leading-relaxed px-2 sm:px-0"
-              >
-                Experience the pinnacle of technology with our curated collection of premium devices, 
-                smart accessories, and cutting-edge innovations.
-              </motion.p>
+                >
+                  Experience the pinnacle of technology with our curated collection of premium devices,
+                  smart accessories, and cutting-edge innovations.
+                </motion.p>
               </motion.div>
 
               {/* Buttons with Powerful Entrance */}
               <motion.div
                 initial={{ opacity: 0, y: 50, scale: 0.8 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ 
+                transition={{
                   delay: 1.3,
                   duration: 1,
                   ease: [0.4, 0, 0.2, 1],
@@ -239,7 +239,7 @@ const Home = () => {
                       >
                         <ArrowRight className="ml-2 h-5 w-5" />
                       </motion.div>
-                </Button>
+                    </Button>
                   </Link>
                 </motion.div>
                 <motion.div
@@ -254,7 +254,7 @@ const Home = () => {
                       className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 rounded-md"
                     />
                     <span className="relative z-10">View Deals</span>
-                </Button>
+                  </Button>
                 </motion.div>
               </motion.div>
 
@@ -262,7 +262,7 @@ const Home = () => {
               <motion.div
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ 
+                transition={{
                   delay: 1.5,
                   duration: 1,
                   ease: [0.4, 0, 0.2, 1],
@@ -281,7 +281,7 @@ const Home = () => {
                     key={i}
                     initial={{ opacity: 0, y: 40, scale: 0.5, rotateY: -30 }}
                     animate={{ opacity: 1, y: 0, scale: 1, rotateY: 0 }}
-                    transition={{ 
+                    transition={{
                       delay: 1.7 + (i * 0.15),
                       duration: 0.8,
                       ease: [0.4, 0, 0.2, 1],
@@ -289,7 +289,7 @@ const Home = () => {
                       stiffness: 150,
                       damping: 15
                     }}
-                    whileHover={{ 
+                    whileHover={{
                       scale: 1.15,
                       y: -8,
                       rotateY: 5,
@@ -309,7 +309,7 @@ const Home = () => {
                         animate={{ opacity: 1 }}
                         transition={{ delay: 2.1 + (i * 0.1), duration: 0.8 }}
                       >
-                      {stat.value}
+                        {stat.value}
                       </motion.span>
                       {stat.icon && (
                         <motion.div
@@ -331,8 +331,8 @@ const Home = () => {
             <motion.div
               initial={{ opacity: 0, scale: 0.6, rotateY: 45, x: 100 }}
               animate={{ opacity: 1, scale: 1, rotateY: 0, x: 0 }}
-              transition={{ 
-                duration: 1.8, 
+              transition={{
+                duration: 1.8,
                 delay: 0.4,
                 ease: [0.4, 0, 0.2, 1],
                 type: "spring",
@@ -343,7 +343,7 @@ const Home = () => {
               className="relative group order-first lg:order-last"
             >
               {/* Image Container with Perfect Edge Blending */}
-              <div 
+              <div
                 className="hero-image-container relative overflow-hidden max-w-full mx-auto"
                 style={{
                   backgroundColor: "#ffffff",
@@ -354,59 +354,59 @@ const Home = () => {
                 }}
               >
                 {/* Edge Blending Overlay - Top */}
-                <div 
+                <div
                   className="edge-blend-top absolute top-0 left-0 w-full h-8 z-20 pointer-events-none"
                 />
-                
+
                 {/* Edge Blending Overlay - Bottom */}
-                <div 
+                <div
                   className="edge-blend-bottom absolute bottom-0 left-0 w-full h-8 z-20 pointer-events-none"
                 />
-                
+
                 {/* Edge Blending Overlay - Left */}
-                <div 
+                <div
                   className="edge-blend-left absolute top-0 left-0 w-8 h-full z-20 pointer-events-none"
                 />
-                
+
                 {/* Edge Blending Overlay - Right */}
-                <div 
+                <div
                   className="edge-blend-right absolute top-0 right-0 w-8 h-full z-20 pointer-events-none"
                 />
 
                 {/* Multiple Floating Elements */}
                 <motion.div
                   className="absolute -top-4 -right-4 w-20 h-20 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full blur-xl"
-                  initial={{ 
-                    opacity: 0, 
+                  initial={{
+                    opacity: 0,
                     scale: 0,
                     rotate: -180
                   }}
-                  animate={{ 
-                    opacity: 1, 
+                  animate={{
+                    opacity: 1,
                     scale: 1,
                     rotate: 0
                   }}
-                  transition={{ 
-                    duration: 1.5, 
+                  transition={{
+                    duration: 1.5,
                     delay: 1.0,
                     ease: [0.4, 0, 0.2, 1]
                   }}
                 />
-                
+
                 <motion.div
                   className="absolute -bottom-4 -left-4 w-16 h-16 bg-gradient-to-br from-accent/20 to-primary/20 rounded-full blur-xl"
-                  initial={{ 
-                    opacity: 0, 
+                  initial={{
+                    opacity: 0,
                     scale: 0,
                     rotate: 180
                   }}
-                  animate={{ 
-                    opacity: 1, 
+                  animate={{
+                    opacity: 1,
                     scale: 1,
                     rotate: 0
                   }}
-                  transition={{ 
-                    duration: 1.5, 
+                  transition={{
+                    duration: 1.5,
                     delay: 1.2,
                     ease: [0.4, 0, 0.2, 1]
                   }}
@@ -415,18 +415,18 @@ const Home = () => {
                 {/* Main Glow Effect */}
                 <motion.div
                   className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 rounded-full blur-3xl"
-                  initial={{ 
-                    opacity: 0, 
+                  initial={{
+                    opacity: 0,
                     scale: 0.5,
                     rotate: 45
                   }}
-                  animate={{ 
-                    opacity: 1, 
+                  animate={{
+                    opacity: 1,
                     scale: 1,
                     rotate: 0
                   }}
-                  transition={{ 
-                    duration: 1.8, 
+                  transition={{
+                    duration: 1.8,
                     delay: 1.0,
                     ease: [0.4, 0, 0.2, 1]
                   }}
@@ -435,7 +435,7 @@ const Home = () => {
                 {/* Pulsing Ring Effect */}
                 <motion.div
                   className="absolute inset-0 border-2 border-primary/20 rounded-full"
-                  initial={{ 
+                  initial={{
                     scale: 0.8,
                     opacity: 0
                   }}
@@ -443,7 +443,7 @@ const Home = () => {
                     scale: [0.8, 1.1, 0.8],
                     opacity: [0, 0.5, 0]
                   }}
-                  transition={{ 
+                  transition={{
                     duration: 3,
                     delay: 1.5,
                     repeat: Infinity,
@@ -456,24 +456,24 @@ const Home = () => {
                   src={heroProduct}
                   alt="Premium Technology"
                   className="w-full h-auto relative z-10 max-h-[300px] sm:max-h-[400px] md:max-h-[500px] lg:max-h-[600px] xl:max-h-[700px] object-contain"
-                  initial={{ 
-                    opacity: 0, 
-                    scale: 0.4, 
+                  initial={{
+                    opacity: 0,
+                    scale: 0.4,
                     rotateY: -60,
                     rotateX: 20,
                     filter: "blur(15px)",
                     y: 50
                   }}
-                  animate={{ 
-                    opacity: 1, 
-                    scale: 1, 
+                  animate={{
+                    opacity: 1,
+                    scale: 1,
                     rotateY: 0,
                     rotateX: 0,
                     filter: "blur(0px)",
                     y: 0
                   }}
-                  transition={{ 
-                    duration: 2, 
+                  transition={{
+                    duration: 2,
                     delay: 0.6,
                     ease: [0.4, 0, 0.2, 1],
                     type: "spring",
@@ -504,22 +504,22 @@ const Home = () => {
                   animate={{ opacity: 1 }}
                   transition={{ delay: 1.8, duration: 1 }}
                 />
-                
+
                 {/* Enhanced Shadow with Animation */}
                 <motion.div
                   className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-3/4 h-6 bg-black/10 rounded-full blur-xl"
-                  initial={{ 
-                    opacity: 0, 
+                  initial={{
+                    opacity: 0,
                     scale: 0.8,
                     y: 20
                   }}
-                  animate={{ 
-                    opacity: 1, 
+                  animate={{
+                    opacity: 1,
                     scale: 1,
                     y: 0
                   }}
-                  transition={{ 
-                    duration: 1.5, 
+                  transition={{
+                    duration: 1.5,
                     delay: 1.3,
                     ease: [0.4, 0, 0.2, 1]
                   }}
@@ -534,7 +534,7 @@ const Home = () => {
                       top: `${20 + (i * 15)}%`,
                       left: `${10 + (i * 15)}%`,
                     }}
-                    initial={{ 
+                    initial={{
                       opacity: 0,
                       scale: 0,
                       rotate: 0
@@ -562,7 +562,7 @@ const Home = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ 
+          transition={{
             delay: 2.5,
             duration: 0.8,
             ease: [0.4, 0, 0.2, 1]
@@ -575,29 +575,29 @@ const Home = () => {
           >
             {/* Outer Ring */}
             <motion.div
-              animate={{ 
+              animate={{
                 scale: [1, 1.1, 1],
                 opacity: [0.5, 0.8, 0.5]
               }}
-              transition={{ 
+              transition={{
                 duration: 2,
                 repeat: Infinity,
                 ease: "easeInOut"
               }}
               className="absolute inset-0 w-6 h-10 border border-primary/30 rounded-full"
             />
-            
+
             {/* Main Scroll Indicator */}
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-              transition={{ 
-                duration: 1.5, 
+            <motion.div
+              animate={{ y: [0, 10, 0] }}
+              transition={{
+                duration: 1.5,
                 repeat: Infinity,
                 ease: [0.4, 0, 0.2, 1]
               }}
               className="w-6 h-10 border-2 border-primary rounded-full flex justify-center p-2 relative z-10"
-          >
-              <motion.div 
+            >
+              <motion.div
                 className="w-1 h-2 bg-primary rounded-full"
                 animate={{
                   opacity: [0.4, 1, 0.4]
@@ -609,7 +609,7 @@ const Home = () => {
                 }}
               />
             </motion.div>
-            
+
             {/* Pulse Effect */}
             <motion.div
               className="absolute inset-0 w-6 h-10 border border-primary/20 rounded-full"
@@ -625,7 +625,7 @@ const Home = () => {
               }}
             />
           </motion.div>
-          
+
           {/* Scroll Text */}
           <motion.div
             initial={{ opacity: 0 }}

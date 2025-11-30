@@ -79,10 +79,10 @@ const StreamingServiceDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  
+
   const serviceId = id ? parseInt(id, 10) : null;
   const service = serviceId ? getServiceById(serviceId) : null;
-  
+
   // Get selected plan from URL query parameter
   const selectedPlanId = searchParams.get("plan");
   const [selectedPlan, setSelectedPlan] = useState<number | null>(
@@ -126,7 +126,7 @@ const StreamingServiceDetail = () => {
 
   if (!service) {
     return (
-      <div className="min-h-screen bg-white no-horizontal-scroll overflow-x-hidden">
+      <div className="min-h-screen bg-white w-full">
         <Header />
         <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-12 text-center">
           <h2 className="text-2xl mb-4">Service not found</h2>
@@ -157,7 +157,7 @@ const StreamingServiceDetail = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white no-horizontal-scroll overflow-x-hidden" style={{ touchAction: "pan-y" }}>
+    <div className="min-h-screen bg-white w-full" style={{ touchAction: "pan-y" }}>
       <Header />
 
       <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12">
@@ -243,7 +243,7 @@ const StreamingServiceDetail = () => {
                   {service.detailedDescription.split('. ').filter(part => part.trim()).map((part, index) => {
                     const trimmedPart = part.trim();
                     if (!trimmedPart) return null;
-                    
+
                     // Format sections with colons
                     if (trimmedPart.includes(':')) {
                       const [category, ...rest] = trimmedPart.split(':');
@@ -255,7 +255,7 @@ const StreamingServiceDetail = () => {
                         </div>
                       );
                     }
-                    
+
                     return (
                       <p key={index}>
                         {trimmedPart}
@@ -278,21 +278,19 @@ const StreamingServiceDetail = () => {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => setSelectedPlan(plan.id)}
-                      className={`p-3 sm:p-4 rounded-lg border-2 transition-all duration-200 text-left relative ${
-                        isSelected
-                          ? plan.isFreeTrial
-                            ? "bg-accent/20 border-accent shadow-lg"
-                            : "bg-primary/10 border-primary shadow-lg"
-                          : plan.isFreeTrial
-                            ? "bg-accent/10 border-accent/30 hover:border-accent/50 hover:bg-accent/20"
-                            : "bg-primary/5 border-primary/20 hover:border-primary/40 hover:bg-primary/10"
-                      }`}
+                      className={`p-3 sm:p-4 rounded-lg border-2 transition-all duration-200 text-left relative ${isSelected
+                        ? plan.isFreeTrial
+                          ? "bg-accent/20 border-accent shadow-lg"
+                          : "bg-primary/10 border-primary shadow-lg"
+                        : plan.isFreeTrial
+                          ? "bg-accent/10 border-accent/30 hover:border-accent/50 hover:bg-accent/20"
+                          : "bg-primary/5 border-primary/20 hover:border-primary/40 hover:bg-primary/10"
+                        }`}
                       style={{ touchAction: "manipulation" }}
                     >
                       <div className="flex items-center justify-between gap-2">
-                        <span className={`text-sm sm:text-base font-medium ${
-                          plan.isFreeTrial ? "text-accent" : "text-elegant"
-                        }`}>
+                        <span className={`text-sm sm:text-base font-medium ${plan.isFreeTrial ? "text-accent" : "text-elegant"
+                          }`}>
                           {plan.duration}
                         </span>
                         <div className="flex items-center gap-2 flex-shrink-0">

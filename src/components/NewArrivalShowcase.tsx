@@ -2,21 +2,21 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
-import { 
-  ArrowRight, 
-  Star, 
-  ShieldCheck, 
-  Zap, 
-  CheckCircle2, 
-  Power, 
-  Radio, 
-  Camera, 
-  ScanFace, 
-  Battery, 
-  Gauge, 
-  Activity, 
-  ThermometerSun, 
-  Wifi 
+import {
+  ArrowRight,
+  Star,
+  ShieldCheck,
+  Zap,
+  CheckCircle2,
+  Power,
+  Radio,
+  Camera,
+  ScanFace,
+  Battery,
+  Gauge,
+  Activity,
+  ThermometerSun,
+  Wifi
 } from "lucide-react";
 import { getGreenLionProductById } from "@/data/greenLionProducts";
 import { useState, useEffect } from "react";
@@ -137,14 +137,13 @@ const NewArrivalShowcase = () => {
             animate="center"
             exit="exit"
             transition={{
-              x: { 
-                type: "spring", 
-                stiffness: isMobile ? 400 : 300, 
-                damping: isMobile ? 35 : 30, 
-                mass: isMobile ? 0.8 : 1.2 
-              }, // Responsive "heavy" feel - lighter on mobile
-              opacity: { duration: isMobile ? 0.3 : 0.4 },
-              scale: { duration: isMobile ? 0.3 : 0.4 }
+              x: {
+                type: "tween",
+                ease: "easeInOut",
+                duration: 0.8
+              },
+              opacity: { duration: 0.5 },
+              scale: { duration: 0.5 }
             }}
             drag={isMobile ? false : "x"}
             dragConstraints={{ left: 0, right: 0 }}
@@ -168,7 +167,7 @@ const NewArrivalShowcase = () => {
                 <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1.5 fill-primary" />
                 Featured Item
               </Badge>
-              <motion.h2 
+              <motion.h2
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
@@ -183,23 +182,23 @@ const NewArrivalShowcase = () => {
               <div className="relative aspect-square max-w-[280px] sm:max-w-md mx-auto lg:max-w-full">
                 {/* Glowing Background behind image */}
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full blur-2xl scale-90" />
-                
+
                 <motion.div
                   whileHover={canHover ? { scale: 1.05, rotate: -2 } : undefined}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
                   className="relative z-10 w-full h-full flex items-center justify-center"
                   style={{ touchAction: 'manipulation' }}
                 >
-                  <img 
-                    src={product.images[0]} 
-                    alt={product.name} 
+                  <img
+                    src={product.images[0]}
+                    alt={product.name}
                     className="w-full h-full object-contain drop-shadow-2xl max-h-[250px] sm:max-h-[300px] md:max-h-[400px] lg:max-h-[500px]"
                     loading="lazy"
                   />
                 </motion.div>
 
                 {/* Floating Badges */}
-                <motion.div 
+                <motion.div
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.3, duration: 0.5 }}
@@ -214,7 +213,7 @@ const NewArrivalShowcase = () => {
             </div>
 
             {/* Description */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
@@ -227,7 +226,7 @@ const NewArrivalShowcase = () => {
             </motion.div>
 
             {/* Why this is a great choice section */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
@@ -236,7 +235,7 @@ const NewArrivalShowcase = () => {
               <h3 className="text-base sm:text-lg font-semibold mb-4 flex items-center gap-2">
                 Why this is a great choice
               </h3>
-              
+
               <div className="grid gap-3 sm:gap-4">
                 {currentShowcase.highlightFeatures.map((feature, index) => {
                   const IconComponent = feature.icon;
@@ -267,15 +266,15 @@ const NewArrivalShowcase = () => {
             </motion.div>
 
             {/* CTA */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
               className="order-5 flex flex-col sm:flex-row gap-3 sm:gap-4 w-full pt-4 lg:col-span-2"
             >
               <Link to={`/product/${product.id}`} className="w-full sm:w-auto flex-1 sm:flex-none">
-                <Button 
-                  size="lg" 
+                <Button
+                  size="lg"
                   className="w-full text-sm sm:text-base font-semibold px-8 py-6 shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all duration-300 min-h-[52px]"
                   style={{ touchAction: 'manipulation' }}
                 >
@@ -284,9 +283,9 @@ const NewArrivalShowcase = () => {
                 </Button>
               </Link>
               <Link to="/products" className="w-full sm:w-auto flex-1 sm:flex-none">
-                <Button 
-                  variant="outline" 
-                  size="lg" 
+                <Button
+                  variant="outline"
+                  size="lg"
                   className="w-full text-sm sm:text-base font-semibold px-8 py-6 min-h-[52px]"
                   style={{ touchAction: 'manipulation' }}
                 >
@@ -296,18 +295,17 @@ const NewArrivalShowcase = () => {
             </motion.div>
           </motion.div>
         </AnimatePresence>
-        
+
         {/* Carousel Indicators */}
         <div className="absolute bottom-2 sm:bottom-3 md:bottom-4 left-1/2 transform -translate-x-1/2 flex gap-1.5 sm:gap-2 z-20">
           {showcases.map((_, idx) => (
             <button
               key={idx}
               onClick={() => setCurrentIndex(idx)}
-              className={`h-1.5 sm:h-2 rounded-full transition-all duration-300 min-w-[12px] sm:min-w-[16px] ${
-                idx === currentIndex 
-                  ? "w-6 sm:w-8 bg-primary" 
+              className={`h-1.5 sm:h-2 rounded-full transition-all duration-300 min-w-[12px] sm:min-w-[16px] ${idx === currentIndex
+                  ? "w-6 sm:w-8 bg-primary"
                   : "w-1.5 sm:w-2 bg-primary/30 hover:bg-primary/50 active:bg-primary/60"
-              }`}
+                }`}
               aria-label={`Go to slide ${idx + 1}`}
               style={{ touchAction: 'manipulation' }}
             />

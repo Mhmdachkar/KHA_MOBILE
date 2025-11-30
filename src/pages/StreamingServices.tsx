@@ -127,7 +127,7 @@ const ServiceCard = ({ service }: ServiceCardProps) => {
             View Details <ArrowRight className="h-3 w-3 group-hover/link:translate-x-1 transition-transform" />
           </div>
         </Link>
-        
+
         {/* Subscription Plans */}
         <div className="space-y-2 mb-4" style={{ touchAction: "pan-y" }}>
           <p className="text-elegant text-xs font-medium mb-3">Subscription Plans:</p>
@@ -141,17 +141,15 @@ const ServiceCard = ({ service }: ServiceCardProps) => {
                 e.stopPropagation();
                 handlePlanClick(plan);
               }}
-              className={`w-full text-left p-3 rounded-lg border transition-all duration-200 ${
-                plan.isFreeTrial
+              className={`w-full text-left p-3 rounded-lg border transition-all duration-200 ${plan.isFreeTrial
                   ? "bg-accent/10 border-accent/30 hover:border-accent/50 hover:bg-accent/20"
                   : "bg-primary/5 border-primary/20 hover:border-primary/40 hover:bg-primary/10"
-              }`}
+                }`}
               style={{ touchAction: "manipulation" }}
             >
               <div className="flex items-center justify-between">
-                <span className={`text-sm font-medium ${
-                  plan.isFreeTrial ? "text-accent" : "text-elegant"
-                }`}>
+                <span className={`text-sm font-medium ${plan.isFreeTrial ? "text-accent" : "text-elegant"
+                  }`}>
                   {plan.duration}
                 </span>
                 {plan.isFreeTrial && (
@@ -178,7 +176,7 @@ const StreamingServices = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white no-horizontal-scroll overflow-x-hidden" style={{ touchAction: "pan-y" }}>
+    <div className="min-h-screen bg-white w-full" style={{ touchAction: "pan-y" }}>
       <Header />
 
       <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-12" style={{ touchAction: "pan-y" }}>

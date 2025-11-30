@@ -146,7 +146,7 @@ const CategoryPage = () => {
     if (categoryMap[pathname]) {
       return categoryMap[pathname];
     }
-    
+
     // Check dynamic route (/category/:categoryName)
     const categoryMatch = pathname.match(/^\/category\/(.+)$/);
     if (categoryMatch) {
@@ -154,7 +154,7 @@ const CategoryPage = () => {
       // Capitalize first letter for category name
       return categoryParam.charAt(0).toUpperCase() + categoryParam.slice(1);
     }
-    
+
     return "Category";
   };
 
@@ -205,7 +205,7 @@ const CategoryPage = () => {
           }))];
         }
         // Add Green Lion gaming products if any
-        const greenLionGaming = greenLionProducts.filter(p => 
+        const greenLionGaming = greenLionProducts.filter(p =>
           p.secondaryCategories?.includes("Gaming") || p.name.toLowerCase().includes("gaming")
         );
         if (greenLionGaming.length > 0) {
@@ -323,77 +323,77 @@ const CategoryPage = () => {
 
         const aIsGreenLion = isGreenLionProduct(a);
         const bIsGreenLion = isGreenLionProduct(b);
-        
+
         // Green Lion products first
         if (aIsGreenLion && !bIsGreenLion) return -1;
         if (!aIsGreenLion && bIsGreenLion) return 1;
-        
+
         // Within same type, sort by rating (high to low)
         return (b.rating || 0) - (a.rating || 0);
       });
     } else {
       // User-selected sort
-    switch (sortBy) {
-      case "price-low":
+      switch (sortBy) {
+        case "price-low":
           filtered.sort((a, b) => {
             const aIsGreenLion = isGreenLionProduct(a);
             const bIsGreenLion = isGreenLionProduct(b);
-            
+
             // Green Lion products first, then by price
             if (aIsGreenLion && !bIsGreenLion) return -1;
             if (!aIsGreenLion && bIsGreenLion) return 1;
-            
+
             return a.price - b.price;
           });
-        break;
-      case "price-high":
+          break;
+        case "price-high":
           filtered.sort((a, b) => {
             const aIsGreenLion = isGreenLionProduct(a);
             const bIsGreenLion = isGreenLionProduct(b);
-            
+
             // Green Lion products first, then by price
             if (aIsGreenLion && !bIsGreenLion) return -1;
             if (!aIsGreenLion && bIsGreenLion) return 1;
-            
+
             return b.price - a.price;
           });
-        break;
-      case "rating":
+          break;
+        case "rating":
           filtered.sort((a, b) => {
             const aIsGreenLion = isGreenLionProduct(a);
             const bIsGreenLion = isGreenLionProduct(b);
-            
+
             // Green Lion products first, then by rating
             if (aIsGreenLion && !bIsGreenLion) return -1;
             if (!aIsGreenLion && bIsGreenLion) return 1;
-            
+
             return (b.rating || 0) - (a.rating || 0);
           });
-        break;
-      case "name":
+          break;
+        case "name":
           filtered.sort((a, b) => {
             const aIsGreenLion = isGreenLionProduct(a);
             const bIsGreenLion = isGreenLionProduct(b);
-            
+
             // Green Lion products first, then by name
             if (aIsGreenLion && !bIsGreenLion) return -1;
             if (!aIsGreenLion && bIsGreenLion) return 1;
-            
+
             return a.name.localeCompare(b.name);
           });
-        break;
-      default:
+          break;
+        default:
           // Default: Green Lion first, then by rating
           filtered.sort((a, b) => {
             const aIsGreenLion = isGreenLionProduct(a);
             const bIsGreenLion = isGreenLionProduct(b);
-            
+
             if (aIsGreenLion && !bIsGreenLion) return -1;
             if (!aIsGreenLion && bIsGreenLion) return 1;
-            
+
             return (b.rating || 0) - (a.rating || 0);
           });
-        break;
+          break;
       }
     }
 
@@ -409,13 +409,13 @@ const CategoryPage = () => {
   }, [location.pathname, categoryDisplayName, categoryProducts, filteredAndSortedProducts]);
 
   // Only redirect if category is truly not found (not in map and not a valid dynamic route)
-  const isCategoryNotFound = !categoryMap[location.pathname] && 
-                             categoryDisplayName === "Category" &&
-                             !location.pathname.match(/^\/category\//);
-  
+  const isCategoryNotFound = !categoryMap[location.pathname] &&
+    categoryDisplayName === "Category" &&
+    !location.pathname.match(/^\/category\//);
+
   if (isCategoryNotFound) {
     return (
-      <div className="min-h-screen bg-background no-horizontal-scroll overflow-x-hidden">
+      <div className="min-h-screen bg-background w-full">
         <Header />
         <div className="container mx-auto px-4 sm:px-6 py-12 text-center">
           <h2 className="text-2xl mb-4">Category not found</h2>
@@ -438,11 +438,10 @@ const CategoryPage = () => {
                   <button
                     key={brand}
                     onClick={() => setSelectedSmartphoneBrand(brand)}
-                    className={`px-3 py-1.5 rounded-full text-xs sm:text-sm border transition-all ${
-                      isActive
-                        ? "border-primary bg-primary/10 text-primary shadow-sm"
-                        : "border-border hover:border-primary/40"
-                    }`}
+                    className={`px-3 py-1.5 rounded-full text-xs sm:text-sm border transition-all ${isActive
+                      ? "border-primary bg-primary/10 text-primary shadow-sm"
+                      : "border-border hover:border-primary/40"
+                      }`}
                   >
                     {brand}
                   </button>
@@ -498,15 +497,14 @@ const CategoryPage = () => {
             <button
               onClick={() => setSelectedSmartphoneBrand("All")}
               style={{ touchAction: 'manipulation' }}
-              className={`col-span-2 flex items-center justify-center p-2.5 sm:p-3 rounded-md border transition-all duration-200 min-h-[44px] ${
-                selectedSmartphoneBrand === "All"
-                  ? "border-primary bg-primary/5 text-primary shadow-sm"
-                  : "border-border hover:border-primary/50 hover:bg-secondary/50"
-              }`}
+              className={`col-span-2 flex items-center justify-center p-2.5 sm:p-3 rounded-md border transition-all duration-200 min-h-[44px] ${selectedSmartphoneBrand === "All"
+                ? "border-primary bg-primary/5 text-primary shadow-sm"
+                : "border-border hover:border-primary/50 hover:bg-secondary/50"
+                }`}
             >
               <span className="text-xs sm:text-sm font-medium">All Brands</span>
             </button>
-            
+
             {smartphoneBrandOptions.map((brand) => {
               const isActive = selectedSmartphoneBrand === brand;
               const logo = brandLogoMap[brand];
@@ -516,24 +514,23 @@ const CategoryPage = () => {
                   key={brand}
                   onClick={() => setSelectedSmartphoneBrand(brand)}
                   style={{ touchAction: 'manipulation' }}
-                  className={`relative flex flex-col items-center justify-center p-2.5 sm:p-3 rounded-md border transition-all duration-200 group min-h-[70px] sm:min-h-[80px] ${
-                    isActive
-                      ? "border-primary bg-primary/5 shadow-md scale-[1.02]"
-                      : "border-border hover:border-primary/50 hover:bg-secondary/50"
-                  }`}
+                  className={`relative flex flex-col items-center justify-center p-2.5 sm:p-3 rounded-md border transition-all duration-200 group min-h-[70px] sm:min-h-[80px] ${isActive
+                    ? "border-primary bg-primary/5 shadow-md scale-[1.02]"
+                    : "border-border hover:border-primary/50 hover:bg-secondary/50"
+                    }`}
                 >
                   {isActive && (
                     <div className="absolute top-1 right-1 sm:top-1.5 sm:right-1.5">
                       <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-primary rounded-full" />
                     </div>
                   )}
-                  
+
                   {logo ? (
                     <div className="w-full h-7 sm:h-8 md:h-9 flex items-center justify-center mb-1 sm:mb-1.5">
-                      <img 
-                        src={logo} 
-                        alt={brand} 
-                        className="max-w-full max-h-full object-contain opacity-80 group-hover:opacity-100 transition-opacity" 
+                      <img
+                        src={logo}
+                        alt={brand}
+                        className="max-w-full max-h-full object-contain opacity-80 group-hover:opacity-100 transition-opacity"
                         loading="lazy"
                       />
                     </div>
@@ -557,7 +554,7 @@ const CategoryPage = () => {
   );
 
   return (
-    <div className="min-h-screen bg-background no-horizontal-scroll overflow-x-hidden">
+    <div className="min-h-screen bg-background w-full">
       <Header />
 
       <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-12">
@@ -597,7 +594,7 @@ const CategoryPage = () => {
         >
           <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-accent/5 to-primary/5 opacity-50" />
           <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20" />
-          
+
           {/* Decorative Circles */}
           <div className="absolute top-0 left-0 w-24 h-24 sm:w-32 sm:h-32 bg-primary/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
           <div className="absolute bottom-0 right-0 w-32 h-32 sm:w-40 sm:h-40 bg-accent/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
@@ -708,11 +705,10 @@ const CategoryPage = () => {
             {/* Products */}
             {filteredAndSortedProducts.length > 0 ? (
               <div
-                className={`grid gap-2 sm:gap-3 md:gap-4 lg:gap-6 ${
-                  viewMode === "grid"
-                    ? "grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
-                    : "grid-cols-1"
-                }`}
+                className={`grid gap-2 sm:gap-3 md:gap-4 lg:gap-6 ${viewMode === "grid"
+                  ? "grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+                  : "grid-cols-1"
+                  }`}
               >
                 {filteredAndSortedProducts.map((product, index) => {
                   // Ensure product has all required fields
@@ -728,7 +724,7 @@ const CategoryPage = () => {
                       transition={{ delay: index * 0.05 }}
                       className="space-y-2"
                     >
-                      <ProductCard 
+                      <ProductCard
                         id={product.id}
                         name={product.name}
                         price={product.price || 0}
@@ -762,7 +758,7 @@ const CategoryPage = () => {
             ) : (
               <div className="text-center py-12 sm:py-16">
                 <p className="text-muted-foreground text-lg mb-4">
-                  {categoryProducts.length === 0 
+                  {categoryProducts.length === 0
                     ? `No products available in ${categoryDisplayName} category yet.`
                     : "No products found matching your filters."}
                 </p>

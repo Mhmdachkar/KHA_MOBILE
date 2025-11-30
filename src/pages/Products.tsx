@@ -95,7 +95,7 @@ const Products = () => {
       if (product.brand) {
         brandSet.add(product.brand);
       }
-      
+
       // Then check product name
       const name = product.name.toLowerCase();
       if (name.includes("green lion") || name.startsWith("green lion")) brandSet.add("Green Lion");
@@ -110,7 +110,7 @@ const Products = () => {
       if (name.includes("borofone")) brandSet.add("BOROFONE");
       if (name.includes("galaxy")) brandSet.add("Samsung");
       if (name.includes("kakusiga")) brandSet.add("Kakusiga");
-      
+
       // Also check for Green Lion by ID
       if (product.id >= 5000) brandSet.add("Green Lion");
     });
@@ -152,47 +152,47 @@ const Products = () => {
         const normalizedQuery = searchQuery.toLowerCase().trim();
         // Split query into words for better matching
         const queryWords = normalizedQuery.split(/\s+/).filter(word => word.length > 0);
-        
+
         // Normalize all product fields to lowercase for case-insensitive comparison
         const normalizedName = product.name.toLowerCase();
         const normalizedTitle = product.title.toLowerCase();
         const normalizedCategory = product.category.toLowerCase();
         const normalizedDescription = product.description.toLowerCase();
-        
+
         // Create a comprehensive searchable text (all normalized to lowercase)
         const searchableText = `${normalizedName} ${normalizedTitle} ${normalizedCategory} ${normalizedDescription}`;
-        
+
         // Check if all query words are present in any of the searchable fields
-        const allWordsMatch = queryWords.length > 0 && queryWords.every(word => 
+        const allWordsMatch = queryWords.length > 0 && queryWords.every(word =>
           normalizedName.includes(word) ||
           normalizedTitle.includes(word) ||
           normalizedCategory.includes(word) ||
           normalizedDescription.includes(word) ||
           searchableText.includes(word)
         );
-        
+
         // Also check for exact phrase match (normalized)
         const exactPhraseMatch = normalizedName.includes(normalizedQuery) ||
-                                 normalizedTitle.includes(normalizedQuery) ||
-                                 normalizedCategory.includes(normalizedQuery) ||
-                                 normalizedDescription.includes(normalizedQuery) ||
-                                 searchableText.includes(normalizedQuery);
-        
+          normalizedTitle.includes(normalizedQuery) ||
+          normalizedCategory.includes(normalizedQuery) ||
+          normalizedDescription.includes(normalizedQuery) ||
+          searchableText.includes(normalizedQuery);
+
         if (!allWordsMatch && !exactPhraseMatch) return false;
       }
-      
+
       // Category filter
       const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(product.category);
-      
+
       // Brand filter - check both product.brand field and extracted brand from name
       const productBrand = product.brand || extractBrand(product.name);
-      
+
       // For Green Lion, also check if name starts with "Green Lion"
-      const isGreenLionBrand = product.brand === "Green Lion" || 
-                               product.name?.startsWith("Green Lion") ||
-                               product.id >= 5000; // Green Lion products have IDs >= 5000
-      
-      const brandMatch = selectedBrands.length === 0 || 
+      const isGreenLionBrand = product.brand === "Green Lion" ||
+        product.name?.startsWith("Green Lion") ||
+        product.id >= 5000; // Green Lion products have IDs >= 5000
+
+      const brandMatch = selectedBrands.length === 0 ||
         (selectedBrands.some(selectedBrand => {
           // Special handling for Green Lion
           if (selectedBrand === "Green Lion" && isGreenLionBrand) {
@@ -201,7 +201,7 @@ const Products = () => {
           // For other brands, check exact match
           return productBrand !== null && productBrand === selectedBrand;
         }));
-      
+
       return categoryMatch && brandMatch;
     });
 
@@ -216,11 +216,11 @@ const Products = () => {
         filtered.sort((a, b) => {
           const aIsGreenLion = isGreenLionProduct(a);
           const bIsGreenLion = isGreenLionProduct(b);
-          
+
           // Green Lion products first, then by price
           if (aIsGreenLion && !bIsGreenLion) return -1;
           if (!aIsGreenLion && bIsGreenLion) return 1;
-          
+
           return a.price - b.price;
         });
         break;
@@ -228,11 +228,11 @@ const Products = () => {
         filtered.sort((a, b) => {
           const aIsGreenLion = isGreenLionProduct(a);
           const bIsGreenLion = isGreenLionProduct(b);
-          
+
           // Green Lion products first, then by price
           if (aIsGreenLion && !bIsGreenLion) return -1;
           if (!aIsGreenLion && bIsGreenLion) return 1;
-          
+
           return b.price - a.price;
         });
         break;
@@ -240,11 +240,11 @@ const Products = () => {
         filtered.sort((a, b) => {
           const aIsGreenLion = isGreenLionProduct(a);
           const bIsGreenLion = isGreenLionProduct(b);
-          
+
           // Green Lion products first, then by rating
           if (aIsGreenLion && !bIsGreenLion) return -1;
           if (!aIsGreenLion && bIsGreenLion) return 1;
-          
+
           return (b.rating || 0) - (a.rating || 0);
         });
         break;
@@ -252,11 +252,11 @@ const Products = () => {
         filtered.sort((a, b) => {
           const aIsGreenLion = isGreenLionProduct(a);
           const bIsGreenLion = isGreenLionProduct(b);
-          
+
           // Green Lion products first, then by name
           if (aIsGreenLion && !bIsGreenLion) return -1;
           if (!aIsGreenLion && bIsGreenLion) return 1;
-          
+
           return a.name.localeCompare(b.name);
         });
         break;
@@ -265,11 +265,11 @@ const Products = () => {
         filtered.sort((a, b) => {
           const aIsGreenLion = isGreenLionProduct(a);
           const bIsGreenLion = isGreenLionProduct(b);
-          
+
           // Green Lion products first, then by ID
           if (aIsGreenLion && !bIsGreenLion) return -1;
           if (!aIsGreenLion && bIsGreenLion) return 1;
-          
+
           return b.id - a.id;
         });
         break;
@@ -278,11 +278,11 @@ const Products = () => {
         filtered.sort((a, b) => {
           const aIsGreenLion = isGreenLionProduct(a);
           const bIsGreenLion = isGreenLionProduct(b);
-          
+
           // Green Lion products first
           if (aIsGreenLion && !bIsGreenLion) return -1;
           if (!aIsGreenLion && bIsGreenLion) return 1;
-          
+
           // Then by rating
           return (b.rating || 0) - (a.rating || 0);
         });
@@ -293,8 +293,8 @@ const Products = () => {
   }, [allProducts, sortBy, selectedCategories, selectedBrands, searchQuery]);
 
   const handleCategoryToggle = (category: string) => {
-    setSelectedCategories(prev => 
-      prev.includes(category) 
+    setSelectedCategories(prev =>
+      prev.includes(category)
         ? prev.filter(c => c !== category)
         : [...prev, category]
     );
@@ -315,7 +315,7 @@ const Products = () => {
   };
 
   return (
-    <div className="min-h-screen no-horizontal-scroll overflow-x-hidden">
+    <div className="min-h-screen w-full">
       <Header />
 
       <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12">
@@ -369,9 +369,9 @@ const Products = () => {
               <div className="mt-6 space-y-6">
                 <div className="flex items-center justify-between">
                   <h3 className="text-elegant text-base">Filters</h3>
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
+                  <Button
+                    variant="ghost"
+                    size="sm"
                     className="text-elegant text-xs"
                     onClick={handleClearFilters}
                   >
@@ -385,7 +385,7 @@ const Products = () => {
                   <div className="space-y-2">
                     {categories.map((category) => (
                       <div key={category} className="flex items-center space-x-2">
-                        <Checkbox 
+                        <Checkbox
                           id={`mobile-category-${category}`}
                           checked={selectedCategories.includes(category)}
                           onCheckedChange={() => handleCategoryToggle(category)}
@@ -407,7 +407,7 @@ const Products = () => {
                   <div className="space-y-2">
                     {brands.map((brand) => (
                       <div key={brand} className="flex items-center space-x-2">
-                        <Checkbox 
+                        <Checkbox
                           id={`mobile-brand-${brand}`}
                           checked={selectedBrands.includes(brand)}
                           onCheckedChange={() => handleBrandToggle(brand)}
@@ -503,9 +503,9 @@ const Products = () => {
             <div className="sticky top-20 sm:top-24 space-y-6 sm:space-y-8">
               <div className="flex items-center justify-between mb-4 sm:mb-6">
                 <h2 className="text-elegant text-base sm:text-lg">Filters</h2>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
+                <Button
+                  variant="ghost"
+                  size="sm"
                   className="text-elegant text-xs"
                   onClick={handleClearFilters}
                 >
@@ -519,7 +519,7 @@ const Products = () => {
                 <div className="space-y-2 sm:space-y-3">
                   {categories.map((category) => (
                     <div key={category} className="flex items-center space-x-2">
-                      <Checkbox 
+                      <Checkbox
                         id={category}
                         checked={selectedCategories.includes(category)}
                         onCheckedChange={() => handleCategoryToggle(category)}
@@ -541,7 +541,7 @@ const Products = () => {
                 <div className="space-y-2 sm:space-y-3">
                   {brands.map((brand) => (
                     <div key={brand} className="flex items-center space-x-2">
-                      <Checkbox 
+                      <Checkbox
                         id={brand}
                         checked={selectedBrands.includes(brand)}
                         onCheckedChange={() => handleBrandToggle(brand)}
@@ -657,7 +657,7 @@ const Products = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05 }}
                   >
-                    <ProductCard 
+                    <ProductCard
                       id={product.id}
                       name={product.name}
                       price={product.price}
@@ -688,8 +688,8 @@ const Products = () => {
             >
               <p className="text-elegant text-lg sm:text-xl md:text-2xl mb-2 text-green-600 font-medium">⚡ Top Picks in Smart Accessories</p>
               <p className="text-xs sm:text-sm md:text-base font-light mb-4 sm:mb-6 text-green-500">Grab Yours Today!</p>
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 className="text-elegant border-primary text-primary hover:bg-primary/10 min-h-[44px] sm:min-h-[48px] text-xs sm:text-sm md:text-base"
                 style={{ touchAction: 'manipulation' }}
               >

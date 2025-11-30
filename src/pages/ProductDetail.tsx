@@ -75,7 +75,7 @@ const generateProductReviews = (productId: number, productName: string, productR
   // Determine product category
   const nameLower = productName.toLowerCase();
   let category = 'accessories';
-  
+
   if (nameLower.includes('samsung') || nameLower.includes('galaxy')) {
     category = 'samsung';
   } else if (nameLower.includes('tecno') || nameLower.includes('camon') || nameLower.includes('spark')) {
@@ -90,7 +90,7 @@ const generateProductReviews = (productId: number, productName: string, productR
 
   // Get reviews for category or use default
   const reviews = reviewTemplates[category] || reviewTemplates['accessories'];
-  
+
   // Adjust ratings slightly based on product rating
   return reviews.map((review, index) => ({
     ...review,
@@ -117,7 +117,7 @@ const ProductDetail = () => {
   const { addToCart } = useCart();
 
   const productId = id ? parseInt(id, 10) : null;
-  
+
   // Check both regular products and Green Lion products
   const regularProduct = productId ? getProductById(productId) : null;
   const greenLionProduct = productId ? getGreenLionProductById(productId) : null;
@@ -139,7 +139,7 @@ const ProductDetail = () => {
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-white no-horizontal-scroll overflow-x-hidden">
+      <div className="min-h-screen bg-white w-full">
         <Header />
         <div className="container mx-auto px-6 py-12 text-center">
           <h2 className="text-2xl mb-4">Product not found</h2>
@@ -239,7 +239,7 @@ const ProductDetail = () => {
     productImages[0] ||
     regularProduct?.image ||
     (greenLionProduct ? greenLionProduct.images[0] : "/placeholder.svg");
-  
+
   const favorite = isFavorite(product.id);
 
   // Generate product-specific reviews
@@ -255,7 +255,7 @@ const ProductDetail = () => {
     // Get the color image if a color is selected
     const selectedColorImage = colorImage || (selectedColor ? colorOptions.find(c => c.name === selectedColor)?.image : null);
     const displayImage = selectedColorImage || primaryImage;
-    
+
     addToCart({
       id: product.id,
       name: product.name,
@@ -363,7 +363,7 @@ const ProductDetail = () => {
       /^Foneng\s+/i,
       /^Borofone\s+/i,
     ];
-    
+
     for (const pattern of brandPatterns) {
       const match = productName.match(pattern);
       if (match) {
@@ -456,8 +456,8 @@ const ProductDetail = () => {
         brand: p.brand || null,
       })),
       ...greenLionProducts
-        .filter(p => 
-          p.category === "Accessories" || 
+        .filter(p =>
+          p.category === "Accessories" ||
           p.secondaryCategories?.includes("Accessories") ||
           p.secondaryCategories?.includes("Charging") ||
           p.category === "Charging"
@@ -485,7 +485,7 @@ const ProductDetail = () => {
     const scoredAccessories = allAccessories.map(acc => {
       let score = 0;
       const nameLower = acc.name.toLowerCase();
-      
+
       // Boost essential accessories
       essentialKeywords.forEach(keyword => {
         if (nameLower.includes(keyword)) score += 10;
@@ -493,10 +493,10 @@ const ProductDetail = () => {
 
       // Boost highly rated products
       if (acc.rating >= 4.5) score += 5;
-      
+
       // Boost Green Lion products
       if (acc.id >= 5000 || acc.brand === "Green Lion") score += 8;
-      
+
       // Boost charging accessories
       if (acc.category === "Charging") score += 7;
 
@@ -553,7 +553,7 @@ const ProductDetail = () => {
   }, [categorizedAccessories, selectedAccessoryFilter]);
 
   return (
-    <div className="min-h-screen bg-white no-horizontal-scroll overflow-x-hidden" style={{ touchAction: 'pan-y pinch-zoom' }}>
+    <div className="min-h-screen bg-white w-full">
       <Header />
 
       <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12" style={{ touchAction: 'pan-y pinch-zoom' }}>
@@ -588,30 +588,30 @@ const ProductDetail = () => {
               style={{ touchAction: "pan-y pinch-zoom" }}
             >
               {/* Dynamic Background Animation behind the product */}
-              <motion.div 
+              <motion.div
                 className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary/5 to-transparent opacity-30"
-                animate={{ 
+                animate={{
                   backgroundPosition: ["0% 0%", "100% 100%", "0% 0%"],
                 }}
-                transition={{ 
-                  duration: 15, 
-                  ease: "linear", 
-                  repeat: Infinity 
-                }} 
+                transition={{
+                  duration: 15,
+                  ease: "linear",
+                  repeat: Infinity
+                }}
               />
-              
+
               {/* Floating Geometric Accent for blank space */}
               <motion.div
                 className="absolute top-10 right-10 w-20 h-20 border border-primary/10 rounded-full"
-                animate={{ 
+                animate={{
                   y: [0, -10, 0],
                   scale: [1, 1.05, 1],
                   opacity: [0.2, 0.5, 0.2]
                 }}
-                transition={{ 
-                  duration: 8, 
-                  ease: "easeInOut", 
-                  repeat: Infinity 
+                transition={{
+                  duration: 8,
+                  ease: "easeInOut",
+                  repeat: Infinity
                 }}
               />
 
@@ -628,7 +628,7 @@ const ProductDetail = () => {
               />
               {productImages.length > 1 && (
                 <>
-                  <button 
+                  <button
                     onClick={handlePreviousImage}
                     style={{ touchAction: 'manipulation', minHeight: '44px', minWidth: '44px' }}
                     className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 h-11 w-11 sm:h-12 sm:w-12 bg-background/90 backdrop-blur-md rounded-full flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-background shadow-lg border border-border/50 z-10"
@@ -636,7 +636,7 @@ const ProductDetail = () => {
                   >
                     <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6" />
                   </button>
-                  <button 
+                  <button
                     onClick={handleNextImage}
                     style={{ touchAction: 'manipulation', minHeight: '44px', minWidth: '44px' }}
                     className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 h-11 w-11 sm:h-12 sm:w-12 bg-background/90 backdrop-blur-md rounded-full flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-background shadow-lg border border-border/50 z-10"
@@ -659,11 +659,10 @@ const ProductDetail = () => {
                     key={index}
                     onClick={() => setSelectedImage(index)}
                     style={{ touchAction: "manipulation", minHeight: "60px", minWidth: "60px" }}
-                    className={`aspect-square bg-white rounded-sm overflow-hidden border-2 transition-all cursor-pointer min-h-[70px] sm:min-h-[80px] md:min-h-[90px] ${
-                      selectedImage === index
-                        ? "border-primary ring-2 ring-primary/30 shadow-md"
-                        : "border-border hover:border-primary/50"
-                    }`}
+                    className={`aspect-square bg-white rounded-sm overflow-hidden border-2 transition-all cursor-pointer min-h-[70px] sm:min-h-[80px] md:min-h-[90px] ${selectedImage === index
+                      ? "border-primary ring-2 ring-primary/30 shadow-md"
+                      : "border-border hover:border-primary/50"
+                      }`}
                     aria-label={`View image ${index + 1}`}
                   >
                     <img
@@ -696,12 +695,12 @@ const ProductDetail = () => {
             <div className="hidden md:block mt-6 sm:mt-8">
               <div className="bg-primary/5 border border-primary/10 rounded-md p-6 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-primary/10 to-transparent rounded-bl-full" />
-                
+
                 <h4 className="text-elegant font-medium mb-4 relative z-10 flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-primary" />
                   Why this is a great choice
                 </h4>
-                
+
                 <div className="flex flex-col gap-3 relative z-10">
                   {product.features?.slice(0, 3).map((feature, i) => (
                     <div key={i} className="flex items-start gap-2.5">
@@ -726,8 +725,8 @@ const ProductDetail = () => {
             {/* Mobile Action Buttons - Only visible on mobile */}
             <div className="md:hidden mt-4 sm:mt-6">
               <div className="flex flex-col gap-3 mb-4">
-                <Button 
-                  size="lg" 
+                <Button
+                  size="lg"
                   className="flex-1 text-elegant text-sm py-4 sm:py-5 w-full"
                   onClick={() => handleAddToCart()}
                   style={{ touchAction: 'manipulation' }}
@@ -735,9 +734,9 @@ const ProductDetail = () => {
                   <ShoppingCart className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                   Add to Cart
                 </Button>
-                <Button 
-                  size="lg" 
-                  variant="outline" 
+                <Button
+                  size="lg"
+                  variant="outline"
                   className="flex-1 text-elegant text-sm py-4 sm:py-5 w-full"
                   onClick={() => handleAddToCart(true)}
                   style={{ touchAction: 'manipulation' }}
@@ -745,17 +744,16 @@ const ProductDetail = () => {
                   Buy Now
                 </Button>
               </div>
-              
+
               {/* Wishlist Button - Well structured below Buy Now */}
-              <motion.button 
+              <motion.button
                 whileHover={window.matchMedia('(hover: hover)').matches ? { scale: 1.02 } : undefined}
                 onClick={() => toggleFavorite(product)}
                 style={{ touchAction: 'manipulation' }}
-                className={`w-full flex items-center justify-center gap-2 px-4 py-3 sm:py-3.5 rounded-sm border transition-all duration-300 ${
-                  favorite 
-                    ? "bg-accent/10 text-accent border-accent/30 hover:bg-accent/20" 
-                    : "bg-background text-foreground border-border hover:bg-secondary/50 hover:border-primary/40"
-                }`}
+                className={`w-full flex items-center justify-center gap-2 px-4 py-3 sm:py-3.5 rounded-sm border transition-all duration-300 ${favorite
+                  ? "bg-accent/10 text-accent border-accent/30 hover:bg-accent/20"
+                  : "bg-background text-foreground border-border hover:bg-secondary/50 hover:border-primary/40"
+                  }`}
               >
                 <Heart className={`h-4 w-4 sm:h-5 sm:w-5 transition-colors ${favorite ? "fill-accent text-accent" : ""}`} />
                 <span className="text-elegant text-sm font-medium">
@@ -774,7 +772,7 @@ const ProductDetail = () => {
           >
             {/* Elegant Backdrop for Info */}
             <div className="absolute -top-10 -right-10 w-40 h-40 bg-gradient-to-b from-primary/5 to-transparent rounded-full blur-3xl pointer-events-none -z-10" />
-            
+
             {/* Floating particle animation */}
             <motion.div
               className="absolute top-4 right-4 w-3 h-3 bg-primary/20 rounded-full blur-[1px]"
@@ -792,17 +790,16 @@ const ProductDetail = () => {
 
             <h1 className="text-elegant text-xl sm:text-2xl md:text-3xl mb-2 relative z-10 leading-tight sm:leading-normal" style={{ userSelect: 'text', WebkitUserSelect: 'text', touchAction: 'pan-y' }}>{product.title}</h1>
             <p className="text-muted-foreground text-xs sm:text-sm mb-3 sm:mb-4" style={{ userSelect: 'text', WebkitUserSelect: 'text', touchAction: 'pan-y' }}>{product.category}</p>
-            
+
             <div className="flex items-center gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 flex-wrap">
               <div className="flex items-center gap-1">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star
                     key={i}
-                    className={`h-3 w-3 sm:h-4 sm:w-4 ${
-                      i < Math.floor(product.rating)
-                        ? "fill-primary text-primary"
-                        : "text-border fill-border/30"
-                    }`}
+                    className={`h-3 w-3 sm:h-4 sm:w-4 ${i < Math.floor(product.rating)
+                      ? "fill-primary text-primary"
+                      : "text-border fill-border/30"
+                      }`}
                   />
                 ))}
               </div>
@@ -878,11 +875,10 @@ const ProductDetail = () => {
                       key={color.name}
                       onClick={() => setSelectedColor(color.name)}
                       style={{ touchAction: 'manipulation', minHeight: '44px' }}
-                      className={`px-4 py-2 rounded-full text-xs sm:text-sm border transition-all ${
-                        selectedColor === color.name
-                          ? "border-primary bg-primary/5 text-primary ring-1 ring-primary/20 font-medium"
-                          : "border-border hover:border-primary/50 text-muted-foreground"
-                      }`}
+                      className={`px-4 py-2 rounded-full text-xs sm:text-sm border transition-all ${selectedColor === color.name
+                        ? "border-primary bg-primary/5 text-primary ring-1 ring-primary/20 font-medium"
+                        : "border-border hover:border-primary/50 text-muted-foreground"
+                        }`}
                     >
                       {color.name}
                     </button>
@@ -902,11 +898,10 @@ const ProductDetail = () => {
                         key={variant.key}
                         onClick={() => setSelectedVariantKey(variant.key)}
                         style={{ touchAction: 'manipulation', minHeight: '80px' }}
-                        className={`text-left border rounded-sm p-3 sm:p-4 flex flex-col gap-1.5 sm:gap-2 transition-all duration-300 ${
-                          isActive
-                            ? "border-primary bg-primary/5 shadow-sm ring-1 ring-primary/20"
-                            : "border-border hover:border-primary/50"
-                        }`}
+                        className={`text-left border rounded-sm p-3 sm:p-4 flex flex-col gap-1.5 sm:gap-2 transition-all duration-300 ${isActive
+                          ? "border-primary bg-primary/5 shadow-sm ring-1 ring-primary/20"
+                          : "border-border hover:border-primary/50"
+                          }`}
                       >
                         <span className="text-xs sm:text-sm font-semibold text-elegant">{variant.label}</span>
                         <span className="text-[10px] sm:text-xs text-muted-foreground leading-tight">
@@ -931,7 +926,7 @@ const ProductDetail = () => {
               <p className="text-sm font-light leading-relaxed text-muted-foreground mb-4" style={{ userSelect: 'text', WebkitUserSelect: 'text', touchAction: 'pan-y' }}>
                 {product.description}
               </p>
-              
+
               {/* Key Features */}
               {product.features && product.features.length > 0 && (
                 <div className="mt-6">
@@ -950,8 +945,8 @@ const ProductDetail = () => {
 
             {/* Actions - Hidden on mobile (buttons shown in image gallery), visible on desktop */}
             <div className="hidden md:flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6">
-              <Button 
-                size="lg" 
+              <Button
+                size="lg"
                 className="flex-1 text-elegant text-sm sm:text-base py-4 sm:py-5 md:py-6"
                 onClick={() => handleAddToCart()}
                 style={{ touchAction: 'manipulation' }}
@@ -959,9 +954,9 @@ const ProductDetail = () => {
                 <ShoppingCart className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                 Add to Cart
               </Button>
-              <Button 
-                size="lg" 
-                variant="outline" 
+              <Button
+                size="lg"
+                variant="outline"
                 className="flex-1 text-elegant text-sm sm:text-base py-4 sm:py-5 md:py-6"
                 onClick={() => handleAddToCart(true)}
                 style={{ touchAction: 'manipulation' }}
@@ -971,15 +966,14 @@ const ProductDetail = () => {
             </div>
 
             {/* Wishlist Button - Desktop only (mobile version is in image gallery) */}
-            <motion.button 
+            <motion.button
               whileHover={window.matchMedia('(hover: hover)').matches ? { scale: 1.05 } : undefined}
               onClick={() => toggleFavorite(product)}
               style={{ touchAction: 'manipulation' }}
-              className={`hidden md:flex items-center gap-2 text-sm transition-colors mb-12 ${
-                favorite 
-                  ? "text-accent" 
-                  : "hover:text-accent"
-              }`}
+              className={`hidden md:flex items-center gap-2 text-sm transition-colors mb-12 ${favorite
+                ? "text-accent"
+                : "hover:text-accent"
+                }`}
             >
               <Heart className={`h-4 w-4 ${favorite ? "fill-accent" : ""}`} />
               <span className="text-elegant">
@@ -1031,11 +1025,10 @@ const ProductDetail = () => {
                   {Array.from({ length: 5 }).map((_, i) => (
                     <Star
                       key={i}
-                      className={`h-4 w-4 ${
-                        i < Math.floor(reviewStats.averageRating)
-                          ? "fill-primary text-primary"
-                          : "text-border"
-                      }`}
+                      className={`h-4 w-4 ${i < Math.floor(reviewStats.averageRating)
+                        ? "fill-primary text-primary"
+                        : "text-border"
+                        }`}
                     />
                   ))}
                 </div>
@@ -1093,11 +1086,10 @@ const ProductDetail = () => {
                           {Array.from({ length: 5 }).map((_, i) => (
                             <Star
                               key={i}
-                              className={`h-3 w-3 ${
-                                i < review.rating
-                                  ? "fill-primary text-primary"
-                                  : "text-border"
-                              }`}
+                              className={`h-3 w-3 ${i < review.rating
+                                ? "fill-primary text-primary"
+                                : "text-border"
+                                }`}
                             />
                           ))}
                         </div>
@@ -1152,11 +1144,10 @@ const ProductDetail = () => {
                     transition={{ delay: index * 0.1 }}
                     style={{ touchAction: 'manipulation' }}
                     onClick={() => setSelectedAccessoryFilter(tab)}
-                    className={`px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 rounded-full text-[11px] sm:text-xs md:text-sm border transition-all duration-300 min-h-[36px] sm:min-h-[40px] ${
-                      isActive
-                        ? "border-primary bg-primary/5 text-primary shadow-sm font-medium"
-                        : "border-border hover:border-primary/60 hover:bg-primary/5"
-                    }`}
+                    className={`px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 rounded-full text-[11px] sm:text-xs md:text-sm border transition-all duration-300 min-h-[36px] sm:min-h-[40px] ${isActive
+                      ? "border-primary bg-primary/5 text-primary shadow-sm font-medium"
+                      : "border-border hover:border-primary/60 hover:bg-primary/5"
+                      }`}
                   >
                     {tab}
                   </motion.button>
@@ -1207,9 +1198,9 @@ const ProductDetail = () => {
               className="text-center mt-6 sm:mt-8 md:mt-10 lg:mt-12 px-2"
             >
               <Link to="/accessories">
-                <Button 
-                  size="lg" 
-                  variant="outline" 
+                <Button
+                  size="lg"
+                  variant="outline"
                   className="text-elegant text-xs sm:text-sm md:text-base min-h-[44px] sm:min-h-[48px]"
                   style={{ touchAction: 'manipulation' }}
                 >

@@ -1257,17 +1257,17 @@ const useFilteredCards = (cards: GiftCard[], filters: FilterState) => {
     let filtered = [...cards];
 
     // Filter by regions
-    filtered = filtered.filter(card => 
+    filtered = filtered.filter(card =>
       filters.regions.includes(card.region)
     );
 
     // Filter by brands
-    filtered = filtered.filter(card => 
+    filtered = filtered.filter(card =>
       filters.brands.includes(card.brand)
     );
 
     // Filter by price range slider
-    filtered = filtered.filter(card => 
+    filtered = filtered.filter(card =>
       card.price >= filters.priceRange[0] && card.price <= filters.priceRange[1]
     );
 
@@ -1277,8 +1277,8 @@ const useFilteredCards = (cards: GiftCard[], filters: FilterState) => {
         return filters.selectedPriceRanges.some(rangeLabel => {
           const range = PRICE_RANGES.find(r => r.label === rangeLabel);
           if (!range) return false;
-          return card.price >= range.min && 
-                 (range.max === Infinity ? true : card.price <= range.max);
+          return card.price >= range.min &&
+            (range.max === Infinity ? true : card.price <= range.max);
         });
       });
     }
@@ -1338,9 +1338,9 @@ const FilterSidebar = ({ filters, onUpdateFilters, onClearFilters }: FilterSideb
     <div className="space-y-6 sm:space-y-8">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-elegant text-lg">Filters</h2>
-        <Button 
-          variant="ghost" 
-          size="sm" 
+        <Button
+          variant="ghost"
+          size="sm"
           className="text-elegant text-xs"
           onClick={onClearFilters}
         >
@@ -1353,28 +1353,26 @@ const FilterSidebar = ({ filters, onUpdateFilters, onClearFilters }: FilterSideb
         <h3 className="text-elegant text-sm mb-4 font-medium">🌍 Region</h3>
         <div className="space-y-3">
           {REGIONS.map((region) => (
-            <div key={region} className={`flex items-center space-x-2 p-2 rounded transition-all duration-200 ${
-              filters.regions.includes(region) 
-                ? "bg-primary/10 border border-primary/30" 
+            <div key={region} className={`flex items-center space-x-2 p-2 rounded transition-all duration-200 ${filters.regions.includes(region)
+                ? "bg-primary/10 border border-primary/30"
                 : "hover:bg-white/50"
-            }`}>
-              <Checkbox 
+              }`}>
+              <Checkbox
                 id={`region-${region}`}
                 checked={filters.regions.includes(region)}
-                onCheckedChange={(checked) => 
+                onCheckedChange={(checked) =>
                   handleRegionChange(region, checked as boolean)
                 }
               />
-               <Label
-                 htmlFor={`region-${region}`}
-                 className={`text-sm cursor-pointer transition-colors duration-200 ${
-                   filters.regions.includes(region) 
-                     ? "font-medium text-primary" 
-                     : "font-light"
-                 }`}
-               >
-                 {region === "Family" ? `${region} (Anghami only)` : region}
-               </Label>
+              <Label
+                htmlFor={`region-${region}`}
+                className={`text-sm cursor-pointer transition-colors duration-200 ${filters.regions.includes(region)
+                    ? "font-medium text-primary"
+                    : "font-light"
+                  }`}
+              >
+                {region === "Family" ? `${region} (Anghami only)` : region}
+              </Label>
             </div>
           ))}
         </div>
@@ -1393,10 +1391,10 @@ const FilterSidebar = ({ filters, onUpdateFilters, onClearFilters }: FilterSideb
         <div className="space-y-3">
           {BRANDS.map((brand) => (
             <div key={brand} className="flex items-center space-x-2">
-              <Checkbox 
+              <Checkbox
                 id={`brand-${brand}`}
                 checked={filters.brands.includes(brand)}
-                onCheckedChange={(checked) => 
+                onCheckedChange={(checked) =>
                   handleBrandChange(brand, checked as boolean)
                 }
               />
@@ -1434,10 +1432,10 @@ const FilterSidebar = ({ filters, onUpdateFilters, onClearFilters }: FilterSideb
         <div className="space-y-3">
           {PRICE_RANGES.map((range) => (
             <div key={range.label} className="flex items-center space-x-2">
-              <Checkbox 
+              <Checkbox
                 id={range.label}
                 checked={filters.selectedPriceRanges.includes(range.label)}
-                onCheckedChange={(checked) => 
+                onCheckedChange={(checked) =>
                   handlePriceRangeChange(range.label, checked as boolean)
                 }
               />
@@ -1477,9 +1475,9 @@ const MobileFilterButton = ({ filters, onUpdateFilters, onClearFilters }: Filter
     <div className="space-y-6 sm:space-y-8">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-elegant text-lg">Filters</h2>
-        <Button 
-          variant="ghost" 
-          size="sm" 
+        <Button
+          variant="ghost"
+          size="sm"
           className="text-elegant text-xs"
           onClick={onClearFilters}
         >
@@ -1492,12 +1490,11 @@ const MobileFilterButton = ({ filters, onUpdateFilters, onClearFilters }: Filter
         <h3 className="text-elegant text-sm mb-4 font-medium">🌍 Region</h3>
         <div className="space-y-3">
           {REGIONS.map((region) => (
-            <div key={region} className={`flex items-center space-x-2 p-2 rounded transition-all duration-200 ${
-              filters.regions.includes(region) 
-                ? "bg-primary/10 border border-primary/30" 
+            <div key={region} className={`flex items-center space-x-2 p-2 rounded transition-all duration-200 ${filters.regions.includes(region)
+                ? "bg-primary/10 border border-primary/30"
                 : "hover:bg-white/50"
-            }`}>
-              <Checkbox 
+              }`}>
+              <Checkbox
                 id={`mobile-region-${region}`}
                 checked={filters.regions.includes(region)}
                 onCheckedChange={(checked) => {
@@ -1507,16 +1504,15 @@ const MobileFilterButton = ({ filters, onUpdateFilters, onClearFilters }: Filter
                   onUpdateFilters({ regions: newRegions });
                 }}
               />
-               <Label
-                 htmlFor={`mobile-region-${region}`}
-                 className={`text-sm cursor-pointer transition-colors duration-200 ${
-                   filters.regions.includes(region) 
-                     ? "font-medium text-primary" 
-                     : "font-light"
-                 }`}
-               >
-                 {region === "Family" ? `${region} (Anghami only)` : region}
-               </Label>
+              <Label
+                htmlFor={`mobile-region-${region}`}
+                className={`text-sm cursor-pointer transition-colors duration-200 ${filters.regions.includes(region)
+                    ? "font-medium text-primary"
+                    : "font-light"
+                  }`}
+              >
+                {region === "Family" ? `${region} (Anghami only)` : region}
+              </Label>
             </div>
           ))}
         </div>
@@ -1535,7 +1531,7 @@ const MobileFilterButton = ({ filters, onUpdateFilters, onClearFilters }: Filter
         <div className="space-y-3">
           {BRANDS.map((brand) => (
             <div key={brand} className="flex items-center space-x-2">
-              <Checkbox 
+              <Checkbox
                 id={`mobile-brand-${brand}`}
                 checked={filters.brands.includes(brand)}
                 onCheckedChange={(checked) => {
@@ -1579,7 +1575,7 @@ const MobileFilterButton = ({ filters, onUpdateFilters, onClearFilters }: Filter
         <div className="space-y-3">
           {PRICE_RANGES.map((range) => (
             <div key={range.label} className="flex items-center space-x-2">
-              <Checkbox 
+              <Checkbox
                 id={`mobile-${range.label}`}
                 checked={filters.selectedPriceRanges.includes(range.label)}
                 onCheckedChange={(checked) => {
@@ -1705,9 +1701,8 @@ const GiftCardComponent = ({ id, name, price, regionalPrice, image, region, bran
       transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
       className="group relative bg-white rounded-sm overflow-hidden border border-border hover:border-primary/40 transition-all duration-500 shadow-card hover:shadow-elegant"
     >
-      <div className={`overflow-hidden bg-white relative border-b border-border ${
-        viewMode === "grid" ? "aspect-[4/3]" : "aspect-[16/9]"
-      }`}>
+      <div className={`overflow-hidden bg-white relative border-b border-border ${viewMode === "grid" ? "aspect-[4/3]" : "aspect-[16/9]"
+        }`}>
         <motion.img
           src={image}
           alt={name}
@@ -1716,7 +1711,7 @@ const GiftCardComponent = ({ id, name, price, regionalPrice, image, region, bran
       </div>
       <div className="p-4">
         <div className="flex items-center justify-between mb-2">
-          <motion.span 
+          <motion.span
             initial={{ opacity: 0.7 }}
             whileHover={{ opacity: 1 }}
             className="text-elegant text-[10px] text-primary"
@@ -1738,9 +1733,9 @@ const GiftCardComponent = ({ id, name, price, regionalPrice, image, region, bran
             </p>
           )}
         </div>
-        
-        <Button 
-          size="sm" 
+
+        <Button
+          size="sm"
           className="w-full mt-3 text-elegant"
           variant="outline"
           onClick={handleBuyNow}
@@ -1767,7 +1762,7 @@ const GiftCards = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white no-horizontal-scroll overflow-x-hidden">
+    <div className="min-h-screen bg-white w-full">
       <Header />
 
       <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12">
@@ -1778,7 +1773,7 @@ const GiftCards = () => {
         >
           Gift Cards
         </motion.h1>
-        
+
         <motion.p
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -1804,24 +1799,23 @@ const GiftCards = () => {
             </div>
             <div className="flex flex-wrap gap-2">
               {REGIONS.map((region) => (
-                 <Button
-                   key={region}
-                   variant={filters.regions.includes(region) ? "default" : "outline"}
-                   size="sm"
-                   onClick={() => {
-                     const newRegions = filters.regions.includes(region)
-                       ? filters.regions.filter(r => r !== region)
-                       : [...filters.regions, region];
-                     updateFilters({ regions: newRegions });
-                   }}
-                   className={`text-xs sm:text-sm transition-all duration-200 ${
-                     filters.regions.includes(region)
-                       ? "bg-primary text-white shadow-lg scale-105"
-                       : "hover:bg-primary/10"
-                   }`}
-                 >
-                   {region === "Family" ? `${region} (Anghami only)` : region}
-                 </Button>
+                <Button
+                  key={region}
+                  variant={filters.regions.includes(region) ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => {
+                    const newRegions = filters.regions.includes(region)
+                      ? filters.regions.filter(r => r !== region)
+                      : [...filters.regions, region];
+                    updateFilters({ regions: newRegions });
+                  }}
+                  className={`text-xs sm:text-sm transition-all duration-200 ${filters.regions.includes(region)
+                      ? "bg-primary text-white shadow-lg scale-105"
+                      : "hover:bg-primary/10"
+                    }`}
+                >
+                  {region === "Family" ? `${region} (Anghami only)` : region}
+                </Button>
               ))}
             </div>
           </div>
@@ -1829,7 +1823,7 @@ const GiftCards = () => {
 
         {/* Mobile Filter Button - Appears above cards on mobile, hidden on desktop */}
         <div className="lg:hidden mb-4">
-          <MobileFilterButton 
+          <MobileFilterButton
             filters={filters}
             onUpdateFilters={updateFilters}
             onClearFilters={clearAllFilters}
@@ -1838,7 +1832,7 @@ const GiftCards = () => {
 
         <div className="grid lg:grid-cols-4 gap-6 lg:gap-8">
           {/* Desktop Filter Sidebar - Hidden on mobile, visible on lg+ */}
-          <FilterSidebar 
+          <FilterSidebar
             filters={filters}
             onUpdateFilters={updateFilters}
             onClearFilters={clearAllFilters}
@@ -1860,11 +1854,10 @@ const GiftCards = () => {
             />
 
             {/* Gift Cards */}
-            <div className={`grid gap-2 sm:gap-3 md:gap-4 lg:gap-6 ${
-              viewMode === "grid" 
-                ? "grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5" 
+            <div className={`grid gap-2 sm:gap-3 md:gap-4 lg:gap-6 ${viewMode === "grid"
+                ? "grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
                 : "grid-cols-1"
-            }`}>
+              }`}>
               {filteredCards.map((card, index) => (
                 <motion.div
                   key={card.id}
@@ -1888,8 +1881,8 @@ const GiftCards = () => {
                 <p className="text-muted-foreground text-lg">
                   No gift cards found matching your filters.
                 </p>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   onClick={clearAllFilters}
                   className="mt-4"
                 >
