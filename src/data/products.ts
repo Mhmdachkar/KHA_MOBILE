@@ -31,6 +31,17 @@ import fonengUsbCable from "@/assets/phone_accessories/USB to Type-C foneng.webp
 import borofoneUsbCable from "@/assets/phone_accessories/usb to type-C BOROFONE.jpg";
 import fonengDesktopHolder from "@/assets/phone_accessories/foldable desktop holder foneng.webp";
 import samsung25WAdapter from "@/assets/phone_accessories/Samsung 25W PD Adapter.png";
+// USB Flash Drives imports
+import miniMetalUsb from "@/assets/USB/Mini Metal USB Flash Drive/image.png";
+import miniMetalUsb1 from "@/assets/USB/Mini Metal USB Flash Drive/image copy.png";
+import miniMetalUsb2 from "@/assets/USB/Mini Metal USB Flash Drive/image copy 2.png";
+import miniMetalUsb3 from "@/assets/USB/Mini Metal USB Flash Drive/image copy 3.png";
+import philipsUsb from "@/assets/USB/Philips USB 3.2 High-Speed Metal Flash Drive/image.png";
+import philipsUsb1 from "@/assets/USB/Philips USB 3.2 High-Speed Metal Flash Drive/image copy.png";
+import philipsUsb2 from "@/assets/USB/Philips USB 3.2 High-Speed Metal Flash Drive/image copy 2.png";
+import philipsUsb3 from "@/assets/USB/Philips USB 3.2 High-Speed Metal Flash Drive/image copy 3.png";
+import philipsUsb4 from "@/assets/USB/Philips USB 3.2 High-Speed Metal Flash Drive/image copy 4.png";
+import sandiskUsb from "@/assets/USB/SanDisk Cruzer Blade/image.png";
 // Wearables imports
 import s8UltraMax from "@/assets/wearables/s8 ultra max smart watch.png";
 import smartWatchActivePro from "@/assets/wearables/smart watch active pro (green lion).webp";
@@ -769,6 +780,116 @@ export const phoneAccessories: Product[] = [
       { label: "Power", value: "USB or adapter powered" },
       { label: "Flexibility", value: "Flexible, cuttable design" },
       { label: "Length", value: "Standard length with extension options" }
+    ]
+  },
+  {
+    id: 124,
+    name: "Mini Metal USB Flash Drive",
+    title: "Compact Mini Metal USB 2.0 Flash Drive",
+    price: 8,
+    image: miniMetalUsb,
+    images: [miniMetalUsb, miniMetalUsb1, miniMetalUsb2, miniMetalUsb3],
+    rating: 4.6,
+    category: "All Essentials",
+    brand: "Generic",
+    description: "Ultra-compact and durable mini metal USB flash drive perfect for storing and transferring your important files. Featuring a sleek metal design, this lightweight drive is built to withstand daily use while providing reliable storage for your photos, documents, music, and videos. The compact design makes it incredibly portable - just attach it to your keychain and carry your data wherever you go.",
+    features: [
+      "Metal Construction: Durable metal casing provides enhanced durability and a premium feel.",
+      "Ultra Compact: Incredibly small and lightweight design fits easily on a keychain or in your pocket.",
+      "USB 2.0 Interface: Compatible with all USB 2.0 and 1.1 ports for universal compatibility.",
+      "Plug and Play: No driver installation required - works instantly on Windows, Mac, and Linux.",
+      "Waterproof & Shockproof: Robust construction protects your data from water splashes and physical impacts.",
+      "Wide Compatibility: Works with laptops, PCs, Macs, car audio systems, and more.",
+      "Keyring Attachment: Built-in loop for easy attachment to keys or lanyards."
+    ],
+    specifications: [
+      { label: "Interface", value: "USB 2.0 (backward compatible with USB 1.1)" },
+      { label: "Read Speed", value: "Up to 18 MB/s" },
+      { label: "Write Speed", value: "Up to 8 MB/s" },
+      { label: "Material", value: "Metal alloy casing" },
+      { label: "Dimensions", value: "39mm x 12mm x 4.5mm" },
+      { label: "Weight", value: "Less than 30g" },
+      { label: "Compatibility", value: "Windows, Mac OS, Linux, Chrome OS" },
+      { label: "Data Retention", value: "10+ years" }
+    ],
+    variants: [
+      { key: "16gb", ram: "", storage: "16GB", label: "16GB", price: 8, description: "Perfect for basic storage needs" },
+      { key: "32gb", ram: "", storage: "32GB", label: "32GB", price: 12, description: "Great for documents and photos" },
+      { key: "64gb", ram: "", storage: "64GB", label: "64GB", price: 18, description: "Ideal for multimedia files" },
+      { key: "128gb", ram: "", storage: "128GB", label: "128GB", price: 25, description: "Best for large file storage" }
+    ]
+  },
+  {
+    id: 125,
+    name: "Philips USB 3.2 High-Speed Metal Flash Drive",
+    title: "Philips USB 3.2 Gen 1 High-Speed Flash Drive",
+    price: 15,
+    image: philipsUsb,
+    images: [philipsUsb, philipsUsb1, philipsUsb2, philipsUsb3, philipsUsb4],
+    rating: 4.8,
+    category: "All Essentials",
+    brand: "Philips",
+    description: "Experience blazing-fast data transfer with the Philips USB 3.2 High-Speed Metal Flash Drive. Engineered with advanced USB 3.2 Gen 1 technology, this premium flash drive delivers exceptional read speeds up to 150 MB/s, making it perfect for quickly transferring large files, HD videos, and photo libraries. The robust metal construction ensures long-lasting durability while maintaining a sleek, professional appearance. Perfect for students, professionals, and creatives who demand both speed and reliability.",
+    features: [
+      "USB 3.2 Gen 1 Technology: Ultra-fast data transfer speeds up to 150 MB/s for quick file transfers.",
+      "Premium Metal Design: Durable metal casing provides superior protection and heat dissipation.",
+      "Backward Compatible: Works seamlessly with USB 3.0 and USB 2.0 ports.",
+      "Compact & Portable: Sleek design fits easily in your pocket or laptop bag.",
+      "Plug and Play: No software installation required - ready to use immediately.",
+      "LED Activity Indicator: Built-in LED shows when the drive is active.",
+      "Wide Compatibility: Compatible with Windows, Mac OS, Linux, and more.",
+      "Philips Quality: Backed by Philips' reputation for quality and reliability."
+    ],
+    specifications: [
+      { label: "Interface", value: "USB 3.2 Gen 1 (USB 3.0 compatible)" },
+      { label: "Read Speed", value: "Up to 150 MB/s" },
+      { label: "Write Speed", value: "Up to 50-100 MB/s (varies by capacity)" },
+      { label: "Material", value: "Premium metal alloy" },
+      { label: "LED Indicator", value: "Yes - activity light" },
+      { label: "Compatibility", value: "Windows, Mac OS 9.0+, Linux 2.4.0+" },
+      { label: "Operating Temperature", value: "0°C to 70°C" },
+      { label: "Warranty", value: "2-year limited warranty" }
+    ],
+    variants: [
+      { key: "32gb", ram: "", storage: "32GB", label: "32GB", price: 15, description: "Great for everyday use" },
+      { key: "64gb", ram: "", storage: "64GB", label: "64GB", price: 22, description: "Perfect for professionals" },
+      { key: "128gb", ram: "", storage: "128GB", label: "128GB", price: 30, description: "Ideal for large projects" },
+      { key: "256gb", ram: "", storage: "256GB", label: "256GB", price: 45, description: "Maximum storage capacity" }
+    ]
+  },
+  {
+    id: 126,
+    name: "SanDisk Cruzer Blade USB Flash Drive",
+    title: "SanDisk Cruzer Blade Compact USB 2.0",
+    price: 10,
+    image: sandiskUsb,
+    rating: 4.7,
+    category: "All Essentials",
+    brand: "SanDisk",
+    description: "The SanDisk Cruzer Blade combines sleek design with reliable performance in an incredibly compact form factor. This ultra-portable USB flash drive features the iconic SanDisk black and red design that slides smoothly in and out of USB ports. Perfect for students, professionals, or anyone who needs to carry files on the go, the Cruzer Blade offers simple drag-and-drop file transfer and broad compatibility across all devices and operating systems.",
+    features: [
+      "Ultra Compact Design: Sleek, contoured styling in classic SanDisk black and red colors.",
+      "Simple File Transfer: Easy drag-and-drop functionality for hassle-free file management.",
+      "Universal Compatibility: Works with Windows 2000/XP and later, Mac OS X, and Linux.",
+      "Portable Storage: Small enough to fit in your pocket or attach to your keychain.",
+      "SanDisk Quality: Trusted brand with a 2-year limited warranty for peace of mind.",
+      "Plug and Play: No software installation needed - just plug in and start using.",
+      "Lightweight: Weighs only 3 grams for ultimate portability."
+    ],
+    specifications: [
+      { label: "Interface", value: "USB 2.0" },
+      { label: "Dimensions", value: "41.5mm x 17.6mm x 7.4mm" },
+      { label: "Weight", value: "3 grams" },
+      { label: "Operating Temperature", value: "0°C to 45°C" },
+      { label: "Storage Temperature", value: "-10°C to 70°C" },
+      { label: "Compatibility", value: "Windows 2000+, Mac OS X, Linux" },
+      { label: "Warranty", value: "2-year limited warranty" }
+    ],
+    variants: [
+      { key: "16gb", ram: "", storage: "16GB", label: "16GB", price: 10, description: "Basic storage solution" },
+      { key: "32gb", ram: "", storage: "32GB", label: "32GB", price: 14, description: "Popular choice for daily use" },
+      { key: "64gb", ram: "", storage: "64GB", label: "64GB", price: 20, description: "More space for your files" },
+      { key: "128gb", ram: "", storage: "128GB", label: "128GB", price: 28, description: "Maximum capacity option" }
     ]
   }
 ];

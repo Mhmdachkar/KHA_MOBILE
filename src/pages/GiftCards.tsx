@@ -214,7 +214,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 5,
     name: "iTunes USA $10 Gift Card",
-    price: 10,
+    price: 12,
     regionalPrice: 10,
     image: itunesUSA10,
     region: "USA",
@@ -236,7 +236,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 7,
     name: "iTunes USA $20 Gift Card",
-    price: 20,
+    price: 24,
     regionalPrice: 20,
     image: itunesUSA20,
     region: "USA",
@@ -247,7 +247,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 8,
     name: "iTunes USA $25 Gift Card",
-    price: 25,
+    price: 28,
     regionalPrice: 25,
     image: itunesUSA25,
     region: "USA",
@@ -258,7 +258,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 9,
     name: "iTunes USA $30 Gift Card",
-    price: 30,
+    price: 34,
     regionalPrice: 30,
     image: itunesUSA30,
     region: "USA",
@@ -269,7 +269,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 10,
     name: "iTunes USA $50 Gift Card",
-    price: 50,
+    price: 55,
     regionalPrice: 50,
     image: itunesUSA50,
     region: "USA",
@@ -280,7 +280,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 11,
     name: "iTunes USA $100 Gift Card",
-    price: 100,
+    price: 110,
     regionalPrice: 100,
     image: itunesUSA100,
     region: "USA",
@@ -495,7 +495,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 30,
     name: "PlayStation Store USA $10 Gift Card",
-    price: 10,
+    price: 12,
     regionalPrice: 10,
     image: psUSA10,
     region: "USA",
@@ -506,7 +506,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 31,
     name: "PlayStation Store USA $25 Gift Card",
-    price: 25,
+    price: 28,
     regionalPrice: 25,
     image: psUSA25,
     region: "USA",
@@ -517,7 +517,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 32,
     name: "PlayStation Store USA $50 Gift Card",
-    price: 50,
+    price: 55,
     regionalPrice: 50,
     image: psUSA50,
     region: "USA",
@@ -528,7 +528,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 33,
     name: "PlayStation Store USA $75 Gift Card",
-    price: 75,
+    price: 78,
     regionalPrice: 75,
     image: psUSA75,
     region: "USA",
@@ -539,7 +539,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 34,
     name: "PlayStation Store USA $100 Gift Card",
-    price: 100,
+    price: 110,
     regionalPrice: 100,
     image: psUSA100,
     region: "USA",
@@ -552,7 +552,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 35,
     name: "PlayStation Store UAE $10 Gift Card",
-    price: 10,
+    price: 12,
     regionalPrice: 37,
     image: psUAE10,
     region: "UAE",
@@ -563,7 +563,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 36,
     name: "PlayStation Store UAE $20 Gift Card",
-    price: 20,
+    price: 24,
     regionalPrice: 74,
     image: psUAE20,
     region: "UAE",
@@ -585,7 +585,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 38,
     name: "PlayStation Store UAE $50 Gift Card",
-    price: 50,
+    price: 55,
     regionalPrice: 185,
     image: psUAE50,
     region: "UAE",
@@ -596,7 +596,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 39,
     name: "PlayStation Store UAE $60 Gift Card",
-    price: 60,
+    price: 65,
     regionalPrice: 222,
     image: psUAE60,
     region: "UAE",
@@ -607,7 +607,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 40,
     name: "PlayStation Store UAE $70 Gift Card",
-    price: 70,
+    price: 75,
     regionalPrice: 259,
     image: psUAE70,
     region: "UAE",
@@ -618,7 +618,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 41,
     name: "PlayStation Store UAE $100 Gift Card",
-    price: 100,
+    price: 110,
     regionalPrice: 370,
     image: psUAE100,
     region: "UAE",
@@ -664,7 +664,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 45,
     name: "PlayStation Store KSA $10 Gift Card",
-    price: 10,
+    price: 12,
     regionalPrice: 38,
     image: psKSA10,
     region: "KSA",
@@ -675,7 +675,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 46,
     name: "PlayStation Store KSA $20 Gift Card",
-    price: 20,
+    price: 24,
     regionalPrice: 76,
     image: psKSA20,
     region: "KSA",
@@ -697,7 +697,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 48,
     name: "PlayStation Store KSA $50 Gift Card",
-    price: 50,
+    price: 55,
     regionalPrice: 190,
     image: psKSA50,
     region: "KSA",
@@ -708,7 +708,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 49,
     name: "PlayStation Store KSA $60 Gift Card",
-    price: 60,
+    price: 65,
     regionalPrice: 228,
     image: psKSA60,
     region: "KSA",
@@ -719,7 +719,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 50,
     name: "PlayStation Store KSA $70 Gift Card",
-    price: 70,
+    price: 75,
     regionalPrice: 266,
     image: psKSA70,
     region: "KSA",
@@ -732,7 +732,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 51,
     name: "PlayStation Store OMAN $10 Gift Card",
-    price: 10,
+    price: 12,
     regionalPrice: 3.85,
     image: psOMAN10,
     region: "OMAN",
@@ -743,7 +743,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 52,
     name: "PlayStation Store OMAN $20 Gift Card",
-    price: 20,
+    price: 24,
     regionalPrice: 7.70,
     image: psOMAN20,
     region: "OMAN",
@@ -765,7 +765,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 54,
     name: "PlayStation Store OMAN $45 Gift Card",
-    price: 45,
+    price: 48,
     regionalPrice: 17.33,
     image: psOMAN45,
     region: "OMAN",
@@ -776,7 +776,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 55,
     name: "PlayStation Store OMAN $50 Gift Card",
-    price: 50,
+    price: 55,
     regionalPrice: 19.25,
     image: psOMAN50,
     region: "OMAN",
@@ -787,7 +787,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 56,
     name: "PlayStation Store OMAN $60 Gift Card",
-    price: 60,
+    price: 65,
     regionalPrice: 23.10,
     image: psOMAN60,
     region: "OMAN",
@@ -798,7 +798,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 57,
     name: "PlayStation Store OMAN $70 Gift Card",
-    price: 70,
+    price: 75,
     regionalPrice: 26.95,
     image: psOMAN70,
     region: "OMAN",
@@ -809,7 +809,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 58,
     name: "PlayStation Store OMAN $100 Gift Card",
-    price: 100,
+    price: 110,
     regionalPrice: 38.50,
     image: psOMAN100,
     region: "OMAN",
@@ -822,7 +822,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 59,
     name: "PlayStation Store LEB $10 Gift Card",
-    price: 10,
+    price: 12,
     regionalPrice: 151500,
     image: psLEB10,
     region: "LEB",
@@ -833,7 +833,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 60,
     name: "PlayStation Store LEB $20 Gift Card",
-    price: 20,
+    price: 24,
     regionalPrice: 303000,
     image: psLEB20,
     region: "LEB",
@@ -855,7 +855,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 62,
     name: "PlayStation Store LEB $50 Gift Card",
-    price: 50,
+    price: 55,
     regionalPrice: 757500,
     image: psLEB50,
     region: "LEB",
@@ -866,7 +866,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 63,
     name: "PlayStation Store LEB $100 Gift Card",
-    price: 100,
+    price: 110,
     regionalPrice: 1515000,
     image: psLEB100,
     region: "LEB",
@@ -912,7 +912,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 67,
     name: "Anghami $25 Gift Card",
-    price: 25,
+    price: 28,
     regionalPrice: 25,
     image: anghami25,
     region: "Global",
@@ -923,7 +923,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 68,
     name: "Anghami $50 Gift Card",
-    price: 50,
+    price: 55,
     regionalPrice: 50,
     image: anghami50,
     region: "Global",
@@ -957,7 +957,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 71,
     name: "Anghami $75 Family Gift Card",
-    price: 75,
+    price: 78,
     regionalPrice: 75,
     image: anghami75Family,
     region: "Family",
@@ -970,7 +970,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 72,
     name: "Fortnite $10 Gift Card",
-    price: 10,
+    price: 12,
     regionalPrice: 10,
     image: fortnite10,
     region: "Global",
@@ -981,7 +981,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 73,
     name: "Fortnite $25 Gift Card",
-    price: 25,
+    price: 28,
     regionalPrice: 25,
     image: fortnite25,
     region: "Global",
@@ -992,7 +992,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 74,
     name: "Fortnite $100 Gift Card",
-    price: 100,
+    price: 110,
     regionalPrice: 100,
     image: fortnite100,
     region: "Global",
@@ -1038,7 +1038,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 78,
     name: "Free Fire $10 Gift Card",
-    price: 10,
+    price: 12,
     regionalPrice: 10,
     image: freefire10,
     region: "Global",
@@ -1049,7 +1049,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 79,
     name: "Free Fire $20 Gift Card",
-    price: 20,
+    price: 24,
     regionalPrice: 20,
     image: freefire20,
     region: "Global",
@@ -1084,7 +1084,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 82,
     name: "PUBG $10 Gift Card",
-    price: 10,
+    price: 12,
     regionalPrice: 10,
     image: pubg10,
     region: "Global",
@@ -1095,7 +1095,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 83,
     name: "PUBG $25 Gift Card",
-    price: 25,
+    price: 28,
     regionalPrice: 25,
     image: pubg25,
     region: "Global",
@@ -1106,7 +1106,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 84,
     name: "PUBG $50 Gift Card",
-    price: 50,
+    price: 55,
     regionalPrice: 50,
     image: pubg50,
     region: "Global",
@@ -1117,7 +1117,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 85,
     name: "PUBG $100 Gift Card",
-    price: 100,
+    price: 110,
     regionalPrice: 100,
     image: pubg100,
     region: "Global",
@@ -1163,7 +1163,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 89,
     name: "Roblox $10 Gift Card",
-    price: 10,
+    price: 12,
     regionalPrice: 10,
     image: roblox10,
     region: "Global",
@@ -1174,7 +1174,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 90,
     name: "Roblox $20 Gift Card",
-    price: 20,
+    price: 24,
     regionalPrice: 20,
     image: roblox20,
     region: "Global",
@@ -1185,7 +1185,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 91,
     name: "Roblox $25 Gift Card",
-    price: 25,
+    price: 28,
     regionalPrice: 25,
     image: roblox25,
     region: "Global",
@@ -1196,7 +1196,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 92,
     name: "Roblox $50 Gift Card",
-    price: 50,
+    price: 55,
     regionalPrice: 50,
     image: roblox50,
     region: "Global",
@@ -1354,8 +1354,8 @@ const FilterSidebar = ({ filters, onUpdateFilters, onClearFilters }: FilterSideb
         <div className="space-y-3">
           {REGIONS.map((region) => (
             <div key={region} className={`flex items-center space-x-2 p-2 rounded transition-all duration-200 ${filters.regions.includes(region)
-                ? "bg-primary/10 border border-primary/30"
-                : "hover:bg-white/50"
+              ? "bg-primary/10 border border-primary/30"
+              : "hover:bg-white/50"
               }`}>
               <Checkbox
                 id={`region-${region}`}
@@ -1367,8 +1367,8 @@ const FilterSidebar = ({ filters, onUpdateFilters, onClearFilters }: FilterSideb
               <Label
                 htmlFor={`region-${region}`}
                 className={`text-sm cursor-pointer transition-colors duration-200 ${filters.regions.includes(region)
-                    ? "font-medium text-primary"
-                    : "font-light"
+                  ? "font-medium text-primary"
+                  : "font-light"
                   }`}
               >
                 {region === "Family" ? `${region} (Anghami only)` : region}
@@ -1491,8 +1491,8 @@ const MobileFilterButton = ({ filters, onUpdateFilters, onClearFilters }: Filter
         <div className="space-y-3">
           {REGIONS.map((region) => (
             <div key={region} className={`flex items-center space-x-2 p-2 rounded transition-all duration-200 ${filters.regions.includes(region)
-                ? "bg-primary/10 border border-primary/30"
-                : "hover:bg-white/50"
+              ? "bg-primary/10 border border-primary/30"
+              : "hover:bg-white/50"
               }`}>
               <Checkbox
                 id={`mobile-region-${region}`}
@@ -1507,8 +1507,8 @@ const MobileFilterButton = ({ filters, onUpdateFilters, onClearFilters }: Filter
               <Label
                 htmlFor={`mobile-region-${region}`}
                 className={`text-sm cursor-pointer transition-colors duration-200 ${filters.regions.includes(region)
-                    ? "font-medium text-primary"
-                    : "font-light"
+                  ? "font-medium text-primary"
+                  : "font-light"
                   }`}
               >
                 {region === "Family" ? `${region} (Anghami only)` : region}
@@ -1810,8 +1810,8 @@ const GiftCards = () => {
                     updateFilters({ regions: newRegions });
                   }}
                   className={`text-xs sm:text-sm transition-all duration-200 ${filters.regions.includes(region)
-                      ? "bg-primary text-white shadow-lg scale-105"
-                      : "hover:bg-primary/10"
+                    ? "bg-primary text-white shadow-lg scale-105"
+                    : "hover:bg-primary/10"
                     }`}
                 >
                   {region === "Family" ? `${region} (Anghami only)` : region}
@@ -1855,8 +1855,8 @@ const GiftCards = () => {
 
             {/* Gift Cards */}
             <div className={`grid gap-2 sm:gap-3 md:gap-4 lg:gap-6 ${viewMode === "grid"
-                ? "grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
-                : "grid-cols-1"
+              ? "grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+              : "grid-cols-1"
               }`}>
               {filteredCards.map((card, index) => (
                 <motion.div
