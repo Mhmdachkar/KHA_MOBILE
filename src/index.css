@@ -161,7 +161,6 @@ All colors MUST be HSL.
   html {
     overflow-x: hidden;
     overflow-y: auto;
-    scroll-behavior: smooth;
     height: 100%;
     /* Performance optimizations for smoother scrolling */
     -webkit-font-smoothing: antialiased;
@@ -170,6 +169,73 @@ All colors MUST be HSL.
     /* Enable hardware acceleration */
     transform: translateZ(0);
     -webkit-transform: translateZ(0);
+  }
+
+  /* ============ Lenis Smooth Scroll Optimizations ============ */
+
+  /* Remove default scroll behavior to let Lenis handle it */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  .lenis.lenis-scrolling iframe {
+    pointer-events: none;
+  }
+
+  /* ============ Performance Optimizations ============ */
+
+  /* GPU acceleration for common animated elements */
+  .motion-div,
+  .hover-effect,
+  [class*="hover:"],
+  [class*="group-hover:"] {
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+
+  /* Optimize images for smooth scrolling */
+  img {
+    will-change: transform;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+  }
+
+  /* Optimize product cards and interactive elements */
+  .product-card,
+  [class*="card"],
+  button,
+  a {
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+  }
+
+  /* Disable will-change after animations complete */
+  .motion-div:not(:hover),
+  .hover-effect:not(:hover) {
+    will-change: auto;
+  }
+
+  /* ============ Scroll-based Animations & Parallax ============ */
+
+  .scroll-fade-in {
+    opacity: 0;
+    transform: translateY(20px) translateZ(0);
+    backface-visibility: hidden;
   }
 
   body {
@@ -182,7 +248,6 @@ All colors MUST be HSL.
     width: 100%;
     min-height: 100%;
     -webkit-overflow-scrolling: touch;
-    scroll-behavior: smooth;
     margin: 0;
     padding: 0;
     /* Performance optimizations for smoother scrolling */
@@ -390,7 +455,6 @@ All colors MUST be HSL.
   /* Smooth scrolling for touch devices */
   * {
     -webkit-overflow-scrolling: touch;
-    scroll-behavior: smooth;
   }
 
   /* Prevent scroll interruption when clicking */
@@ -402,5 +466,27 @@ All colors MUST be HSL.
   /* Optimize motion components for touch */
   [data-framer-component] {
     touch-action: manipulation;
+  }
+
+  /* Smooth scroll utilities */
+  .scroll-smooth-section {
+    will-change: transform;
+    transform: translateZ(0);
+  }
+
+  /* Parallax utility classes */
+  .parallax-slow {
+    will-change: transform;
+    transform: translateZ(0);
+  }
+
+  .parallax-medium {
+    will-change: transform;
+    transform: translateZ(0);
+  }
+
+  .parallax-fast {
+    will-change: transform;
+    transform: translateZ(0);
   }
 }

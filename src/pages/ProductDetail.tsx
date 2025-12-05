@@ -10,6 +10,7 @@ import { getProductById, phoneAccessories, wearablesProducts, smartphoneProducts
 import { getGreenLionProductById, greenLionProducts } from "@/data/greenLionProducts";
 import ProductCard from "@/components/ProductCard";
 import ProductCarousel from "@/components/ProductCarousel";
+import ImageLightbox from "@/components/ImageLightbox";
 
 // Mock customer reviews data
 interface Review {
@@ -113,6 +114,7 @@ const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(0);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const { isFavorite, toggleFavorite } = useFavorites();
   const { addToCart } = useCart();
 
@@ -208,31 +210,24 @@ const ProductDetail = () => {
     return color?.image;
   }, [selectedColor, colorOptions]);
 
-  // Reset selectedImage when productImages changes, but prioritize color selection
-  useEffect(() => {
-    // If a color is selected and has an image, find and use that image
-    if (colorImage && productImages.length > 0) {
-      const colorIndex = productImages.findIndex(img => img === colorImage);
-      if (colorIndex !== -1) {
-        setSelectedImage(colorIndex);
-        return;
-      }
-    }
-    // Otherwise, reset to first image
-    if (productImages.length > 0) {
-      setSelectedImage(0);
-    }
-  }, [productImages]);
+  // Track if user manually clicked an image (to prevent color sync from overriding)
+  const [manualImageSelection, setManualImageSelection] = useState(false);
 
-  // When color changes, update selectedImage index if the image exists in productImages
+  // When color changes from COLOR BUTTON click, update selectedImage
+  // But don't interfere if user manually clicked an image thumbnail
   useEffect(() => {
-    if (colorImage && productImages.length > 0) {
+    // Only sync if this was a deliberate color change, not from clicking an image
+    if (!manualImageSelection && colorImage && productImages.length > 0) {
       const index = productImages.findIndex(img => img === colorImage);
-      if (index !== -1 && selectedImage !== index) {
+      if (index !== -1) {
         setSelectedImage(index);
       }
     }
-  }, [colorImage, productImages, selectedImage]);
+    // Reset the manual flag after color sync attempt
+    if (manualImageSelection) {
+      setManualImageSelection(false);
+    }
+  }, [colorImage]);
 
   const displayPrice = selectedVariant?.price ?? product.price;
   const primaryImage =
@@ -618,8 +613,9 @@ const ProductDetail = () => {
               <img
                 src={productImages[selectedImage]}
                 alt={product.name}
-                className="h-full w-full object-contain p-4 sm:p-6 md:p-8 transition-opacity duration-300 relative z-10"
+                className="h-full w-full object-contain p-4 sm:p-6 md:p-8 transition-opacity duration-300 relative z-10 cursor-pointer hover:opacity-90"
                 style={{ maxHeight: "100%", maxWidth: "100%", margin: "0 auto", touchAction: "pan-y pinch-zoom" }}
+                onClick={() => setIsLightboxOpen(true)}
                 onError={(e) => {
                   // Fallback if image fails to load
                   const target = e.target as HTMLImageElement;
@@ -657,9 +653,25 @@ const ProductDetail = () => {
                 {productImages.map((image, index) => (
                   <button
                     key={index}
-                    onClick={() => setSelectedImage(index)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      // Mark this as a manual selection
+                      setManualImageSelection(true);
+                      setSelectedImage(index);
+
+                      // Sync color selection when clicking on images
+                      if (colorOptions.length > 0) {
+                        // Try to find which color this image corresponds to
+                        const matchingColor = colorOptions.find(color => color.image === image);
+                        if (matchingColor) {
+                          setSelectedColor(matchingColor.name);
+                        }
+                      }
+                    }}
+                    type="button"
                     style={{ touchAction: "manipulation", minHeight: "60px", minWidth: "60px" }}
-                    className={`aspect-square bg-white rounded-sm overflow-hidden border-2 transition-all cursor-pointer min-h-[70px] sm:min-h-[80px] md:min-h-[90px] ${selectedImage === index
+                    className={`aspect-square bg-white rounded-sm overflow-hidden border-2 transition-all cursor-pointer min-h-[70px] sm:min-h-[80px] md:min-h-[90px] flex items-center justify-center p-1.5 sm:p-2 ${selectedImage === index
                       ? "border-primary ring-2 ring-primary/30 shadow-md"
                       : "border-border hover:border-primary/50"
                       }`}
@@ -668,7 +680,7 @@ const ProductDetail = () => {
                     <img
                       src={image}
                       alt={`${product.name} - View ${index + 1}`}
-                      className="h-full w-full object-contain p-1.5 sm:p-2"
+                      className="h-full w-full object-contain pointer-events-none"
                       style={{ maxHeight: '100%', maxWidth: '100%', margin: '0 auto', objectFit: 'contain' }}
                       loading="lazy"
                       onError={(e) => {
@@ -873,7 +885,17 @@ const ProductDetail = () => {
                   {colorOptions.map((color) => (
                     <button
                       key={color.name}
-                      onClick={() => setSelectedColor(color.name)}
+                      onClick={() => {
+                        setSelectedColor(color.name);
+
+                        // Sync image selection when clicking on colors
+                        if (color.image && productImages.length > 0) {
+                          const imageIndex = productImages.findIndex(img => img === color.image);
+                          if (imageIndex !== -1) {
+                            setSelectedImage(imageIndex);
+                          }
+                        }
+                      }}
                       style={{ touchAction: 'manipulation', minHeight: '44px' }}
                       className={`px-4 py-2 rounded-full text-xs sm:text-sm border transition-all ${selectedColor === color.name
                         ? "border-primary bg-primary/5 text-primary ring-1 ring-primary/20 font-medium"
@@ -1236,9 +1258,17 @@ const ProductDetail = () => {
           </motion.section>
         )}
       </div>
+
+      {/* Image Lightbox */}
+      <ImageLightbox
+        images={productImages}
+        initialIndex={selectedImage}
+        productName={product.name}
+        isOpen={isLightboxOpen}
+        onClose={() => setIsLightboxOpen(false)}
+      />
     </div>
   );
 };
 
 export default ProductDetail;
-

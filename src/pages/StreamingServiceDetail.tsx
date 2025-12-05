@@ -16,6 +16,7 @@ interface SubscriptionPlan {
   duration: string;
   price?: number;
   isFreeTrial?: boolean;
+  accountType?: 'user' | 'full';
 }
 
 interface StreamingService {
@@ -28,7 +29,7 @@ interface StreamingService {
   plans: SubscriptionPlan[];
 }
 
-// Data - should match StreamingServices.tsx
+// Data (same as in StreamingServices page)
 const STREAMING_SERVICES: StreamingService[] = [
   {
     id: 1,
@@ -37,9 +38,14 @@ const STREAMING_SERVICES: StreamingService[] = [
     image: netflixImage,
     category: "Netflix",
     plans: [
-      { id: 1, duration: "1 month" },
-      { id: 2, duration: "3 months" },
-      { id: 3, duration: "1 year" },
+      // User Plans
+      { id: 1, duration: "1 user - 1 month", price: 5, accountType: 'user' },
+      { id: 2, duration: "1 user - 3 months", price: 10, accountType: 'user' },
+      { id: 3, duration: "1 user - 1 year", price: 30, accountType: 'user' },
+      // Full Account Plans
+      { id: 4, duration: "Full account - 1 month", price: 15, accountType: 'full' },
+      { id: 5, duration: "Full account - 3 months", price: 35, accountType: 'full' }, // Changed to $35 as requested
+      { id: 6, duration: "Full account - 1 year", price: 110, accountType: 'full' },
     ]
   },
   {
@@ -49,9 +55,14 @@ const STREAMING_SERVICES: StreamingService[] = [
     image: shahidImage,
     category: "Shahid",
     plans: [
-      { id: 1, duration: "1 month" },
-      { id: 2, duration: "3 months" },
-      { id: 3, duration: "1 year" },
+      // User Plans
+      { id: 1, duration: "1 user - 1 month", price: 5, accountType: 'user' },
+      { id: 2, duration: "1 user - 3 months", price: 10, accountType: 'user' },
+      { id: 3, duration: "1 user - 1 year", price: 25, accountType: 'user' },
+      // Full Account Plans
+      { id: 4, duration: "Full account - 1 month", price: 10, accountType: 'full' },
+      { id: 5, duration: "Full account - 3 months", price: 15, accountType: 'full' },
+      { id: 6, duration: "Full account - 1 year", price: 50, accountType: 'full' },
     ]
   },
   {

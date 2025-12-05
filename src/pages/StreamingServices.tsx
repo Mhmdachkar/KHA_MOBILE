@@ -14,8 +14,9 @@ import iptvImage from "@/assets/netflix,shahid,iptv/IPTV.jpg";
 interface SubscriptionPlan {
   id: number;
   duration: string;
-  price?: number; // Optional price if available
+  price?: number;
   isFreeTrial?: boolean;
+  accountType?: 'user' | 'full'; // user or full account type
 }
 
 interface StreamingService {
@@ -37,9 +38,14 @@ const STREAMING_SERVICES: StreamingService[] = [
     image: netflixImage,
     category: "Netflix",
     plans: [
-      { id: 1, duration: "1 month" },
-      { id: 2, duration: "3 months" },
-      { id: 3, duration: "1 year" },
+      // User Plans
+      { id: 1, duration: "1 user - 1 month", price: 5, accountType: 'user' },
+      { id: 2, duration: "1 user - 3 months", price: 10, accountType: 'user' },
+      { id: 3, duration: "1 user - 1 year", price: 30, accountType: 'user' },
+      // Full Account Plans
+      { id: 4, duration: "Full account - 1 month", price: 15, accountType: 'full' },
+      { id: 5, duration: "Full account - 3 months", price: 35, accountType: 'full' }, // Changed to $35 as requested
+      { id: 6, duration: "Full account - 1 year", price: 110, accountType: 'full' },
     ]
   },
   {
@@ -49,9 +55,14 @@ const STREAMING_SERVICES: StreamingService[] = [
     image: shahidImage,
     category: "Shahid",
     plans: [
-      { id: 1, duration: "1 month" },
-      { id: 2, duration: "3 months" },
-      { id: 3, duration: "1 year" },
+      // User Plans
+      { id: 1, duration: "1 user - 1 month", price: 5, accountType: 'user' },
+      { id: 2, duration: "1 user - 3 months", price: 10, accountType: 'user' },
+      { id: 3, duration: "1 user - 1 year", price: 25, accountType: 'user' },
+      // Full Account Plans
+      { id: 4, duration: "Full account - 1 month", price: 10, accountType: 'full' },
+      { id: 5, duration: "Full account - 3 months", price: 15, accountType: 'full' },
+      { id: 6, duration: "Full account - 1 year", price: 50, accountType: 'full' },
     ]
   },
   {
@@ -142,8 +153,8 @@ const ServiceCard = ({ service }: ServiceCardProps) => {
                 handlePlanClick(plan);
               }}
               className={`w-full text-left p-3 rounded-lg border transition-all duration-200 ${plan.isFreeTrial
-                  ? "bg-accent/10 border-accent/30 hover:border-accent/50 hover:bg-accent/20"
-                  : "bg-primary/5 border-primary/20 hover:border-primary/40 hover:bg-primary/10"
+                ? "bg-accent/10 border-accent/30 hover:border-accent/50 hover:bg-accent/20"
+                : "bg-primary/5 border-primary/20 hover:border-primary/40 hover:bg-primary/10"
                 }`}
               style={{ touchAction: "manipulation" }}
             >
@@ -155,6 +166,11 @@ const ServiceCard = ({ service }: ServiceCardProps) => {
                 {plan.isFreeTrial && (
                   <span className="text-xs bg-accent text-white px-2 py-1 rounded">
                     FREE
+                  </span>
+                )}
+                {plan.price && (
+                  <span className="text-sm font-semibold text-primary">
+                    ${plan.price}
                   </span>
                 )}
               </div>

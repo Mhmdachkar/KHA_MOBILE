@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { FavoritesProvider } from "@/context/FavoritesContext";
 import { CartProvider } from "@/context/CartContext";
 import CartDashboard from "@/components/CartDashboard";
+import SmoothScrollWrapper from "@/components/SmoothScrollWrapper";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
@@ -31,11 +32,11 @@ const ScrollToTop = () => {
       left: 0,
       behavior: 'instant' as ScrollBehavior
     });
-    
+
     // Also scroll document elements for better compatibility
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
-    
+
     // Fallback: ensure scroll after a brief delay (for slow renders)
     const timeoutId = setTimeout(() => {
       window.scrollTo({
@@ -61,11 +62,12 @@ const App = () => (
       <CartProvider>
         <BrowserRouter>
           <ScrollToTop />
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <CartDashboard />
-            <Routes>
+          <SmoothScrollWrapper>
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <CartDashboard />
+              <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/products" element={<Products />} />
                 <Route path="/category/:categoryName" element={<CategoryPage />} />
@@ -86,7 +88,8 @@ const App = () => (
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
-          </TooltipProvider>
+            </TooltipProvider>
+          </SmoothScrollWrapper>
         </BrowserRouter>
       </CartProvider>
     </FavoritesProvider>
