@@ -499,7 +499,7 @@ const Checkout = () => {
     const encodedMessage = encodeURIComponent(message);
 
     // Replace with your WhatsApp business number (format: country code + number without +)
-    const whatsappNumber = "81939088"; // TODO: Replace with actual WhatsApp business number
+    const whatsappNumber = "96181861811"; // WhatsApp business number for receiving orders
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
     // Open WhatsApp

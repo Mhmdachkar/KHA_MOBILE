@@ -56,51 +56,37 @@ type ViewMode = "grid" | "list";
 // Data
 const RECHARGE_CARDS: RechargeCard[] = [
   {
-    id: 1,
-    name: "Touch $1.67 Card",
-    price: 1.67,
-    image: recharge1_67,
-    category: "Touch Cards"
-  },
-  {
-    id: 2,
-    name: "Touch $3.79 Card",
-    price: 3.79,
-    image: recharge3_79,
-    category: "Touch Cards"
-  },
-  {
     id: 3,
     name: "Touch $4.50 Card",
-    price: 4.50,
+    price: 7,
     image: recharge4_50,
     category: "Touch Cards"
   },
   {
     id: 4,
     name: "Touch Start $4.50 Card",
-    price: 4.50,
+    price: 7,
     image: rechargeStart4_50,
     category: "Touch Cards"
   },
   {
     id: 5,
     name: "Touch $7.58 Card",
-    price: 7.58,
+    price: 10,
     image: recharge7_58,
     category: "Touch Cards"
   },
   {
     id: 6,
     name: "Touch Smart $7.50 Card",
-    price: 7.50,
+    price: 10,
     image: rechargeSmart7_50,
     category: "Touch Cards"
   },
   {
     id: 7,
     name: "Touch $10 Card",
-    price: 10,
+    price: 15,
     image: recharge10,
     category: "Touch Cards"
   },
@@ -114,21 +100,21 @@ const RECHARGE_CARDS: RechargeCard[] = [
   {
     id: 9,
     name: "Touch $15.15 Card",
-    price: 15.15,
+    price: 20,
     image: recharge15_15,
     category: "Touch Cards"
   },
   {
     id: 10,
     name: "Touch $22.73 Card",
-    price: 22.73,
+    price: 30,
     image: recharge22_73,
     category: "Touch Cards"
   },
   {
     id: 11,
     name: "Touch $77.28 Card",
-    price: 77.28,
+    price: 100,
     image: recharge77_28,
     category: "Touch Cards"
   },
@@ -137,35 +123,35 @@ const RECHARGE_CARDS: RechargeCard[] = [
   {
     id: 12,
     name: "30 Days Card",
-    price: 2.8,
+    price: 3.34,
     image: recharge30days,
     category: "Days Cards"
   },
   {
     id: 13,
     name: "60 Days Card",
-    price: 5.6,
+    price: 6.66,
     image: recharge60days,
     category: "Days Cards"
   },
   {
     id: 14,
     name: "90 Days Card",
-    price: 8.4,
+    price: 10,
     image: recharge90days,
     category: "Days Cards"
   },
   {
     id: 15,
     name: "180 Days Card",
-    price: 16.8,
+    price: 20,
     image: recharge180days,
     category: "Days Cards"
   },
   {
     id: 16,
     name: "360 Days Card",
-    price: 33.6,
+    price: 40,
     image: recharge360days,
     category: "Days Cards"
   },
@@ -598,8 +584,8 @@ const Recharges = () => {
 
             {/* Recharge Cards */}
             <div className={`grid gap-3 sm:gap-4 md:gap-5 lg:gap-6 ${viewMode === "grid"
-                ? "grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
-                : "grid-cols-1"
+              ? "grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+              : "grid-cols-1"
               }`}>
               {filteredCards.map((card, index) => (
                 <motion.div

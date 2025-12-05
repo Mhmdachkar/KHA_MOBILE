@@ -1,4 +1,4 @@
-import { useEffect, useRef, ReactNode } from 'react';
+import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import Lenis from '@studio-freight/lenis';
 
@@ -12,33 +12,33 @@ const SmoothScrollWrapper = ({ children }: SmoothScrollWrapperProps) => {
     const location = useLocation();
 
     useEffect(() => {
-        // Initialize Lenis with optimized settings for performance
+        // Initialize Lenis with performance-optimized settings
         const lenis = new Lenis({
-            duration: 0.8, // Reduced from 1.2 for snappier response
-            easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Apple-style easing
+            duration: 0.7, // Faster for snappier feel with less lag
+            easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             orientation: 'vertical',
             gestureOrientation: 'vertical',
             smoothWheel: true,
-            wheelMultiplier: 0.8, // Reduced for finer control
+            wheelMultiplier: 0.9, // Balanced responsiveness
             touchMultiplier: 1.5,
             infinite: false,
-            lerp: 0.12, // Slightly increased from 0.1 for smoother motion
+            lerp: 0.15, // Slightly higher for smoother motion without lag
         });
 
         lenisRef.current = lenis;
 
-        // Optimized RAF loop with performance checks
+        // Optimized RAF loop to prevent frame drops
         let lastTime = 0;
         const targetFPS = 60;
-        const targetFrameTime = 1000 / targetFPS;
+        const frameInterval = 1000 / targetFPS;
 
-        function raf(time: number) {
-            const deltaTime = time - lastTime;
+        function raf(currentTime: number) {
+            const elapsed = currentTime - lastTime;
 
-            // Skip frame if running too fast (> 60 FPS)
-            if (deltaTime >= targetFrameTime) {
-                lenis.raf(time);
-                lastTime = time;
+            // Only update if enough time has passed to maintain 60 FPS
+            if (elapsed >= frameInterval) {
+                lenis.raf(currentTime);
+                lastTime = currentTime - (elapsed % frameInterval);
             }
 
             rafRef.current = requestAnimationFrame(raf);
@@ -55,16 +55,23 @@ const SmoothScrollWrapper = ({ children }: SmoothScrollWrapperProps) => {
         };
     }, []);
 
-    // Scroll to top on route change using Lenis with immediate flag
+    // Handle route changes
     useEffect(() => {
-        if (lenisRef.current) {
-            // Use Lenis scrollTo for smooth integration with immediate flag
-            lenisRef.current.scrollTo(0, { immediate: true, lock: true });
-        }
-        // Also directly set scroll position for immediate effect
-        window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-        document.documentElement.scrollTop = 0;
-        document.body.scrollTop = 0;
+        const lenis = lenisRef.current;
+        if (!lenis) return;
+
+        // Stop, scroll to top, then restart
+        lenis.stop();
+        requestAnimationFrame(() => {
+            lenis.scrollTo(0, { immediate: true, force: true });
+            window.scrollTo(0, 0);
+            document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
+
+            requestAnimationFrame(() => {
+                lenis.start();
+            });
+        });
     }, [location.pathname]);
 
     return <>{children}</>;
