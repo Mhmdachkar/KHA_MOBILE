@@ -93,7 +93,7 @@ const RECHARGE_CARDS: RechargeCard[] = [
   {
     id: 8,
     name: "Touch Super $13.50 Card",
-    price: 13.50,
+    price: 20,
     image: rechargeSuper13_50,
     category: "Touch Cards"
   },

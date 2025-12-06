@@ -234,7 +234,7 @@ const ProductDetail = () => {
     productImages[0] ||
     regularProduct?.image ||
     (greenLionProduct ? greenLionProduct.images[0] : "/placeholder.svg");
-
+  
   const favorite = isFavorite(product.id);
 
   // Generate product-specific reviews
@@ -624,7 +624,7 @@ const ProductDetail = () => {
               />
               {productImages.length > 1 && (
                 <>
-                  <button
+                  <button 
                     onClick={handlePreviousImage}
                     style={{ touchAction: 'manipulation', minHeight: '44px', minWidth: '44px' }}
                     className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 h-11 w-11 sm:h-12 sm:w-12 bg-background/90 backdrop-blur-md rounded-full flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-background shadow-lg border border-border/50 z-10"
@@ -632,7 +632,7 @@ const ProductDetail = () => {
                   >
                     <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6" />
                   </button>
-                  <button
+                  <button 
                     onClick={handleNextImage}
                     style={{ touchAction: 'manipulation', minHeight: '44px', minWidth: '44px' }}
                     className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 h-11 w-11 sm:h-12 sm:w-12 bg-background/90 backdrop-blur-md rounded-full flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-background shadow-lg border border-border/50 z-10"
@@ -674,7 +674,7 @@ const ProductDetail = () => {
                     className={`aspect-square bg-white rounded-sm overflow-hidden border-2 transition-all cursor-pointer min-h-[70px] sm:min-h-[80px] md:min-h-[90px] flex items-center justify-center p-1.5 sm:p-2 ${selectedImage === index
                       ? "border-primary ring-2 ring-primary/30 shadow-md"
                       : "border-border hover:border-primary/50"
-                      }`}
+                    }`}
                     aria-label={`View image ${index + 1}`}
                   >
                     <img
@@ -802,7 +802,7 @@ const ProductDetail = () => {
 
             <h1 className="text-elegant text-xl sm:text-2xl md:text-3xl mb-2 relative z-10 leading-tight sm:leading-normal" style={{ userSelect: 'text', WebkitUserSelect: 'text', touchAction: 'pan-y' }}>{product.title}</h1>
             <p className="text-muted-foreground text-xs sm:text-sm mb-3 sm:mb-4" style={{ userSelect: 'text', WebkitUserSelect: 'text', touchAction: 'pan-y' }}>{product.category}</p>
-
+            
             <div className="flex items-center gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 flex-wrap">
               <div className="flex items-center gap-1">
                 {Array.from({ length: 5 }).map((_, i) => (
@@ -811,7 +811,7 @@ const ProductDetail = () => {
                     className={`h-3 w-3 sm:h-4 sm:w-4 ${i < Math.floor(product.rating)
                       ? "fill-primary text-primary"
                       : "text-border fill-border/30"
-                      }`}
+                    }`}
                   />
                 ))}
               </div>
@@ -948,7 +948,7 @@ const ProductDetail = () => {
               <p className="text-sm font-light leading-relaxed text-muted-foreground mb-4" style={{ userSelect: 'text', WebkitUserSelect: 'text', touchAction: 'pan-y' }}>
                 {product.description}
               </p>
-
+              
               {/* Key Features */}
               {product.features && product.features.length > 0 && (
                 <div className="mt-6">
@@ -967,8 +967,8 @@ const ProductDetail = () => {
 
             {/* Actions - Hidden on mobile (buttons shown in image gallery), visible on desktop */}
             <div className="hidden md:flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6">
-              <Button
-                size="lg"
+              <Button 
+                size="lg" 
                 className="flex-1 text-elegant text-sm sm:text-base py-4 sm:py-5 md:py-6"
                 onClick={() => handleAddToCart()}
                 style={{ touchAction: 'manipulation' }}
@@ -988,14 +988,14 @@ const ProductDetail = () => {
             </div>
 
             {/* Wishlist Button - Desktop only (mobile version is in image gallery) */}
-            <motion.button
+            <motion.button 
               whileHover={window.matchMedia('(hover: hover)').matches ? { scale: 1.05 } : undefined}
               onClick={() => toggleFavorite(product)}
               style={{ touchAction: 'manipulation' }}
               className={`hidden md:flex items-center gap-2 text-sm transition-colors mb-12 ${favorite
-                ? "text-accent"
-                : "hover:text-accent"
-                }`}
+                  ? "text-accent" 
+                  : "hover:text-accent"
+              }`}
             >
               <Heart className={`h-4 w-4 ${favorite ? "fill-accent" : ""}`} />
               <span className="text-elegant">
@@ -1233,6 +1233,249 @@ const ProductDetail = () => {
             </motion.div>
           </motion.section>
         )}
+
+        {/* Frequently Bought Together - Sales-Focused Bundle Section */}
+        {(() => {
+          // Get frequently bought together items based on product category
+          const getFrequentlyBoughtTogether = () => {
+            const productName = product.name.toLowerCase();
+            const allProducts = [
+              ...phoneAccessories,
+              ...wearablesProducts,
+              ...smartphoneProducts,
+              ...tabletProducts,
+              ...greenLionProducts.map(p => ({
+                ...p,
+                image: p.images[0],
+                images: p.images,
+              })),
+            ];
+
+            let bundleItems: any[] = [];
+
+            // USB Flash Drive bundles
+            if (productName.includes('usb') || productName.includes('flash') || productName.includes('cruzer') || productName.includes('philips')) {
+              bundleItems = allProducts
+                .filter(p => {
+                  const name = p.name?.toLowerCase() || '';
+                  return (
+                    (name.includes('usb hub') || name.includes('usb splitter')) ||
+                    (name.includes('usb cable') && !name.includes('flash')) ||
+                    (name.includes('usb adapter')) ||
+                    (name.includes('power bank') || name.includes('portable charger')) ||
+                    (name.includes('case') && (name.includes('usb') || name.includes('storage')))
+                  );
+                })
+                .slice(0, 3)
+                .map(p => ({
+                  id: p.id,
+                  name: p.name,
+                  price: p.price,
+                  image: p.image || p.images?.[0],
+                  images: p.images || [p.image],
+                  rating: p.rating || 4.5,
+                  category: p.category,
+                }));
+            }
+            // Smartphone bundles
+            else if (isSmartphone) {
+              bundleItems = smartAccessories.slice(0, 3);
+            }
+            // Accessories bundles
+            else {
+              bundleItems = allProducts
+                .filter(p => {
+                  if (p.id === product.id) return false;
+                  const name = p.name?.toLowerCase() || '';
+                  const category = p.category?.toLowerCase() || '';
+                  return (
+                    category === 'all essentials' ||
+                    category === 'charging' ||
+                    category === 'accessories' ||
+                    name.includes('case') ||
+                    name.includes('cable') ||
+                    name.includes('adapter')
+                  );
+                })
+                .slice(0, 3)
+                .map(p => ({
+                  id: p.id,
+                  name: p.name,
+                  price: p.price,
+                  image: p.image || p.images?.[0],
+                  images: p.images || [p.image],
+                  rating: p.rating || 4.5,
+                  category: p.category,
+                }));
+            }
+
+            return bundleItems;
+          };
+
+          const bundleItems = getFrequentlyBoughtTogether();
+
+          if (bundleItems.length === 0) return null;
+
+          const bundleTotal = bundleItems.reduce((sum, item) => sum + item.price, displayPrice);
+          const bundleSavings = bundleTotal * 0.15; // 15% savings
+          const bundlePrice = bundleTotal - bundleSavings;
+
+          return (
+            <motion.section
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="mt-12 sm:mt-16 md:mt-20 mb-12 sm:mb-16 md:mb-20"
+            >
+              <div className="bg-gradient-to-br from-primary/5 via-accent/5 to-primary/5 border-2 border-primary/20 rounded-lg p-6 sm:p-8 md:p-10 relative overflow-hidden">
+                {/* Background decorative elements */}
+                <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -z-0" />
+                <div className="absolute bottom-0 left-0 w-48 h-48 bg-accent/5 rounded-full blur-3xl -z-0" />
+
+                <div className="relative z-10">
+                  {/* Header */}
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 sm:mb-8">
+                    <div>
+                      <h2 className="text-elegant text-xl sm:text-2xl md:text-3xl font-bold mb-2">
+                        Frequently Bought Together
+                      </h2>
+                      <p className="text-sm sm:text-base text-muted-foreground">
+                        Complete your setup with these essential accessories
+                      </p>
+                    </div>
+                    {bundleSavings > 0 && (
+                      <div className="bg-green-500/10 border border-green-500/30 rounded-lg px-4 py-2">
+                        <p className="text-xs text-green-600 font-semibold uppercase tracking-wide">Save ${bundleSavings.toFixed(2)}</p>
+                        <p className="text-sm text-green-700 font-bold">Buy Bundle</p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Bundle Items Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
+                    {/* Current Product */}
+                    <div className="bg-white border-2 border-primary/30 rounded-lg p-4 sm:p-5 relative">
+                      <div className="aspect-square mb-3 bg-white rounded-md overflow-hidden">
+                        <img
+                          src={primaryImage}
+                          alt={product.name}
+                          className="w-full h-full object-contain p-2"
+                          loading="lazy"
+                        />
+                      </div>
+                      <h3 className="text-sm font-semibold text-elegant mb-1 line-clamp-2 min-h-[2.5rem]">
+                        {product.name}
+                      </h3>
+                      <p className="text-lg font-bold text-primary mb-2">${displayPrice.toFixed(2)}</p>
+                      <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                        <CheckCircle2 className="w-5 h-5 text-white" />
+                      </div>
+                    </div>
+
+                    {/* Plus Icon (Desktop Only) */}
+                    <div className="hidden lg:flex items-center justify-center">
+                      <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center">
+                        <span className="text-2xl font-bold text-primary">+</span>
+                      </div>
+                    </div>
+
+                    {/* Bundle Items */}
+                    {bundleItems.slice(0, 2).map((item, index) => (
+                      <div key={item.id}>
+                        {index === 0 && (
+                          <div className="lg:hidden flex items-center justify-center mb-4">
+                            <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
+                              <span className="text-xl font-bold text-primary">+</span>
+                            </div>
+                          </div>
+                        )}
+                        <Link to={`/product/${item.id}`}>
+                          <div className="bg-white border-2 border-border hover:border-primary/50 rounded-lg p-4 sm:p-5 transition-all duration-300 cursor-pointer group">
+                            <div className="aspect-square mb-3 bg-white rounded-md overflow-hidden">
+                              <img
+                                src={item.image}
+                                alt={item.name}
+                                className="w-full h-full object-contain p-2 group-hover:scale-110 transition-transform duration-300"
+                                loading="lazy"
+                              />
+                            </div>
+                            <h3 className="text-sm font-semibold text-elegant mb-1 line-clamp-2 min-h-[2.5rem] group-hover:text-primary transition-colors">
+                              {item.name}
+                            </h3>
+                            <div className="flex items-center gap-1 mb-2">
+                              {Array.from({ length: 5 }).map((_, i) => (
+                                <Star
+                                  key={i}
+                                  className={`w-3 h-3 ${i < Math.floor(item.rating) ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`}
+                                />
+                              ))}
+                            </div>
+                            <p className="text-lg font-bold text-elegant">${item.price.toFixed(2)}</p>
+                          </div>
+                        </Link>
+                        {index < bundleItems.length - 1 && (
+                          <div className="lg:hidden flex items-center justify-center my-4">
+                            <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
+                              <span className="text-xl font-bold text-primary">+</span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Bundle Pricing & CTA */}
+                  <div className="bg-white/80 backdrop-blur-sm border-2 border-primary/30 rounded-lg p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-4 mb-2">
+                        <div>
+                          <p className="text-xs text-muted-foreground">Total Value</p>
+                          <p className="text-lg line-through text-muted-foreground">${bundleTotal.toFixed(2)}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-green-600 font-semibold">Bundle Price</p>
+                          <p className="text-2xl sm:text-3xl font-bold text-green-600">${bundlePrice.toFixed(2)}</p>
+                        </div>
+                        {bundleSavings > 0 && (
+                          <div>
+                            <p className="text-xs text-primary font-semibold">You Save</p>
+                            <p className="text-lg font-bold text-primary">${bundleSavings.toFixed(2)}</p>
+                          </div>
+                        )}
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        {bundleItems.length + 1} items • Free shipping on orders over $50
+                      </p>
+                    </div>
+                    <Button
+                      size="lg"
+                      className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold px-6 sm:px-8 py-6 sm:py-7 text-sm sm:text-base min-w-[180px] sm:min-w-[200px]"
+                      onClick={() => {
+                        // Add all items to cart
+                        handleAddToCart();
+                        bundleItems.forEach(item => {
+                          addToCart({
+                            id: item.id,
+                            name: item.name,
+                            price: item.price,
+                            image: item.image,
+                            rating: item.rating,
+                            category: item.category,
+                            quantity: 1,
+                          });
+                        });
+                      }}
+                      style={{ touchAction: 'manipulation' }}
+                    >
+                      <ShoppingCart className="mr-2 h-5 w-5" />
+                      Add Bundle to Cart
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </motion.section>
+          );
+        })()}
 
         {/* You May Also Like - Horizontal Scrolling Carousel */}
         {relatedProducts.length > 0 && (

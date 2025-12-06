@@ -59,7 +59,7 @@ const ADDITIONAL_TOUCH_CARDS = [
   { id: 5, name: "Touch $7.58 Card", price: 7.58, image: recharge7_58 },
   { id: 6, name: "Touch Smart $7.50 Card", price: 7.50, image: rechargeSmart7_50 },
   { id: 7, name: "Touch $10 Card", price: 10, image: recharge10 },
-  { id: 8, name: "Touch Super $13.50 Card", price: 13.50, image: rechargeSuper13_50 },
+  { id: 8, name: "Touch Super $13.50 Card", price: 20, image: rechargeSuper13_50 },
   { id: 9, name: "Touch $15.15 Card", price: 15.15, image: recharge15_15 },
   { id: 10, name: "Touch $22.73 Card", price: 22.73, image: recharge22_73 },
   { id: 11, name: "Touch $77.28 Card", price: 77.28, image: recharge77_28 },

@@ -22,6 +22,11 @@ import hoco22_5W from "@/assets/phone_accessories/powerbank hoco 22.5W-10000MAH.
 import apple25WAdapter from "@/assets/phone_accessories/apple adapter USB-C 25W.gif";
 import foneng25WAdapter from "@/assets/phone_accessories/adapter foneng 25W.png";
 import fonengAuxCable from "@/assets/audio/aux cable foneng.jpg";
+// AirPods 4 imports
+import airpods4_1 from "@/assets/audio/AIRPODES 4/Screenshot 2025-12-06 203434.png";
+import airpods4_2 from "@/assets/audio/AIRPODES 4/Screenshot 2025-12-06 203442.png";
+import airpods4_3 from "@/assets/audio/AIRPODES 4/Screenshot 2025-12-06 203449.png";
+import airpods4_4 from "@/assets/audio/AIRPODES 4/Screenshot 2025-12-06 203458.png";
 // Accessories imports
 import rgbMj33Ring from "@/assets/accessories/RGB MJ33 RING 13INCH.avif";
 import rgbMj33RingGif from "@/assets/accessories/RGB MJ33 RING 13INCH.gif";
@@ -47,6 +52,12 @@ import s8UltraMax from "@/assets/wearables/s8 ultra max smart watch.png";
 import smartWatchActivePro from "@/assets/wearables/smart watch active pro (green lion).webp";
 import u9Ultra2 from "@/assets/wearables/u9 ultra 2.png";
 import watchXSeries10 from "@/assets/wearables/watch x series 10.png";
+// Apple Watch SE2 imports
+import appleWatchSE2_40MM from "@/assets/wearables/apple watch SE2 40MM/apple watch SE2 40MM.jpg";
+import appleWatchSE2_40MM_1 from "@/assets/wearables/apple watch SE2 40MM/Apple watch SE2 40MM 1.jpg";
+import appleWatchSE2_40MM_Midnight from "@/assets/wearables/apple watch SE2 40MM/716tEwpUImL._AC_SX466_.jpg";
+import appleWatchSE2_40MM_Starlight from "@/assets/wearables/apple watch SE2 40MM/91GkjaDhHoL._AC_SX466_.jpg";
+import appleWatchSE2_44MM from "@/assets/wearables/Apple watch SE2 44MM.webp";
 // Smartphone image imports
 import a06Main from "@/assets/phones/A06 128gb/A06 5G (FAST PROCESSOR,HIGHER DISPLAY REFRESH RATE-90HZ, WATER RESISTANT ) 128GB.jpg";
 import a075Purple from "@/assets/phones/A075 samsunng galaxy/A075 Mediatek Helio G99 (6 nm)  purple.webp";
@@ -111,6 +122,30 @@ import galaxyTabA11X135SilverPlaceholder from "@/assets/Tablets/Samsung Galaxy T
 import galaxyTabA11X135Grey from "@/assets/Tablets/Samsung Galaxy Tab A11 X135 4G/Samsung Galaxy Tab grey.webp";
 import galaxyTabA11X135DarkGrey from "@/assets/Tablets/Samsung Galaxy Tab A11 X135 4G/Samsung Galaxy Tab greyy.webp";
 import galaxyTabA11X135Silver from "@/assets/Tablets/Samsung Galaxy Tab A11 X135 4G/Samsung Galaxy Tab silver.webp";
+// Apple Pencil Pro imports
+import applePencilPro from "@/assets/Tablets/pencil pro/Pencil pro.webp";
+import applePencilPro1 from "@/assets/Tablets/pencil pro/MX2D3_AV1-scaled.webp";
+import applePencilPro2 from "@/assets/Tablets/pencil pro/MX2D3_AV2-scaled.webp";
+// iPad 11 imports
+import iPad11 from "@/assets/Tablets/ipad 11/ipad 11.webp";
+import iPad11_128 from "@/assets/Tablets/ipad 11/ipad 11 128.webp";
+import iPad11_128g from "@/assets/Tablets/ipad 11/ipad 11 128g.webp";
+import iPad11_128gb from "@/assets/Tablets/ipad 11/ipad 11 128gb.webp";
+// iPad Air M3 11 imports
+import iPadAirM3_11_Blue from "@/assets/Tablets/ipad air M3 11/ipad air M3 11 BLUE.webp";
+import iPadAirM3_11_Grey from "@/assets/Tablets/ipad air M3 11/ipad air M3 11 GREY.webp";
+import iPadAirM3_11_Purple from "@/assets/Tablets/ipad air M3 11/ipad air M3 11 PURPLE.webp";
+import iPadAirM3_11_Starlight from "@/assets/Tablets/ipad air M3 11/ipad air M3 11 STARLIGHT.webp";
+// iPad Air M3 13 imports
+import iPadAirM3_13_Blue from "@/assets/Tablets/Apple iPad Air 13 M3 Chip (2025) - Wi-Fi/Apple iPad Air 13 M3 Chip (2025) - Wi-Fi blue.png";
+import iPadAirM3_13_Purple from "@/assets/Tablets/Apple iPad Air 13 M3 Chip (2025) - Wi-Fi/Apple iPad Air 13 M3 Chip (2025) - Wi-Fi purple.png";
+import iPadAirM3_13_Starlight from "@/assets/Tablets/Apple iPad Air 13 M3 Chip (2025) - Wi-Fi/Apple iPad Air 13 M3 Chip (2025) - Wi-Fi starlight.png";
+import iPadAirM3_13_Grey from "@/assets/Tablets/Apple iPad Air 13 M3 Chip (2025) - Wi-Fi/Screenshot 2025-12-06 200315.png";
+// iPad Air M2 13 imports (6th generation)
+import iPadAirM2_13_Blue from "@/assets/Tablets/Apple IPad Air 6 13″ M2 (2024) – Wifi 128GB/Apple IPad Air 6 13″ M2 (2024) – Wifi BLUE.webp";
+import iPadAirM2_13_Purple from "@/assets/Tablets/Apple IPad Air 6 13″ M2 (2024) – Wifi 128GB/Apple IPad Air 6 13″ M2 (2024) – Wifi PURPLE.webp";
+import iPadAirM2_13_Starlight from "@/assets/Tablets/Apple IPad Air 6 13″ M2 (2024) – Wifi 128GB/Apple IPad Air 6 13″ M2 (2024) – Wifi STARLIGHT.webp";
+import iPadAirM2_13_SpaceGrey from "@/assets/Tablets/Apple IPad Air 6 13″ M2 (2024) – Wifi 128GB/Apple IPad Air 6 13″ M2 (2024) – Wifi SPACE GREY.webp";
 
 export interface ProductVariant {
   key: string;
@@ -786,34 +821,42 @@ export const phoneAccessories: Product[] = [
     id: 124,
     name: "Mini Metal USB Flash Drive",
     title: "Compact Mini Metal USB 2.0 Flash Drive",
-    price: 8,
+    price: 10,
     image: miniMetalUsb,
     images: [miniMetalUsb, miniMetalUsb1, miniMetalUsb2, miniMetalUsb3],
     rating: 4.6,
     category: "All Essentials",
     brand: "Generic",
-    description: "Ultra-compact and durable mini metal USB flash drive perfect for storing and transferring your important files. Featuring a sleek metal design, this lightweight drive is built to withstand daily use while providing reliable storage for your photos, documents, music, and videos. The compact design makes it incredibly portable - just attach it to your keychain and carry your data wherever you go.",
+    description: "Ultra-compact and durable mini metal USB flash drive perfect for storing and transferring your important files. Featuring a sleek metal alloy design, this lightweight drive is built to withstand daily use while providing reliable storage for your photos, documents, music, and videos. The compact design makes it incredibly portable - just attach it to your keychain using the integrated keyring loop and carry your data wherever you go. Ideal for students, professionals, and anyone who needs portable storage without the bulk. The metal construction provides enhanced durability and a premium feel while maintaining excellent data transfer reliability.",
     features: [
-      "Metal Construction: Durable metal casing provides enhanced durability and a premium feel.",
-      "Ultra Compact: Incredibly small and lightweight design fits easily on a keychain or in your pocket.",
-      "USB 2.0 Interface: Compatible with all USB 2.0 and 1.1 ports for universal compatibility.",
-      "Plug and Play: No driver installation required - works instantly on Windows, Mac, and Linux.",
-      "Waterproof & Shockproof: Robust construction protects your data from water splashes and physical impacts.",
-      "Wide Compatibility: Works with laptops, PCs, Macs, car audio systems, and more.",
-      "Keyring Attachment: Built-in loop for easy attachment to keys or lanyards."
+      "Metal Construction: Durable aluminum alloy casing provides enhanced durability, heat dissipation, and a premium feel that resists fingerprints and scratches.",
+      "Ultra Compact: Incredibly small and lightweight design (less than 30g) fits easily on a keychain or in your pocket without adding bulk.",
+      "USB 2.0 Interface: Compatible with all USB 2.0 and 1.1 ports for universal compatibility across desktop computers, laptops, and modern devices.",
+      "Plug and Play: No driver installation required - works instantly on Windows, Mac, Linux, and Chrome OS devices right out of the box.",
+      "Waterproof & Shockproof: Robust construction with IPX4 rating protects your data from water splashes, dust, and physical impacts from daily use.",
+      "Wide Compatibility: Works seamlessly with laptops, desktop PCs, Macs, car audio systems, smart TVs, gaming consoles, and media players.",
+      "Keyring Attachment: Built-in reinforced keyring loop for secure attachment to keys, lanyards, or backpacks for easy access.",
+      "Reliable Storage: Built with high-quality NAND flash memory for consistent performance and data integrity over extended use."
     ],
     specifications: [
-      { label: "Interface", value: "USB 2.0 (backward compatible with USB 1.1)" },
-      { label: "Read Speed", value: "Up to 18 MB/s" },
-      { label: "Write Speed", value: "Up to 8 MB/s" },
-      { label: "Material", value: "Metal alloy casing" },
-      { label: "Dimensions", value: "39mm x 12mm x 4.5mm" },
-      { label: "Weight", value: "Less than 30g" },
-      { label: "Compatibility", value: "Windows, Mac OS, Linux, Chrome OS" },
-      { label: "Data Retention", value: "10+ years" }
+      { label: "Brand", value: "Generic/Universal" },
+      { label: "Interface", value: "USB 2.0 High-Speed (backward compatible with USB 1.1)" },
+      { label: "Read Speed", value: "Up to 18 MB/s (144 Mbps)" },
+      { label: "Write Speed", value: "Up to 8 MB/s (64 Mbps)" },
+      { label: "Material", value: "Aluminum alloy casing with polished finish" },
+      { label: "Dimensions", value: "39mm x 12mm x 4.5mm (1.54\" x 0.47\" x 0.18\")" },
+      { label: "Weight", value: "Less than 30g (1.06 oz)" },
+      { label: "Form Factor", value: "Compact mini design with keyring loop" },
+      { label: "Water Resistance", value: "IPX4 rated - protected against water splashes" },
+      { label: "Shock Resistance", value: "Withstands normal drops and impacts" },
+      { label: "Compatibility", value: "Windows XP/Vista/7/8/10/11, Mac OS X 10.5+, Linux 2.6+, Chrome OS" },
+      { label: "Operating Temperature", value: "0°C to 60°C (32°F to 140°F)" },
+      { label: "Storage Temperature", value: "-20°C to 85°C (-4°F to 185°F)" },
+      { label: "Data Retention", value: "10+ years when powered off under normal storage conditions" },
+      { label: "Warranty", value: "Manufacturer warranty as per brand policy" }
     ],
     variants: [
-      { key: "16gb", ram: "", storage: "16GB", label: "16GB", price: 8, description: "Perfect for basic storage needs" },
+      { key: "16gb", ram: "", storage: "16GB", label: "16GB", price: 10, description: "Perfect for basic storage needs" },
       { key: "32gb", ram: "", storage: "32GB", label: "32GB", price: 12, description: "Great for documents and photos" },
       { key: "64gb", ram: "", storage: "64GB", label: "64GB", price: 18, description: "Ideal for multimedia files" },
       { key: "128gb", ram: "", storage: "128GB", label: "128GB", price: 25, description: "Best for large file storage" }
@@ -823,35 +866,41 @@ export const phoneAccessories: Product[] = [
     id: 125,
     name: "Philips USB 3.2 High-Speed Metal Flash Drive",
     title: "Philips USB 3.2 Gen 1 High-Speed Flash Drive",
-    price: 15,
+    price: 10,
     image: philipsUsb,
     images: [philipsUsb, philipsUsb1, philipsUsb2, philipsUsb3, philipsUsb4],
     rating: 4.8,
     category: "All Essentials",
     brand: "Philips",
-    description: "Experience blazing-fast data transfer with the Philips USB 3.2 High-Speed Metal Flash Drive. Engineered with advanced USB 3.2 Gen 1 technology, this premium flash drive delivers exceptional read speeds up to 150 MB/s, making it perfect for quickly transferring large files, HD videos, and photo libraries. The robust metal construction ensures long-lasting durability while maintaining a sleek, professional appearance. Perfect for students, professionals, and creatives who demand both speed and reliability.",
+    description: "Experience blazing-fast data transfer with the Philips USB 3.2 High-Speed Metal Flash Drive. Engineered with advanced USB 3.2 Gen 1 (SuperSpeed USB) technology, this premium flash drive delivers exceptional read speeds up to 150 MB/s and write speeds up to 100 MB/s, making it perfect for quickly transferring large files, HD videos, and photo libraries. The robust metal construction ensures long-lasting durability while maintaining a sleek, professional appearance. With backward compatibility with USB 3.0 and USB 2.0 ports, this drive works seamlessly across all modern devices. Perfect for students, professionals, and creatives who demand both speed and reliability.",
     features: [
-      "USB 3.2 Gen 1 Technology: Ultra-fast data transfer speeds up to 150 MB/s for quick file transfers.",
-      "Premium Metal Design: Durable metal casing provides superior protection and heat dissipation.",
-      "Backward Compatible: Works seamlessly with USB 3.0 and USB 2.0 ports.",
-      "Compact & Portable: Sleek design fits easily in your pocket or laptop bag.",
-      "Plug and Play: No software installation required - ready to use immediately.",
-      "LED Activity Indicator: Built-in LED shows when the drive is active.",
-      "Wide Compatibility: Compatible with Windows, Mac OS, Linux, and more.",
-      "Philips Quality: Backed by Philips' reputation for quality and reliability."
+      "USB 3.2 Gen 1 Technology: Ultra-fast SuperSpeed USB with read speeds up to 150 MB/s and write speeds up to 100 MB/s for lightning-quick file transfers.",
+      "Premium Metal Design: Durable aluminum alloy casing provides superior protection against drops, scratches, and heat dissipation during intensive use.",
+      "Backward Compatible: Works seamlessly with USB 3.0 and USB 2.0 ports, ensuring compatibility with both modern and legacy devices.",
+      "Compact & Portable: Sleek, minimalist design fits easily in your pocket, laptop bag, or briefcase without adding bulk.",
+      "Plug and Play: No software installation required - works instantly with Windows, Mac, and Linux operating systems right out of the box.",
+      "LED Activity Indicator: Built-in blue LED light shows real-time read/write activity, providing visual feedback during data transfers.",
+      "Wide Compatibility: Compatible with Windows 7/8/10/11, macOS 10.5+, Linux kernel 2.6+, Chrome OS, and Android devices with OTG support.",
+      "Philips Quality: Backed by Philips' global reputation for quality, reliability, and innovation in consumer electronics."
     ],
     specifications: [
-      { label: "Interface", value: "USB 3.2 Gen 1 (USB 3.0 compatible)" },
-      { label: "Read Speed", value: "Up to 150 MB/s" },
-      { label: "Write Speed", value: "Up to 50-100 MB/s (varies by capacity)" },
-      { label: "Material", value: "Premium metal alloy" },
-      { label: "LED Indicator", value: "Yes - activity light" },
-      { label: "Compatibility", value: "Windows, Mac OS 9.0+, Linux 2.4.0+" },
-      { label: "Operating Temperature", value: "0°C to 70°C" },
-      { label: "Warranty", value: "2-year limited warranty" }
+      { label: "Brand", value: "Philips" },
+      { label: "Interface", value: "USB 3.2 Gen 1 (SuperSpeed USB, backward compatible with USB 3.0 and USB 2.0)" },
+      { label: "Read Speed", value: "Up to 150 MB/s (900 Mbps)" },
+      { label: "Write Speed", value: "Up to 100 MB/s (600 Mbps) - varies by capacity" },
+      { label: "Material", value: "Premium aluminum alloy casing with matte finish" },
+      { label: "LED Indicator", value: "Yes - blue LED activity light for read/write status" },
+      { label: "Design", value: "Compact slide-out design with protective cap" },
+      { label: "Compatibility", value: "Windows 7/8/10/11, macOS 10.5+, Linux 2.6+, Chrome OS, Android (with OTG)" },
+      { label: "Operating Temperature", value: "0°C to 70°C (32°F to 158°F)" },
+      { label: "Storage Temperature", value: "-20°C to 85°C (-4°F to 185°F)" },
+      { label: "Shock Resistance", value: "Withstands drops up to 2 meters" },
+      { label: "Vibration Resistance", value: "Up to 1500 G/0.5ms" },
+      { label: "Data Retention", value: "Up to 10 years when powered off" },
+      { label: "Warranty", value: "2-year limited warranty from Philips" }
     ],
     variants: [
-      { key: "32gb", ram: "", storage: "32GB", label: "32GB", price: 15, description: "Great for everyday use" },
+      { key: "32gb", ram: "", storage: "32GB", label: "32GB", price: 10, description: "Great for everyday use" },
       { key: "64gb", ram: "", storage: "64GB", label: "64GB", price: 22, description: "Perfect for professionals" },
       { key: "128gb", ram: "", storage: "128GB", label: "128GB", price: 30, description: "Ideal for large projects" },
       { key: "256gb", ram: "", storage: "256GB", label: "256GB", price: 45, description: "Maximum storage capacity" }
@@ -860,36 +909,192 @@ export const phoneAccessories: Product[] = [
   {
     id: 126,
     name: "SanDisk Cruzer Blade USB Flash Drive",
-    title: "SanDisk Cruzer Blade Compact USB 2.0",
-    price: 10,
+    title: "SanDisk Cruzer Blade Compact USB 2.0 Flash Drive",
+    price: 12,
     image: sandiskUsb,
     rating: 4.7,
     category: "All Essentials",
     brand: "SanDisk",
-    description: "The SanDisk Cruzer Blade combines sleek design with reliable performance in an incredibly compact form factor. This ultra-portable USB flash drive features the iconic SanDisk black and red design that slides smoothly in and out of USB ports. Perfect for students, professionals, or anyone who needs to carry files on the go, the Cruzer Blade offers simple drag-and-drop file transfer and broad compatibility across all devices and operating systems.",
+    description: "The SanDisk Cruzer Blade combines sleek design with reliable performance in an incredibly compact form factor. This ultra-portable USB flash drive features the iconic SanDisk black and red design that slides smoothly in and out of USB ports. Perfect for students, professionals, or anyone who needs to carry files on the go, the Cruzer Blade offers simple drag-and-drop file transfer and broad compatibility across all devices and operating systems. Built with SanDisk's trusted NAND flash memory technology, this drive ensures data integrity and reliable performance for years to come.",
     features: [
-      "Ultra Compact Design: Sleek, contoured styling in classic SanDisk black and red colors.",
-      "Simple File Transfer: Easy drag-and-drop functionality for hassle-free file management.",
-      "Universal Compatibility: Works with Windows 2000/XP and later, Mac OS X, and Linux.",
-      "Portable Storage: Small enough to fit in your pocket or attach to your keychain.",
-      "SanDisk Quality: Trusted brand with a 2-year limited warranty for peace of mind.",
-      "Plug and Play: No software installation needed - just plug in and start using.",
-      "Lightweight: Weighs only 3 grams for ultimate portability."
+      "Ultra Compact Design: Sleek, contoured styling in classic SanDisk black and red colors with smooth retractable mechanism.",
+      "Simple File Transfer: Easy drag-and-drop functionality for hassle-free file management with no additional software required.",
+      "Universal Compatibility: Works with Windows 2000/XP and later, Mac OS X 10.5+, and Linux kernel 2.6 or later.",
+      "Portable Storage: Small enough to fit in your pocket or attach to your keychain with the included keyring loop.",
+      "SanDisk Quality: Trusted brand with SanDisk SecureAccess software (optional) and 2-year limited warranty for peace of mind.",
+      "Plug and Play: No driver installation needed - just plug into any USB 2.0 or USB 3.0 port and start using immediately.",
+      "Lightweight: Weighs only 3 grams for ultimate portability without compromising on durability.",
+      "Reliable Performance: Built with SanDisk's proven NAND flash memory technology for consistent read/write speeds."
     ],
     specifications: [
-      { label: "Interface", value: "USB 2.0" },
-      { label: "Dimensions", value: "41.5mm x 17.6mm x 7.4mm" },
-      { label: "Weight", value: "3 grams" },
-      { label: "Operating Temperature", value: "0°C to 45°C" },
-      { label: "Storage Temperature", value: "-10°C to 70°C" },
-      { label: "Compatibility", value: "Windows 2000+, Mac OS X, Linux" },
-      { label: "Warranty", value: "2-year limited warranty" }
+      { label: "Brand", value: "SanDisk" },
+      { label: "Model Series", value: "Cruzer Blade" },
+      { label: "Interface", value: "USB 2.0 (backward compatible with USB 1.1)" },
+      { label: "Read Speed", value: "Up to 15 MB/s" },
+      { label: "Write Speed", value: "Up to 5 MB/s" },
+      { label: "Dimensions", value: "41.5mm x 17.6mm x 7.4mm (1.63\" x 0.69\" x 0.29\")" },
+      { label: "Weight", value: "3 grams (0.1 oz)" },
+      { label: "Form Factor", value: "Retractable design with sliding mechanism" },
+      { label: "Operating Temperature", value: "0°C to 45°C (32°F to 113°F)" },
+      { label: "Storage Temperature", value: "-10°C to 70°C (14°F to 158°F)" },
+      { label: "Compatibility", value: "Windows 2000/XP/Vista/7/8/10/11, Mac OS X 10.5+, Linux kernel 2.6+" },
+      { label: "Software", value: "SanDisk SecureAccess (optional, downloadable)" },
+      { label: "Warranty", value: "2-year limited warranty from SanDisk" },
+      { label: "Encryption", value: "Optional password protection via SanDisk SecureAccess" }
     ],
     variants: [
-      { key: "16gb", ram: "", storage: "16GB", label: "16GB", price: 10, description: "Basic storage solution" },
+      { key: "16gb", ram: "", storage: "16GB", label: "16GB", price: 12, description: "Basic storage solution" },
       { key: "32gb", ram: "", storage: "32GB", label: "32GB", price: 14, description: "Popular choice for daily use" },
       { key: "64gb", ram: "", storage: "64GB", label: "64GB", price: 20, description: "More space for your files" },
       { key: "128gb", ram: "", storage: "128GB", label: "128GB", price: 28, description: "Maximum capacity option" }
+    ]
+  },
+  {
+    id: 127,
+    name: "Apple AirPods 4",
+    title: "Apple AirPods 4 - Redesigned Sound Experience with H2 Chip",
+    price: 129.99,
+    image: airpods4_1,
+    images: [airpods4_1, airpods4_2, airpods4_3, airpods4_4],
+    rating: 4.9,
+    category: "Audio",
+    brand: "Apple",
+    description: "The all-new Apple AirPods 4 are redesigned from the ground up to deliver an exceptional audio experience. Powered by Apple's advanced H2 chip, these earbuds feature a more ergonomic and secure fit for all-day comfort, superior sound quality with personalized Spatial Audio, and impressive battery life. With a USB-C charging case, IP54 dust and water resistance, and seamless integration with all your Apple devices, AirPods 4 represent the perfect balance of performance, comfort, and value.",
+    features: [
+      "H2 Chip: Apple's most advanced audio chip delivers improved sound quality, lower latency, and more efficient performance for an exceptional listening experience.",
+      "Redesigned Ergonomic Fit: More comfortable and secure design ensures all-day comfort and stability during workouts, commutes, and daily activities.",
+      "Custom High-Excursion Driver: Delivers rich, detailed sound with powerful bass and crisp highs for music, podcasts, and calls.",
+      "High Dynamic Range Amplifier: Ensures audio clarity and detail across all volume levels, from quiet podcasts to loud music.",
+      "Personalized Spatial Audio: Dynamic head tracking creates an immersive, theater-like sound experience that moves with you for a truly three-dimensional listening experience.",
+      "Adaptive EQ: Automatically tunes music to the shape of your ear in real-time for optimal sound quality personalized to you.",
+      "Up to 5 Hours Listening: Enjoy up to 5 hours of listening time on a single charge for music and podcasts.",
+      "Up to 30 Hours Total: The USB-C charging case provides additional charges for up to 30 hours of total listening time.",
+      "USB-C Charging Case: Modern USB-C connector for fast, convenient charging, compatible with the same cable you use for your other devices.",
+      "Multiple Charging Options: Charge with USB-C cable, Apple Watch chargers, or any Qi-certified wireless charger for ultimate flexibility.",
+      "IP54 Dust & Water Resistance: Both AirPods and charging case are rated IP54, protecting against dust, sweat, and water splashes for worry-free use during workouts and in various environments.",
+      "Voice Isolation: Enhanced microphone system with advanced algorithms isolates your voice from background noise for crystal-clear calls.",
+      "Siri Integration: Activate Siri with voice commands or by saying \"Hey Siri\" for hands-free control of your music, calls, and more.",
+      "One-Tap Setup: Seamlessly pairs with your iPhone, iPad, or Mac instantly when you open the case near your device.",
+      "Automatic Switching: Automatically switches between your Apple devices, so you can answer a call on your iPhone or watch a movie on your iPad without manually switching.",
+      "Find My Support: Use the Find My app to locate your AirPods if they're misplaced, with precision finding for nearby devices.",
+      "Audio Sharing: Share audio with a friend using two sets of AirPods connected to the same iPhone or iPad.",
+      "Long Press Controls: Customize controls with long press gestures to play, pause, skip tracks, or activate Siri.",
+      "Lightweight Design: Comfortable, lightweight build ensures hours of comfortable wear without fatigue.",
+      "Seamless Apple Ecosystem: Works flawlessly with iPhone, iPad, Mac, Apple Watch, and Apple TV for a unified experience."
+    ],
+    specifications: [
+      { label: "Brand", value: "Apple" },
+      { label: "Model", value: "AirPods 4" },
+      { label: "Chip", value: "Apple H2 chip" },
+      { label: "Driver", value: "Custom high-excursion Apple driver" },
+      { label: "Amplifier", value: "High dynamic range amplifier" },
+      { label: "Audio Technology", value: "Personalized Spatial Audio with dynamic head tracking, Adaptive EQ" },
+      { label: "Battery Life (AirPods)", value: "Up to 5 hours of listening time on a single charge" },
+      { label: "Battery Life (Total)", value: "Up to 30 hours total listening time with charging case" },
+      { label: "Charging Case", value: "USB-C charging case" },
+      { label: "Charging Options", value: "USB-C cable, Apple Watch chargers, Qi-certified wireless chargers" },
+      { label: "Water & Dust Resistance", value: "IP54 rating (both AirPods and charging case)" },
+      { label: "Microphones", value: "Dual beamforming microphones with voice isolation" },
+      { label: "Controls", value: "Long press for play/pause, skip tracks, activate Siri" },
+      { label: "Siri", value: "Always-on \"Hey Siri\" support" },
+      { label: "Connectivity", value: "Bluetooth 5.3" },
+      { label: "Compatibility", value: "iPhone, iPad, Mac, Apple Watch, Apple TV" },
+      { label: "Features", value: "One-tap setup, automatic device switching, audio sharing, Find My support" },
+      { label: "Dimensions (Case)", value: "46.40mm x 60.60mm x 21.70mm" },
+      { label: "Weight (Each AirPod)", value: "Approximately 5.4 grams" },
+      { label: "Weight (Case)", value: "Approximately 40.5 grams" },
+      { label: "Color", value: "White" },
+      { label: "In The Box", value: "AirPods 4, USB-C Charging Case, Documentation" },
+      { label: "Warranty", value: "1-year limited warranty" }
+    ],
+    variants: [
+      {
+        key: "airpods4-standard",
+        ram: "",
+        storage: "",
+        label: "Standard",
+        price: 129.99,
+        description: "AirPods 4 with H2 chip, personalized Spatial Audio, and up to 30 hours total battery life."
+      }
+    ]
+  },
+  {
+    id: 128,
+    name: "Apple AirPods 4 with Active Noise Cancellation",
+    title: "Apple AirPods 4 with Active Noise Cancellation - Premium Audio Experience with ANC",
+    price: 179.99,
+    image: airpods4_1,
+    images: [airpods4_1, airpods4_2, airpods4_3, airpods4_4],
+    rating: 4.9,
+    category: "Audio",
+    brand: "Apple",
+    description: "The Apple AirPods 4 with Active Noise Cancellation take the premium listening experience to the next level. Featuring all the advanced features of AirPods 4 plus industry-leading Active Noise Cancellation in an open-ear design, Adaptive Audio that blends ANC and Transparency Mode intelligently, and Conversation Awareness that automatically lowers volume when you speak. Powered by the H2 chip with a built-in speaker in the charging case for Find My support, these are the ultimate AirPods for those who demand the best in audio quality, noise control, and convenience.",
+    features: [
+      "Active Noise Cancellation: Industry-leading ANC technology reduces unwanted ambient noise like airplane engines, city traffic, and office chatter, allowing you to focus on your music, podcasts, and calls.",
+      "Adaptive Audio: Intelligently blends Active Noise Cancellation and Transparency Mode in real-time, automatically adjusting noise control based on your environment for the perfect listening experience.",
+      "Transparency Mode: Hear your surroundings when you need to with Transparency Mode, perfect for staying aware during walks, conversations, or when safety awareness is important.",
+      "Conversation Awareness: Automatically detects when you're speaking and temporarily lowers volume and reduces noise cancellation so you can hear conversations naturally—no need to remove your AirPods.",
+      "H2 Chip: Apple's most advanced audio chip delivers exceptional sound quality, lower latency, and efficient ANC processing for premium performance.",
+      "Custom High-Excursion Driver: Delivers rich, detailed sound with powerful bass and crisp highs, optimized for both music and calls.",
+      "High Dynamic Range Amplifier: Ensures audio clarity and detail across all volume levels and listening modes.",
+      "Personalized Spatial Audio: Dynamic head tracking creates an immersive, theater-like sound experience that moves with you in three-dimensional space.",
+      "Adaptive EQ: Automatically tunes music to the shape of your ear in real-time for optimal, personalized sound quality.",
+      "Up to 4 Hours with ANC: Enjoy up to 4 hours of listening time with Active Noise Cancellation enabled on a single charge.",
+      "Up to 20 Hours Total: The USB-C charging case provides additional charges for up to 20 hours of total listening time with ANC.",
+      "USB-C Charging Case with Speaker: Modern USB-C connector for fast charging, plus a built-in speaker for Find My support to help locate your AirPods.",
+      "Multiple Charging Options: Charge with USB-C cable, Apple Watch chargers, or any Qi-certified wireless charger for ultimate convenience.",
+      "IP54 Dust & Water Resistance: Both AirPods and charging case are rated IP54, protecting against dust, sweat, and water splashes for worry-free use.",
+      "Voice Isolation: Advanced microphone system with voice isolation technology ensures crystal-clear calls even in noisy environments.",
+      "Wideband Audio: Enhanced call quality with wideband audio support for natural-sounding conversations.",
+      "Siri Integration: Activate Siri with voice commands, \"Hey Siri,\" or head gestures (nod to answer, shake to decline) for hands-free control.",
+      "One-Tap Setup: Seamlessly pairs with your iPhone, iPad, or Mac instantly when you open the case near your device.",
+      "Automatic Switching: Automatically switches between your Apple devices, so you can answer a call on your iPhone or watch a movie on your iPad seamlessly.",
+      "Precision Finding: Use the Find My app with precision finding to locate your AirPods with visual, haptic, and audio guidance.",
+      "Built-in Case Speaker: Charging case includes a speaker that plays sounds to help you locate it if misplaced.",
+      "Audio Sharing: Share audio with a friend using two sets of AirPods connected to the same iPhone or iPad.",
+      "Long Press Controls: Customize controls with long press gestures to switch between ANC modes, play/pause, skip tracks, or activate Siri.",
+      "Head Gesture Controls: Nod to answer calls, shake head to decline—intuitive gesture controls for hands-free interaction.",
+      "Lightweight Comfortable Design: Ergonomic, lightweight build ensures hours of comfortable wear even with advanced features.",
+      "Seamless Apple Ecosystem: Works flawlessly with iPhone, iPad, Mac, Apple Watch, and Apple TV for a unified, premium experience."
+    ],
+    specifications: [
+      { label: "Brand", value: "Apple" },
+      { label: "Model", value: "AirPods 4 with Active Noise Cancellation" },
+      { label: "Chip", value: "Apple H2 chip" },
+      { label: "Noise Control", value: "Active Noise Cancellation, Transparency Mode, Adaptive Audio" },
+      { label: "Driver", value: "Custom high-excursion Apple driver" },
+      { label: "Amplifier", value: "High dynamic range amplifier" },
+      { label: "Audio Technology", value: "Personalized Spatial Audio with dynamic head tracking, Adaptive EQ" },
+      { label: "Battery Life (AirPods with ANC)", value: "Up to 4 hours of listening time with ANC enabled" },
+      { label: "Battery Life (Total with ANC)", value: "Up to 20 hours total listening time with charging case" },
+      { label: "Charging Case", value: "USB-C charging case with built-in speaker" },
+      { label: "Charging Options", value: "USB-C cable, Apple Watch chargers, Qi-certified wireless chargers" },
+      { label: "Water & Dust Resistance", value: "IP54 rating (both AirPods and charging case)" },
+      { label: "Microphones", value: "Dual beamforming microphones with voice isolation and wideband audio" },
+      { label: "Controls", value: "Long press for ANC/Transparency, play/pause, skip tracks, activate Siri" },
+      { label: "Head Gestures", value: "Nod to answer calls, shake to decline" },
+      { label: "Siri", value: "Always-on \"Hey Siri\" support with head gesture activation" },
+      { label: "Find My", value: "Precision finding with visual, haptic, and audio guidance, case speaker support" },
+      { label: "Conversation Awareness", value: "Automatically detects speech and adjusts audio settings" },
+      { label: "Connectivity", value: "Bluetooth 5.3" },
+      { label: "Compatibility", value: "iPhone, iPad, Mac, Apple Watch, Apple TV" },
+      { label: "Features", value: "One-tap setup, automatic device switching, audio sharing, Conversation Awareness" },
+      { label: "Dimensions (Case)", value: "46.40mm x 60.60mm x 21.70mm" },
+      { label: "Weight (Each AirPod)", value: "Approximately 5.4 grams" },
+      { label: "Weight (Case)", value: "Approximately 40.5 grams" },
+      { label: "Color", value: "White" },
+      { label: "In The Box", value: "AirPods 4 with ANC, USB-C Charging Case, Documentation" },
+      { label: "Warranty", value: "1-year limited warranty" }
+    ],
+    variants: [
+      {
+        key: "airpods4-anc",
+        ram: "",
+        storage: "",
+        label: "With Active Noise Cancellation",
+        price: 179.99,
+        description: "AirPods 4 with Active Noise Cancellation, Adaptive Audio, Conversation Awareness, and Find My case speaker."
+      }
     ]
   }
 ];
@@ -1160,6 +1365,7 @@ export const smartphoneProducts: Product[] = [
       }
     ]
   },
+  
   {
     id: 306,
     name: "Samsung Galaxy A36",
@@ -1952,6 +2158,445 @@ export const tabletProducts: Product[] = [
       { name: "Polished Silver", image: galaxyTabA11X135Silver }
     ],
     connectivityOptions: ["Wi-Fi + LTE (Nano-SIM)"]
+  },
+  {
+    id: 404,
+    name: "iPad 11-inch (A16 Chip)",
+    title: "iPad 11-inch - Supercharged with A16 Chip and Liquid Retina Display",
+    price: 449.99,
+    image: iPad11,
+    images: [iPad11, iPad11_128, iPad11_128g, iPad11_128gb],
+    rating: 4.9,
+    category: "Tablets",
+    brand: "Apple",
+    description: "The 11-inch iPad is now more capable than ever with the superfast A16 chip, stunning Liquid Retina display, advanced cameras, fast Wi-Fi 6 and 5G connectivity, USB-C connector, and four gorgeous colors. iPad delivers a powerful way to create, stay connected, and get things done—all for a surprisingly affordable price. Whether you're creating digital art, editing videos, taking notes, or streaming content, this iPad handles it all with ease while delivering all-day battery life. With iPadOS and a million apps designed specifically for iPad, you can do more than ever before.",
+    features: [
+      "Superfast A16 Chip: The same powerful chip used in iPhone 15 Pro delivers incredible performance for gaming, video editing, multitasking, and creative work with remarkable efficiency.",
+      "11-inch Liquid Retina Display: Gorgeous 2388 x 1668 resolution display brings your content to life with vibrant colors, crisp text, and incredible detail—perfect for watching movies or drawing your next masterpiece.",
+      "True Tone Technology: Automatically adjusts the display to the color temperature of your environment, making viewing comfortable in any lighting condition from bright daylight to warm indoor lighting.",
+      "All-Day Battery Life: Up to 10 hours of surfing the web on Wi‑Fi, watching video, or listening to music—powerful enough for your entire day.",
+      "Advanced Cameras: 12MP Center Stage front camera with ultra-wide lens keeps you perfectly framed during video calls and automatically adjusts as people move. 12MP Wide back camera captures stunning photos and 4K videos.",
+      "iPadOS 18: The most advanced mobile operating system designed for iPad, with powerful multitasking, enhanced Apple Pencil features, improved Files app, and seamless integration with your other Apple devices.",
+      "Apple Pencil Compatible: Works with Apple Pencil (USB-C) and Apple Pencil (1st generation) for precise drawing, note-taking, and markup with pixel-perfect accuracy and low latency.",
+      "Magic Keyboard Folio Support: Transform your iPad into a powerful laptop with the versatile two-piece Magic Keyboard Folio featuring a detachable keyboard and protective back panel.",
+      "Fast Wi-Fi 6: Experience faster wireless speeds for downloading files, streaming 4K content, playing online games, and video conferencing with minimal lag.",
+      "5G Cellular Option: Stay connected anywhere with optional 5G connectivity for fast downloads, smooth video streaming, and reliable internet access when away from Wi-Fi.",
+      "USB-C Connector: Universal USB-C port for charging, data transfer, and connecting to external displays, cameras, and other accessories with one versatile connector.",
+      "Touch ID Security: Built into the top button, Touch ID provides secure and convenient authentication for unlocking your iPad, authorizing purchases, and signing into apps.",
+      "Landscape Stereo Speakers: Immersive sound experience with two high-quality speakers positioned for optimal audio when using iPad in landscape orientation.",
+      "Dual Microphones: Crystal-clear audio capture for video calls, voice recordings, and voice commands with noise reduction and directional audio capture."
+    ],
+    specifications: [
+      { label: "Brand", value: "Apple" },
+      { label: "Model", value: "iPad 11-inch" },
+      { label: "Display", value: "11-inch Liquid Retina display, 2388 x 1668 pixels, 264 ppi, True Tone technology" },
+      { label: "Processor", value: "Apple A16 Bionic chip with 6-core CPU and 5-core GPU" },
+      { label: "Storage Options", value: "128GB or 256GB" },
+      { label: "Operating System", value: "iPadOS 18 (upgradable to latest version)" },
+      { label: "Dimensions", value: "247.6mm x 178.5mm x 7.0mm (9.75\" x 7.03\" x 0.28\")" },
+      { label: "Weight", value: "477 grams (Wi-Fi), 481 grams (Wi-Fi + Cellular)" },
+      { label: "Rear Camera", value: "12MP Wide camera, f/1.8 aperture, 4K video recording at 24/25/30/60fps, 1080p HD video at 25/30/60fps" },
+      { label: "Front Camera", value: "12MP Ultra Wide camera, f/2.4 aperture, Center Stage, 1080p HD video at 25/30/60fps" },
+      { label: "Video Recording", value: "4K video at 24/25/30/60fps, 1080p HD video at 25/30/60fps, Extended dynamic range for video up to 30fps" },
+      { label: "Battery Life", value: "Up to 10 hours of surfing the web on Wi‑Fi, watching video, or listening to music" },
+      { label: "Charging", value: "USB-C connector, 20W USB-C Power Adapter included" },
+      { label: "Connectivity", value: "Wi-Fi 6 (802.11ax), Bluetooth 5.3, optional 5G (Sub‑6GHz and mmWave)" },
+      { label: "Ports", value: "USB-C connector for charging and accessories" },
+      { label: "Security", value: "Touch ID built into top button" },
+      { label: "Audio", value: "Landscape stereo speakers, dual microphones" },
+      { label: "Apple Pencil Support", value: "Apple Pencil (USB-C) and Apple Pencil (1st generation)" },
+      { label: "Keyboard Support", value: "Magic Keyboard Folio, Smart Keyboard Folio" },
+      { label: "Sensors", value: "Touch ID, three-axis gyro, accelerometer, ambient light sensor" },
+      { label: "Accessibility", value: "VoiceOver, Zoom, Display Accommodations, Switch Control, and more" },
+      { label: "In The Box", value: "iPad, USB-C Charge Cable (1 meter), 20W USB-C Power Adapter" },
+      { label: "Warranty", value: "1-year limited warranty with 90 days of complimentary technical support" }
+    ],
+    variants: [
+      {
+        key: "ipad11-128gb-wifi",
+        ram: "",
+        storage: "128GB Storage",
+        label: "128GB Wi-Fi",
+        price: 449.99,
+        description: "Perfect for everyday use, entertainment, and creative projects with ample storage for apps, photos, and files."
+      },
+      {
+        key: "ipad11-256gb-wifi",
+        ram: "",
+        storage: "256GB Storage",
+        label: "256GB Wi-Fi",
+        price: 599.99,
+        description: "Ideal for content creators, students, and professionals who need extra space for large files, videos, and projects."
+      },
+      {
+        key: "ipad11-128gb-5g",
+        ram: "",
+        storage: "128GB Storage",
+        label: "128GB Wi-Fi + 5G",
+        price: 599.99,
+        description: "Stay connected anywhere with 5G cellular connectivity for work and play on the go."
+      },
+      {
+        key: "ipad11-256gb-5g",
+        ram: "",
+        storage: "256GB Storage",
+        label: "256GB Wi-Fi + 5G",
+        price: 749.99,
+        description: "Maximum storage and connectivity for professionals who need to work from anywhere."
+      }
+    ],
+    colors: [
+      { name: "Space Gray", image: iPad11, stock: "available" },
+      { name: "Silver", image: iPad11_128, stock: "available" },
+      { name: "Blue", image: iPad11_128g, stock: "available" },
+      { name: "Pink", image: iPad11_128gb, stock: "available" }
+    ],
+    connectivityOptions: ["Wi-Fi only", "Wi-Fi + 5G Cellular"]
+  },
+  {
+    id: 405,
+    name: "Apple Pencil Pro",
+    title: "Apple Pencil Pro - Revolutionary Precision with Squeeze, Haptic Feedback & Find My",
+    price: 129.99,
+    image: applePencilPro,
+    images: [applePencilPro, applePencilPro1, applePencilPro2],
+    rating: 4.9,
+    category: "Tablets",
+    brand: "Apple",
+    description: "The Apple Pencil Pro is the most advanced Apple Pencil yet, designed for the most demanding creative professionals and digital artists. Featuring revolutionary new interactions including squeeze gesture for quick tool access, haptic feedback for tactile confirmation, and barrel roll for precise control of shaped brushes and pens. With Apple Pencil hover, you can preview your exact touch point before it touches the display, while Find My integration helps you locate your Apple Pencil if it ever goes missing. Magnetically attaches, pairs, and charges wirelessly on compatible iPad models, providing pixel-perfect precision with industry-leading low latency for the most natural drawing and writing experience.",
+    features: [
+      "Squeeze Gesture: Revolutionary new interaction that brings up a palette for quick tool, line weight, and color selection—simply squeeze the barrel to access shortcuts instantly.",
+      "Haptic Feedback: Built-in haptic engine provides precise tactile feedback for actions like squeezing or double-tapping, giving you physical confirmation of your interactions.",
+      "Barrel Roll: Built-in gyroscope enables rotation for precise control of shaped pen and brush tools, allowing you to tilt and rotate for natural shading and texturing effects.",
+      "Apple Pencil Hover: Previews your exact touch point on the display before contact, giving you pixel-perfect precision and making detailed work easier than ever.",
+      "Double-Tap Gesture: Quickly switch between tools, such as switching from pen to eraser or changing brush sizes, by double-tapping the side of the Apple Pencil Pro.",
+      "Find My Integration: Built-in Find My support lets you locate your Apple Pencil Pro if it's misplaced, with location tracking and proximity notifications.",
+      "Pixel-Perfect Precision: Industry-leading pressure sensitivity and tilt detection for incredibly natural drawing and writing with exceptional accuracy.",
+      "Ultra-Low Latency: Near-instantaneous response makes drawing and writing feel natural, with minimal delay between your movement and what appears on screen.",
+      "Wireless Charging: Magnetically attaches to the side of compatible iPad models for automatic pairing and wireless charging—no cables needed.",
+      "Pressure Sensitivity: Responds to the pressure you apply, allowing for thick or thin strokes, just like a real pencil or brush.",
+      "Tilt Support: Recognizes the angle at which you're holding the Apple Pencil Pro for natural shading, calligraphy, and artistic effects.",
+      "Palm Rejection: Advanced palm rejection technology lets you rest your hand on the screen while drawing or writing without interfering with your work.",
+      "All-Day Battery: Long-lasting battery life supports hours of continuous use, with quick charging when attached magnetically to your iPad.",
+      "Universal Compatibility: Works seamlessly across all compatible iPad apps, from Apple's own apps to professional creative software and note-taking applications."
+    ],
+    specifications: [
+      { label: "Brand", value: "Apple" },
+      { label: "Model", value: "Apple Pencil Pro" },
+      { label: "Length", value: "166mm (6.53 inches)" },
+      { label: "Diameter", value: "8.9mm (0.35 inches)" },
+      { label: "Weight", value: "19.15 grams (0.68 ounces)" },
+      { label: "Connectivity", value: "Bluetooth for pairing and communication" },
+      { label: "Charging", value: "Wireless charging via magnetic attachment to compatible iPad models" },
+      { label: "Pressure Sensitivity", value: "Industry-leading pressure detection for natural drawing and writing" },
+      { label: "Tilt Recognition", value: "Advanced tilt detection for natural shading and artistic effects" },
+      { label: "Palm Rejection", value: "Advanced palm rejection technology for comfortable use" },
+      { label: "Haptic Engine", value: "Built-in haptic feedback for tactile confirmation of gestures" },
+      { label: "Gyroscope", value: "Built-in gyroscope for barrel roll functionality and orientation detection" },
+      { label: "Battery Life", value: "All-day battery life with wireless charging" },
+      { label: "Compatibility", value: "iPad Pro 13-inch (M4), iPad Pro 11-inch (M4), iPad Air 13-inch (M2 & M3), iPad Air 11-inch (M2 & M3), iPad mini (A17 Pro)" },
+      { label: "System Requirements", value: "iPadOS 17.5 or later" },
+      { label: "Features", value: "Squeeze gesture, haptic feedback, barrel roll, Apple Pencil hover, double-tap gesture, Find My integration" },
+      { label: "Materials", value: "Precision-machined aluminum body with matte finish" },
+      { label: "Warranty", value: "1-year limited warranty with 90 days of complimentary technical support" },
+      { label: "Color", value: "White" }
+    ],
+    variants: [
+      {
+        key: "pencil-pro-standard",
+        ram: "",
+        storage: "",
+        label: "Standard",
+        price: 129.99,
+        description: "Complete Apple Pencil Pro with all features including squeeze gesture, haptic feedback, and Find My integration."
+      }
+    ],
+    colors: [
+      { name: "White", image: applePencilPro, stock: "available" }
+    ]
+  },
+  {
+    id: 406,
+    name: "Apple iPad Air M3 Chip 11-inch",
+    title: "Apple iPad Air M3 Chip 11-inch - Built for Apple Intelligence with Advanced Graphics",
+    price: 569.99,
+    image: iPadAirM3_11_Blue,
+    images: [iPadAirM3_11_Blue, iPadAirM3_11_Grey, iPadAirM3_11_Purple, iPadAirM3_11_Starlight],
+    rating: 4.9,
+    category: "Tablets",
+    brand: "Apple",
+    description: "Now with the powerful M3 chip, the Apple 11-inch iPad Air delivers optimal performance and is built for Apple Intelligence. The M3 chip brings Apple's advanced graphics architecture to the iPad Air for the first time with support for ray tracing, dynamic caching, and hardware-accelerated mesh shading. With 8GB of RAM, 128GB or 256GB storage options, a portable design, all-day battery life, an 11-inch Liquid Retina Display, and support for optional Apple Pencil Pro, Apple Pencil (USB-C), and Magic Keyboard, the iPad Air empowers you to be even more productive and creative while on the go. Featuring a more powerful 8-core CPU, the M3 is up to 35 percent faster for multithreaded CPU workflows than M1, with a 9-core GPU offering up to 40 percent faster graphics performance.",
+    features: [
+      "Apple M3 Chip: Revolutionary 8-core CPU and 9-core GPU with 16-core Neural Engine delivers desktop-class performance for demanding creative and professional workflows.",
+      "Advanced Graphics Architecture: For the first time on iPad Air, M3 brings support for ray tracing, dynamic caching, and hardware-accelerated mesh shading—enabling up to four times faster graphics performance than M1.",
+      "Dynamic Caching: Only uses the exact amount of memory needed for each task, dramatically increasing GPU utilization for significant performance increases in the most demanding pro apps and games.",
+      "11-inch Liquid Retina Display: Stunning 2360 x 1640 resolution (264 ppi) with P3 wide color gamut, True Tone technology, 500 nits brightness, and anti-reflective coating for vivid colors and comfortable viewing in any light.",
+      "Apple Intelligence Ready: Built for Apple Intelligence, the personal intelligence system that helps you write, express yourself, and get things done effortlessly with secure privacy protections.",
+      "Image Wand & Image Playground: Turn rough sketches into related images with Image Wand, and create new images based on descriptions, suggested concepts, and even people from your Photos library.",
+      "Writing Tools: Advanced writing assistance helps you find the right words, proofread text, rewrite different versions for the right tone, and summarize selected text with a tap.",
+      "Clean Up Tool: Easily remove unwanted distractions in photos with Apple Intelligence identifying background objects so you can delete them with a tap while staying true to the original image.",
+      "Ultra-Wide 12MP Landscape Front Camera: Now located on the long side for ideal video calling with Center Stage technology that automatically adjusts to keep everyone in view using machine learning.",
+      "12MP Wide Rear Camera: Captures vivid photos and detailed 4K videos, perfect for scanning documents and filling them out with Apple Pencil, or editing images and videos directly on the large display.",
+      "8GB Unified Memory: Ample RAM ensures smooth multitasking, fast app switching, and seamless performance even with multiple demanding apps running simultaneously.",
+      "Wi-Fi 6E Connectivity: Delivers fast wireless connectivity over two times faster than the previous generation for streaming, downloading, and sharing at high speeds.",
+      "USB-C Port (10 Gb/s): Fast, versatile connection for external displays, docks, drives, cameras, and more with USB 3 speeds up to 10 Gb/s for rapid data transfer.",
+      "Bluetooth 5.3: Low-latency audio support for next-gen headsets and hearing aids using Bluetooth LE technology.",
+      "Dual Studio-Quality Mics: Record rich, clear audio for video calls, voice recordings, and content creation with professional-grade microphone quality.",
+      "Landscape Stereo Speakers: Immersive audio experience with high-quality speakers positioned for optimal sound when using iPad Air in landscape orientation.",
+      "All-Day Battery Life: Up to 10 hours of surfing the web on Wi-Fi or watching video on a single charge—perfect for work, creativity, and entertainment throughout your day.",
+      "Apple Pencil Pro Support: Works seamlessly with Apple Pencil Pro featuring squeeze gesture, haptic feedback, barrel roll, and Find My integration.",
+      "Apple Pencil (USB-C) Compatible: Also supports the more affordable Apple Pencil (USB-C) for drawing, note-taking, and markup.",
+      "Magic Keyboard Support: Transform your iPad Air into a powerful laptop with the Magic Keyboard featuring a backlit keyboard and trackpad.",
+      "100% Recycled Aluminum: Environmentally conscious design with 100% recycled aluminum in the enclosure, contributing to Apple's carbon-neutral goals.",
+      "Sustainable Materials: 100% recycled cobalt and over 95% recycled lithium in the battery, 100% recycled rare earth elements in all magnets, and 100% fiber-based packaging."
+    ],
+    specifications: [
+      { label: "Brand", value: "Apple" },
+      { label: "Model", value: "iPad Air M3 Chip 11-inch (2025)" },
+      { label: "SKU", value: "MC9Y4LL/A" },
+      { label: "Display", value: "11-inch Liquid Retina display, 2360 x 1640 pixels (264 ppi), P3 wide color gamut, True Tone, 500 nits brightness, anti-reflective coating" },
+      { label: "Processor", value: "Apple M3 chip with 8-core CPU (4 performance cores + 4 efficiency cores)" },
+      { label: "GPU", value: "9-core GPU with advanced graphics architecture" },
+      { label: "Neural Engine", value: "16-core Neural Engine for machine learning and Apple Intelligence" },
+      { label: "Memory", value: "8GB unified memory" },
+      { label: "Storage Options", value: "128GB or 256GB" },
+      { label: "Operating System", value: "iPadOS with Apple Intelligence (preloaded, check settings for latest updates)" },
+      { label: "Dimensions", value: "247.6mm x 178.5mm x 6.1mm (9.74\" x 7.02\" x 0.24\")" },
+      { label: "Weight", value: "460 grams (1.01 pounds)" },
+      { label: "Rear Camera", value: "12MP Wide camera, f/1.8 aperture, 4K video recording at 24/25/30/60fps, 1080p HD video at 25/30/60fps" },
+      { label: "Front Camera", value: "12MP Ultra Wide camera, f/2.0 aperture, Center Stage, 1080p HD video at 25/30/60fps, landscape orientation" },
+      { label: "Video Recording", value: "4K video at 24/25/30/60fps, 1080p HD video at 25/30/60fps, Extended dynamic range for video up to 30fps" },
+      { label: "Battery Life", value: "Up to 10 hours of surfing the web on Wi-Fi or watching video" },
+      { label: "Charging", value: "USB-C connector, 20W USB-C Power Adapter included" },
+      { label: "Connectivity", value: "Wi-Fi 6E (802.11ax), Bluetooth 5.3, optional 5G (Sub-6GHz)" },
+      { label: "Ports", value: "USB-C port with support for charging, DisplayPort, and USB 3 (up to 10 Gb/s)" },
+      { label: "Audio", value: "Landscape stereo speakers, dual studio-quality microphones" },
+      { label: "Apple Pencil Support", value: "Apple Pencil Pro, Apple Pencil (USB-C)" },
+      { label: "Keyboard Support", value: "Magic Keyboard, Smart Keyboard Folio" },
+      { label: "Graphics Features", value: "Ray tracing, dynamic caching, hardware-accelerated mesh shading" },
+      { label: "Apple Intelligence", value: "Image Wand, Image Playground, Writing Tools, Clean Up tool in Photos" },
+      { label: "Sensors", value: "Touch ID in top button, three-axis gyro, accelerometer, ambient light sensor, barometer" },
+      { label: "Security", value: "Touch ID built into top button for secure authentication" },
+      { label: "Accessibility", value: "VoiceOver, Zoom, Display Accommodations, Switch Control, and more" },
+      { label: "Environmental", value: "100% recycled aluminum, 100% recycled rare earth elements, 100% fiber-based packaging, 100% recycled cobalt and over 95% recycled lithium in battery" },
+      { label: "In The Box", value: "iPad Air, USB-C Charge Cable (1 meter), 20W USB-C Power Adapter" },
+      { label: "Warranty", value: "1-year limited warranty" },
+      { label: "Condition", value: "Brand New" }
+    ],
+    variants: [
+      {
+        key: "ipad-air-m3-11-128gb-wifi",
+        ram: "8GB RAM",
+        storage: "128GB Storage",
+        label: "128GB Wi-Fi",
+        price: 569.99,
+        description: "Perfect for everyday productivity, creativity, and entertainment with ample storage for apps, photos, and files."
+      },
+      {
+        key: "ipad-air-m3-11-256gb-wifi",
+        ram: "8GB RAM",
+        storage: "256GB Storage",
+        label: "256GB Wi-Fi",
+        price: 669.99,
+        description: "Ideal for content creators, professionals, and power users who need extra space for large files, videos, and creative projects."
+      }
+    ],
+    colors: [
+      { name: "Blue", image: iPadAirM3_11_Blue, stock: "available" },
+      { name: "Space Gray", image: iPadAirM3_11_Grey, stock: "available" },
+      { name: "Purple", image: iPadAirM3_11_Purple, stock: "available" },
+      { name: "Starlight", image: iPadAirM3_11_Starlight, stock: "available" }
+    ],
+    connectivityOptions: ["Wi-Fi only"]
+  },
+  {
+    id: 407,
+    name: "Apple iPad Air M3 Chip 13-inch",
+    title: "Apple iPad Air M3 Chip 13-inch - Largest Display with Advanced Graphics & Apple Intelligence",
+    price: 749.99,
+    image: iPadAirM3_13_Blue,
+    images: [iPadAirM3_13_Blue, iPadAirM3_13_Grey, iPadAirM3_13_Purple, iPadAirM3_13_Starlight],
+    rating: 4.9,
+    category: "Tablets",
+    brand: "Apple",
+    description: "The Apple iPad Air 13-inch with M3 chip delivers the largest and most immersive iPad Air experience ever created. Featuring a stunning 13-inch Liquid Retina display, the powerful Apple M3 chip with advanced graphics architecture, and built for Apple Intelligence, this iPad Air empowers you to be incredibly productive and creative with more screen real estate than ever before. Perfect for professionals, content creators, and creative professionals who need maximum workspace for multitasking, video editing, design work, and content creation. With ray tracing, dynamic caching, hardware-accelerated mesh shading, and Apple Intelligence features like Image Wand and Writing Tools, the 13-inch iPad Air is a powerhouse of creativity and productivity in a beautifully portable design.",
+    features: [
+      "13-inch Liquid Retina Display: The largest iPad Air display ever, featuring 2732 x 2048 resolution (264 ppi) with P3 wide color gamut, True Tone technology, 500 nits brightness, and anti-reflective coating for an immersive viewing and working experience.",
+      "Apple M3 Chip: Revolutionary 8-core CPU and 9-core GPU with 16-core Neural Engine delivers desktop-class performance—up to 35% faster CPU and 40% faster graphics than M1 for the most demanding workflows.",
+      "Advanced Graphics Architecture: First time on iPad Air—M3 brings support for ray tracing, dynamic caching, and hardware-accelerated mesh shading, enabling up to four times faster graphics performance than M1 for professional apps and games.",
+      "Dynamic Caching: Intelligently uses only the exact amount of GPU memory needed for each task, dramatically increasing average GPU utilization for significant performance boosts in demanding professional applications.",
+      "Ray Tracing Support: Hardware-accelerated ray tracing enables incredibly realistic lighting, reflections, and shadows for immersive gaming experiences and professional 3D rendering.",
+      "Apple Intelligence Ready: Built for Apple Intelligence, the personal intelligence system that helps you write, express yourself, and get things done effortlessly with secure, on-device privacy protections.",
+      "Image Wand: Turn rough sketches into related images instantly with AI-powered Image Wand, perfect for creative brainstorming and visual ideation.",
+      "Image Playground: Create stunning new images based on descriptions, suggested concepts, or even people from your Photos library with powerful AI image generation.",
+      "Writing Tools: Advanced AI-powered writing assistance helps you find the perfect words, proofread text, rewrite versions for different tones, and summarize selected text with a single tap.",
+      "Clean Up Tool: Remove unwanted distractions from photos with Apple Intelligence identifying background objects for easy deletion while preserving the original image quality.",
+      "Ultra-Wide 12MP Landscape Front Camera: Strategically positioned on the long edge for ideal video calling with Center Stage technology that uses machine learning to automatically keep everyone in view.",
+      "12MP Wide Rear Camera: Capture stunning photos and detailed 4K videos, perfect for scanning documents, creating content, and editing directly on the large 13-inch display.",
+      "8GB Unified Memory: Ample RAM ensures smooth multitasking, lightning-fast app switching, and seamless performance even when running multiple demanding creative and professional applications simultaneously.",
+      "128GB or 256GB Storage: Choose the storage capacity that fits your needs, from everyday productivity to content creation with large video files and creative projects.",
+      "Wi-Fi 6E Connectivity: Delivers blazing-fast wireless speeds—over two times faster than previous generation—perfect for streaming 4K content, downloading large files, and seamless video conferencing.",
+      "USB-C Port (10 Gb/s): Versatile high-speed connection supporting external displays up to 6K, docks, storage drives, cameras, and professional accessories with USB 3 speeds up to 10 Gb/s.",
+      "Bluetooth 5.3: Low-latency audio support for next-generation wireless headsets, hearing aids, and professional audio equipment using Bluetooth LE technology.",
+      "Dual Studio-Quality Microphones: Professional-grade audio recording for crystal-clear video calls, voice recordings, podcasts, and content creation with advanced noise reduction.",
+      "Landscape Stereo Speakers: Immersive four-speaker audio system positioned for optimal sound when using iPad Air in landscape orientation—perfect for video editing, music production, and entertainment.",
+      "All-Day Battery Life: Up to 10 hours of surfing the web on Wi-Fi or watching video on a single charge—powerful enough for full workdays, creative sessions, and entertainment.",
+      "Apple Pencil Pro Support: Works seamlessly with Apple Pencil Pro featuring squeeze gesture, haptic feedback, barrel roll, Apple Pencil hover, and Find My integration for the ultimate creative experience.",
+      "Apple Pencil (USB-C) Compatible: Also supports the more affordable Apple Pencil (USB-C) for drawing, note-taking, markup, and creative work.",
+      "Magic Keyboard Support: Transform your iPad Air into a powerful laptop replacement with the Magic Keyboard featuring a backlit keyboard, trackpad, and versatile design.",
+      "Touch ID Security: Built into the top button, Touch ID provides secure and convenient fingerprint authentication for unlocking, authorizing purchases, and signing into apps.",
+      "100% Recycled Aluminum: Environmentally conscious design with 100% recycled aluminum enclosure, contributing to Apple's carbon-neutral goals and sustainable manufacturing.",
+      "Sustainable Materials: 100% recycled cobalt and over 95% recycled lithium in battery, 100% recycled rare earth elements in magnets, 100% fiber-based packaging with 39% recycled content."
+    ],
+    specifications: [
+      { label: "Brand", value: "Apple" },
+      { label: "Model", value: "iPad Air M3 Chip 13-inch (2025)" },
+      { label: "Display", value: "13-inch Liquid Retina display, 2732 x 2048 pixels (264 ppi), P3 wide color gamut, True Tone, 500 nits brightness, anti-reflective coating" },
+      { label: "Processor", value: "Apple M3 chip with 8-core CPU (4 performance cores + 4 efficiency cores)" },
+      { label: "GPU", value: "9-core GPU with advanced graphics architecture" },
+      { label: "Neural Engine", value: "16-core Neural Engine for machine learning and Apple Intelligence" },
+      { label: "Memory", value: "8GB unified memory" },
+      { label: "Storage Options", value: "128GB or 256GB" },
+      { label: "Operating System", value: "iPadOS with Apple Intelligence (preloaded, check settings for latest updates)" },
+      { label: "Dimensions", value: "280.6mm x 214.9mm x 6.1mm (11.05\" x 8.46\" x 0.24\")" },
+      { label: "Weight", value: "617 grams (1.36 pounds)" },
+      { label: "Rear Camera", value: "12MP Wide camera, f/1.8 aperture, 4K video recording at 24/25/30/60fps, 1080p HD video at 25/30/60fps" },
+      { label: "Front Camera", value: "12MP Ultra Wide camera, f/2.0 aperture, Center Stage, 1080p HD video at 25/30/60fps, landscape orientation" },
+      { label: "Video Recording", value: "4K video at 24/25/30/60fps, 1080p HD video at 25/30/60fps, Extended dynamic range for video up to 30fps" },
+      { label: "Battery Life", value: "Up to 10 hours of surfing the web on Wi-Fi or watching video" },
+      { label: "Charging", value: "USB-C connector, 20W USB-C Power Adapter included" },
+      { label: "Connectivity", value: "Wi-Fi 6E (802.11ax), Bluetooth 5.3, optional 5G (Sub-6GHz)" },
+      { label: "Ports", value: "USB-C port with support for charging, DisplayPort (up to 6K external display), and USB 3 (up to 10 Gb/s)" },
+      { label: "Audio", value: "Landscape stereo speakers (four-speaker system), dual studio-quality microphones" },
+      { label: "Apple Pencil Support", value: "Apple Pencil Pro, Apple Pencil (USB-C)" },
+      { label: "Keyboard Support", value: "Magic Keyboard, Smart Keyboard Folio" },
+      { label: "Graphics Features", value: "Ray tracing, dynamic caching, hardware-accelerated mesh shading" },
+      { label: "Apple Intelligence", value: "Image Wand, Image Playground, Writing Tools, Clean Up tool in Photos" },
+      { label: "Performance", value: "Up to 35% faster CPU and 40% faster graphics than M1, up to 4x faster graphics performance with ray tracing" },
+      { label: "Sensors", value: "Touch ID in top button, three-axis gyro, accelerometer, ambient light sensor, barometer" },
+      { label: "Security", value: "Touch ID built into top button for secure authentication" },
+      { label: "Accessibility", value: "VoiceOver, Zoom, Display Accommodations, Switch Control, and more" },
+      { label: "External Display Support", value: "Up to 6K resolution at 60Hz via USB-C" },
+      { label: "Environmental", value: "100% recycled aluminum, 100% recycled rare earth elements, 100% fiber-based packaging, 100% recycled cobalt and over 95% recycled lithium in battery" },
+      { label: "In The Box", value: "iPad Air 13-inch, USB-C Charge Cable (1 meter), 20W USB-C Power Adapter" },
+      { label: "Warranty", value: "1-year limited warranty" },
+      { label: "Condition", value: "Brand New" }
+    ],
+    variants: [
+      {
+        key: "ipad-air-m3-13-128gb-wifi",
+        ram: "8GB RAM",
+        storage: "128GB Storage",
+        label: "128GB Wi-Fi",
+        price: 749.99,
+        description: "Perfect for professionals and creators who need maximum screen real estate for productivity, creativity, and multitasking with ample storage."
+      },
+      {
+        key: "ipad-air-m3-13-256gb-wifi",
+        ram: "8GB RAM",
+        storage: "256GB Storage",
+        label: "256GB Wi-Fi",
+        price: 899.99,
+        description: "Ideal for content creators, video editors, and professionals who need extra storage for large creative projects, 4K videos, and extensive app libraries."
+      }
+    ],
+    colors: [
+      { name: "Blue", image: iPadAirM3_13_Blue, stock: "available" },
+      { name: "Space Gray", image: iPadAirM3_13_Grey, stock: "available" },
+      { name: "Purple", image: iPadAirM3_13_Purple, stock: "available" },
+      { name: "Starlight", image: iPadAirM3_13_Starlight, stock: "available" }
+    ],
+    connectivityOptions: ["Wi-Fi only"]
+  },
+  {
+    id: 408,
+    name: "Apple iPad Air 6th Generation 13-inch (M2 Chip)",
+    title: "Apple iPad Air 6th Generation 13-inch (M2 Chip) - Powerful Performance with Largest Display",
+    price: 699.99,
+    image: iPadAirM2_13_Blue,
+    images: [iPadAirM2_13_Blue, iPadAirM2_13_SpaceGrey, iPadAirM2_13_Purple, iPadAirM2_13_Starlight],
+    rating: 4.8,
+    category: "Tablets",
+    brand: "Apple",
+    description: "The Apple iPad Air 6th Generation 13-inch with M2 chip delivers exceptional performance and the largest iPad Air display in a beautifully portable design. Featuring Apple's powerful M2 chip with 8-core CPU and 10-core GPU, this iPad Air provides desktop-class performance for demanding creative workflows, multitasking, and productivity tasks. The stunning 13-inch Liquid Retina display offers an immersive viewing experience perfect for content creation, video editing, design work, and entertainment. With 8GB of unified memory, 128GB of storage, advanced cameras with Center Stage, Wi-Fi 6E connectivity, and support for Apple Pencil Pro and Magic Keyboard, the iPad Air 13-inch M2 empowers you to create, work, and play with unparalleled performance and versatility.",
+    features: [
+      "13-inch Liquid Retina Display: Stunning 2732 x 2048 resolution (264 ppi) with P3 wide color gamut, True Tone technology, 500 nits brightness, and anti-reflective coating for vibrant, accurate colors and comfortable viewing in any lighting condition.",
+      "Apple M2 Chip: Powerful 8-core CPU with 4 performance cores and 4 efficiency cores, plus 10-core GPU delivers exceptional performance—up to 15% faster CPU and 35% faster graphics than M1 for smooth multitasking and demanding apps.",
+      "8GB Unified Memory: Fast, efficient unified memory architecture ensures seamless performance when running multiple apps simultaneously, editing videos, creating designs, or working with large files.",
+      "128GB Storage: Generous storage capacity for apps, photos, videos, documents, and creative projects—perfect for professionals and content creators.",
+      "12MP Ultra Wide Landscape Front Camera: Strategically positioned on the long edge for ideal video calling with Center Stage technology that automatically adjusts to keep everyone in view using advanced machine learning.",
+      "12MP Wide Rear Camera: Capture stunning photos and detailed 4K videos with the advanced camera system, perfect for scanning documents, creating content, and capturing life's moments.",
+      "Center Stage: Front camera uses machine learning to automatically pan and zoom to keep you centered during video calls, even as you move around.",
+      "Wi-Fi 6E Connectivity: Next-generation Wi-Fi 6E delivers blazing-fast wireless speeds for streaming 4K content, downloading large files, video conferencing, and seamless internet browsing.",
+      "USB-C Port (10 Gb/s): Versatile high-speed USB-C connector supports external displays up to 6K resolution, fast data transfer, charging, and connection to professional accessories and peripherals.",
+      "Bluetooth 5.3: Advanced Bluetooth technology with low-latency audio support for wireless headphones, keyboards, mice, and other Bluetooth accessories.",
+      "Landscape Stereo Speakers: Four-speaker audio system positioned for optimal sound when using iPad Air in landscape orientation—perfect for video editing, music production, movies, and entertainment.",
+      "Dual Studio-Quality Microphones: Professional-grade microphones capture crystal-clear audio for video calls, voice recordings, podcasts, and content creation with advanced noise reduction.",
+      "All-Day Battery Life: Up to 10 hours of surfing the web on Wi-Fi or watching video on a single charge—powerful enough for full workdays and creative sessions.",
+      "Apple Pencil Pro Support: Works seamlessly with Apple Pencil Pro featuring squeeze gesture, haptic feedback, barrel roll, Apple Pencil hover, and Find My integration for the ultimate creative and note-taking experience.",
+      "Apple Pencil (USB-C) Compatible: Also supports the more affordable Apple Pencil (USB-C) for drawing, sketching, note-taking, markup, and creative work.",
+      "Magic Keyboard Support: Transform your iPad Air into a powerful laptop replacement with the Magic Keyboard featuring a backlit keyboard, large trackpad, and versatile design for comfortable typing and navigation.",
+      "Smart Keyboard Folio Compatible: Alternative keyboard option that protects your iPad while providing a comfortable typing experience.",
+      "Touch ID Security: Built into the top button, Touch ID provides secure and convenient fingerprint authentication for unlocking your iPad, authorizing purchases, and signing into apps and websites.",
+      "iPadOS 18: Latest iPadOS optimized for the M2 chip with powerful multitasking, enhanced Apple Pencil features, improved Files app, and seamless integration with other Apple devices.",
+      "Stage Manager: Advanced window management lets you create ideal workspace layouts and seamlessly switch between apps for enhanced productivity.",
+      "Split View & Slide Over: Powerful multitasking features let you work with multiple apps simultaneously, boosting productivity and efficiency.",
+      "Universal Control: Seamlessly use your Mac's keyboard and trackpad with your iPad Air for a unified workspace experience.",
+      "Continuity Features: Handoff, AirDrop, Universal Clipboard, and more keep your workflow seamless across all your Apple devices.",
+      "100% Recycled Aluminum: Environmentally conscious design with 100% recycled aluminum enclosure, contributing to Apple's carbon-neutral goals and sustainable manufacturing practices.",
+      "Sustainable Materials: 100% recycled rare earth elements in magnets, 100% recycled cobalt and over 95% recycled lithium in battery, and 100% fiber-based packaging for minimal environmental impact."
+    ],
+    specifications: [
+      { label: "Brand", value: "Apple" },
+      { label: "Model", value: "iPad Air 6th Generation 13-inch (M2 Chip, 2024)" },
+      { label: "Display", value: "13-inch Liquid Retina display, 2732 x 2048 pixels (264 ppi), P3 wide color gamut, True Tone, 500 nits brightness, anti-reflective coating, fully laminated" },
+      { label: "Processor", value: "Apple M2 chip with 8-core CPU (4 performance cores + 4 efficiency cores)" },
+      { label: "GPU", value: "10-core GPU with advanced graphics performance" },
+      { label: "Neural Engine", value: "16-core Neural Engine for machine learning and advanced computational tasks" },
+      { label: "Memory", value: "8GB unified memory" },
+      { label: "Storage", value: "128GB" },
+      { label: "Operating System", value: "iPadOS 18 (upgradable to latest version)" },
+      { label: "Dimensions", value: "280.6mm x 214.9mm x 6.1mm (11.05\" x 8.46\" x 0.24\")" },
+      { label: "Weight", value: "617 grams (1.36 pounds)" },
+      { label: "Rear Camera", value: "12MP Wide camera, f/1.8 aperture, 4K video recording at 24/25/30/60fps, 1080p HD video at 25/30/60fps, digital zoom up to 5x" },
+      { label: "Front Camera", value: "12MP Ultra Wide camera, f/2.0 aperture, Center Stage, 1080p HD video at 25/30/60fps, landscape orientation" },
+      { label: "Video Recording", value: "4K video at 24/25/30/60fps, 1080p HD video at 25/30/60fps, Extended dynamic range for video up to 30fps, Slo-mo video support" },
+      { label: "Battery Life", value: "Up to 10 hours of surfing the web on Wi-Fi or watching video" },
+      { label: "Battery Capacity", value: "36.59-watt-hour rechargeable lithium-polymer battery" },
+      { label: "Charging", value: "USB-C connector, 20W USB-C Power Adapter included" },
+      { label: "Connectivity", value: "Wi-Fi 6E (802.11ax) with 2x2 MIMO, Bluetooth 5.3" },
+      { label: "Ports", value: "USB-C port with support for charging, DisplayPort (up to 6K external display at 60Hz), and USB 3 (up to 10 Gb/s)" },
+      { label: "Audio", value: "Landscape stereo speakers (four-speaker system), dual studio-quality microphones" },
+      { label: "Apple Pencil Support", value: "Apple Pencil Pro, Apple Pencil (USB-C)" },
+      { label: "Keyboard Support", value: "Magic Keyboard, Smart Keyboard Folio" },
+      { label: "Sensors", value: "Touch ID in top button, three-axis gyro, accelerometer, ambient light sensor, barometer" },
+      { label: "Security", value: "Touch ID built into top button for secure authentication and Apple Pay" },
+      { label: "Multitasking", value: "Stage Manager, Split View, Slide Over, Picture in Picture" },
+      { label: "Accessibility", value: "VoiceOver, Zoom, Display Accommodations, Switch Control, and more" },
+      { label: "External Display Support", value: "Up to 6K resolution at 60Hz via USB-C DisplayPort" },
+      { label: "Performance", value: "Up to 15% faster CPU and 35% faster graphics than M1 chip" },
+      { label: "Environmental", value: "100% recycled aluminum, 100% recycled rare earth elements, 100% fiber-based packaging, 100% recycled cobalt and over 95% recycled lithium in battery" },
+      { label: "In The Box", value: "iPad Air 13-inch, USB-C Charge Cable (1 meter), 20W USB-C Power Adapter" },
+      { label: "Warranty", value: "1-year limited warranty with 90 days of complimentary technical support" },
+      { label: "Condition", value: "Brand New" }
+    ],
+    variants: [
+      {
+        key: "ipad-air-m2-13-128gb-wifi",
+        ram: "8GB RAM",
+        storage: "128GB Storage",
+        label: "128GB Wi-Fi",
+        price: 699.99,
+        description: "Perfect for professionals, creators, and power users who need maximum screen real estate and powerful performance for productivity, creativity, and multitasking."
+      }
+    ],
+    colors: [
+      { name: "Blue", image: iPadAirM2_13_Blue, stock: "available" },
+      { name: "Space Gray", image: iPadAirM2_13_SpaceGrey, stock: "available" },
+      { name: "Purple", image: iPadAirM2_13_Purple, stock: "available" },
+      { name: "Starlight", image: iPadAirM2_13_Starlight, stock: "available" }
+    ],
+    connectivityOptions: ["Wi-Fi only"]
   }
 ];
 
@@ -2079,6 +2724,152 @@ export const wearablesProducts: Product[] = [
       { label: "Water Resistance", value: "IP68 (5ATM)" },
       { label: "Smart Features", value: "Voice assistant, contactless payments" },
       { label: "Connectivity", value: "Bluetooth 5.3, Wi-Fi, NFC" }
+    ]
+  },
+  {
+    id: 205,
+    name: "Apple Watch SE (2nd generation) 40mm",
+    title: "Apple Watch SE (2nd generation) 40mm - Essential Health & Fitness Companion",
+    price: 249.99,
+    image: appleWatchSE2_40MM,
+    images: [appleWatchSE2_40MM, appleWatchSE2_40MM_1, appleWatchSE2_40MM_Midnight, appleWatchSE2_40MM_Starlight],
+    rating: 4.8,
+    category: "Wearables",
+    brand: "Apple",
+    description: "The Apple Watch SE (2nd generation) combines essential health and fitness features with powerful performance in an elegant, affordable design. Powered by the same S8 chip found in Apple Watch Series 8, it delivers seamless performance, advanced safety features including Crash Detection and Fall Detection, and comprehensive fitness tracking. With a bright Retina display, up to 18 hours of battery life, and water resistance up to 50 meters, it's the perfect companion for your active lifestyle. Experience the best of Apple Watch technology with health monitoring, GPS tracking, and seamless iPhone integration—all at an incredible value.",
+    features: [
+      "Apple S8 SiP: Same powerful dual-core processor as Apple Watch Series 8 for smooth, responsive performance.",
+      "Crash Detection: Advanced motion sensors detect severe car crashes and automatically connect you to emergency services if needed.",
+      "Fall Detection: Automatically detects hard falls and can call emergency services and notify your emergency contacts.",
+      "Emergency SOS: Get help immediately by pressing and holding the side button to contact emergency services.",
+      "Heart Rate Monitoring: Second-generation heart rate sensor provides accurate readings and alerts for high or low heart rate.",
+      "Sleep Tracking: Track your sleep stages and get personalized insights to improve your sleep quality.",
+      "Fitness Tracking: Comprehensive workout app with automatic workout detection for running, walking, cycling, swimming, and more.",
+      "GPS + Cellular Options: Built-in GPS for precise location tracking, with optional LTE connectivity for calling and messaging without your iPhone.",
+      "Water Resistant: Swim-proof design with 50-meter water resistance rating for swimming and water activities.",
+      "Retina Display: Bright LTPO OLED Retina display with up to 1,000 nits brightness for excellent visibility in all conditions.",
+      "32GB Storage: Ample space for apps, music, podcasts, and photos directly on your wrist.",
+      "watchOS 11: Latest watchOS with enhanced health features, new watch faces, and improved workout tracking.",
+      "Apple Pay: Make secure purchases directly from your wrist using contactless payment technology.",
+      "Siri Integration: Access Siri hands-free for quick answers, setting reminders, sending messages, and controlling your smart home."
+    ],
+    specifications: [
+      { label: "Brand", value: "Apple" },
+      { label: "Model", value: "Apple Watch SE (2nd generation)" },
+      { label: "Case Size", value: "40mm" },
+      { label: "Display", value: "1.57-inch LTPO OLED Retina display, 324 x 394 pixels, up to 1,000 nits brightness" },
+      { label: "Processor", value: "Apple S8 SiP with 64-bit dual-core processor" },
+      { label: "Storage", value: "32GB internal storage" },
+      { label: "Operating System", value: "watchOS 9 (upgradable to watchOS 11)" },
+      { label: "Dimensions", value: "40mm x 34mm x 10.7mm (1.57\" x 1.34\" x 0.42\")" },
+      { label: "Weight", value: "26.4 grams (GPS), 27.8 grams (GPS + Cellular)" },
+      { label: "Battery Life", value: "Up to 18 hours (36 hours in Low Power Mode)" },
+      { label: "Charging", value: "Wireless charging with Apple Watch magnetic charging cable" },
+      { label: "Water Resistance", value: "50 meters (WR50) - ISO standard 22810:2010" },
+      { label: "Sensors", value: "Second-generation heart rate sensor, accelerometer, gyroscope, ambient light sensor, always-on altimeter, compass" },
+      { label: "Health Features", value: "Heart rate monitoring, sleep tracking, fall detection, crash detection, cycle tracking, high/low heart rate notifications" },
+      { label: "Fitness Features", value: "Workout app with 70+ workout types, automatic workout detection, activity rings, fitness awards" },
+      { label: "Connectivity", value: "Wi-Fi 802.11 b/g/n, Bluetooth 5.3, GPS, GLONASS, GALILEO, QZSS, NFC (Apple Pay), optional LTE (eSIM)" },
+      { label: "Safety Features", value: "Emergency SOS, Crash Detection, Fall Detection, International emergency calling" },
+      { label: "Compatibility", value: "Requires iPhone Xs or later with iOS 18 or later" },
+      { label: "Materials", value: "100% recycled aluminum case with Ion-X front glass" },
+      { label: "Warranty", value: "1-year limited warranty with 90 days of complimentary technical support" }
+    ],
+    variants: [
+      {
+        key: "se2-40mm-gps",
+        ram: "",
+        storage: "32GB Storage",
+        label: "GPS",
+        price: 249.99,
+        description: "GPS model for tracking workouts and location without cellular connectivity."
+      },
+      {
+        key: "se2-40mm-cellular",
+        ram: "",
+        storage: "32GB Storage",
+        label: "GPS + Cellular",
+        price: 299.99,
+        description: "GPS + Cellular model for calls, texts, and streaming without your iPhone nearby."
+      }
+    ],
+    colors: [
+      { name: "Midnight", image: appleWatchSE2_40MM_Midnight, stock: "available" },
+      { name: "Starlight", image: appleWatchSE2_40MM_Starlight, stock: "available" },
+      { name: "Silver", image: appleWatchSE2_40MM, stock: "available" }
+    ]
+  },
+  {
+    id: 206,
+    name: "Apple Watch SE (2nd generation) 44mm",
+    title: "Apple Watch SE (2nd generation) 44mm - Larger Display for Enhanced Experience",
+    price: 279.99,
+    image: appleWatchSE2_44MM,
+    images: [appleWatchSE2_44MM],
+    rating: 4.8,
+    category: "Wearables",
+    brand: "Apple",
+    description: "The Apple Watch SE (2nd generation) in 44mm offers the same powerful features and health capabilities as the 40mm model, but with a larger, more immersive display perfect for those who prefer bigger screens or have larger wrists. Featuring the advanced S8 chip, Crash Detection, Fall Detection, and comprehensive health monitoring, this larger variant provides enhanced readability and easier interaction while maintaining the same slim, lightweight design. Whether you're tracking workouts, monitoring your health, or staying connected, the 44mm Apple Watch SE delivers exceptional value with all the essential Apple Watch features you need.",
+    features: [
+      "Larger Display: Spacious 1.78-inch Retina display provides more screen real estate for apps, notifications, and workout metrics.",
+      "Apple S8 SiP: Powerful dual-core processor ensures smooth performance across all apps and features.",
+      "Crash Detection: Advanced motion sensors and accelerometer detect severe car crashes and automatically connect you to emergency services.",
+      "Fall Detection: Automatically detects hard falls and can call emergency services and notify your emergency contacts.",
+      "Emergency SOS: Get help immediately by pressing and holding the side button to contact emergency services anywhere.",
+      "Heart Rate Monitoring: Second-generation heart rate sensor with high and low heart rate notifications for better health awareness.",
+      "Sleep Tracking: Advanced sleep tracking with sleep stage detection helps you understand and improve your sleep patterns.",
+      "Comprehensive Fitness: Automatic workout detection, 70+ workout types, activity rings, and personalized coaching.",
+      "GPS Tracking: Built-in GPS provides accurate location tracking for runs, walks, hikes, and cycling without your iPhone.",
+      "Water Resistant: 50-meter water resistance rating allows for swimming, surfing, and water activities.",
+      "Extended Battery: Up to 18 hours of battery life, with Low Power Mode extending usage to 36 hours.",
+      "Fast Wireless Charging: Charges quickly with Apple Watch magnetic charging cable or any Qi-compatible charger.",
+      "Apple Pay Ready: Make secure contactless payments directly from your wrist at millions of locations worldwide.",
+      "Siri on Your Wrist: Ask Siri questions, send messages, set reminders, and control your smart home devices hands-free."
+    ],
+    specifications: [
+      { label: "Brand", value: "Apple" },
+      { label: "Model", value: "Apple Watch SE (2nd generation)" },
+      { label: "Case Size", value: "44mm" },
+      { label: "Display", value: "1.78-inch LTPO OLED Retina display, 448 x 368 pixels, up to 1,000 nits brightness" },
+      { label: "Processor", value: "Apple S8 SiP with 64-bit dual-core processor" },
+      { label: "Storage", value: "32GB internal storage" },
+      { label: "Operating System", value: "watchOS 9 (upgradable to watchOS 11)" },
+      { label: "Dimensions", value: "44mm x 38mm x 10.7mm (1.73\" x 1.50\" x 0.42\")" },
+      { label: "Weight", value: "32.9 grams (GPS), 33.0 grams (GPS + Cellular)" },
+      { label: "Battery Life", value: "Up to 18 hours (36 hours in Low Power Mode)" },
+      { label: "Charging", value: "Wireless charging with Apple Watch magnetic charging cable" },
+      { label: "Water Resistance", value: "50 meters (WR50) - ISO standard 22810:2010" },
+      { label: "Sensors", value: "Second-generation heart rate sensor, accelerometer, gyroscope, ambient light sensor, always-on altimeter, compass" },
+      { label: "Health Features", value: "Heart rate monitoring, sleep tracking, fall detection, crash detection, cycle tracking, high/low heart rate notifications" },
+      { label: "Fitness Features", value: "Workout app with 70+ workout types, automatic workout detection, activity rings, fitness awards, route tracking" },
+      { label: "Connectivity", value: "Wi-Fi 802.11 b/g/n, Bluetooth 5.3, GPS, GLONASS, GALILEO, QZSS, NFC (Apple Pay), optional LTE (eSIM)" },
+      { label: "Safety Features", value: "Emergency SOS, Crash Detection, Fall Detection, International emergency calling, Find My" },
+      { label: "Compatibility", value: "Requires iPhone Xs or later with iOS 18 or later" },
+      { label: "Materials", value: "100% recycled aluminum case with Ion-X front glass" },
+      { label: "Warranty", value: "1-year limited warranty with 90 days of complimentary technical support" }
+    ],
+    variants: [
+      {
+        key: "se2-44mm-gps",
+        ram: "",
+        storage: "32GB Storage",
+        label: "GPS",
+        price: 279.99,
+        description: "GPS model for tracking workouts and location without cellular connectivity."
+      },
+      {
+        key: "se2-44mm-cellular",
+        ram: "",
+        storage: "32GB Storage",
+        label: "GPS + Cellular",
+        price: 329.99,
+        description: "GPS + Cellular model for calls, texts, and streaming without your iPhone nearby."
+      }
+    ],
+    colors: [
+      { name: "Midnight", image: appleWatchSE2_44MM, stock: "available" },
+      { name: "Starlight", image: appleWatchSE2_44MM, stock: "available" },
+      { name: "Silver", image: appleWatchSE2_44MM, stock: "available" }
     ]
   }
 ];
