@@ -234,7 +234,7 @@ const ProductDetail = () => {
     productImages[0] ||
     regularProduct?.image ||
     (greenLionProduct ? greenLionProduct.images[0] : "/placeholder.svg");
-  
+
   const favorite = isFavorite(product.id);
 
   // Generate product-specific reviews
@@ -624,7 +624,7 @@ const ProductDetail = () => {
               />
               {productImages.length > 1 && (
                 <>
-                  <button 
+                  <button
                     onClick={handlePreviousImage}
                     style={{ touchAction: 'manipulation', minHeight: '44px', minWidth: '44px' }}
                     className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 h-11 w-11 sm:h-12 sm:w-12 bg-background/90 backdrop-blur-md rounded-full flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-background shadow-lg border border-border/50 z-10"
@@ -632,7 +632,7 @@ const ProductDetail = () => {
                   >
                     <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6" />
                   </button>
-                  <button 
+                  <button
                     onClick={handleNextImage}
                     style={{ touchAction: 'manipulation', minHeight: '44px', minWidth: '44px' }}
                     className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 h-11 w-11 sm:h-12 sm:w-12 bg-background/90 backdrop-blur-md rounded-full flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-background shadow-lg border border-border/50 z-10"
@@ -674,7 +674,7 @@ const ProductDetail = () => {
                     className={`aspect-square bg-white rounded-sm overflow-hidden border-2 transition-all cursor-pointer min-h-[70px] sm:min-h-[80px] md:min-h-[90px] flex items-center justify-center p-1.5 sm:p-2 ${selectedImage === index
                       ? "border-primary ring-2 ring-primary/30 shadow-md"
                       : "border-border hover:border-primary/50"
-                    }`}
+                      }`}
                     aria-label={`View image ${index + 1}`}
                   >
                     <img
@@ -692,16 +692,6 @@ const ProductDetail = () => {
                 ))}
               </div>
             )}
-
-            {/* AR/360 Buttons - Hidden on mobile, shown on desktop */}
-            <div className="hidden md:flex gap-2 sm:gap-3 md:gap-4 mt-4 sm:mt-6">
-              <Button variant="outline" className="flex-1 text-elegant text-xs sm:text-sm py-2 sm:py-3" style={{ touchAction: 'manipulation' }}>
-                360° View
-              </Button>
-              <Button variant="outline" className="flex-1 text-elegant text-xs sm:text-sm py-2 sm:py-3" style={{ touchAction: 'manipulation' }}>
-                AR Preview
-              </Button>
-            </div>
 
             {/* Elegant Feature Highlight (Desktop Only) - Fills blank space */}
             <div className="hidden md:block mt-6 sm:mt-8">
@@ -802,7 +792,7 @@ const ProductDetail = () => {
 
             <h1 className="text-elegant text-xl sm:text-2xl md:text-3xl mb-2 relative z-10 leading-tight sm:leading-normal" style={{ userSelect: 'text', WebkitUserSelect: 'text', touchAction: 'pan-y' }}>{product.title}</h1>
             <p className="text-muted-foreground text-xs sm:text-sm mb-3 sm:mb-4" style={{ userSelect: 'text', WebkitUserSelect: 'text', touchAction: 'pan-y' }}>{product.category}</p>
-            
+
             <div className="flex items-center gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 flex-wrap">
               <div className="flex items-center gap-1">
                 {Array.from({ length: 5 }).map((_, i) => (
@@ -811,7 +801,7 @@ const ProductDetail = () => {
                     className={`h-3 w-3 sm:h-4 sm:w-4 ${i < Math.floor(product.rating)
                       ? "fill-primary text-primary"
                       : "text-border fill-border/30"
-                    }`}
+                      }`}
                   />
                 ))}
               </div>
@@ -948,7 +938,7 @@ const ProductDetail = () => {
               <p className="text-sm font-light leading-relaxed text-muted-foreground mb-4" style={{ userSelect: 'text', WebkitUserSelect: 'text', touchAction: 'pan-y' }}>
                 {product.description}
               </p>
-              
+
               {/* Key Features */}
               {product.features && product.features.length > 0 && (
                 <div className="mt-6">
@@ -967,8 +957,8 @@ const ProductDetail = () => {
 
             {/* Actions - Hidden on mobile (buttons shown in image gallery), visible on desktop */}
             <div className="hidden md:flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6">
-              <Button 
-                size="lg" 
+              <Button
+                size="lg"
                 className="flex-1 text-elegant text-sm sm:text-base py-4 sm:py-5 md:py-6"
                 onClick={() => handleAddToCart()}
                 style={{ touchAction: 'manipulation' }}
@@ -988,14 +978,14 @@ const ProductDetail = () => {
             </div>
 
             {/* Wishlist Button - Desktop only (mobile version is in image gallery) */}
-            <motion.button 
+            <motion.button
               whileHover={window.matchMedia('(hover: hover)').matches ? { scale: 1.05 } : undefined}
               onClick={() => toggleFavorite(product)}
               style={{ touchAction: 'manipulation' }}
               className={`hidden md:flex items-center gap-2 text-sm transition-colors mb-12 ${favorite
-                  ? "text-accent" 
-                  : "hover:text-accent"
-              }`}
+                ? "text-accent"
+                : "hover:text-accent"
+                }`}
             >
               <Heart className={`h-4 w-4 ${favorite ? "fill-accent" : ""}`} />
               <span className="text-elegant">
@@ -1125,6 +1115,54 @@ const ProductDetail = () => {
             ))}
           </div>
         </motion.section>
+
+        {/* Product Video Section */}
+        {product.video && (
+          <motion.section
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-12 sm:mt-16 md:mt-20 mb-12 sm:mb-16 md:mb-20"
+          >
+            <div className="text-center mb-6 sm:mb-8 md:mb-10 px-2">
+              <motion.div
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                viewport={{ once: true }}
+                className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4"
+              >
+                <svg className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9 7a1 1 0 012 0v6a1 1 0 11-2 0V7z" clipRule="evenodd" />
+                </svg>
+              </motion.div>
+              <h2 className="text-elegant text-xl sm:text-2xl md:text-3xl lg:text-4xl mb-2 sm:mb-3 md:mb-4">See It In Action</h2>
+              <p className="text-xs sm:text-sm md:text-base text-muted-foreground max-w-2xl mx-auto font-light">
+                Watch our detailed product demonstration to see all the features and capabilities in action.
+              </p>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="max-w-4xl mx-auto px-2 sm:px-4"
+            >
+              <div className="relative aspect-video bg-secondary rounded-xl overflow-hidden shadow-2xl">
+                <video
+                  controls
+                  className="w-full h-full object-contain"
+                  poster={product.image}
+                  preload="metadata"
+                >
+                  <source src={product.video} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </motion.div>
+          </motion.section>
+        )}
 
         {/* Complete Your Setup - Smart Accessories for Smartphones */}
         {isSmartphone && filteredAccessories.length > 0 && (
@@ -1288,13 +1326,22 @@ const ProductDetail = () => {
                   if (p.id === product.id) return false;
                   const name = p.name?.toLowerCase() || '';
                   const category = p.category?.toLowerCase() || '';
+
+                  // Include products from specified categories
                   return (
                     category === 'all essentials' ||
                     category === 'charging' ||
+                    category === 'audio' ||
+                    category === 'protection' ||
                     category === 'accessories' ||
                     name.includes('case') ||
                     name.includes('cable') ||
-                    name.includes('adapter')
+                    name.includes('adapter') ||
+                    name.includes('charger') ||
+                    name.includes('power bank') ||
+                    name.includes('screen protector') ||
+                    name.includes('headphone') ||
+                    name.includes('earphone')
                   );
                 })
                 .slice(0, 3)

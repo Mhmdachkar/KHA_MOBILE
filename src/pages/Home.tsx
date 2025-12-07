@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Smartphone, Headphones, Gamepad2, CreditCard, Gift, Tv, Watch, Zap, ArrowRight, Star, Sparkles, ShoppingCart, Tablet } from "lucide-react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import rechargeLogo from "@/assets/recharges/logo.png";
 import Header from "@/components/Header";
@@ -14,7 +15,298 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import heroProduct from "@/assets/Gemini_Generated_Image_3qc0nc3qc0nc3qc0.png";
 import { useRef, useEffect } from "react";
+// iPhone 16 imports
+import iPhone16Black from "@/assets/phones/iphone 16/iphone 16 black.jpeg";
+import iPhone16Pink from "@/assets/phones/iphone 16/iphone 16 pink.jpeg";
+import iPhone16Teal from "@/assets/phones/iphone 16/iphone 16 teal.jpeg";
+import iPhone16Ultramarine from "@/assets/phones/iphone 16/iphone 16 ultramarine.jpeg";
+import iPhone16White from "@/assets/phones/iphone 16/iphone 16 white.jpeg";
 import { getProductsByCategory } from "@/data/products";
+
+// iPhone 16 Showcase Component
+const FlagshipiPhone16Showcase = () => {
+  const [selectedColor, setSelectedColor] = useState("ultramarine");
+
+  const colors = [
+    { name: "ultramarine", label: "Ultramarine", image: iPhone16Ultramarine, hex: "#003d82" },
+    { name: "teal", label: "Teal", image: iPhone16Teal, hex: "#4a7c7e" },
+    { name: "pink", label: "Pink", image: iPhone16Pink, hex: "#f7c3d3" },
+    { name: "white", label: "White", image: iPhone16White, hex: "#f5f5f7" },
+    { name: "black", label: "Black", image: iPhone16Black, hex: "#1d1d1f" },
+  ];
+
+  const currentColor = colors.find(c => c.name === selectedColor) || colors[0];
+
+  return (
+    <section className="relative py-16 sm:py-20 md:py-24 lg:py-32 overflow-hidden">
+      {/* Dynamic Background Gradient */}
+      <motion.div
+        className="absolute inset-0 -z-10"
+        animate={{
+          background: [
+            `linear-gradient(135deg, ${currentColor.hex}15 0%, ${currentColor.hex}05 50%, ${currentColor.hex}15 100%)`,
+            `linear-gradient(135deg, ${currentColor.hex}20 0%, ${currentColor.hex}10 50%, ${currentColor.hex}20 100%)`,
+            `linear-gradient(135deg, ${currentColor.hex}15 0%, ${currentColor.hex}05 50%, ${currentColor.hex}15 100%)`,
+          ]
+        }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      {/* Floating Orbs */}
+      <motion.div
+        className="absolute top-20 left-10 w-64 h-64 rounded-full blur-3xl opacity-20"
+        style={{ backgroundColor: currentColor.hex }}
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.2, 0.3, 0.2],
+          x: [0, 50, 0],
+          y: [0, -30, 0],
+        }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute bottom-20 right-10 w-96 h-96 rounded-full blur-3xl opacity-20"
+        style={{ backgroundColor: currentColor.hex }}
+        animate={{
+          scale: [1, 1.3, 1],
+          opacity: [0.2, 0.25, 0.2],
+          x: [0, -40, 0],
+          y: [0, 40, 0],
+        }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+      />
+
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="grid lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
+          {/* Left: Content */}
+          <motion.div
+            initial={{ opacity: 0, x: -80 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="space-y-6 md:space-y-8 text-center lg:text-left order-2 lg:order-1"
+          >
+            {/* Badge */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2, duration: 0.6, type: "spring" }}
+              className="inline-block"
+            >
+              <Badge className="text-xs sm:text-sm px-4 py-1.5 glassmorphism border-primary/30">
+                <Sparkles className="h-3 w-3 mr-1.5" />
+                Flagship Innovation
+              </Badge>
+            </motion.div>
+
+            {/* Title */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+            >
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+                <span className="text-elegant block mb-2">iPhone 16</span>
+                <span className="text-gradient block">Redefining Excellence</span>
+              </h2>
+            </motion.div>
+
+            {/* Description */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4, duration: 0.8 }}
+              className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0 leading-relaxed"
+            >
+              Experience unparalleled performance with the A18 Pro chip, stunning camera system, and revolutionary design. The most advanced iPhone ever created.
+            </motion.p>
+
+            {/* Features Grid */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+              className="grid grid-cols-2 gap-4 max-w-md mx-auto lg:mx-0"
+            >
+              {[
+                { label: "A18 Pro Chip", sublabel: "Next-Gen Performance" },
+                { label: "ProMotion", sublabel: "120Hz Display" },
+                { label: "48MP Camera", sublabel: "Pro Photography" },
+                { label: "All-Day Battery", sublabel: "Up to 29 Hours" },
+              ].map((feature, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.6 + i * 0.1, duration: 0.5 }}
+                  whileHover={{ scale: 1.05, y: -5 }}
+                  className="glassmorphism p-4 rounded-xl border border-border/50 hover:border-primary/50 transition-all duration-300"
+                >
+                  <div className="text-sm font-semibold text-elegant">{feature.label}</div>
+                  <div className="text-xs text-muted-foreground mt-1">{feature.sublabel}</div>
+                </motion.div>
+              ))}
+            </motion.div>
+
+            {/* Color Selector */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.7, duration: 0.8 }}
+              className="space-y-4"
+            >
+              <div className="text-sm font-medium text-elegant">Choose your color:</div>
+              <div className="flex gap-3 justify-center lg:justify-start flex-wrap">
+                {colors.map((color, i) => (
+                  <motion.button
+                    key={color.name}
+                    initial={{ opacity: 0, scale: 0 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.8 + i * 0.05, type: "spring" }}
+                    whileHover={{ scale: 1.15, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setSelectedColor(color.name)}
+                    className={`relative w-12 h-12 rounded-full border-2 transition-all duration-300 ${selectedColor === color.name
+                      ? "border-primary shadow-lg scale-110"
+                      : "border-border/30 hover:border-primary/50"
+                      }`}
+                    style={{ backgroundColor: color.hex }}
+                  >
+                    {selectedColor === color.name && (
+                      <motion.div
+                        layoutId="colorSelector"
+                        className="absolute inset-0 rounded-full border-2 border-primary"
+                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                      />
+                    )}
+                    <span className="sr-only">{color.label}</span>
+                  </motion.button>
+                ))}
+              </div>
+              <motion.div
+                key={selectedColor}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-sm text-muted-foreground"
+              >
+                Selected: <span className="font-medium text-elegant">{currentColor.label}</span>
+              </motion.div>
+            </motion.div>
+
+            {/* CTA Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.9, duration: 0.8 }}
+              className="flex gap-4 justify-center lg:justify-start flex-wrap pt-4"
+            >
+              <Link to="/product/500">
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button variant="gradient" size="lg" className="group shadow-glow">
+                    <ShoppingCart className="mr-2 h-5 w-5" />
+                    Order Now
+                    <motion.div
+                      whileHover={{ x: 4 }}
+                      className="ml-2"
+                    >
+                      <ArrowRight className="h-5 w-5" />
+                    </motion.div>
+                  </Button>
+                </motion.div>
+              </Link>
+              <Link to="/smartphones">
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button variant="outline" size="lg" className="glassmorphism">
+                    View All iPhones
+                  </Button>
+                </motion.div>
+              </Link>
+            </motion.div>
+          </motion.div>
+
+          {/* Right: iPhone Image */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, rotateY: 45 }}
+            whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="relative order-1 lg:order-2"
+          >
+            {/* Glow Effect */}
+            <motion.div
+              className="absolute inset-0 rounded-full blur-3xl opacity-30"
+              style={{ backgroundColor: currentColor.hex }}
+              animate={{
+                scale: [1, 1.1, 1],
+                opacity: [0.2, 0.4, 0.2],
+              }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            />
+
+            {/* Rotating Ring */}
+            <motion.div
+              className="absolute inset-0 border-2 rounded-full opacity-20"
+              style={{ borderColor: currentColor.hex }}
+              animate={{ rotate: 360 }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            />
+
+            {/* iPhone Image */}
+            <motion.div
+              key={selectedColor}
+              initial={{ opacity: 0, scale: 0.9, rotateY: 90 }}
+              animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+              exit={{ opacity: 0, scale: 0.9, rotateY: -90 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="relative z-10"
+            >
+              <motion.img
+                src={currentColor.image}
+                alt={`iPhone 16 ${currentColor.label}`}
+                className="w-full h-auto max-w-md mx-auto drop-shadow-2xl"
+                whileHover={{
+                  scale: 1.05,
+                  rotateY: 5,
+                  rotateX: 5,
+                  transition: { duration: 0.3 }
+                }}
+              />
+
+              {/* Reflection */}
+              <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-background/50 to-transparent rounded-b-3xl" />
+            </motion.div>
+
+            {/* Floating Specs */}
+            {[
+              { label: '6.1" Display', position: "top-10 left-0" },
+              { label: "A18 Pro", position: "top-1/3 right-0" },
+              { label: "5G Speed", position: "bottom-1/3 left-0" },
+            ].map((spec, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0, x: i === 1 ? 50 : -50 }}
+                whileInView={{ opacity: 1, scale: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 1 + i * 0.2, type: "spring" }}
+                className={`absolute ${spec.position} glassmorphism px-3 py-2 rounded-lg text-xs font-medium border border-border/50 shadow-lg hidden lg:block`}
+              >
+                {spec.label}
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+};
 
 const Home = () => {
   // Scroll to top on mount
@@ -649,6 +941,9 @@ const Home = () => {
           </motion.div>
         </motion.div>
       </motion.section>
+
+      {/* iPhone 16 Flagship Showcase */}
+      <FlagshipiPhone16Showcase />
 
       {/* Shop by Category */}
       <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-background">

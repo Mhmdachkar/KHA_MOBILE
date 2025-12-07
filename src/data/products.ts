@@ -27,6 +27,18 @@ import airpods4_1 from "@/assets/audio/AIRPODES 4/Screenshot 2025-12-06 203434.p
 import airpods4_2 from "@/assets/audio/AIRPODES 4/Screenshot 2025-12-06 203442.png";
 import airpods4_3 from "@/assets/audio/AIRPODES 4/Screenshot 2025-12-06 203449.png";
 import airpods4_4 from "@/assets/audio/AIRPODES 4/Screenshot 2025-12-06 203458.png";
+// AirPods Pro 3 imports
+import airpodsPro3 from "@/assets/audio/AIRPODES PRO 3/AIRPODES PRO 3.webp";
+import airpodsPro3_1 from "@/assets/audio/AIRPODES PRO 3/AIRPODES 3 PRO.jpg";
+import airpodsPro3_2 from "@/assets/audio/AIRPODES PRO 3/AIRPODES PRO 3.jpg";
+// AirPods Pro 2nd Generation (USB-C) imports
+import airpodsPro2USB_C from "@/assets/audio/Apple AirPods Pro (2nd Generation) Wireless Ear Buds with USB-C Charging/Apple AirPods Pro (2nd Generation) Wireless Ear Buds with USB-C Charging.jpg";
+import airpodsPro2USB_C_1 from "@/assets/audio/Apple AirPods Pro (2nd Generation) Wireless Ear Buds with USB-C Charging/Apple AirPods Pro (2nd Generation) Wireless Ear Buds with USB-C ChargingG.jpg";
+import airpodsPro2USB_C_2 from "@/assets/audio/Apple AirPods Pro (2nd Generation) Wireless Ear Buds with USB-C Charging/Apple AirPods Pro (2nd Generation) Wireless Ear Buds with USB-C ChargingGG.jpg";
+import airpodsPro2USB_C_3 from "@/assets/audio/Apple AirPods Pro (2nd Generation) Wireless Ear Buds with USB-C Charging/Apple AirPods Pro (2nd Generation) Wireless Ear Buds with USB-C Chargingggggg.jpg";
+import airpodsPro2USB_C_4 from "@/assets/audio/Apple AirPods Pro (2nd Generation) Wireless Ear Buds with USB-C Charging/Apple AirPods Pro (2nd Generation) Wireless Ear Buds with USB-C Charginggggggggg.jpg";
+import airpodsPro2USB_C_5 from "@/assets/audio/Apple AirPods Pro (2nd Generation) Wireless Ear Buds with USB-C Charging/g.jpg";
+import airpodsPro2USB_C_Video from "@/assets/audio/Apple AirPods Pro (2nd Generation) Wireless Ear Buds with USB-C Charging/Screen Recording 2025-12-07 021354.mp4";
 // Accessories imports
 import rgbMj33Ring from "@/assets/accessories/RGB MJ33 RING 13INCH.avif";
 import rgbMj33RingGif from "@/assets/accessories/RGB MJ33 RING 13INCH.gif";
@@ -127,10 +139,10 @@ import applePencilPro from "@/assets/Tablets/pencil pro/Pencil pro.webp";
 import applePencilPro1 from "@/assets/Tablets/pencil pro/MX2D3_AV1-scaled.webp";
 import applePencilPro2 from "@/assets/Tablets/pencil pro/MX2D3_AV2-scaled.webp";
 // iPad 11 imports
-import iPad11 from "@/assets/Tablets/ipad 11/ipad 11.webp";
-import iPad11_128 from "@/assets/Tablets/ipad 11/ipad 11 128.webp";
-import iPad11_128g from "@/assets/Tablets/ipad 11/ipad 11 128g.webp";
-import iPad11_128gb from "@/assets/Tablets/ipad 11/ipad 11 128gb.webp";
+import iPad11Pink from "@/assets/Tablets/ipad 11/ipad 11 128 pink.webp";
+import iPad11Grey from "@/assets/Tablets/ipad 11/ipad 11 128g grey.webp";
+import iPad11Blue from "@/assets/Tablets/ipad 11/ipad 11 128gb blue.webp";
+import iPad11Yellow from "@/assets/Tablets/ipad 11/ipad 11 yellow.webp";
 // iPad Air M3 11 imports
 import iPadAirM3_11_Blue from "@/assets/Tablets/ipad air M3 11/ipad air M3 11 BLUE.webp";
 import iPadAirM3_11_Grey from "@/assets/Tablets/ipad air M3 11/ipad air M3 11 GREY.webp";
@@ -146,6 +158,7 @@ import iPadAirM2_13_Blue from "@/assets/Tablets/Apple IPad Air 6 13″ M2 (2024)
 import iPadAirM2_13_Purple from "@/assets/Tablets/Apple IPad Air 6 13″ M2 (2024) – Wifi 128GB/Apple IPad Air 6 13″ M2 (2024) – Wifi PURPLE.webp";
 import iPadAirM2_13_Starlight from "@/assets/Tablets/Apple IPad Air 6 13″ M2 (2024) – Wifi 128GB/Apple IPad Air 6 13″ M2 (2024) – Wifi STARLIGHT.webp";
 import iPadAirM2_13_SpaceGrey from "@/assets/Tablets/Apple IPad Air 6 13″ M2 (2024) – Wifi 128GB/Apple IPad Air 6 13″ M2 (2024) – Wifi SPACE GREY.webp";
+import { iPhone16Product } from "@/data/iphone16";
 
 export interface ProductVariant {
   key: string;
@@ -163,6 +176,7 @@ export interface Product {
   price: number;
   image: string;
   images?: string[];
+  video?: string;
   rating: number;
   category: string;
   brand?: string;
@@ -437,32 +451,206 @@ export const phoneAccessories: Product[] = [
   {
     id: 111,
     name: "Apple AirPods 4",
-    title: "Apple AirPods 4",
+    title: "Apple AirPods 4 - Redesigned Sound Experience with H2 Chip",
     price: 20,
     image: airpodsPro2,
     rating: 4.9,
     category: "Audio",
     brand: "Apple",
-    description: "Take your audio experience to the next level with Apple AirPods 4. Featuring the revolutionary H2 chip, these earbuds deliver exceptional active noise cancellation, immersive Spatial Audio, and personalized sound. The adaptive transparency mode lets you hear your surroundings while the customizable fit ensures comfort for all-day wear.",
+    description: "Take your audio experience to the next level with Apple AirPods 4. Featuring the revolutionary H2 chip, these earbuds deliver exceptional sound quality, immersive Spatial Audio, and personalized listening. Choose between the standard version for everyday listening or upgrade to Active Noise Cancellation for complete immersion in your audio.",
     features: [
-      "H2 Chip: Advanced audio processing for breakthrough sound quality and noise cancellation.",
-      "Active Noise Cancellation: Up to 2x more noise cancellation than the previous generation.",
-      "Adaptive Transparency: Intelligently reduces loud environmental noise while preserving natural sounds.",
+      "H2 Chip: Advanced audio processing for breakthrough sound quality.",
       "Spatial Audio: Immersive 3D sound experience with dynamic head tracking for a theater-like experience.",
       "Personalized Spatial Audio: Customizes sound based on your head geometry for a truly personalized experience.",
+      "Redesigned Comfort: New ergonomic design for all-day comfort and a secure fit.",
       "Sweat & Water Resistant: IPX4 rating for workouts and light rain.",
       "MagSafe Charging Case: Up to 30 hours of total listening time with wireless and MagSafe charging.",
-      "Touch Controls: Easy-to-use stem controls for music, calls, and Siri."
+      "Touch Controls: Easy-to-use stem controls for music, calls, and Siri.",
+      "Available with ANC: Upgrade to Active Noise Cancellation for complete immersion and Adaptive Transparency mode."
     ],
     specifications: [
       { label: "Chip", value: "H2 chip" },
-      { label: "Noise Cancellation", value: "Active noise cancellation" },
-      { label: "Transparency Mode", value: "Adaptive transparency" },
       { label: "Audio", value: "Spatial Audio with dynamic head tracking" },
       { label: "Resistance", value: "IPX4 (sweat & water resistant)" },
       { label: "Battery", value: "Up to 30 hours total (with case)" },
       { label: "Charging", value: "Lightning, MagSafe, and wireless charging" },
       { label: "Controls", value: "Touch controls on stem" }
+    ]
+  },
+  {
+    id: 127,
+    name: "Apple AirPods Pro 3",
+    title: "Apple AirPods Pro 3 - White (AAP3-WT)",
+    price: 45,
+    image: airpodsPro3,
+    images: [airpodsPro3, airpodsPro3_1, airpodsPro3_2],
+    rating: 5.0,
+    category: "Audio",
+    brand: "Apple",
+    description: "Experience the next generation of premium audio with Apple AirPods Pro 3. Featuring groundbreaking health tracking with built-in heart rate sensing, studio-quality recording, and enhanced Active Noise Cancellation with Adaptive Audio. The IP57 water resistance and up to 32 hours of total battery life make these the most advanced AirPods Pro yet.",
+    features: [
+      "Heart Rate Sensing: Revolutionary built-in photoplethysmography sensor tracks heart rate during workouts and daily activities.",
+      "Workout Tracking: Seamlessly track over 50 workout types with the Fitness app on iPhone.",
+      "Studio-Quality Recording: Professional-grade audio recording capabilities for content creators and musicians.",
+      "Active Noise Cancellation with Adaptive Audio: Intelligently adapts noise cancellation based on your environment.",
+      "Adaptive Transparency: Reduces loud environmental noise while preserving natural sounds for safety.",
+      "Personalized Spatial Audio: 3D audio tailored to your head geometry with dynamic head tracking.",
+      "Extended Battery Life: Up to 8 hours with ANC on, 10 hours with Transparency mode, plus 24 hours from the case.",
+      "IP57 Water Resistance: Enhanced protection against water and dust (earbuds only).",
+      "Bluetooth 5.4: Latest Bluetooth technology for improved connectivity and energy efficiency.",
+      "USB-C Charging: Modern USB-C port with wireless charging support and fast charging capabilities.",
+      "Pressure Equalization: Advanced vent system reduces ear pressure for all-day comfort.",
+      "Touch-Sensitive Controls: Intuitive controls for playback, calls, and Siri access."
+    ],
+    specifications: [
+      { label: "Model", value: "AAP3-WT (White)" },
+      { label: "Connectivity", value: "Bluetooth 5.4" },
+      { label: "Battery (Earbuds)", value: "8 hours (ANC) / 10 hours (Transparency)" },
+      { label: "Battery (Case)", value: "Additional 24 hours" },
+      { label: "Total Battery", value: "Up to 32 hours" },
+      { label: "Charging", value: "USB-C and wireless charging with fast charging" },
+      { label: "Water Resistance", value: "IP57 rating (earbuds only)" },
+      { label: "Driver", value: "Custom high-excursion Apple driver" },
+      { label: "Amplifier", value: "Custom high dynamic range amplifier" },
+      { label: "Noise Cancellation", value: "Active Noise Cancellation with Adaptive Audio" },
+      { label: "Transparency Mode", value: "Adaptive Transparency" },
+      { label: "Spatial Audio", value: "Personalized with dynamic head tracking" },
+      { label: "EQ", value: "Adaptive EQ" },
+      { label: "Recording", value: "Studio-quality audio recording" },
+      { label: "Health Features", value: "Heart rate sensing (photoplethysmography)" },
+      { label: "Workout Tracking", value: "Over 50 workout types" },
+      { label: "Vent System", value: "Pressure equalization" },
+      { label: "Controls", value: "Touch-sensitive controls" },
+      { label: "Compatibility", value: "Optimized for Apple devices, Bluetooth 5.4 compatible" },
+      { label: "Color", value: "White" }
+    ]
+  },
+  {
+    id: 128,
+    name: "Apple AirPods 4",
+    title: "Apple AirPods 4 (4th Generation) - Official",
+    price: 129,
+    image: airpods4_1,
+    images: [airpods4_1, airpods4_2, airpods4_3, airpods4_4],
+    rating: 4.9,
+    category: "Audio",
+    brand: "Apple",
+    description: "The all-new Apple AirPods 4 bring outstanding audio quality, personalized Spatial Audio, and a redesigned fit for all-day comfort. Powered by the Apple H2 chip, these fourth-generation AirPods deliver exceptional sound with enhanced bass, crystal-clear highs, and Adaptive EQ that tunes music to your ears. Choose the standard model for exceptional everyday listening, or upgrade to Active Noise Cancellation for immersive audio isolation with Adaptive Audio, Transparency mode, and Conversation Awareness. With up to 30 hours of total battery life, IP54 water and dust resistance, and seamless Apple ecosystem integration, AirPods 4 are designed to elevate your listening experience.",
+    features: [
+      "Apple H2 Chip: Advanced audio processing delivers superior sound quality and efficient performance.",
+      "Redesigned for Comfort: More ergonomic fit ensures all-day comfort and stability during any activity.",
+      "Custom High-Excursion Driver: Rich, detailed sound with powerful bass and crisp, clear highs.",
+      "High Dynamic Range Amplifier: Consistent audio clarity across all volume levels.",
+      "Personalized Spatial Audio: Immersive 3D sound with dynamic head tracking for a theater-like experience.",
+      "Adaptive EQ: Automatically tunes music to match the shape of your ear for optimal sound quality.",
+      "Voice Isolation: Advanced microphone system isolates your voice for crystal-clear phone calls.",
+      "IP54 Dust, Sweat & Water Resistance: Both earbuds and charging case are protected for active lifestyles.",
+      "USB-C Charging: Modern USB-C port for fast, convenient charging.",
+      "Force Sensor Controls: Intuitive press controls for media playback, calls, and Siri activation.",
+      "Siri Interactions: Respond to Siri by nodding (yes) or shaking your head (no) - hands-free interaction.",
+      "Hey Siri Always-On: Voice-activate Siri any time for hands-free control.",
+      "Seamless Apple Integration: One-tap setup, automatic device switching, and audio sharing across iPhone, iPad, Mac, Apple Watch, and Apple TV.",
+      "Find My Support: Locate your AirPods using the Find My app if misplaced.",
+      "Bluetooth 5.3: Latest Bluetooth technology for stable, efficient wireless connectivity."
+    ],
+    specifications: [
+      { label: "Model", value: "AirPods 4 (4th Generation)" },
+      { label: "Chip", value: "Apple H2 chip" },
+      { label: "Driver", value: "Custom high-excursion Apple driver" },
+      { label: "Amplifier", value: "Custom high dynamic range amplifier" },
+      { label: "Audio Technology", value: "Personalized Spatial Audio, Adaptive EQ, Voice Isolation" },
+      { label: "Water & Dust Resistance", value: "IP54 (earbuds and case)" },
+      { label: "Charging Port", value: "USB-C" },
+      { label: "Connectivity", value: "Bluetooth 5.3" },
+      { label: "Controls", value: "Force sensor (press controls)" },
+      { label: "Siri", value: "Hey Siri (always-on), Siri Interactions (head gestures)" },
+      { label: "Weight (Each Earbud)", value: "Approximately 4.3 grams" },
+      { label: "Compatibility", value: "iPhone, iPad, Mac, Apple Watch, Apple TV" },
+      { label: "In The Box", value: "AirPods 4, USB-C Charging Case, Documentation" }
+    ],
+    variants: [
+      {
+        key: "standard",
+        ram: "",
+        storage: "",
+        label: "Standard",
+        price: 129,
+        description: "Up to 5 hours listening time per charge, 30 hours total with USB-C case. Perfect for everyday listening with exceptional sound quality and Personalized Spatial Audio."
+      },
+      {
+        key: "anc",
+        ram: "",
+        storage: "",
+        label: "Active Noise Cancellation",
+        price: 179,
+        description: "Up to 4 hours with ANC (5 hours without), 20 hours total with ANC (30 hours without). Includes ANC, Adaptive Audio, Transparency mode, Conversation Awareness, and wireless charging case with Find My speaker."
+      }
+    ]
+  },
+  {
+    id: 129,
+    name: "Apple AirPods Pro (2nd Generation) with USB-C",
+    title: "Apple AirPods Pro (2nd Generation) - USB-C Charging",
+    price: 249,
+    image: airpodsPro2USB_C,
+    images: [airpodsPro2USB_C, airpodsPro2USB_C_1, airpodsPro2USB_C_2, airpodsPro2USB_C_3, airpodsPro2USB_C_4, airpodsPro2USB_C_5],
+    video: airpodsPro2USB_C_Video,
+    rating: 5.0,
+    category: "Audio",
+    brand: "Apple",
+    description: "Experience premium audio like never before with the Apple AirPods Pro (2nd Generation) featuring USB-C charging. Powered by the revolutionary Apple H2 chip, these earbuds deliver up to 2x more Active Noise Cancellation than the previous generation, along with game-changing features like Adaptive Audio, Conversation Awareness, and Personalized Spatial Audio. The updated USB-C MagSafe Charging Case now features IP54 water resistance and supports wireless charging via MagSafe, Qi-certified chargers, and Apple Watch chargers. With advanced hearing health features including a Hearing Test, clinical-grade Hearing Aid functionality, and active Hearing Protection, AirPods Pro 2 redefine what's possible in wireless audio.",
+    features: [
+      "Apple H2 Chip: Next-generation audio processing delivers exceptional sound quality and intelligent noise cancellation.",
+      "Up to 2x Active Noise Cancellation: Industry-leading ANC reduces unwanted environmental noise for complete immersion in your audio.",
+      "Adaptive Audio: Intelligently blends Active Noise Cancellation and Transparency mode in real-time based on your surroundings.",
+      "Transparency Mode: Hear your environment naturally while still enjoying your audio - perfect for conversations and staying aware.",
+      "Conversation Awareness: Automatically lowers media volume and enhances voices when you start speaking.",
+      "Personalized Spatial Audio: Immersive 3D sound with dynamic head tracking creates a theater-like listening experience.",
+      "Custom High-Excursion Driver: Delivers rich, powerful bass and crystal-clear highs for exceptional sound quality.",
+      "Custom High Dynamic Range Amplifier: Ensures optimal audio performance across all volume levels.",
+      "Adaptive EQ: Automatically tunes music to match the shape of your ear for personalized sound.",
+      "Voice Isolation: Advanced microphone system isolates your voice for crystal-clear phone calls.",
+      "Personalized Volume: Intelligently adjusts media volume based on environmental conditions and listening preferences.",
+      "Loud Sound Reduction: Protects your hearing by reducing exposure to loud environmental sounds.",
+      "Up to 6 Hours Battery (ANC On): Extended listening time with Active Noise Cancellation enabled.",
+      "Up to 30 Hours Total Battery: MagSafe Charging Case provides additional charges for all-day listening.",
+      "USB-C MagSafe Charging Case: Modern USB-C connector plus MagSafe, Qi wireless, and Apple Watch charger compatibility.",
+      "IP54 Water & Dust Resistance: Both earbuds AND charging case are protected against water, sweat, and dust.",
+      "Hearing Health Features: Includes Hearing Test, clinical-grade Hearing Aid for mild to moderate hearing loss, and active Hearing Protection.",
+      "Lossless Audio Support: Ultra-low latency lossless audio when paired with Apple Vision Pro.",
+      "Force Sensor Controls: Intuitive press controls for playback, calls, and switching between listening modes.",
+      "Hey Siri Always-On: Voice-activate Siri hands-free for music control, calls, and more.",
+      "Bluetooth 5.3: Latest wireless technology for stable, efficient connectivity.",
+      "Seamless Apple Integration: One-tap setup, automatic device switching, and Find My support.",
+      "5-Minute Quick Charge: Just 5 minutes in the case provides approximately 1 hour of listening time."
+    ],
+    specifications: [
+      { label: "Model", value: "AirPods Pro (2nd Generation) - USB-C" },
+      { label: "Chip", value: "Apple H2 chip" },
+      { label: "Driver", value: "Custom high-excursion Apple driver" },
+      { label: "Amplifier", value: "Custom high dynamic range amplifier" },
+      { label: "Active Noise Cancellation", value: "Up to 2x more ANC than 1st generation" },
+      { label: "Audio Features", value: "Adaptive Audio, Transparency mode, Conversation Awareness" },
+      { label: "Spatial Audio", value: "Personalized Spatial Audio with dynamic head tracking" },
+      { label: "Adaptive EQ", value: "Yes" },
+      { label: "Voice Features", value: "Voice Isolation, Personalized Volume" },
+      { label: "Hearing Health", value: "Hearing Test, Hearing Aid (clinical-grade), Hearing Protection" },
+      { label: "Battery (Earbuds with ANC)", value: "Up to 6 hours listening time" },
+      { label: "Battery (Spatial Audio)", value: "Up to 5.5 hours listening time" },
+      { label: "Battery (Talk Time)", value: "Up to 4.5 hours" },
+      { label: "Total Battery (with Case)", value: "Up to 30 hours listening, 24 hours talk time" },
+      { label: "Quick Charge", value: "5 minutes = ~1 hour listening or talk time" },
+      { label: "Charging Case", value: "USB-C MagSafe Charging Case" },
+      { label: "Charging Options", value: "USB-C, MagSafe, Qi wireless, Apple Watch charger" },
+      { label: "Water & Dust Resistance", value: "IP54 (earbuds and case)" },
+      { label: "Connectivity", value: "Bluetooth 5.3" },
+      { label: "Sensors", value: "Dual beamforming mics, inward mic, skin-detect sensor, accelerometers, force sensor" },
+      { label: "Controls", value: "Force sensor (press for playback, hold for listening modes)" },
+      { label: "Siri", value: "Hey Siri (always-on), voice commands" },
+      { label: "Special Features", value: "Lossless audio with Vision Pro (ultra-low latency)" },
+      { label: "Compatibility", value: "iPhone, iPad, Mac, Apple Watch, Apple TV, Apple Vision Pro" },
+      { label: "In The Box", value: "AirPods Pro, USB-C MagSafe Charging Case, 4 ear tip sizes (XS, S, M, L), Documentation" },
+      { label: "Release Date", value: "September 22, 2023" }
     ]
   },
   {
@@ -948,154 +1136,6 @@ export const phoneAccessories: Product[] = [
       { key: "64gb", ram: "", storage: "64GB", label: "64GB", price: 20, description: "More space for your files" },
       { key: "128gb", ram: "", storage: "128GB", label: "128GB", price: 28, description: "Maximum capacity option" }
     ]
-  },
-  {
-    id: 127,
-    name: "Apple AirPods 4",
-    title: "Apple AirPods 4 - Redesigned Sound Experience with H2 Chip",
-    price: 129.99,
-    image: airpods4_1,
-    images: [airpods4_1, airpods4_2, airpods4_3, airpods4_4],
-    rating: 4.9,
-    category: "Audio",
-    brand: "Apple",
-    description: "The all-new Apple AirPods 4 are redesigned from the ground up to deliver an exceptional audio experience. Powered by Apple's advanced H2 chip, these earbuds feature a more ergonomic and secure fit for all-day comfort, superior sound quality with personalized Spatial Audio, and impressive battery life. With a USB-C charging case, IP54 dust and water resistance, and seamless integration with all your Apple devices, AirPods 4 represent the perfect balance of performance, comfort, and value.",
-    features: [
-      "H2 Chip: Apple's most advanced audio chip delivers improved sound quality, lower latency, and more efficient performance for an exceptional listening experience.",
-      "Redesigned Ergonomic Fit: More comfortable and secure design ensures all-day comfort and stability during workouts, commutes, and daily activities.",
-      "Custom High-Excursion Driver: Delivers rich, detailed sound with powerful bass and crisp highs for music, podcasts, and calls.",
-      "High Dynamic Range Amplifier: Ensures audio clarity and detail across all volume levels, from quiet podcasts to loud music.",
-      "Personalized Spatial Audio: Dynamic head tracking creates an immersive, theater-like sound experience that moves with you for a truly three-dimensional listening experience.",
-      "Adaptive EQ: Automatically tunes music to the shape of your ear in real-time for optimal sound quality personalized to you.",
-      "Up to 5 Hours Listening: Enjoy up to 5 hours of listening time on a single charge for music and podcasts.",
-      "Up to 30 Hours Total: The USB-C charging case provides additional charges for up to 30 hours of total listening time.",
-      "USB-C Charging Case: Modern USB-C connector for fast, convenient charging, compatible with the same cable you use for your other devices.",
-      "Multiple Charging Options: Charge with USB-C cable, Apple Watch chargers, or any Qi-certified wireless charger for ultimate flexibility.",
-      "IP54 Dust & Water Resistance: Both AirPods and charging case are rated IP54, protecting against dust, sweat, and water splashes for worry-free use during workouts and in various environments.",
-      "Voice Isolation: Enhanced microphone system with advanced algorithms isolates your voice from background noise for crystal-clear calls.",
-      "Siri Integration: Activate Siri with voice commands or by saying \"Hey Siri\" for hands-free control of your music, calls, and more.",
-      "One-Tap Setup: Seamlessly pairs with your iPhone, iPad, or Mac instantly when you open the case near your device.",
-      "Automatic Switching: Automatically switches between your Apple devices, so you can answer a call on your iPhone or watch a movie on your iPad without manually switching.",
-      "Find My Support: Use the Find My app to locate your AirPods if they're misplaced, with precision finding for nearby devices.",
-      "Audio Sharing: Share audio with a friend using two sets of AirPods connected to the same iPhone or iPad.",
-      "Long Press Controls: Customize controls with long press gestures to play, pause, skip tracks, or activate Siri.",
-      "Lightweight Design: Comfortable, lightweight build ensures hours of comfortable wear without fatigue.",
-      "Seamless Apple Ecosystem: Works flawlessly with iPhone, iPad, Mac, Apple Watch, and Apple TV for a unified experience."
-    ],
-    specifications: [
-      { label: "Brand", value: "Apple" },
-      { label: "Model", value: "AirPods 4" },
-      { label: "Chip", value: "Apple H2 chip" },
-      { label: "Driver", value: "Custom high-excursion Apple driver" },
-      { label: "Amplifier", value: "High dynamic range amplifier" },
-      { label: "Audio Technology", value: "Personalized Spatial Audio with dynamic head tracking, Adaptive EQ" },
-      { label: "Battery Life (AirPods)", value: "Up to 5 hours of listening time on a single charge" },
-      { label: "Battery Life (Total)", value: "Up to 30 hours total listening time with charging case" },
-      { label: "Charging Case", value: "USB-C charging case" },
-      { label: "Charging Options", value: "USB-C cable, Apple Watch chargers, Qi-certified wireless chargers" },
-      { label: "Water & Dust Resistance", value: "IP54 rating (both AirPods and charging case)" },
-      { label: "Microphones", value: "Dual beamforming microphones with voice isolation" },
-      { label: "Controls", value: "Long press for play/pause, skip tracks, activate Siri" },
-      { label: "Siri", value: "Always-on \"Hey Siri\" support" },
-      { label: "Connectivity", value: "Bluetooth 5.3" },
-      { label: "Compatibility", value: "iPhone, iPad, Mac, Apple Watch, Apple TV" },
-      { label: "Features", value: "One-tap setup, automatic device switching, audio sharing, Find My support" },
-      { label: "Dimensions (Case)", value: "46.40mm x 60.60mm x 21.70mm" },
-      { label: "Weight (Each AirPod)", value: "Approximately 5.4 grams" },
-      { label: "Weight (Case)", value: "Approximately 40.5 grams" },
-      { label: "Color", value: "White" },
-      { label: "In The Box", value: "AirPods 4, USB-C Charging Case, Documentation" },
-      { label: "Warranty", value: "1-year limited warranty" }
-    ],
-    variants: [
-      {
-        key: "airpods4-standard",
-        ram: "",
-        storage: "",
-        label: "Standard",
-        price: 129.99,
-        description: "AirPods 4 with H2 chip, personalized Spatial Audio, and up to 30 hours total battery life."
-      }
-    ]
-  },
-  {
-    id: 128,
-    name: "Apple AirPods 4 with Active Noise Cancellation",
-    title: "Apple AirPods 4 with Active Noise Cancellation - Premium Audio Experience with ANC",
-    price: 179.99,
-    image: airpods4_1,
-    images: [airpods4_1, airpods4_2, airpods4_3, airpods4_4],
-    rating: 4.9,
-    category: "Audio",
-    brand: "Apple",
-    description: "The Apple AirPods 4 with Active Noise Cancellation take the premium listening experience to the next level. Featuring all the advanced features of AirPods 4 plus industry-leading Active Noise Cancellation in an open-ear design, Adaptive Audio that blends ANC and Transparency Mode intelligently, and Conversation Awareness that automatically lowers volume when you speak. Powered by the H2 chip with a built-in speaker in the charging case for Find My support, these are the ultimate AirPods for those who demand the best in audio quality, noise control, and convenience.",
-    features: [
-      "Active Noise Cancellation: Industry-leading ANC technology reduces unwanted ambient noise like airplane engines, city traffic, and office chatter, allowing you to focus on your music, podcasts, and calls.",
-      "Adaptive Audio: Intelligently blends Active Noise Cancellation and Transparency Mode in real-time, automatically adjusting noise control based on your environment for the perfect listening experience.",
-      "Transparency Mode: Hear your surroundings when you need to with Transparency Mode, perfect for staying aware during walks, conversations, or when safety awareness is important.",
-      "Conversation Awareness: Automatically detects when you're speaking and temporarily lowers volume and reduces noise cancellation so you can hear conversations naturally—no need to remove your AirPods.",
-      "H2 Chip: Apple's most advanced audio chip delivers exceptional sound quality, lower latency, and efficient ANC processing for premium performance.",
-      "Custom High-Excursion Driver: Delivers rich, detailed sound with powerful bass and crisp highs, optimized for both music and calls.",
-      "High Dynamic Range Amplifier: Ensures audio clarity and detail across all volume levels and listening modes.",
-      "Personalized Spatial Audio: Dynamic head tracking creates an immersive, theater-like sound experience that moves with you in three-dimensional space.",
-      "Adaptive EQ: Automatically tunes music to the shape of your ear in real-time for optimal, personalized sound quality.",
-      "Up to 4 Hours with ANC: Enjoy up to 4 hours of listening time with Active Noise Cancellation enabled on a single charge.",
-      "Up to 20 Hours Total: The USB-C charging case provides additional charges for up to 20 hours of total listening time with ANC.",
-      "USB-C Charging Case with Speaker: Modern USB-C connector for fast charging, plus a built-in speaker for Find My support to help locate your AirPods.",
-      "Multiple Charging Options: Charge with USB-C cable, Apple Watch chargers, or any Qi-certified wireless charger for ultimate convenience.",
-      "IP54 Dust & Water Resistance: Both AirPods and charging case are rated IP54, protecting against dust, sweat, and water splashes for worry-free use.",
-      "Voice Isolation: Advanced microphone system with voice isolation technology ensures crystal-clear calls even in noisy environments.",
-      "Wideband Audio: Enhanced call quality with wideband audio support for natural-sounding conversations.",
-      "Siri Integration: Activate Siri with voice commands, \"Hey Siri,\" or head gestures (nod to answer, shake to decline) for hands-free control.",
-      "One-Tap Setup: Seamlessly pairs with your iPhone, iPad, or Mac instantly when you open the case near your device.",
-      "Automatic Switching: Automatically switches between your Apple devices, so you can answer a call on your iPhone or watch a movie on your iPad seamlessly.",
-      "Precision Finding: Use the Find My app with precision finding to locate your AirPods with visual, haptic, and audio guidance.",
-      "Built-in Case Speaker: Charging case includes a speaker that plays sounds to help you locate it if misplaced.",
-      "Audio Sharing: Share audio with a friend using two sets of AirPods connected to the same iPhone or iPad.",
-      "Long Press Controls: Customize controls with long press gestures to switch between ANC modes, play/pause, skip tracks, or activate Siri.",
-      "Head Gesture Controls: Nod to answer calls, shake head to decline—intuitive gesture controls for hands-free interaction.",
-      "Lightweight Comfortable Design: Ergonomic, lightweight build ensures hours of comfortable wear even with advanced features.",
-      "Seamless Apple Ecosystem: Works flawlessly with iPhone, iPad, Mac, Apple Watch, and Apple TV for a unified, premium experience."
-    ],
-    specifications: [
-      { label: "Brand", value: "Apple" },
-      { label: "Model", value: "AirPods 4 with Active Noise Cancellation" },
-      { label: "Chip", value: "Apple H2 chip" },
-      { label: "Noise Control", value: "Active Noise Cancellation, Transparency Mode, Adaptive Audio" },
-      { label: "Driver", value: "Custom high-excursion Apple driver" },
-      { label: "Amplifier", value: "High dynamic range amplifier" },
-      { label: "Audio Technology", value: "Personalized Spatial Audio with dynamic head tracking, Adaptive EQ" },
-      { label: "Battery Life (AirPods with ANC)", value: "Up to 4 hours of listening time with ANC enabled" },
-      { label: "Battery Life (Total with ANC)", value: "Up to 20 hours total listening time with charging case" },
-      { label: "Charging Case", value: "USB-C charging case with built-in speaker" },
-      { label: "Charging Options", value: "USB-C cable, Apple Watch chargers, Qi-certified wireless chargers" },
-      { label: "Water & Dust Resistance", value: "IP54 rating (both AirPods and charging case)" },
-      { label: "Microphones", value: "Dual beamforming microphones with voice isolation and wideband audio" },
-      { label: "Controls", value: "Long press for ANC/Transparency, play/pause, skip tracks, activate Siri" },
-      { label: "Head Gestures", value: "Nod to answer calls, shake to decline" },
-      { label: "Siri", value: "Always-on \"Hey Siri\" support with head gesture activation" },
-      { label: "Find My", value: "Precision finding with visual, haptic, and audio guidance, case speaker support" },
-      { label: "Conversation Awareness", value: "Automatically detects speech and adjusts audio settings" },
-      { label: "Connectivity", value: "Bluetooth 5.3" },
-      { label: "Compatibility", value: "iPhone, iPad, Mac, Apple Watch, Apple TV" },
-      { label: "Features", value: "One-tap setup, automatic device switching, audio sharing, Conversation Awareness" },
-      { label: "Dimensions (Case)", value: "46.40mm x 60.60mm x 21.70mm" },
-      { label: "Weight (Each AirPod)", value: "Approximately 5.4 grams" },
-      { label: "Weight (Case)", value: "Approximately 40.5 grams" },
-      { label: "Color", value: "White" },
-      { label: "In The Box", value: "AirPods 4 with ANC, USB-C Charging Case, Documentation" },
-      { label: "Warranty", value: "1-year limited warranty" }
-    ],
-    variants: [
-      {
-        key: "airpods4-anc",
-        ram: "",
-        storage: "",
-        label: "With Active Noise Cancellation",
-        price: 179.99,
-        description: "AirPods 4 with Active Noise Cancellation, Adaptive Audio, Conversation Awareness, and Find My case speaker."
-      }
-    ]
   }
 ];
 
@@ -1140,6 +1180,9 @@ export const smartphoneProducts: Product[] = [
       }
     ]
   },
+  // ==================== SMARTPHONES ====================
+  // iPhone 16 - Flagship Product (ID: 500)
+  iPhone16Product,
   {
     id: 302,
     name: "Samsung Galaxy A07s (A075)",
@@ -1365,7 +1408,7 @@ export const smartphoneProducts: Product[] = [
       }
     ]
   },
-  
+
   {
     id: 306,
     name: "Samsung Galaxy A36",
@@ -2164,8 +2207,8 @@ export const tabletProducts: Product[] = [
     name: "iPad 11-inch (A16 Chip)",
     title: "iPad 11-inch - Supercharged with A16 Chip and Liquid Retina Display",
     price: 449.99,
-    image: iPad11,
-    images: [iPad11, iPad11_128, iPad11_128g, iPad11_128gb],
+    image: iPad11Pink,
+    images: [iPad11Pink, iPad11Grey, iPad11Blue, iPad11Yellow],
     rating: 4.9,
     category: "Tablets",
     brand: "Apple",
@@ -2246,10 +2289,10 @@ export const tabletProducts: Product[] = [
       }
     ],
     colors: [
-      { name: "Space Gray", image: iPad11, stock: "available" },
-      { name: "Silver", image: iPad11_128, stock: "available" },
-      { name: "Blue", image: iPad11_128g, stock: "available" },
-      { name: "Pink", image: iPad11_128gb, stock: "available" }
+      { name: "Pink", image: iPad11Pink, stock: "available" },
+      { name: "Grey", image: iPad11Grey, stock: "available" },
+      { name: "Blue", image: iPad11Blue, stock: "available" },
+      { name: "Yellow", image: iPad11Yellow, stock: "available" }
     ],
     connectivityOptions: ["Wi-Fi only", "Wi-Fi + 5G Cellular"]
   },
