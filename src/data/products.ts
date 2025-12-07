@@ -159,6 +159,21 @@ import iPadAirM2_13_Purple from "@/assets/Tablets/Apple IPad Air 6 13″ M2 (202
 import iPadAirM2_13_Starlight from "@/assets/Tablets/Apple IPad Air 6 13″ M2 (2024) – Wifi 128GB/Apple IPad Air 6 13″ M2 (2024) – Wifi STARLIGHT.webp";
 import iPadAirM2_13_SpaceGrey from "@/assets/Tablets/Apple IPad Air 6 13″ M2 (2024) – Wifi 128GB/Apple IPad Air 6 13″ M2 (2024) – Wifi SPACE GREY.webp";
 import { iPhone16Product } from "@/data/iphone16";
+// Samsung Galaxy A55 256GB imports
+import a55Black from "@/assets/phones/A55 256GB/A55 256 GB BLACK.png";
+import a55IceBlue from "@/assets/phones/A55 256GB/A55 256 GB ICE BLUE.png";
+import a55Lilac from "@/assets/phones/A55 256GB/A55 256GB 8RAM Lilac color.png";
+// Samsung Galaxy S24 FE 256GB imports
+import s24FeBlack from "@/assets/phones/S24 FE 256/S24 FE 256 black.png";
+import s24FeGrey from "@/assets/phones/S24 FE 256/S24 FE 256 marbale grey.png";
+import s24Fe_1 from "@/assets/phones/S24 FE 256/Screenshot 2025-12-08 002810.png";
+import s24Fe_2 from "@/assets/phones/S24 FE 256/Screenshot 2025-12-08 002817.png";
+import s24Fe_3 from "@/assets/phones/S24 FE 256/Screenshot 2025-12-08 002823.png";
+// Samsung Galaxy S25 FE 256GB imports
+import s25FeBlack from "@/assets/phones/Samsung Galaxy S25 FE - 8GB256GB/Samsung Galaxy S25 FE - 8GB256GB black.png";
+import s25FeNavy from "@/assets/phones/Samsung Galaxy S25 FE - 8GB256GB/Samsung Galaxy S25 FE - 8GB256GB NAVY.png";
+import s25FeIceBlue from "@/assets/phones/Samsung Galaxy S25 FE - 8GB256GB/Samsung Galaxy S25 FE - 8GB256GB ICE BLUE.png";
+import s25FeWhite from "@/assets/phones/Samsung Galaxy S25 FE - 8GB256GB/Samsung Galaxy S25 FE - 8GB256GB WHITE.png";
 
 export interface ProductVariant {
   key: string;
@@ -1181,6 +1196,196 @@ export const smartphoneProducts: Product[] = [
     ]
   },
   // ==================== SMARTPHONES ====================
+  // Samsung Galaxy A55 256GB/8RAM (ID: 301)
+  {
+    id: 301,
+    name: "Samsung Galaxy A55 5G",
+    title: "Samsung Galaxy A55 5G 256GB/8GB RAM - Redefining Mobile Excellence",
+    price: 399.99,
+    image: a55Black,
+    images: [a55Black, a55IceBlue, a55Lilac],
+    rating: 4.8,
+    category: "Smartphones",
+    brand: "Samsung",
+    description: "Introducing the Galaxy A55 5G, a stunning fusion of metal and glass. This iconic design features a 3-camera layout within a metal flat frame for an intuitive grip. Enhanced with Corning® Gorilla® Glass Victus®+, the A55 is tougher and more resistant to damage, making it both stylish and durable. Experience superior performance with an Octa-core processor, 5G capabilities, and a vivid 6.6-inch Super AMOLED display.",
+    features: [
+      "**Sleek Design with Durability**: Metal and glass construction with Corning® Gorilla® Glass Victus®+ for enhanced protection and style.",
+      "**50MP High-Resolution Camera**: Capture every detail with vibrant colors using the 50MP wide-angle camera for crisp, share-worthy photos.",
+      "**Night Photography Excellence**: Big pixel camera captures more light for bright, sharp, and color-accurate photos with low noise at night.",
+      "**32MP Front Camera**: High-quality selfies with Portrait Mode to focus on subjects while blurring backgrounds professionally.",
+      "**Super HDR Video Recording**: Record videos in Super HDR with OIS and VDIS stabilization for smooth 4K resolution content.",
+      "**Effortless Photo Editing**: Edit Suggestion and Image Clipper tools let you enhance photos and create fun mashups with a tap.",
+      "**Powerful Octa-Core Performance**: Seamless multitasking, gaming, and streaming with improved processor and 5G capabilities.",
+      "**256GB Internal Storage**: Plenty of space for apps, photos, and videos, expandable up to 1TB with microSD.",
+      "**8GB RAM**: Enhanced multitasking with 8GB RAM plus upgraded GPU, NPU, and integrated cooling system.",
+      "**6.6-inch Super AMOLED Display**: FHD+ screen with 120Hz adaptive refresh rate and Vision Booster for optimal sunlight visibility.",
+      "**1000 Nits Brightness**: Exceptional display brightness up to 1,000 nits for perfect viewing in any lighting condition.",
+      "**5,000mAh Long-Lasting Battery**: Up to 2 days of usage with Super Fast Charging to keep you powered up quickly.",
+      "**IP67 Water & Dust Resistant**: Protected against dust and water for worry-free usage and capturing memories.",
+      "**Samsung Knox Security**: Enterprise-grade security protection for your data and privacy.",
+      "**4 OS Upgrades + 5 Years Security**: Long-term software support with up to 4 generations of OS upgrades and 5 years of security updates."
+    ],
+    specifications: [
+      { label: "Model", value: "Samsung Galaxy A55 5G" },
+      { label: "Display", value: "6.6-inch FHD+ Super AMOLED, 1080 x 2340, 120Hz refresh rate" },
+      { label: "Processor", value: "Octa-Core (2.75GHz + 2GHz)" },
+      { label: "RAM", value: "8GB" },
+      { label: "Internal Storage", value: "256GB" },
+      { label: "Expandable Storage", value: "Up to 1TB via microSD" },
+      { label: "Rear Camera", value: "50MP (Wide) + 12MP (Ultra-wide) + 5MP (Macro)" },
+      { label: "Front Camera", value: "32MP Selfie Camera" },
+      { label: "Video Recording", value: "UHD 4K @30fps with Super HDR, OIS & VDIS stabilization" },
+      { label: "Battery", value: "5,000mAh (Up to 2 days usage)" },
+      { label: "Charging", value: "Super Fast Charging" },
+      { label: "Network", value: "5G, 4G LTE, 3G, 2G" },
+      { label: "Connectivity", value: "USB Type-C, Bluetooth 5.3, NFC, Wi-Fi 802.11a/b/g/n/ac/ax" },
+      { label: "Water Resistance", value: "IP67 (Dust and water resistant)" },
+      { label: "Display Protection", value: "Corning® Gorilla® Glass Victus®+" },
+      { label: "Brightness", value: "Up to 1,000 nits with Vision Booster" },
+      { label: "Sensors", value: "Accelerometer, Fingerprint Sensor, Gyro Sensor, Proximity, Compass" },
+      { label: "Security", value: "Samsung Knox, Fingerprint Sensor" },
+      { label: "Dimensions", value: "161.1 x 77.4 x 8.2 mm" },
+      { label: "Weight", value: "213g" },
+      { label: "OS Support", value: "Up to 4 OS upgrades, 5 years security updates" },
+      { label: "In The Box", value: "Galaxy A55 5G, USB-C Cable, SIM Ejector Tool, Quick Start Guide" }
+    ],
+    colors: [
+      { name: "Awesome Navy (Black)", image: a55Black, stock: "available" },
+      { name: "Awesome Iceblue", image: a55IceBlue, stock: "available" },
+      { name: "Awesome Lilac", image: a55Lilac, stock: "available" }
+    ]
+  },
+  // Samsung Galaxy S24 FE 256GB/8RAM (ID: 304)
+  {
+    id: 304,
+    name: "Samsung Galaxy S24 FE",
+    title: "Samsung Galaxy S24 FE 256GB/8GB RAM - AI-Powered Creativity",
+    price: 649.99,
+    image: s24FeBlack,
+    images: [s24FeBlack, s24FeGrey, s24Fe_1, s24Fe_2, s24Fe_3],
+    rating: 4.9,
+    category: "Smartphones",
+    brand: "Samsung",
+    description: "Introducing the Samsung Galaxy S24 FE, a smartphone designed to inspire creativity and innovation with its cutting-edge features and advanced Galaxy AI technology. Every moment can be transformed into a masterpiece, whether through capturing breathtaking photos or exploring imaginative sketches. The Galaxy S24 FE is built for durability with Corning® Gorilla® Glass Victus®+ and IP68 rating, ensuring optimal protection against everyday wear and tear.",
+    features: [
+      "**Advanced Galaxy AI Integration**: Photo Assist and Sketch to Image enable effortless edits and creative transformations with AI-powered tools.",
+      "**ProVisual Engine**: Comprehensive AI-powered suite that significantly improves photo and video quality by enhancing details and textures.",
+      "**50MP Triple Camera System**: 50MP wide + 12MP ultra-wide + 8MP telephoto with OIS for stunning photos in any condition.",
+      "**Optical Quality Zoom**: 3x Optical Zoom, 2x Optical Quality Zoom via Adaptive Pixel sensor, up to 30x Digital Zoom for distant subjects.",
+      "**8K Video Recording**: Capture ultra-high-resolution videos at UHD 8K (7680 x 4320) @30fps with advanced stabilization.",
+      "**10MP Front Camera**: High-quality selfies with F2.4 aperture for clear, vibrant self-portraits.",
+      "**6.7-inch Dynamic AMOLED 2X Display**: FHD+ (1080 x 2340) with 120Hz adaptive refresh rate for smooth scrolling and gaming.",
+      "**16M Color Depth**: Exceptional color accuracy and vibrancy on the Dynamic AMOLED 2X display.",
+      "**Samsung Exynos 2400e Processor**: Deca-Core CPU (3.1GHz, 2.9GHz, 2.6GHz, 1.95GHz) delivers flagship performance.",
+      "**8GB RAM + 256GB Storage**: Ample memory for multitasking with 231.7GB available storage space.",
+      "**4700mAh Long-Lasting Battery**: Up to 21 hours internet usage, 28 hours video playback, 81 hours audio playback.",
+      "**Corning® Gorilla® Glass Victus®+**: Premium protection on both front and back for enhanced durability.",
+      "**IP68 Water & Dust Resistant**: Withstands submersion in water and complete dust protection.",
+      "**5G Connectivity**: Future-ready 5G Sub6 FDD/TDD support with dual-SIM (Nano-SIM + eSIM) capability.",
+      "**Wi-Fi 6E Support**: 802.11ax with 2.4GHz + 5GHz + 6GHz for blazing-fast wireless speeds.",
+      "**Bluetooth 5.3**: Latest Bluetooth technology for seamless connectivity with accessories.",
+      "**USB 3.2 Gen 1 Type-C**: Fast data transfer and charging with modern USB-C interface.",
+      "**NFC & Samsung Pay**: Contactless payments and easy data sharing with NFC support."
+    ],
+    specifications: [
+      { label: "Model", value: "Samsung Galaxy S24 FE" },
+      { label: "Processor", value: "Samsung Exynos 2400e Deca-Core (3.1GHz, 2.9GHz, 2.6GHz, 1.95GHz)" },
+      { label: "Display", value: "6.7-inch Dynamic AMOLED 2X, 1080 x 2340 (FHD+), 120Hz" },
+      { label: "Color Depth", value: "16M colors" },
+      { label: "RAM", value: "8GB" },
+      { label: "Internal Storage", value: "256GB (231.7GB available)" },
+      { label: "Rear Camera", value: "50MP (F1.8, OIS) + 12MP Ultra-wide (F2.2) + 8MP Telephoto (F2.4, OIS)" },
+      { label: "Front Camera", value: "10MP (F2.4)" },
+      { label: "Zoom Capabilities", value: "3x Optical, 2x Optical Quality, 30x Digital Zoom" },
+      { label: "Video Recording", value: "UHD 8K @30fps, 4K, FHD with slow-mo 240fps @FHD" },
+      { label: "Battery", value: "4700mAh (Non-removable)" },
+      { label: "Internet Usage", value: "Up to 21 hours (LTE/Wi-Fi)" },
+      { label: "Video Playback", value: "Up to 28 hours" },
+      { label: "Audio Playback", value: "Up to 81 hours" },
+      { label: "Network", value: "5G Sub6 FDD/TDD, 4G LTE FDD/TDD, 3G WCDMA, 2G GSM" },
+      { label: "SIM", value: "Dual-SIM (Nano-SIM + Embedded-SIM)" },
+      { label: "Connectivity", value: "USB Type-C (USB 3.2 Gen 1), Wi-Fi 6E (802.11ax), Bluetooth 5.3, NFC" },
+      { label: "Water Resistance", value: "IP68 (Dust and water resistant)" },
+      { label: "Display Protection", value: "Corning® Gorilla® Glass Victus®+ (Front & Back)" },
+      { label: "AI Features", value: "Galaxy AI, Photo Assist, Sketch to Image, ProVisual Engine" },
+      { label: "In The Box", value: "Galaxy S24 FE, USB-C Cable, SIM Ejector Tool, Quick Start Guide" }
+    ],
+    colors: [
+      { name: "Graphite Black", image: s24FeBlack, stock: "available" },
+      { name: "Marble Grey", image: s24FeGrey, stock: "available" }
+    ]
+  },
+  // Samsung Galaxy S25 FE 256GB/8RAM (ID: 305)
+  {
+    id: 305,
+    name: "Samsung Galaxy S25 FE",
+    title: "Samsung Galaxy S25 FE 256GB/8GB RAM - Flagship Performance Redefined",
+    price: 699.99,
+    image: s25FeBlack,
+    images: [s25FeBlack, s25FeNavy, s25FeIceBlue, s25FeWhite],
+    rating: 5.0,
+    category: "Smartphones",
+    brand: "Samsung",
+    description: "The Samsung Galaxy S25 FE is designed to deliver flagship-level performance with a sleek and durable build. Powered by the advanced Exynos 2400 processor, this smartphone ensures fast responsiveness, smooth gaming with ray tracing, and superior multitasking capabilities. Its 6.7-inch Dynamic AMOLED 2X display with up to 120Hz refresh rate offers bright and vibrant visuals, ideal for streaming, browsing, and gaming. Engineered with ProVisual Engine and AI-powered features, the Galaxy S25 FE enhances every photo and video.",
+    features: [
+      "**ProVisual Engine Camera System**: Capture vibrant, lifelike photos with real-time color, detail, and HDR optimization for sharp low-light shots.",
+      "**AI-Powered Editing Tools**: Generative Edit, Auto Trim, My Filters, and Audio Eraser perfect photos, videos, and recordings effortlessly.",
+      "**50MP Triple Camera System**: 50MP wide (F1.8, OIS) + 12MP ultra-wide (F2.2) + 8MP telephoto (F2.4) for professional photography.",
+      "**12MP Front Camera**: Enhanced selfie camera with F2.2 aperture captures detailed and vibrant self-portraits.",
+      "**8K Video Recording**: Record ultra-high-resolution videos at UHD 8K (7680 x 4320) @30fps with advanced stabilization.",
+      "**3x Optical Zoom**: Professional zoom capabilities with 3x optical, 2x optical quality via Adaptive Pixel, up to 30x digital zoom.",
+      "**6.7-inch Dynamic AMOLED 2X Display**: FHD+ (1080 x 2340) with 120Hz refresh rate, 16M colors for smooth and cinematic visuals.",
+      "**Exynos 2400 Deca-Core Processor**: 3.2GHz flagship performance with hardware ray tracing and 14% larger vapor chamber cooling.",
+      "**8GB RAM + 256GB Storage**: Enhanced multitasking with 232.2GB available storage for all your apps and media.",
+      "**4900mAh Long-Lasting Battery**: Up to 28 hours video playback with fast charging reaching 65% in just 30 minutes.",
+      "**Ultra-Slim Design**: Only 7.4mm thin and 190g light with premium Armor Aluminum frame for durability.",
+      "**Gorilla Glass Victus+®**: Enhanced protection on front and back with scratch and impact resistance.",
+      "**IP68 Water & Dust Resistant**: Complete protection against dust and water submersion.",
+      "**5G + Wi-Fi 6E**: Future-ready connectivity with 802.11ax (2.4GHz + 5GHz + 6GHz) and Bluetooth 5.4.",
+      "**Samsung DeX Support**: Desktop experience on external displays for enhanced productivity.",
+      "**Gemini Live & AI Features**: Includes Circle to Search, Browsing Assist, Writing Assist for smart productivity.",
+      "**One UI 8.0**: Latest Samsung interface with extensive customization and optimization.",
+      "**Long-Term Support**: Security updates guaranteed until September 30, 2032."
+    ],
+    specifications: [
+      { label: "Model", value: "Samsung Galaxy S25 FE" },
+      { label: "Processor", value: "Samsung Exynos 2400 Deca-Core (3.2GHz, 2.9GHz, 2.6GHz, 1.95GHz)" },
+      { label: "Display", value: "6.7-inch Dynamic AMOLED 2X, 1080 x 2340 (FHD+), 120Hz" },
+      { label: "Color Depth", value: "16M colors" },
+      { label: "RAM", value: "8GB" },
+      { label: "Internal Storage", value: "256GB (232.2GB available)" },
+      { label: "Rear Camera", value: "50MP (F1.8, OIS) + 12MP Ultra-wide (F2.2) + 8MP Telephoto (F2.4)" },
+      { label: "Front Camera", value: "12MP (F2.2)" },
+      { label: "Zoom Capabilities", value: "3x Optical, 2x Optical Quality, 30x Digital Zoom" },
+      { label: "Video Recording", value: "UHD 8K @30fps, 4K @60fps, FHD slow-mo 240fps" },
+      { label: "Battery", value: "4900mAh (Non-removable)" },
+      { label: "Video Playback", value: "Up to 28 hours" },
+      { label: "Fast Charging", value: "65% in 30 minutes" },
+      { label: "Network", value: "5G Sub6 FDD/TDD, 4G LTE, 3G WCDMA, 2G GSM" },
+      { label: "SIM", value: "Dual-SIM (Nano-SIM + eSIM / Dual eSIM)" },
+      { label: "Connectivity", value: "USB Type-C 3.2 Gen 1, Wi-Fi 6E (802.11ax), Bluetooth 5.4, NFC" },
+      { label: "Location", value: "GPS, Glonass, Beidou, Galileo" },
+      { label: "Water Resistance", value: "IP68 (Dust and water resistant)" },
+      { label: "Display Protection", value: "Corning® Gorilla® Glass Victus+®" },
+      { label: "Frame Material", value: "Armor Aluminum" },
+      { label: "Dimensions", value: "161.3 x 76.6 x 7.4 mm" },
+      { label: "Weight", value: "190g" },
+      { label: "OS", value: "Android with One UI 8.0" },
+      { label: "AI Features", value: "ProVisual Engine, Generative Edit, Gemini Live, Circle to Search" },
+      { label: "Samsung DeX", value: "Yes" },
+      { label: "SmartThings", value: "Yes" },
+      { label: "Stereo Speakers", value: "Yes" },
+      { label: "Security Updates", value: "Until September 30, 2032" },
+      { label: "Compatible Accessories", value: "Galaxy Buds, Galaxy Watches, Galaxy Fit, Galaxy Ring" },
+      { label: "In The Box", value: "Galaxy S25 FE, USB-C Cable, SIM Ejector Tool, Quick Start Guide" }
+    ],
+    colors: [
+      { name: "Phantom Black", image: s25FeBlack, stock: "available" },
+      { name: "Navy", image: s25FeNavy, stock: "available" },
+      { name: "Icy Blue", image: s25FeIceBlue, stock: "available" },
+      { name: "Ceramic White", image: s25FeWhite, stock: "available" }
+    ]
+  },
   // iPhone 16 - Flagship Product (ID: 500)
   iPhone16Product,
   {
