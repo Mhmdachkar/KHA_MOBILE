@@ -2744,7 +2744,7 @@ export const iphoneCases: Product[] = [
 // Gaming Consoles
 export const gamingConsoles: Product[] = [
   {
-    id: 401,
+    id: 501,
     name: "Sony PlayStation 4 Slim 500GB Console",
     title: "Sony PlayStation 4 Slim 500GB - Compact Gaming Console with HDR Support",
     price: 249.99,
@@ -2794,7 +2794,7 @@ export const gamingConsoles: Product[] = [
     ]
   },
   {
-    id: 402,
+    id: 502,
     name: "Sony PlayStation 5 Slim Console",
     title: "Sony PlayStation 5 Slim - 1TB SSD with 4K 120Hz Gaming & Ray Tracing",
     price: 499.99,

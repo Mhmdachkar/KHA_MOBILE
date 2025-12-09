@@ -123,12 +123,12 @@ export const computersProducts: Product[] = [
 // Wearables products - using real products from products.ts + Green Lion smartwatches
 export const wearablesProducts: Product[] = [
   ...realWearables.map(product => ({
-  id: product.id,
-  name: product.name,
-  price: product.price,
-  image: product.image,
-  rating: product.rating,
-  category: product.category,
+    id: product.id,
+    name: product.name,
+    price: product.price,
+    image: product.image,
+    rating: product.rating,
+    category: product.category,
   })),
   // Green Lion smartwatches
   ...getGreenLionProductsByCategory("Wearables").map(product => ({
@@ -153,7 +153,7 @@ export const gamingProducts: Product[] = [
     category: product.category,
   })),
   // Green Lion gaming accessories
-  ...greenLionProducts.filter(p => 
+  ...greenLionProducts.filter(p =>
     p.secondaryCategories?.includes("Gaming") || p.name.toLowerCase().includes("gaming")
   ).map(product => ({
     id: product.id,
@@ -163,31 +163,6 @@ export const gamingProducts: Product[] = [
     rating: product.rating,
     category: product.category,
   })),
-  // Additional mock gaming products
-  {
-    id: 201,
-    name: "PlayStation 5",
-    price: 499,
-    image: "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=500&h=500&fit=crop",
-    rating: 4.9,
-    category: "Gaming"
-  },
-  {
-    id: 202,
-    name: "Xbox Series X",
-    price: 499,
-    image: "https://images.unsplash.com/photo-1607853202273-797f1c22a38e?w=500&h=500&fit=crop",
-    rating: 4.8,
-    category: "Gaming"
-  },
-  {
-    id: 203,
-    name: "Nintendo Switch OLED",
-    price: 349,
-    image: "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=500&h=500&fit=crop",
-    rating: 4.7,
-    category: "Gaming"
-  },
 ];
 
 // Helper function to get products by category
