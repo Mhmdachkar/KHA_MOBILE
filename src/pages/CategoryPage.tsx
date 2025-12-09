@@ -200,6 +200,50 @@ const CategoryPage = () => {
             category: p.category
           }))];
         }
+        // Sort Audio products: Apple products first (with priority order), then Green Lion (by price), then others by price
+        products.sort((a, b) => {
+          const aIsGreenLion = a.id >= 5000;
+          const bIsGreenLion = b.id >= 5000;
+          const aIsApple = a.brand === "Apple" || (typeof a.name === "string" && a.name.toLowerCase().includes("apple"));
+          const bIsApple = b.brand === "Apple" || (typeof b.name === "string" && b.name.toLowerCase().includes("apple"));
+          
+          // Apple products FIRST - use priority order, then by price
+          if (aIsApple && !bIsApple) return -1;
+          if (!aIsApple && bIsApple) return 1;
+          
+          // Within Apple products, use priority order first
+          if (aIsApple && bIsApple) {
+            const airPodsPriority: Record<number, number> = {
+              127: 1, // Apple AirPods Pro 3 - $287
+              129: 2, // Apple AirPods Pro (2nd Generation) with USB-C - $215
+              128: 3, // Apple AirPods 4 (Original) - $150
+            };
+            
+            const aPriority = airPodsPriority[a.id] || 999;
+            const bPriority = airPodsPriority[b.id] || 999;
+            
+            // If both are in priority list, sort by priority order
+            if (aPriority !== 999 && bPriority !== 999) {
+              return aPriority - bPriority;
+            }
+            // If only one is in priority list, prioritize it
+            if (aPriority !== 999 && bPriority === 999) return -1;
+            if (aPriority === 999 && bPriority !== 999) return 1;
+            
+            // If neither is in priority list, sort by price (highest to lowest)
+            return b.price - a.price;
+          }
+          
+          // Green Lion second - sort by price (highest to lowest) within Green Lion
+          if (aIsGreenLion && !bIsGreenLion) return -1;
+          if (!aIsGreenLion && bIsGreenLion) return 1;
+          if (aIsGreenLion && bIsGreenLion) {
+            return b.price - a.price; // Highest price first within Green Lion
+          }
+          
+          // For non-Apple, non-Green Lion products: sort by price (highest to lowest)
+          return b.price - a.price;
+        });
       } else if (categoryDisplayName === "Gaming") {
         const gamingProducts = getProductsByCategory("Gaming");
         if (Array.isArray(gamingProducts) && gamingProducts.length > 0) {
@@ -234,6 +278,18 @@ const CategoryPage = () => {
             }))
           ];
         }
+        // Sort Smartphones: Apple products first, then by price (highest to lowest)
+        products.sort((a, b) => {
+          const aIsApple = a.brand === "Apple" || (typeof a.name === "string" && a.name.toLowerCase().includes("apple") || a.name.toLowerCase().includes("iphone"));
+          const bIsApple = b.brand === "Apple" || (typeof b.name === "string" && b.name.toLowerCase().includes("apple") || b.name.toLowerCase().includes("iphone"));
+          
+          // Apple products first
+          if (aIsApple && !bIsApple) return -1;
+          if (!aIsApple && bIsApple) return 1;
+          
+          // Sort by price (highest to lowest)
+          return b.price - a.price;
+        });
       } else if (categoryDisplayName === "Wearables") {
         const wearables = getProductsByCategory("Wearables");
         if (Array.isArray(wearables) && wearables.length > 0) {
@@ -255,6 +311,51 @@ const CategoryPage = () => {
             category: p.category
           }))];
         }
+        // Sort Wearables products: Apple products first (with priority order), then Green Lion (by price), then others by price
+        products.sort((a, b) => {
+          const aIsGreenLion = a.id >= 5000;
+          const bIsGreenLion = b.id >= 5000;
+          const aIsApple = a.brand === "Apple" || (typeof a.name === "string" && a.name.toLowerCase().includes("apple"));
+          const bIsApple = b.brand === "Apple" || (typeof b.name === "string" && b.name.toLowerCase().includes("apple"));
+          
+          // Apple products FIRST - use priority order, then by price
+          if (aIsApple && !bIsApple) return -1;
+          if (!aIsApple && bIsApple) return 1;
+          
+          // Within Apple products, use priority order first
+          if (aIsApple && bIsApple) {
+            const appleWatchPriority: Record<number, number> = {
+              208: 1, // Apple Watch Series 11 42mm - $415
+              207: 2, // Apple Watch Series 10 46mm - $370
+              205: 3, // Apple Watch SE (2nd generation) 40mm - $285
+              206: 4, // Apple Watch SE (2nd generation) 44mm - $265
+            };
+            
+            const aPriority = appleWatchPriority[a.id] || 999;
+            const bPriority = appleWatchPriority[b.id] || 999;
+            
+            // If both are in priority list, sort by priority order
+            if (aPriority !== 999 && bPriority !== 999) {
+              return aPriority - bPriority;
+            }
+            // If only one is in priority list, prioritize it
+            if (aPriority !== 999 && bPriority === 999) return -1;
+            if (aPriority === 999 && bPriority !== 999) return 1;
+            
+            // If neither is in priority list, sort by price (highest to lowest)
+            return b.price - a.price;
+          }
+          
+          // Green Lion second - sort by price (highest to lowest) within Green Lion
+          if (aIsGreenLion && !bIsGreenLion) return -1;
+          if (!aIsGreenLion && bIsGreenLion) return 1;
+          if (aIsGreenLion && bIsGreenLion) {
+            return b.price - a.price; // Highest price first within Green Lion
+          }
+          
+          // For non-Apple, non-Green Lion products: sort by price (highest to lowest)
+          return b.price - a.price;
+        });
       } else if (categoryDisplayName === "Tablets") {
         const tablets = getProductsByCategory("Tablets");
         if (Array.isArray(tablets) && tablets.length > 0) {
@@ -266,6 +367,18 @@ const CategoryPage = () => {
             }))
           ];
         }
+        // Sort Tablets: Apple products first, then by price (highest to lowest)
+        products.sort((a, b) => {
+          const aIsApple = a.brand === "Apple" || (typeof a.name === "string" && a.name.toLowerCase().includes("apple") || a.name.toLowerCase().includes("ipad"));
+          const bIsApple = b.brand === "Apple" || (typeof b.name === "string" && b.name.toLowerCase().includes("apple") || b.name.toLowerCase().includes("ipad"));
+          
+          // Apple products first
+          if (aIsApple && !bIsApple) return -1;
+          if (!aIsApple && bIsApple) return 1;
+          
+          // Sort by price (highest to lowest)
+          return b.price - a.price;
+        });
       } else if (categoryDisplayName === "iPhone Cases" || categoryDisplayName === "IPhone Cases" || categoryDisplayName.toLowerCase() === "iphone cases" || categoryDisplayName === "Iphone cases") {
         const cases = getProductsByCategory("iPhone Cases");
         if (Array.isArray(cases) && cases.length > 0) {
@@ -277,6 +390,18 @@ const CategoryPage = () => {
             }))
           ];
         }
+        // Sort iPhone Cases: Apple products first, then by price (highest to lowest)
+        products.sort((a, b) => {
+          const aIsApple = a.brand === "Apple" || (typeof a.name === "string" && a.name.toLowerCase().includes("apple"));
+          const bIsApple = b.brand === "Apple" || (typeof b.name === "string" && b.name.toLowerCase().includes("apple"));
+          
+          // Apple products first
+          if (aIsApple && !bIsApple) return -1;
+          if (!aIsApple && bIsApple) return 1;
+          
+          // Sort by price (highest to lowest)
+          return b.price - a.price;
+        });
       }
     } catch (error) {
       console.error("Error fetching products for category:", categoryDisplayName, error);
@@ -288,6 +413,14 @@ const CategoryPage = () => {
   // Helper function to check if product is Green Lion
   const isGreenLionProduct = (product: any) => {
     return product.id >= 5000 || product.brand === "Green Lion" || product.name?.startsWith("Green Lion");
+  };
+
+  // Helper function to check if product is Apple
+  const isAppleProduct = (product: any) => {
+    if (!product) return false;
+    if (product.brand === "Apple") return true;
+    const name = typeof product.name === "string" ? product.name.toLowerCase() : "";
+    return name.includes("apple") || name.startsWith("iphone") || name.startsWith("ipad") || name.startsWith("airpods") || name.includes("apple watch");
   };
 
   const inferProductBrand = (product: any): string | undefined => {
@@ -328,23 +461,76 @@ const CategoryPage = () => {
       });
     }
 
-    // Always sort to put Green Lion products first (unless user selects a specific sort)
+    // Always sort to put Green Lion products first, then Apple products, then others (unless user selects a specific sort)
     if (sortBy === "default") {
       filtered.sort((a, b) => {
-        // For Smartphones, strictly sort by Newest First (ID Descending)
-        if (isSmartphoneCategory) {
-          return b.id - a.id;
-        }
-
         const aIsGreenLion = isGreenLionProduct(a);
         const bIsGreenLion = isGreenLionProduct(b);
+        const aIsApple = isAppleProduct(a);
+        const bIsApple = isAppleProduct(b);
 
-        // Green Lion products first
+        // Apple products FIRST - use priority order for specific categories, then by price
+        if (aIsApple && !bIsApple) return -1;
+        if (!aIsApple && bIsApple) return 1;
+
+        // Green Lion products second (after Apple) - sort by price (highest to lowest) within Green Lion
         if (aIsGreenLion && !bIsGreenLion) return -1;
         if (!aIsGreenLion && bIsGreenLion) return 1;
+        if (aIsGreenLion && bIsGreenLion) {
+          return b.price - a.price; // Highest price first within Green Lion
+        }
 
-        // Within same type, sort by rating (high to low)
-        return (b.rating || 0) - (a.rating || 0);
+        // For Wearables: prioritize specific Apple Watch models first within Apple products
+        if (categoryDisplayName === "Wearables" && aIsApple && bIsApple) {
+          // Priority order for Apple Watches
+          const appleWatchPriority: Record<number, number> = {
+            208: 1, // Apple Watch Series 11 42mm - $415
+            207: 2, // Apple Watch Series 10 46mm - $370
+            205: 3, // Apple Watch SE (2nd generation) 40mm - $285
+            206: 4, // Apple Watch SE (2nd generation) 44mm - $265
+          };
+          
+          const aPriority = appleWatchPriority[a.id] || 999;
+          const bPriority = appleWatchPriority[b.id] || 999;
+          
+          // If both are in priority list, sort by priority order
+          if (aPriority !== 999 && bPriority !== 999) {
+            return aPriority - bPriority;
+          }
+          // If only one is in priority list, prioritize it
+          if (aPriority !== 999 && bPriority === 999) return -1;
+          if (aPriority === 999 && bPriority !== 999) return 1;
+          
+          // If neither is in priority list, sort by price (highest to lowest)
+          return b.price - a.price;
+        }
+
+        // For Audio: prioritize specific Apple AirPods models first within Apple products
+        if (categoryDisplayName === "Audio" && aIsApple && bIsApple) {
+          // Priority order for Apple AirPods
+          const airPodsPriority: Record<number, number> = {
+            127: 1, // Apple AirPods Pro 3 - $287
+            129: 2, // Apple AirPods Pro (2nd Generation) with USB-C - $215
+            128: 3, // Apple AirPods 4 (Original) - $150
+          };
+          
+          const aPriority = airPodsPriority[a.id] || 999;
+          const bPriority = airPodsPriority[b.id] || 999;
+          
+          // If both are in priority list, sort by priority order
+          if (aPriority !== 999 && bPriority !== 999) {
+            return aPriority - bPriority;
+          }
+          // If only one is in priority list, prioritize it
+          if (aPriority !== 999 && bPriority === 999) return -1;
+          if (aPriority === 999 && bPriority !== 999) return 1;
+          
+          // If neither is in priority list, sort by price (highest to lowest)
+          return b.price - a.price;
+        }
+
+        // Sort by price (highest to lowest) for all categories and all product types
+        return b.price - a.price;
       });
     } else {
       // User-selected sort
@@ -413,7 +599,7 @@ const CategoryPage = () => {
     }
 
     return filtered;
-  }, [categoryProducts, sortBy, isSmartphoneCategory, selectedSmartphoneBrand]);
+  }, [categoryProducts, sortBy, isSmartphoneCategory, categoryDisplayName, selectedSmartphoneBrand]);
 
   // Debug: Log category information (remove in production)
   useEffect(() => {

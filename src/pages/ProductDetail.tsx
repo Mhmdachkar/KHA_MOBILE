@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { motion } from "framer-motion";
 import { Heart, ShoppingCart, Star, ChevronLeft, ChevronRight, CheckCircle2 } from "lucide-react";
 import { Link, useParams, useNavigate, useSearchParams } from "react-router-dom";
@@ -115,8 +115,10 @@ const ProductDetail = () => {
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [showStickyCart, setShowStickyCart] = useState(false);
   const { isFavorite, toggleFavorite } = useFavorites();
   const { addToCart } = useCart();
+  const desktopCartRef = useRef<HTMLDivElement>(null);
 
   const productId = id ? parseInt(id, 10) : null;
 
@@ -131,6 +133,22 @@ const ProductDetail = () => {
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
   }, [id]);
+
+  // Handle sticky Add to Cart button visibility
+  useEffect(() => {
+    const handleScroll = () => {
+      if (desktopCartRef.current) {
+        const rect = desktopCartRef.current.getBoundingClientRect();
+        // Show sticky button when desktop cart buttons scroll out of view
+        setShowStickyCart(rect.bottom < 0);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Check initial state
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // If product not found, redirect to products page
   useEffect(() => {
@@ -234,7 +252,7 @@ const ProductDetail = () => {
     productImages[0] ||
     regularProduct?.image ||
     (greenLionProduct ? greenLionProduct.images[0] : "/placeholder.svg");
-
+  
   const favorite = isFavorite(product.id);
 
   // Generate product-specific reviews
@@ -650,7 +668,7 @@ const ProductDetail = () => {
               />
               {productImages.length > 1 && (
                 <>
-                  <button
+                  <button 
                     onClick={handlePreviousImage}
                     style={{ touchAction: 'manipulation', minHeight: '44px', minWidth: '44px' }}
                     className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 h-11 w-11 sm:h-12 sm:w-12 bg-background/90 backdrop-blur-md rounded-full flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-background shadow-lg border border-border/50 z-10"
@@ -658,7 +676,7 @@ const ProductDetail = () => {
                   >
                     <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6" />
                   </button>
-                  <button
+                  <button 
                     onClick={handleNextImage}
                     style={{ touchAction: 'manipulation', minHeight: '44px', minWidth: '44px' }}
                     className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 h-11 w-11 sm:h-12 sm:w-12 bg-background/90 backdrop-blur-md rounded-full flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-background shadow-lg border border-border/50 z-10"
@@ -700,7 +718,7 @@ const ProductDetail = () => {
                     className={`aspect-square bg-white rounded-sm overflow-hidden border-2 transition-all cursor-pointer min-h-[70px] sm:min-h-[80px] md:min-h-[90px] flex items-center justify-center p-1.5 sm:p-2 ${selectedImage === index
                       ? "border-primary ring-2 ring-primary/30 shadow-md"
                       : "border-border hover:border-primary/50"
-                      }`}
+                    }`}
                     aria-label={`View image ${index + 1}`}
                   >
                     <img
@@ -761,7 +779,7 @@ const ProductDetail = () => {
                 >
                   <ShoppingCart className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                   Add to Cart
-                </Button>
+              </Button>
                 <Button
                   size="lg"
                   variant="outline"
@@ -770,7 +788,7 @@ const ProductDetail = () => {
                   style={{ touchAction: 'manipulation' }}
                 >
                   Buy Now
-                </Button>
+              </Button>
               </div>
 
               {/* Wishlist Button - Well structured below Buy Now */}
@@ -818,7 +836,7 @@ const ProductDetail = () => {
 
             <h1 className="text-elegant text-xl sm:text-2xl md:text-3xl mb-2 relative z-10 leading-tight sm:leading-normal" style={{ userSelect: 'text', WebkitUserSelect: 'text', touchAction: 'pan-y' }}>{product.title}</h1>
             <p className="text-muted-foreground text-xs sm:text-sm mb-3 sm:mb-4" style={{ userSelect: 'text', WebkitUserSelect: 'text', touchAction: 'pan-y' }}>{product.category}</p>
-
+            
             <div className="flex items-center gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 flex-wrap">
               <div className="flex items-center gap-1">
                 {Array.from({ length: 5 }).map((_, i) => (
@@ -827,7 +845,7 @@ const ProductDetail = () => {
                     className={`h-3 w-3 sm:h-4 sm:w-4 ${i < Math.floor(product.rating)
                       ? "fill-primary text-primary"
                       : "text-border fill-border/30"
-                      }`}
+                    }`}
                   />
                 ))}
               </div>
@@ -836,16 +854,26 @@ const ProductDetail = () => {
 
             <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
               <div className="flex flex-col">
-                <p className="text-elegant text-2xl sm:text-3xl font-bold">${displayPrice.toFixed(2)}</p>
+                {product.isPreorder && displayPrice === 0 ? (
+                  <p className="text-elegant text-2xl sm:text-3xl font-bold">Pre-order</p>
+                ) : (
+                  <p className="text-elegant text-2xl sm:text-3xl font-bold">${displayPrice.toFixed(2)}</p>
+                )}
                 {selectedVariant?.label && (
                   <span className="text-xs sm:text-sm text-muted-foreground mt-1">
                     Configuration: {selectedVariant.label}
                   </span>
                 )}
               </div>
+              {product.isPreorder ? (
+                <span className="text-xs sm:text-sm text-primary bg-primary/10 px-2 sm:px-3 py-1 rounded-full">
+                  Pre-order
+                </span>
+              ) : (
               <span className="text-xs sm:text-sm text-green-600 bg-green-50 px-2 sm:px-3 py-1 rounded-full">
                 In Stock
               </span>
+              )}
             </div>
 
             {(colorOptions.length > 0 || variantOptions.length > 0) && (
@@ -964,7 +992,7 @@ const ProductDetail = () => {
               <p className="text-sm font-light leading-relaxed text-muted-foreground mb-4" style={{ userSelect: 'text', WebkitUserSelect: 'text', touchAction: 'pan-y' }}>
                 {product.description}
               </p>
-
+              
               {/* Key Features */}
               {product.features && product.features.length > 0 && (
                 <div className="mt-6">
@@ -982,9 +1010,9 @@ const ProductDetail = () => {
             </div>
 
             {/* Actions - Hidden on mobile (buttons shown in image gallery), visible on desktop */}
-            <div className="hidden md:flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6">
-              <Button
-                size="lg"
+            <div ref={desktopCartRef} className="hidden md:flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6">
+              <Button 
+                size="lg" 
                 className="flex-1 text-elegant text-sm sm:text-base py-4 sm:py-5 md:py-6"
                 onClick={() => handleAddToCart()}
                 style={{ touchAction: 'manipulation' }}
@@ -1004,14 +1032,14 @@ const ProductDetail = () => {
             </div>
 
             {/* Wishlist Button - Desktop only (mobile version is in image gallery) */}
-            <motion.button
+            <motion.button 
               whileHover={window.matchMedia('(hover: hover)').matches ? { scale: 1.05 } : undefined}
               onClick={() => toggleFavorite(product)}
               style={{ touchAction: 'manipulation' }}
               className={`hidden md:flex items-center gap-2 text-sm transition-colors mb-12 ${favorite
-                ? "text-accent"
-                : "hover:text-accent"
-                }`}
+                  ? "text-accent" 
+                  : "hover:text-accent"
+              }`}
             >
               <Heart className={`h-4 w-4 ${favorite ? "fill-accent" : ""}`} />
               <span className="text-elegant">
@@ -1462,8 +1490,8 @@ const ProductDetail = () => {
                             </div>
                           </div>
                         )}
-                        <Link to={`/product/${item.id}`}>
-                          <div className="bg-white border-2 border-border hover:border-primary/50 rounded-lg p-4 sm:p-5 transition-all duration-300 cursor-pointer group">
+                        <div className="bg-white border-2 border-border hover:border-primary/50 rounded-lg p-4 sm:p-5 transition-all duration-300 group">
+                          <Link to={`/product/${item.id}`}>
                             <div className="aspect-square mb-3 bg-white rounded-md overflow-hidden">
                               <img
                                 src={item.image}
@@ -1483,9 +1511,30 @@ const ProductDetail = () => {
                                 />
                               ))}
                             </div>
-                            <p className="text-lg font-bold text-elegant">${item.price.toFixed(2)}</p>
-                          </div>
-                        </Link>
+                            <p className="text-lg font-bold text-elegant mb-3">${item.price.toFixed(2)}</p>
+                          </Link>
+                          <Button
+                            size="sm"
+                            className="w-full text-xs sm:text-sm"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              addToCart({
+                                id: item.id,
+                                name: item.name,
+                                price: item.price,
+                                image: item.image,
+                                rating: item.rating,
+                                category: item.category,
+                                quantity: 1,
+                              });
+                            }}
+                            style={{ touchAction: 'manipulation' }}
+                          >
+                            <ShoppingCart className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+                            Add to Cart
+                          </Button>
+                        </div>
                         {index < bundleItems.length - 1 && (
                           <div className="lg:hidden flex items-center justify-center my-4">
                             <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
@@ -1574,6 +1623,56 @@ const ProductDetail = () => {
           </motion.section>
         )}
       </div>
+
+      {/* Sticky Add to Cart Button - Desktop Only */}
+      {showStickyCart && (
+        <motion.div
+          initial={{ y: 100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 100, opacity: 0 }}
+          className="hidden md:block fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-t border-border shadow-lg"
+        >
+          <div className="container mx-auto px-4 sm:px-6 py-4">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-4 flex-1">
+                <img
+                  src={primaryImage}
+                  alt={product.name}
+                  className="w-16 h-16 object-contain rounded-md border border-border"
+                />
+                <div className="flex-1">
+                  <h3 className="text-sm font-semibold text-elegant line-clamp-1">{product.name}</h3>
+                  {product.isPreorder && displayPrice === 0 ? (
+                    <p className="text-sm font-bold text-primary">Pre-order</p>
+                  ) : (
+                    <p className="text-sm font-bold text-primary">${displayPrice.toFixed(2)}</p>
+                  )}
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <Button
+                  size="lg"
+                  className="text-elegant text-sm sm:text-base px-6 sm:px-8"
+                  onClick={() => handleAddToCart()}
+                  style={{ touchAction: 'manipulation' }}
+                >
+                  <ShoppingCart className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+                  {product.isPreorder ? "Preorder Now" : "Add to Cart"}
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="text-elegant text-sm sm:text-base px-6 sm:px-8"
+                  onClick={() => handleAddToCart(true)}
+                  style={{ touchAction: 'manipulation' }}
+                >
+                  {product.isPreorder ? "Preorder & Checkout" : "Buy Now"}
+                </Button>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      )}
 
       {/* Image Lightbox */}
       <ImageLightbox

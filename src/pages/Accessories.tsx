@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
-import { Grid3x3, List, Battery, Smartphone, Filter } from "lucide-react";
+import { Grid3x3, List, Battery, Smartphone, Filter, Laptop, Cable, Shield, Scissors } from "lucide-react";
 import Header from "@/components/Header";
 import ProductCard from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
@@ -125,18 +125,91 @@ const Accessories = () => {
   };
 
   // Filter products based on category and brand
-  const getFilteredProducts = () => {
+  const getFilteredProducts = useMemo(() => {
     let products = allAccessoryProducts;
 
     // Filter by category
     if (selectedCategory !== "all") {
       products = products.filter((product: any) => {
         const category = product.category?.toLowerCase();
-        return category === selectedCategory;
+        const selectedCat = selectedCategory.toLowerCase();
+        const nameLower = product.name?.toLowerCase() || "";
+        
+        // Handle "advanced accessories" - show gimbal, bedside clock, massage gun
+        if (selectedCat === "advanced accessories") {
+          return nameLower.includes("new york gimbal") ||
+                 nameLower.includes("gimbal smart face") ||
+                 nameLower.includes("bedside clock") ||
+                 nameLower.includes("mini massage gun");
+        }
+        
+        // Handle "stands" - show selfie stick, tripod, phone holders, LED lamps, desktop stands (exclude LED lights)
+        if (selectedCat === "stands") {
+          return (nameLower.includes("magselfie") ||
+                 nameLower.includes("selfie stick") ||
+                 nameLower.includes("tripod") ||
+                 (nameLower.includes("m5") && (nameLower.includes("foldable") || nameLower.includes("holder"))) ||
+                 nameLower.includes("led table lamp") ||
+                 nameLower.includes("kakusiga folding") ||
+                 nameLower.includes("foneng foldable desktop") ||
+                 nameLower.includes("m6-rotating") ||
+                 nameLower.includes("rotating stand")) &&
+                 !nameLower.includes("makeup mirror") &&
+                 !nameLower.includes("ring led") &&
+                 !nameLower.includes("mj33") &&
+                 !nameLower.includes("rl-19 led soft") &&
+                 !nameLower.includes("rl19 led soft");
+        }
+        
+        // Handle "hair & grooming" - show hair dryers, straighteners, trimmers, clippers
+        if (selectedCat === "hair & grooming" || selectedCat === "grooming") {
+          return nameLower.includes("hair dryer") ||
+                 nameLower.includes("blow wave") ||
+                 nameLower.includes("silkwave") ||
+                 nameLower.includes("straightener") ||
+                 nameLower.includes("beard trimmer") ||
+                 nameLower.includes("one blade") ||
+                 nameLower.includes("hair clipper") ||
+                 nameLower.includes("clip pro") ||
+                 nameLower.includes("pro trim duo") ||
+                 nameLower.includes("trim duo") ||
+                 nameLower.includes("pirates hair trimmer") ||
+                 nameLower.includes("pirates trimmer");
+        }
+        
+        // Handle "led lights" - show makeup mirrors, ring lights, light strips
+        if (selectedCat === "led lights") {
+          return nameLower.includes("glam shine makeup mirror") ||
+                 nameLower.includes("makeup mirror") ||
+                 (nameLower.includes("rgb") && nameLower.includes("mj33")) ||
+                 nameLower.includes("mj33 ring") ||
+                 nameLower.includes("ring led light") ||
+                 nameLower.includes("rl-19 led soft") ||
+                 nameLower.includes("rl19 led soft") ||
+                 nameLower.includes("rl-19 led soft light strip");
+        }
+        
+        // Handle "laptop accessories" - show laptop bags and USB flash drives
+        if (selectedCat === "laptop accessories") {
+          return nameLower.includes("laptop sleeve") ||
+                 nameLower.includes("laptop bag") ||
+                 nameLower.includes("orbit sleeve") ||
+                 nameLower.includes("sigma laptop") ||
+                 nameLower.includes("sandisk cruzer blade") ||
+                 nameLower.includes("cruzer blade") ||
+                 nameLower.includes("mini metal usb") ||
+                 nameLower.includes("philips usb 3.2") ||
+                 nameLower.includes("usb flash drive") ||
+                 nameLower.includes("flash drive");
+        }
+        
+        
+        // Standard category matching
+        return category === selectedCat;
       });
     }
 
-    // Filter by brand
+    // Filter by brand - only show products from the selected brand
     if (selectedBrand !== "all") {
       products = products.filter((product: any) => {
         const brand = product.brand || "Other";
@@ -158,9 +231,9 @@ const Accessories = () => {
     });
 
     return products;
-  };
+  }, [allAccessoryProducts, selectedCategory, selectedBrand]);
 
-  const filteredProducts = getFilteredProducts();
+  const filteredProducts = getFilteredProducts;
 
   return (
     <div className="min-h-screen bg-background w-full">
@@ -187,7 +260,7 @@ const Accessories = () => {
           className="mb-6 sm:mb-8 overflow-x-auto scrollbar-hide"
         >
           <Tabs value={selectedCategory} onValueChange={setSelectedCategory}>
-            <TabsList className="grid w-full max-w-2xl grid-cols-3 h-auto p-1 gap-1 sm:gap-0">
+            <TabsList className="grid w-full max-w-5xl grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 h-auto p-1 gap-1 sm:gap-2">
               <TabsTrigger value="all" className="text-elegant text-[10px] sm:text-xs px-2 sm:px-4 py-2">
                 <span className="hidden sm:inline">All Products</span>
                 <span className="sm:hidden">All</span>
@@ -195,10 +268,32 @@ const Accessories = () => {
               <TabsTrigger value="charging" className="text-elegant text-[10px] sm:text-xs px-2 sm:px-4 py-2">
                 <Battery className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                 <span className="hidden sm:inline">Charging</span>
+                <span className="sm:hidden">Charge</span>
               </TabsTrigger>
-              <TabsTrigger value="accessories" className="text-elegant text-[10px] sm:text-xs px-2 sm:px-4 py-2">
+              <TabsTrigger value="hair & grooming" className="text-elegant text-[10px] sm:text-xs px-2 sm:px-4 py-2">
+                <Scissors className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                <span className="hidden sm:inline">Hair & Grooming</span>
+                <span className="sm:hidden">Hair</span>
+              </TabsTrigger>
+              <TabsTrigger value="laptop accessories" className="text-elegant text-[10px] sm:text-xs px-2 sm:px-4 py-2">
+                <Laptop className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                <span className="hidden sm:inline">Laptop Acc</span>
+                <span className="sm:hidden">Laptop</span>
+              </TabsTrigger>
+              <TabsTrigger value="led lights" className="text-elegant text-[10px] sm:text-xs px-2 sm:px-4 py-2">
+                <Cable className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                <span className="hidden sm:inline">LED Lights</span>
+                <span className="sm:hidden">LED</span>
+              </TabsTrigger>
+              <TabsTrigger value="stands" className="text-elegant text-[10px] sm:text-xs px-2 sm:px-4 py-2">
                 <Smartphone className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
-                <span className="hidden sm:inline">Accessories</span>
+                <span className="hidden sm:inline">Stands</span>
+                <span className="sm:hidden">Stand</span>
+              </TabsTrigger>
+              <TabsTrigger value="advanced accessories" className="text-elegant text-[10px] sm:text-xs px-2 sm:px-4 py-2">
+                <Shield className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                <span className="hidden sm:inline">Advanced</span>
+                <span className="sm:hidden">Adv</span>
               </TabsTrigger>
             </TabsList>
           </Tabs>
@@ -214,10 +309,10 @@ const Accessories = () => {
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
             <div className="flex items-center gap-2">
               <Filter className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground flex-shrink-0" />
-              <span className="text-xs sm:text-sm text-elegant whitespace-nowrap">Filter by Brand:</span>
+              <span className="text-xs sm:text-sm text-elegant whitespace-nowrap font-medium">Filter by Brand:</span>
             </div>
             <Select value={selectedBrand} onValueChange={setSelectedBrand}>
-              <SelectTrigger className="w-full sm:w-[200px] h-9 sm:h-10 text-xs sm:text-sm">
+              <SelectTrigger className="w-full sm:w-[250px] h-9 sm:h-10 text-xs sm:text-sm">
                 <SelectValue placeholder="All Brands" />
               </SelectTrigger>
               <SelectContent>
@@ -229,6 +324,16 @@ const Accessories = () => {
                 ))}
               </SelectContent>
             </Select>
+            {selectedBrand !== "all" && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setSelectedBrand("all")}
+                className="text-xs sm:text-sm"
+              >
+                Clear Filter
+              </Button>
+            )}
           </div>
         </motion.div>
 
@@ -315,6 +420,3 @@ const Accessories = () => {
 };
 
 export default Accessories;
-
-
-

@@ -78,6 +78,10 @@ import appleWatchS10_46MM_3 from "@/assets/wearables/Apple watch S10 46MM/Screen
 // Gaming Consoles imports
 import ps4Slim from "@/assets/gaming/ps4.webp";
 import ps5Slim from "@/assets/gaming/Screenshot 2025-12-09 013133.png";
+// MagSafe Charger imports
+import magsafeCharger from "@/assets/recharges/magsafe charger/magsafe charger.gif";
+import magsafeCharger2 from "@/assets/recharges/magsafe charger/magsafe chargerr.gif";
+import magsafeCharger3 from "@/assets/recharges/magsafe charger/magsafe.gif";
 // Apple Watch S11 42MM imports
 import appleWatchS11_42MM from "@/assets/wearables/S11 42MM/Screenshot 2025-12-06 022651.png";
 import appleWatchS11_42MM_1 from "@/assets/wearables/S11 42MM/Screenshot 2025-12-06 022702.png";
@@ -355,6 +359,46 @@ export const phoneAccessories: Product[] = [
     ]
   },
   {
+    id: 132,
+    name: "Apple MagSafe Charger",
+    title: "Apple MagSafe Charger - Official Wireless Fast Charging for iPhone",
+    price: 39,
+    image: magsafeCharger,
+    images: [magsafeCharger, magsafeCharger2, magsafeCharger3],
+    rating: 4.8,
+    category: "Charging",
+    brand: "Apple",
+    description: "The Apple MagSafe Charger makes wireless charging a snap. The perfectly aligned magnets attach to your iPhone 16, iPhone 15, iPhone 14, and iPhone 13 series for faster wireless charging up to 25W. The MagSafe Charger maintains compatibility with Qi charging, so it can be used to wirelessly charge your iPhone 8 or later, as well as AirPods models with a wireless charging case, as you would with any Qi-certified charger.",
+    features: [
+      "Fast Wireless Charging: Delivers up to 25W of power for MagSafe-compatible iPhones, providing faster wireless charging than standard Qi chargers.",
+      "Perfect Magnetic Alignment: Built-in magnets automatically snap into perfect alignment with iPhone 16, 15, 14, 13, and 12 series for optimal charging efficiency.",
+      "Universal Qi Compatibility: Works with any Qi-enabled device, including iPhone 8 and later, AirPods with wireless charging case, and other Qi-certified accessories.",
+      "Upgraded 25W Charging: Newer MagSafe chargers support up to 25W charging for iPhone 16 series with a 30W+ power adapter.",
+      "1-Meter USB-C Cable: Includes a long 1m (3.3 feet) integrated USB-C cable for flexible placement and convenience.",
+      "Sleek Aluminum Design: Premium aluminum finish with Apple logo looks elegant on any desk or nightstand.",
+      "Case Friendly: Charges through most cases with MagSafe compatibility, no need to remove your iPhone case.",
+      "Foreign Object Detection: Advanced safety features detect metallic foreign objects and prevent charging to avoid damage.",
+      "Apple Certified: Official Apple accessory with guaranteed compatibility and safety.",
+      "LED Indicator: Built-in LED light confirms proper magnetic alignment and charging status."
+    ],
+    specifications: [
+      { label: "Brand", value: "Apple" },
+      { label: "Model", value: "MagSafe Charger (Official)" },
+      { label: "Maximum Power", value: "25W (with compatible iPhone and 30W+ adapter)" },
+      { label: "Standard Power", value: "15W (iPhone 13/14/15), 25W (iPhone 16)" },
+      { label: "Cable Length", value: "1m (3.3 feet) integrated USB-C cable" },
+      { label: "Connector", value: "USB-C" },
+      { label: "Compatibility", value: "iPhone 16/15/14/13/12 series, AirPods Pro, AirPods with wireless charging" },
+      { label: "Qi Compatible", value: "Yes (iPhone 8 and later)" },
+      { label: "Material", value: "Aluminum body, integrated cable" },
+      { label: "Magnetic Charging", value: "Yes (MagSafe)" },
+      { label: "Foreign Object Detection", value: "Yes" },
+      { label: "Color", value: "Silver/White" },
+      { label: "Recommended Adapter", value: "20W USB-C (minimum), 30W+ (for 25W charging)" },
+      { label: "Condition", value: "Brand New" }
+    ]
+  },
+  {
     id: 106,
     name: "Apple AirPods",
     title: "Apple AirPods",
@@ -414,7 +458,7 @@ export const phoneAccessories: Product[] = [
     id: 108,
     name: "Galaxy Buds6 Pro (Black)",
     title: "Galaxy Buds6 Pro Wireless Earbuds (Black)",
-    price: 149.99,
+    price: 15,
     image: galaxyBuds6Black,
     rating: 4.7,
     category: "Audio",
@@ -491,7 +535,7 @@ export const phoneAccessories: Product[] = [
     id: 111,
     name: "Apple AirPods 4 (Copy A)",
     title: "Apple AirPods 4 (Copy A) - Redesigned Sound Experience with H2 Chip",
-    price: 150,
+    price: 20,
     image: airpodsPro2,
     rating: 4.9,
     category: "Audio",
@@ -1045,7 +1089,7 @@ export const phoneAccessories: Product[] = [
     ]
   },
   {
-    id: 124,
+    id: 133,
     name: "Mini Metal USB Flash Drive",
     title: "Compact Mini Metal USB 2.0 Flash Drive",
     price: 10,
@@ -1090,7 +1134,7 @@ export const phoneAccessories: Product[] = [
     ]
   },
   {
-    id: 125,
+    id: 134,
     name: "Philips USB 3.2 High-Speed Metal Flash Drive",
     title: "Philips USB 3.2 Gen 1 High-Speed Flash Drive",
     price: 10,
@@ -1134,7 +1178,7 @@ export const phoneAccessories: Product[] = [
     ]
   },
   {
-    id: 126,
+    id: 135,
     name: "SanDisk Cruzer Blade USB Flash Drive",
     title: "SanDisk Cruzer Blade Compact USB 2.0 Flash Drive",
     price: 12,
@@ -2710,26 +2754,58 @@ export const iphoneCases: Product[] = [
   {
     id: 131,
     name: "iPhone 17 Pro Max Silicone Case with MagSafe",
-    title: "iPhone 17 Pro Max Silicone Case with MagSafe - Soft Touch Finish",
+    title: "iPhone 17 Pro Max Silicone Case with MagSafe - Premium Protection with Camera Control",
     price: 70,
     image: silicon17ProMaxOrange,
     images: [silicon17ProMaxOrange, silicon17ProMaxBrown, silicon17ProMaxLemonade, silicon17ProMaxNavyBlue, silicon17ProMaxPurple],
     rating: 4.9,
     category: "iPhone Cases",
     brand: "Apple",
-    description: "Designed by Apple to complement the next-generation iPhone 17 Pro Max, the Silicone Case with MagSafe is a delightful way to protect your iPhone. The silky, soft-touch finish of the silicone exterior feels great in your hand. And on the inside, there's a soft microfiber lining for even more protection. With built-in magnets that align perfectly with iPhone 17 Pro Max, this case offers a magical attach experience and faster wireless charging every time.",
+    description: "Designed by Apple to complement the next-generation iPhone 17 Pro Max, the Silicone Case with MagSafe is a delightful way to protect your iPhone while maintaining its elegant design. Crafted from 45% recycled silicone material, this premium case features a silky, soft-touch finish that feels great in your hand and provides excellent grip. The interior features a soft microfiber lining for added protection against scratches and drops. With built-in magnets that align perfectly with iPhone 17 Pro Max, this case offers a magical attach experience and supports faster wireless charging up to 15W. The case works seamlessly with Camera Control, recognizing precise finger movements like clicks and slides for enhanced photography control. Available in vibrant colors including Orange, Brown, Lemonade, Navy Blue, and Purple, this case combines Apple's commitment to sustainability with premium protection.",
     features: [
-      "MagSafe Compatible: Built-in magnets for magical attachment and faster wireless charging.",
-      "Soft-Touch Silicone: Silky exterior finish feels premium and comfortable in hand.",
-      "Microfiber Lining: Soft inner lining protects your iPhone from scratches.",
-      "Precise Cutouts: Designed specifically for iPhone 17 Pro Max with precise cutouts for buttons and ports.",
-      "Drop Protection: Helps protect your iPhone from drops and scratches."
+      "MagSafe Compatible: Built-in magnets align perfectly with iPhone 17 Pro Max for magical attachment and faster wireless charging up to 15W.",
+      "Camera Control Integration: Works seamlessly with Camera Control, recognizing precise finger movements like clicks and slides for enhanced photography control.",
+      "45% Recycled Silicone: Made with 45% recycled silicone material, reflecting Apple's commitment to environmental sustainability.",
+      "Soft-Touch Silicone Exterior: Silky, premium finish feels comfortable in hand and provides excellent grip to prevent accidental drops.",
+      "Microfiber Lining: Soft inner lining protects your iPhone from scratches, scuffs, and daily wear while maintaining a slim profile.",
+      "Precise Cutouts: Designed specifically for iPhone 17 Pro Max with precise cutouts for buttons, ports, speakers, and camera system.",
+      "Drop Protection: Helps protect your iPhone from drops and impacts with reinforced corners and edge protection.",
+      "Wireless Charging Compatible: Works seamlessly with MagSafe chargers, Qi-certified wireless chargers, and Apple Watch chargers without removing the case.",
+      "Crossbody Strap Compatible: Securely attaches to Apple's Crossbody Strap for convenient hands-free use and added security.",
+      "Extensive Testing: Undergone extensive testing to ensure durability, protection against scratches, drops, and long-lasting performance.",
+      "Official Apple Product: Designed and manufactured by Apple specifically for iPhone 17 Pro Max with guaranteed compatibility and quality.",
+      "Slim Profile: Maintains the sleek design of your iPhone while providing comprehensive protection without adding bulk.",
+      "Easy Installation: Snaps on easily and securely without tools, providing instant protection for your device.",
+      "Premium Feel: High-quality materials and construction provide a premium feel that matches the iPhone 17 Pro Max's design language.",
+      "Color Options: Available in vibrant colors including Orange, Brown, Lemonade, Navy Blue, and Purple to match your personal style.",
+      "Button Protection: Raised edges around buttons provide tactile feedback and protection while maintaining easy access.",
+      "Camera Protection: Raised bezel around camera system protects lenses from scratches and impacts when placed on surfaces.",
+      "Screen Protection: Raised edges around screen perimeter help protect the display from scratches when placed face-down.",
+      "Port Access: Precise cutouts ensure easy access to all ports, speakers, and charging connectors without interference.",
+      "Long-Lasting Durability: High-quality silicone material resists wear, fading, and maintains its premium feel over time."
     ],
     specifications: [
-      { label: "Material", value: "Silicone" },
-      { label: "Compatibility", value: "iPhone 17 Pro Max" },
-      { label: "MagSafe", value: "Yes" },
-      { label: "Lining", value: "Soft Microfiber" }
+      { label: "Brand", value: "Apple" },
+      { label: "Model", value: "iPhone 17 Pro Max Silicone Case with MagSafe" },
+      { label: "Material", value: "45% Recycled Silicone (exterior), Soft Microfiber (interior lining)" },
+      { label: "Compatibility", value: "iPhone 17 Pro Max (2024)" },
+      { label: "MagSafe", value: "Yes - Built-in magnets for attachment and wireless charging" },
+      { label: "Wireless Charging", value: "MagSafe (up to 15W), Qi-certified chargers, Apple Watch chargers" },
+      { label: "Camera Control", value: "Yes - Recognizes finger movements for enhanced photography control" },
+      { label: "Crossbody Strap", value: "Compatible - Securely attaches to Apple Crossbody Strap" },
+      { label: "Protection", value: "Drop protection, scratch resistance, microfiber interior lining" },
+      { label: "Lining", value: "Soft Microfiber interior for scratch protection" },
+      { label: "Design", value: "Precise cutouts for buttons, ports, speakers, and camera system" },
+      { label: "Environmental", value: "Made with 45% recycled silicone material" },
+      { label: "Testing", value: "Extensively tested for durability and protection" },
+      { label: "Installation", value: "Snap-on design - no tools required" },
+      { label: "Profile", value: "Slim profile maintains iPhone's sleek design" },
+      { label: "Button Access", value: "Raised edges provide tactile feedback and easy access" },
+      { label: "Camera Protection", value: "Raised bezel protects camera lenses from scratches" },
+      { label: "Screen Protection", value: "Raised edges protect display when placed face-down" },
+      { label: "Color Options", value: "Orange, Brown, Lemonade, Navy Blue, Purple" },
+      { label: "Warranty", value: "1-year limited warranty from Apple" },
+      { label: "Official Product", value: "Designed and manufactured by Apple" }
     ],
     colors: [
       { name: "Orange", image: silicon17ProMaxOrange },
@@ -2747,7 +2823,7 @@ export const gamingConsoles: Product[] = [
     id: 501,
     name: "Sony PlayStation 4 Slim 500GB Console",
     title: "Sony PlayStation 4 Slim 500GB - Compact Gaming Console with HDR Support",
-    price: 249.99,
+    price: 0,
     image: ps4Slim,
     rating: 4.8,
     category: "Gaming",
@@ -2797,7 +2873,7 @@ export const gamingConsoles: Product[] = [
     id: 502,
     name: "Sony PlayStation 5 Slim Console",
     title: "Sony PlayStation 5 Slim - 1TB SSD with 4K 120Hz Gaming & Ray Tracing",
-    price: 499.99,
+    price: 0,
     image: ps5Slim,
     rating: 4.9,
     category: "Gaming",

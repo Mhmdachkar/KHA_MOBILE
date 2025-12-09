@@ -11,17 +11,19 @@ export interface Product {
   category: string;
 }
 
-// Smartphones products (real data from products.ts)
-export const smartphonesProducts: Product[] = getProductsByCategory("Smartphones").map(product => ({
-  id: product.id,
-  name: product.name,
-  price: product.price,
-  image: product.image,
-  rating: product.rating,
-  category: product.category,
-}));
+// Smartphones products (real data from products.ts) - sorted by price highest to lowest
+export const smartphonesProducts: Product[] = getProductsByCategory("Smartphones")
+  .map(product => ({
+    id: product.id,
+    name: product.name,
+    price: product.price,
+    image: product.image,
+    rating: product.rating,
+    category: product.category,
+  }))
+  .sort((a, b) => b.price - a.price);
 
-// Audio products (merging mock data with real accessories + Green Lion audio)
+// Audio products (merging mock data with real accessories + Green Lion audio) - sorted by price highest to lowest
 export const audioProducts: Product[] = [
   // Real audio accessories
   ...getProductsByCategory("Audio").map(product => ({
@@ -74,7 +76,7 @@ export const audioProducts: Product[] = [
     rating: 4.8,
     category: "Audio"
   },
-];
+].sort((a, b) => b.price - a.price);
 
 // Computers products
 export const computersProducts: Product[] = [
@@ -120,7 +122,7 @@ export const computersProducts: Product[] = [
   },
 ];
 
-// Wearables products - using real products from products.ts + Green Lion smartwatches
+// Wearables products - using real products from products.ts + Green Lion smartwatches - sorted by price highest to lowest
 export const wearablesProducts: Product[] = [
   ...realWearables.map(product => ({
     id: product.id,
@@ -139,9 +141,9 @@ export const wearablesProducts: Product[] = [
     rating: product.rating,
     category: product.category,
   })),
-];
+].sort((a, b) => b.price - a.price);
 
-// Gaming products (merging mock data with real accessories + Green Lion gaming)
+// Gaming products (merging mock data with real accessories + Green Lion gaming) - sorted by price highest to lowest
 export const gamingProducts: Product[] = [
   // Real gaming accessories
   ...getProductsByCategory("Gaming").map(product => ({
@@ -163,7 +165,7 @@ export const gamingProducts: Product[] = [
     rating: product.rating,
     category: product.category,
   })),
-];
+].sort((a, b) => b.price - a.price);
 
 // Helper function to get products by category
 export const getProductsByCategoryName = (categoryName: string): Product[] => {
