@@ -14,29 +14,30 @@ interface ProductCardProps {
   rating?: number;
   category?: string;
   colors?: Array<{ name: string; image?: string; stock?: string }>;
+  isPreorder?: boolean;
 }
 
-const ProductCard = ({ id, name, price, image, images, rating = 4.5, category, colors }: ProductCardProps) => {
+const ProductCard = ({ id, name, price, image, images, rating = 4.5, category, colors, isPreorder = false }: ProductCardProps) => {
   const { isFavorite, toggleFavorite } = useFavorites();
   const { addToCart } = useCart();
   const favorite = isFavorite(id);
   // Standardized image sizing for all products - consistent display
   const imageFitClass = "object-contain p-3 sm:p-4 md:p-5";
-  
+
   // Use images array if provided, otherwise use single image
   const productImages = images && images.length > 0 ? images : [image];
   const hasMultipleImages = productImages.length > 1;
   const defaultImage = productImages[0];
   const hoverImage = hasMultipleImages ? productImages[1] : defaultImage;
-  
+
   // State for hover image switching
   const [currentImage, setCurrentImage] = useState(defaultImage);
-  
+
   // Reset image when product changes
   useEffect(() => {
     setCurrentImage(defaultImage);
   }, [defaultImage, id]);
-  
+
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     addToCart({
@@ -64,7 +65,7 @@ const ProductCard = ({ id, name, price, image, images, rating = 4.5, category, c
       setCurrentImage(defaultImage);
     }
   };
-  
+
   return (
     <motion.div
       whileHover={{ y: window.matchMedia('(hover: hover)').matches ? -8 : 0 }}
@@ -82,11 +83,11 @@ const ProductCard = ({ id, name, price, image, images, rating = 4.5, category, c
             src={defaultImage}
             alt={name}
             initial={{ opacity: 1 }}
-            animate={{ 
+            animate={{
               opacity: currentImage === defaultImage ? 1 : 0
             }}
-            transition={{ 
-              duration: 0.7, 
+            transition={{
+              duration: 0.7,
               ease: [0.23, 1, 0.32, 1] // Smooth, elegant cubic bezier
             }}
             className={`absolute inset-0 h-full w-full ${imageFitClass} will-change-[opacity]`}
@@ -97,7 +98,7 @@ const ProductCard = ({ id, name, price, image, images, rating = 4.5, category, c
               target.src = defaultImage;
             }}
           />
-          
+
           {/* Hover Image - Overlay layer (only if multiple images exist) */}
           {hasMultipleImages && (
             <motion.img
@@ -105,15 +106,15 @@ const ProductCard = ({ id, name, price, image, images, rating = 4.5, category, c
               src={hoverImage}
               alt={`${name} - Alternate view`}
               initial={{ opacity: 0 }}
-              animate={{ 
+              animate={{
                 opacity: currentImage === hoverImage ? 1 : 0
               }}
-              transition={{ 
-                duration: 0.7, 
+              transition={{
+                duration: 0.7,
                 ease: [0.23, 1, 0.32, 1] // Smooth, elegant cubic bezier
               }}
               className={`absolute inset-0 h-full w-full ${imageFitClass} will-change-[opacity]`}
-            style={{ maxHeight: '100%', maxWidth: '100%', margin: '0 auto', objectFit: 'contain' }}
+              style={{ maxHeight: '100%', maxWidth: '100%', margin: '0 auto', objectFit: 'contain' }}
               loading="lazy"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
@@ -121,10 +122,15 @@ const ProductCard = ({ id, name, price, image, images, rating = 4.5, category, c
               }}
             />
           )}
+          {isPreorder && (
+            <div className="absolute top-2 left-2 z-10 bg-black/80 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-1 rounded-sm border border-white/20 tracking-wider">
+              PREORDER
+            </div>
+          )}
         </div>
         <div className="p-2 sm:p-3 md:p-4">
           {category && (
-            <motion.p 
+            <motion.p
               initial={{ opacity: 0.7 }}
               whileHover={{ opacity: 1 }}
               className="text-elegant text-[9px] sm:text-[10px] text-primary mb-0.5 sm:mb-1 line-clamp-1"
@@ -142,11 +148,10 @@ const ProductCard = ({ id, name, price, image, images, rating = 4.5, category, c
                 transition={{ duration: 0.2 }}
               >
                 <Star
-                  className={`h-2.5 w-2.5 sm:h-3 sm:w-3 transition-colors duration-300 ${
-                    i < Math.floor(rating)
-                      ? "fill-primary text-primary"
-                      : "text-border"
-                  }`}
+                  className={`h-2.5 w-2.5 sm:h-3 sm:w-3 transition-colors duration-300 ${i < Math.floor(rating)
+                    ? "fill-primary text-primary"
+                    : "text-border"
+                    }`}
                 />
               </motion.div>
             ))}
@@ -162,14 +167,14 @@ const ProductCard = ({ id, name, price, image, images, rating = 4.5, category, c
           )}
         </div>
       </Link>
-      
+
       {/* Hover Actions - Always visible on mobile for better UX */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 10 }}
         whileInView={{ opacity: 1, y: 0 }}
         className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 md:top-3 md:right-3 lg:top-4 lg:right-4 flex flex-col gap-1 sm:gap-1.5 md:gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-300"
       >
-        <motion.button 
+        <motion.button
           whileHover={window.matchMedia('(hover: hover)').matches ? { scale: 1.1 } : undefined}
           onClick={(e) => {
             e.preventDefault();
@@ -177,16 +182,15 @@ const ProductCard = ({ id, name, price, image, images, rating = 4.5, category, c
             toggleFavorite({ id, name, price, image, rating, category });
           }}
           style={{ touchAction: 'manipulation' }}
-          className={`h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 rounded-full glassmorphism border border-border/50 flex items-center justify-center transition-all duration-300 ripple bg-background/80 backdrop-blur-sm ${
-            favorite 
-              ? "bg-primary text-primary-foreground border-primary" 
-              : "hover:bg-primary hover:text-primary-foreground hover:border-primary"
-          }`}
+          className={`h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 rounded-full glassmorphism border border-border/50 flex items-center justify-center transition-all duration-300 ripple bg-background/80 backdrop-blur-sm ${favorite
+            ? "bg-primary text-primary-foreground border-primary"
+            : "hover:bg-primary hover:text-primary-foreground hover:border-primary"
+            }`}
           aria-label={favorite ? "Remove from favorites" : "Add to favorites"}
         >
           <Heart className={`h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 ${favorite ? "fill-white" : ""}`} />
         </motion.button>
-        <motion.button 
+        <motion.button
           whileHover={window.matchMedia('(hover: hover)').matches ? { scale: 1.1 } : undefined}
           onClick={handleAddToCart}
           style={{ touchAction: 'manipulation' }}

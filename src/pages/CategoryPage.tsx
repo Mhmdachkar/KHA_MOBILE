@@ -72,6 +72,10 @@ const categoryQuotes: Record<string, { title: string; subtitle: string }> = {
   "Tablets": {
     title: "\"Expand your horizons with effortless mobility.\"",
     subtitle: "Portable canvases built for creativity and on-the-go work."
+  },
+  "iPhone Cases": {
+    title: "\"Protection meets perfection.\"",
+    subtitle: "Style and security for your device."
   }
 };
 
@@ -257,6 +261,17 @@ const CategoryPage = () => {
           products = [
             ...products,
             ...tablets.map(p => ({
+              ...p,
+              images: p.images && p.images.length > 0 ? p.images : [p.image],
+            }))
+          ];
+        }
+      } else if (categoryDisplayName === "iPhone Cases" || categoryDisplayName === "IPhone Cases" || categoryDisplayName.toLowerCase() === "iphone cases" || categoryDisplayName === "Iphone cases") {
+        const cases = getProductsByCategory("iPhone Cases");
+        if (Array.isArray(cases) && cases.length > 0) {
+          products = [
+            ...products,
+            ...cases.map(p => ({
               ...p,
               images: p.images && p.images.length > 0 ? p.images : [p.image],
             }))

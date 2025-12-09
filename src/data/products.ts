@@ -70,6 +70,19 @@ import appleWatchSE2_40MM_1 from "@/assets/wearables/apple watch SE2 40MM/Apple 
 import appleWatchSE2_40MM_Midnight from "@/assets/wearables/apple watch SE2 40MM/716tEwpUImL._AC_SX466_.jpg";
 import appleWatchSE2_40MM_Starlight from "@/assets/wearables/apple watch SE2 40MM/91GkjaDhHoL._AC_SX466_.jpg";
 import appleWatchSE2_44MM from "@/assets/wearables/Apple watch SE2 44MM.webp";
+// Apple Watch S10 46MM imports
+import appleWatchS10_46MM from "@/assets/wearables/Apple watch S10 46MM/Screenshot 2025-12-06 022155.png";
+import appleWatchS10_46MM_1 from "@/assets/wearables/Apple watch S10 46MM/Screenshot 2025-12-06 022210.png";
+import appleWatchS10_46MM_2 from "@/assets/wearables/Apple watch S10 46MM/Screenshot 2025-12-06 022226.png";
+import appleWatchS10_46MM_3 from "@/assets/wearables/Apple watch S10 46MM/Screenshot 2025-12-06 022239.png";
+// Gaming Consoles imports
+import ps4Slim from "@/assets/gaming/ps4.webp";
+import ps5Slim from "@/assets/gaming/Screenshot 2025-12-09 013133.png";
+// Apple Watch S11 42MM imports
+import appleWatchS11_42MM from "@/assets/wearables/S11 42MM/Screenshot 2025-12-06 022651.png";
+import appleWatchS11_42MM_1 from "@/assets/wearables/S11 42MM/Screenshot 2025-12-06 022702.png";
+import appleWatchS11_42MM_2 from "@/assets/wearables/S11 42MM/Screenshot 2025-12-06 022714.png";
+import appleWatchS11_42MM_3 from "@/assets/wearables/S11 42MM/Screenshot 2025-12-06 022724.png";
 // Smartphone image imports
 import a06Main from "@/assets/phones/A06 128gb/A06 5G (FAST PROCESSOR,HIGHER DISPLAY REFRESH RATE-90HZ, WATER RESISTANT ) 128GB.jpg";
 import a075Purple from "@/assets/phones/A075 samsunng galaxy/A075 Mediatek Helio G99 (6 nm)  purple.webp";
@@ -88,6 +101,16 @@ import a26Lifestyle from "@/assets/phones/A26/Screenshot 2025-11-24 234052.png";
 import a36Front from "@/assets/phones/A36/Screenshot 2025-11-24 232921.png";
 import a36Back from "@/assets/phones/A36/Screenshot 2025-11-24 232950.png";
 import a36Angles from "@/assets/phones/A36/Screenshot 2025-11-24 233046.png";
+// MagSafe Charger imports
+import magSafeCharger from "@/assets/recharges/magsafe charger/magsafe charger.gif";
+import magSafeCharger1 from "@/assets/recharges/magsafe charger/magsafe chargerr.gif";
+import magSafeCharger2 from "@/assets/recharges/magsafe charger/magsafe.gif";
+// iPhone 17 Pro Max Silicone Case imports
+import silicon17ProMaxOrange from "@/assets/iphone covers/silicon 17 pro max/Screenshot 2025-12-09 010853 orange.png";
+import silicon17ProMaxBrown from "@/assets/iphone covers/silicon 17 pro max/Screenshot 2025-12-09 010901 brown.png";
+import silicon17ProMaxLemonade from "@/assets/iphone covers/silicon 17 pro max/Screenshot 2025-12-09 010909 lemonade.png";
+import silicon17ProMaxNavyBlue from "@/assets/iphone covers/silicon 17 pro max/Screenshot 2025-12-09 010915 navy blue.png";
+import silicon17ProMaxPurple from "@/assets/iphone covers/silicon 17 pro max/purple.png";
 import a56Front from "@/assets/phones/A56/Screenshot 2025-11-24 234542.png";
 import a56Side from "@/assets/phones/A56/Screenshot 2025-11-24 234605.png";
 import a56Camera from "@/assets/phones/A56/Screenshot 2025-11-24 234628.png";
@@ -201,6 +224,7 @@ export interface Product {
   variants?: ProductVariant[];
   colors?: Array<{ name: string; image?: string; stock?: string }>;
   connectivityOptions?: string[];
+  isPreorder?: boolean;
 }
 
 export const phoneAccessories: Product[] = [
@@ -465,9 +489,9 @@ export const phoneAccessories: Product[] = [
   },
   {
     id: 111,
-    name: "Apple AirPods 4",
-    title: "Apple AirPods 4 - Redesigned Sound Experience with H2 Chip",
-    price: 20,
+    name: "Apple AirPods 4 (Copy A)",
+    title: "Apple AirPods 4 (Copy A) - Redesigned Sound Experience with H2 Chip",
+    price: 150,
     image: airpodsPro2,
     rating: 4.9,
     category: "Audio",
@@ -496,7 +520,7 @@ export const phoneAccessories: Product[] = [
     id: 127,
     name: "Apple AirPods Pro 3",
     title: "Apple AirPods Pro 3 - White (AAP3-WT)",
-    price: 45,
+    price: 287,
     image: airpodsPro3,
     images: [airpodsPro3, airpodsPro3_1, airpodsPro3_2],
     rating: 5.0,
@@ -542,9 +566,9 @@ export const phoneAccessories: Product[] = [
   },
   {
     id: 128,
-    name: "Apple AirPods 4",
-    title: "Apple AirPods 4 (4th Generation) - Official",
-    price: 129,
+    name: "Apple AirPods 4 (Original)",
+    title: "Apple AirPods 4 (Original) - Official",
+    price: 150,
     image: airpods4_1,
     images: [airpods4_1, airpods4_2, airpods4_3, airpods4_4],
     rating: 4.9,
@@ -589,7 +613,7 @@ export const phoneAccessories: Product[] = [
         ram: "",
         storage: "",
         label: "Standard",
-        price: 129,
+        price: 150,
         description: "Up to 5 hours listening time per charge, 30 hours total with USB-C case. Perfect for everyday listening with exceptional sound quality and Personalized Spatial Audio."
       },
       {
@@ -597,7 +621,7 @@ export const phoneAccessories: Product[] = [
         ram: "",
         storage: "",
         label: "Active Noise Cancellation",
-        price: 179,
+        price: 210,
         description: "Up to 4 hours with ANC (5 hours without), 20 hours total with ANC (30 hours without). Includes ANC, Adaptive Audio, Transparency mode, Conversation Awareness, and wireless charging case with Find My speaker."
       }
     ]
@@ -606,7 +630,7 @@ export const phoneAccessories: Product[] = [
     id: 129,
     name: "Apple AirPods Pro (2nd Generation) with USB-C",
     title: "Apple AirPods Pro (2nd Generation) - USB-C Charging",
-    price: 249,
+    price: 215,
     image: airpodsPro2USB_C,
     images: [airpodsPro2USB_C, airpodsPro2USB_C_1, airpodsPro2USB_C_2, airpodsPro2USB_C_3, airpodsPro2USB_C_4, airpodsPro2USB_C_5],
     video: airpodsPro2USB_C_Video,
@@ -1151,57 +1175,44 @@ export const phoneAccessories: Product[] = [
       { key: "64gb", ram: "", storage: "64GB", label: "64GB", price: 20, description: "More space for your files" },
       { key: "128gb", ram: "", storage: "128GB", label: "128GB", price: 28, description: "Maximum capacity option" }
     ]
-  }
+  },
+  {
+    id: 130,
+    name: "Apple MagSafe Charger",
+    title: "Apple MagSafe Charger - Fast Wireless Charging",
+    price: 75,
+    image: magSafeCharger,
+    images: [magSafeCharger, magSafeCharger1, magSafeCharger2],
+    rating: 4.8,
+    category: "Phone Accessories",
+    brand: "Apple",
+    description: "The MagSafe Charger makes wireless charging a snap. The perfectly aligned magnets attach to your iPhone 12 or later to provide faster wireless charging up to 15W. The MagSafe Charger maintains compatibility with Qi charging, so it can be used to wirelessly charge your iPhone 8 or later, as well as AirPods models with a wireless charging case.",
+    features: [
+      "Magnetic Alignment: Perfectly aligned magnets attach to iPhone 12, 13, 14, 15, and 16 models.",
+      "Fast Wireless Charging: Provides faster wireless charging up to 15W.",
+      "Qi Compatible: Works with Qi-certified devices like iPhone 8 or later and AirPods models.",
+      "Integrated Cable: Comes with an integrated USB-C cable for convenient connection to power adapters.",
+      "Compact Design: Slim and portable design makes it perfect for travel."
+    ],
+    specifications: [
+      { label: "Connector", value: "USB-C" },
+      { label: "Cable Length", value: "1 meter" },
+      { label: "Compatibility", value: "iPhone 12 and later (Magnetic), iPhone 8 and later (Wireless)" },
+      { label: "Charging Standard", value: "MagSafe / Qi" }
+    ]
+  },
+
 ];
 
 // Smartphone products
 export const smartphoneProducts: Product[] = [
-  {
-    id: 301,
-    name: "Samsung Galaxy A06 5G",
-    title: "Samsung Galaxy A06 5G (6GB RAM, 128GB Storage)",
-    price: 239.99,
-    image: a06Main,
-    images: [a06Main],
-    rating: 4.6,
-    category: "Smartphones",
-    brand: "Samsung",
-    description: "The Galaxy A06 5G delivers reliable speed, a large 6.7\" 90Hz display, and a 50MP dual-camera system wrapped in Samsung's modern design language. Built for creators and students, it balances performance with all-day battery life so you can scroll, stream, and shoot without slowing down.",
-    features: [
-      "6.7\" FHD+ Infinity Display with a smooth 90Hz refresh rate for fluid scrolling.",
-      "MediaTek Dimensity 6100+ 5G chipset provides dependable performance and fast connectivity.",
-      "50MP dual-camera system captures bright, detailed shots even in low light.",
-      "6GB of RAM keeps apps active in the background for seamless multitasking.",
-      "Large 128GB internal storage with microSD expansion up to 1TB.",
-      "Massive 5000mAh battery with 25W fast charging for a full day of use."
-    ],
-    specifications: [
-      { label: "Display", value: "6.7\" FHD+ (1080 x 2400) 90Hz Infinity-U" },
-      { label: "Processor", value: "MediaTek Dimensity 6100+ 5G" },
-      { label: "Rear Camera", value: "50MP main + 2MP depth" },
-      { label: "Front Camera", value: "13MP selfie" },
-      { label: "Battery", value: "5000mAh with 25W fast charging" },
-      { label: "Security", value: "Side-mounted fingerprint + Face Unlock" },
-      { label: "Connectivity", value: "Dual SIM, 5G SA/NSA" }
-    ],
-    variants: [
-      {
-        key: "a06-6-128",
-        ram: "6GB RAM",
-        storage: "128GB Storage",
-        label: "6GB + 128GB",
-        price: 239.99,
-        description: "Best value configuration with enough headroom for daily multitasking."
-      }
-    ]
-  },
   // ==================== SMARTPHONES ====================
   // Samsung Galaxy A55 256GB/8RAM (ID: 301)
   {
     id: 301,
     name: "Samsung Galaxy A55 5G",
     title: "Samsung Galaxy A55 5G 256GB/8GB RAM - Redefining Mobile Excellence",
-    price: 399.99,
+    price: 380,
     image: a55Black,
     images: [a55Black, a55IceBlue, a55Lilac],
     rating: 4.8,
@@ -1260,7 +1271,7 @@ export const smartphoneProducts: Product[] = [
     id: 304,
     name: "Samsung Galaxy S24 FE",
     title: "Samsung Galaxy S24 FE 256GB/8GB RAM - AI-Powered Creativity",
-    price: 649.99,
+    price: 560,
     image: s24FeBlack,
     images: [s24FeBlack, s24FeGrey, s24Fe_1, s24Fe_2, s24Fe_3],
     rating: 4.9,
@@ -1320,7 +1331,7 @@ export const smartphoneProducts: Product[] = [
     id: 305,
     name: "Samsung Galaxy S25 FE",
     title: "Samsung Galaxy S25 FE 256GB/8GB RAM - Flagship Performance Redefined",
-    price: 699.99,
+    price: 690,
     image: s25FeBlack,
     images: [s25FeBlack, s25FeNavy, s25FeIceBlue, s25FeWhite],
     rating: 5.0,
@@ -1392,7 +1403,7 @@ export const smartphoneProducts: Product[] = [
     id: 302,
     name: "Samsung Galaxy A07s (A075)",
     title: "Samsung Galaxy A07s with Helio G99 and Triple Camera",
-    price: 179.99,
+    price: 100,
     image: a075Purple,
     images: [a075Purple, a075Grey, a075Silver],
     rating: 4.7,
@@ -1422,7 +1433,7 @@ export const smartphoneProducts: Product[] = [
         ram: "4GB RAM",
         storage: "64GB Storage",
         label: "4GB + 64GB",
-        price: 179.99,
+        price: 100,
         description: "Entry option ideal for essential apps and light photography."
       },
       {
@@ -1430,7 +1441,7 @@ export const smartphoneProducts: Product[] = [
         ram: "4GB RAM",
         storage: "128GB Storage",
         label: "4GB + 128GB",
-        price: 199.99,
+        price: 125,
         description: "Double the storage for creatives who keep more offline."
       },
       {
@@ -1438,7 +1449,7 @@ export const smartphoneProducts: Product[] = [
         ram: "6GB RAM",
         storage: "128GB Storage",
         label: "6GB + 128GB",
-        price: 229.99,
+        price: 140,
         description: "Maximum RAM for gamers and social storytellers."
       }
     ],
@@ -1452,7 +1463,7 @@ export const smartphoneProducts: Product[] = [
     id: 303,
     name: "Samsung Galaxy A16",
     title: "Samsung Galaxy A16 – 6.7\" AMOLED, Up to 8GB RAM",
-    price: 199.99,
+    price: 155,
     image: a16Black,
     images: [a16Black, a16Silver, a16Display, a16Lifestyle],
     rating: 4.8,
@@ -1482,7 +1493,7 @@ export const smartphoneProducts: Product[] = [
         ram: "4GB RAM",
         storage: "128GB Storage",
         label: "4GB + 128GB",
-        price: 199.99,
+        price: 155,
         description: "Perfect for everyday users stepping into AMOLED."
       },
       {
@@ -1490,7 +1501,7 @@ export const smartphoneProducts: Product[] = [
         ram: "6GB RAM",
         storage: "128GB Storage",
         label: "6GB + 128GB",
-        price: 229.99,
+        price: 170,
         description: "More RAM for creators editing on the go."
       },
       {
@@ -1498,7 +1509,7 @@ export const smartphoneProducts: Product[] = [
         ram: "8GB RAM",
         storage: "256GB Storage",
         label: "8GB + 256GB",
-        price: 279.99,
+        price: 200,
         description: "Ultimate storage + RAM combo for power users."
       }
     ],
@@ -1508,10 +1519,10 @@ export const smartphoneProducts: Product[] = [
     ]
   },
   {
-    id: 304,
+    id: 306,
     name: "Samsung Galaxy A17",
     title: "Samsung Galaxy A17 – Pro-Grade Camera Choices",
-    price: 229.99,
+    price: 175,
     image: a17Hero,
     images: [a17Hero, a17Blue, a17Camera],
     rating: 4.9,
@@ -1541,7 +1552,7 @@ export const smartphoneProducts: Product[] = [
         ram: "4GB RAM",
         storage: "128GB Storage",
         label: "4GB + 128GB",
-        price: 229.99,
+        price: 175,
         description: "Ideal for social media and casual creators."
       },
       {
@@ -1549,7 +1560,7 @@ export const smartphoneProducts: Product[] = [
         ram: "6GB RAM",
         storage: "128GB Storage",
         label: "6GB + 128GB",
-        price: 259.99,
+        price: 185,
         description: "Balanced option for gamers and students."
       },
       {
@@ -1557,7 +1568,7 @@ export const smartphoneProducts: Product[] = [
         ram: "8GB RAM",
         storage: "256GB Storage",
         label: "8GB + 256GB",
-        price: 309.99,
+        price: 220,
         description: "Maximum storage for 4K video lovers."
       }
     ],
@@ -1567,10 +1578,10 @@ export const smartphoneProducts: Product[] = [
     ]
   },
   {
-    id: 305,
+    id: 307,
     name: "Samsung Galaxy A26",
     title: "Samsung Galaxy A26 – Advanced Nightography",
-    price: 269.99,
+    price: 230,
     image: a26Front,
     images: [a26Front, a26Angles, a26Lifestyle],
     rating: 4.7,
@@ -1600,7 +1611,7 @@ export const smartphoneProducts: Product[] = [
         ram: "6GB RAM",
         storage: "128GB Storage",
         label: "6GB + 128GB",
-        price: 269.99,
+        price: 230,
         description: "Ideal for daily creators who want flagship cameras."
       },
       {
@@ -1608,17 +1619,17 @@ export const smartphoneProducts: Product[] = [
         ram: "8GB RAM",
         storage: "256GB Storage",
         label: "8GB + 256GB",
-        price: 329.99,
+        price: 260,
         description: "Extra space and RAM for filming long-form content."
       }
     ]
   },
 
   {
-    id: 306,
+    id: 308,
     name: "Samsung Galaxy A36",
     title: "Samsung Galaxy A36 – Flagship Feel, Friendly Price",
-    price: 299.99,
+    price: 315,
     image: a36Front,
     images: [a36Front, a36Back, a36Angles],
     rating: 4.8,
@@ -1647,8 +1658,8 @@ export const smartphoneProducts: Product[] = [
         key: "a36-6-128",
         ram: "6GB RAM",
         storage: "128GB Storage",
-        label: "6GB + 128GB",
-        price: 299.99,
+        label: "8GB + 128GB",
+        price: 315,
         description: "Premium feel with the most accessible price tag."
       },
       {
@@ -1656,16 +1667,16 @@ export const smartphoneProducts: Product[] = [
         ram: "8GB RAM",
         storage: "256GB Storage",
         label: "8GB + 256GB",
-        price: 359.99,
+        price: 325,
         description: "Maxed-out storage for RAW shooters and gamers."
       }
     ]
   },
   {
-    id: 307,
+    id: 309,
     name: "Samsung Galaxy A56",
     title: "Samsung Galaxy A56 – Performance for Pro Creators",
-    price: 379.99,
+    price: 400,
     image: a56Front,
     images: [a56Front, a56Side, a56Camera],
     rating: 4.9,
@@ -1694,537 +1705,20 @@ export const smartphoneProducts: Product[] = [
         key: "a56-8-128",
         ram: "8GB RAM",
         storage: "128GB Storage",
-        label: "8GB + 128GB",
-        price: 379.99,
+        label: "8GB + 256GB",
+        price: 400,
         description: "Powerful entry for next-gen flagship performance."
       },
       {
         key: "a56-8-256",
         ram: "8GB RAM",
         storage: "256GB Storage",
-        label: "8GB + 256GB",
-        price: 429.99,
+        label: "12GB + 256GB",
+        price: 420,
         description: "Extra storage for 8K footage and Pro RAW projects."
       }
-    ]
-  },
-  {
-    id: 311,
-    name: "Smart 10 HD",
-    title: "Smart 10 HD (2GB RAM + 64GB Storage)",
-    price: 129.99,
-    image: smart10HdPlaceholder,
-    images: [smart10HdPlaceholder, smart10HdBlack, smart10HdGold, smart10HdGreen, smart10HdGrey],
-    rating: 4.5,
-    category: "Smartphones",
-    brand: "Smart",
-    description: "Smart 10 HD focuses on essentials with a large immersive HD+ display, memory fusion technology, and a dependable 5000mAh battery. It is the ideal first smartphone for students and multitaskers who still want modern styling and a responsive UI.",
-    features: [
-      "6.6\" HD+ immersive display with thin bezels for a cinema-like view.",
-      "Memory Fusion expands the 2GB physical RAM up to 4GB for smoother multitasking.",
-      "64GB of internal storage with microSD expansion for photos, apps, and files.",
-      "50MP AI dual camera system captures vivid daylight shots and bright portraits.",
-      "5000mAh battery paired with smart power management for up to two days of use.",
-      "Side-mounted fingerprint sensor plus Face Unlock for instant access."
-    ],
-    specifications: [
-      { label: "Display", value: "6.6\" HD+ IPS, 20:9 aspect" },
-      { label: "Processor", value: "Octa-core efficiency chipset" },
-      { label: "RAM", value: "2GB physical + up to 4GB extended" },
-      { label: "Storage", value: "64GB internal, microSD up to 1TB" },
-      { label: "Battery", value: "5000mAh with USB-C charging" },
-      { label: "Rear Camera", value: "50MP AI dual system" },
-      { label: "Security", value: "Face Unlock + side fingerprint" }
-    ],
-    variants: [
-      {
-        key: "smart10hd-2-64",
-        ram: "2GB RAM",
-        storage: "64GB Storage",
-        label: "2GB + 64GB",
-        price: 129.99,
-        description: "Includes up to 4GB extended RAM for smooth everyday use."
-      }
     ],
     colors: [
-      { name: "Midnight Black", image: smart10HdBlack },
-      { name: "Champagne Gold", image: smart10HdGold },
-      { name: "Emerald Green", image: smart10HdGreen },
-      { name: "Slate Grey", image: smart10HdGrey }
-    ]
-  },
-  {
-    id: 312,
-    name: "Smart 10",
-    title: "Smart 10 – Memory Fusion Smartphone",
-    price: 149.99,
-    image: smart10HdPlaceholder,
-    images: [smart10HdPlaceholder, smart10HdBlack, smart10HdGold, smart10HdGreen],
-    rating: 4.6,
-    category: "Smartphones",
-    brand: "Smart",
-    description: "Smart 10 upgrades the HD edition with additional RAM choices, faster performance, and a refined matte chassis. Extended Memory Fusion lets you bump RAM up to 8GB, so editing, gaming, and streaming feel seamless even when dozens of apps remain open.",
-    features: [
-      "Up to 8GB memory fusion keeps social apps, games, and camera tasks active.",
-      "Choose between 64GB or 128GB storage depending on your offline library.",
-      "Premium dual-ring camera housing with 50MP AI main sensor.",
-      "XOS-like gaming mode optimizes resources for higher frame rates.",
-      "Dual stereo speakers tuned for clear highs during movies and games.",
-      "NFC-ready with side fingerprint sensor and Face Unlock."
-    ],
-    specifications: [
-      { label: "Display", value: "6.6\" HD+ punch-hole display" },
-      { label: "Processor", value: "Octa-core Performance Chip" },
-      { label: "RAM", value: "3GB/4GB + up to 8GB extended" },
-      { label: "Storage", value: "64GB or 128GB, microSD up to 1TB" },
-      { label: "Battery", value: "5000mAh, Type-C 18W charging" },
-      { label: "Rear Camera", value: "50MP AI main + depth sensor" },
-      { label: "Audio", value: "Stereo speakers, DTS enhancement" }
-    ],
-    variants: [
-      {
-        key: "smart10-3-64",
-        ram: "3GB RAM",
-        storage: "64GB Storage",
-        label: "3GB + 64GB",
-        price: 149.99,
-        description: "Ideal for daily messaging with up to 6GB extended RAM."
-      },
-      {
-        key: "smart10-4-64",
-        ram: "4GB RAM",
-        storage: "64GB Storage",
-        label: "4GB + 64GB",
-        price: 159.99,
-        description: "Balanced option with up to 8GB total memory."
-      },
-      {
-        key: "smart10-4-128",
-        ram: "4GB RAM",
-        storage: "128GB Storage",
-        label: "4GB + 128GB",
-        price: 179.99,
-        description: "Extra storage for video libraries and offline playlists."
-      }
-    ],
-    colors: [
-      { name: "Midnight Black", image: smart10HdBlack },
-      { name: "Champagne Gold", image: smart10HdGold },
-      { name: "Emerald Green", image: smart10HdGreen }
-    ]
-  },
-  {
-    id: 313,
-    name: "Smart 10 Plus",
-    title: "Smart 10 Plus – AMOLED Lite Flagship",
-    price: 199.99,
-    image: smart10PlusBlack,
-    images: [smart10PlusBlack, smart10PlusBlue, smart10PlusPink, smart10PlusSilver],
-    rating: 4.7,
-    category: "Smartphones",
-    brand: "Smart",
-    description: "Smart 10 Plus takes the series premium with a curved glass finish, ultra-narrow bezels, and upgraded 8GB memory fusion that hits 16GB extended. It's the creative-friendly option with upgraded cooling, dual stereo speakers, and AI night photography.",
-    features: [
-      "6.78\" FHD+ punch-hole display with adaptive brightness and slim bezels.",
-      "Memory Fusion 2.0 delivers up to 16GB extended RAM for pro-level multitasking.",
-      "Dual stereo speakers with DTS + Dirac tuning for immersive audio.",
-      "50MP Ultra Pixel camera with Super Night Mode and 2K video.",
-      "In-display fingerprint sensor plus AI Face Unlock.",
-      "5000mAh battery with 33W fast charging and battery health guard."
-    ],
-    specifications: [
-      { label: "Display", value: "6.78\" FHD+ 120Hz panel" },
-      { label: "Processor", value: "Octa-core 6nm platform with Vapor Chamber cooling" },
-      { label: "RAM", value: "4GB or 8GB + up to 16GB extended" },
-      { label: "Storage", value: "128GB UFS 2.2, microSD support" },
-      { label: "Battery", value: "5000mAh, 33W fast charging" },
-      { label: "Rear Camera", value: "50MP main + 2MP depth + AI lens" },
-      { label: "Audio", value: "Dual stereo speakers, DTS + Dirac" }
-    ],
-    variants: [
-      {
-        key: "smart10plus-4-128",
-        ram: "4GB RAM",
-        storage: "128GB Storage",
-        label: "4GB + 128GB",
-        price: 199.99,
-        description: "Great blend of storage and 8GB total memory fusion."
-      },
-      {
-        key: "smart10plus-8-128",
-        ram: "8GB RAM",
-        storage: "128GB Storage",
-        label: "8GB + 128GB",
-        price: 229.99,
-        description: "Ships with 8GB physical RAM and up to 16GB extended."
-      }
-    ],
-    colors: [
-      { name: "Midnight Black", image: smart10PlusBlack },
-      { name: "Ocean Blue", image: smart10PlusBlue },
-      { name: "Blush Pink", image: smart10PlusPink },
-      { name: "Lunar Silver", image: smart10PlusSilver }
-    ]
-  },
-  {
-    id: 308,
-    name: "Tecno Spark Go 2",
-    title: "Tecno Spark Go 2 – Durable 120Hz Budget Smartphone",
-    price: 149.99,
-    image: sparkGo2Black,
-    images: [sparkGo2Black, sparkGo2Grey, sparkGo2Green, sparkGo2White],
-    rating: 4.5,
-    category: "Smartphones",
-    brand: "Tecno",
-    description: "The Tecno Spark Go 2 brings a smooth 120Hz display, IP64 durability, and a long-lasting 5000mAh battery to the entry-level segment. Running Android 15 on the Unisoc T7250 platform, it handles daily multitasking with ease while staying tough enough for active lifestyles.",
-    features: [
-      "6.67\" IPS LCD with 120Hz refresh for fluid scrolling and gaming.",
-      "Unisoc T7250 chipset + Android 15 (HIOS 15) optimized for everyday reliability.",
-      "IP64 dust and water resistance plus drop protection up to 1.5 meters.",
-      "5000mAh battery with 15W USB-C charging keeps you powered all day.",
-      "Dual speakers with FM radio and OTG support for flexible connectivity.",
-      "Side-mounted fingerprint sensor for fast, secure unlocking.",
-      "Expandable storage via microSDXC slot for extra media and apps."
-    ],
-    specifications: [
-      { label: "Display", value: "6.67\" IPS LCD, 120Hz, 720 x 1600 (20:9)" },
-      { label: "Processor", value: "Unisoc T7250 (12nm) Octa-core, Mali-G57 MP1 GPU" },
-      { label: "OS", value: "Android 15, HIOS 15" },
-      { label: "Durability", value: "IP64, drop resistant to 1.5m" },
-      { label: "Rear Camera", value: "13MP PDAF with Dual-LED flash" },
-      { label: "Front Camera", value: "8MP with Dual-LED flash" },
-      { label: "Battery", value: "5000mAh, 15W wired charging" },
-      { label: "Audio", value: "Dual speakers, 3.5mm jack, FM radio" },
-      { label: "Security", value: "Side-mounted fingerprint sensor" }
-    ],
-    variants: [
-      {
-        key: "sparkgo2-3-64",
-        ram: "3GB RAM",
-        storage: "64GB Storage",
-        label: "3GB + 64GB",
-        price: 149.99,
-        description: "Accessible price with the same rugged build and smooth 120Hz screen."
-      },
-      {
-        key: "sparkgo2-4-128",
-        ram: "4GB RAM",
-        storage: "128GB Storage",
-        label: "4GB + 128GB",
-        price: 169.99,
-        description: "Adds more storage for photos, apps, and offline playlists."
-      },
-      {
-        key: "sparkgo2-4-256",
-        ram: "4GB RAM",
-        storage: "256GB Storage",
-        label: "4GB + 256GB",
-        price: 189.99,
-        description: "Maximum onboard storage while keeping the price approachable."
-      }
-    ],
-    colors: [
-      { name: "Carbon Black", image: sparkGo2Black },
-      { name: "Titanium Grey", image: sparkGo2Grey },
-      { name: "Turquoise Green", image: sparkGo2Green },
-      { name: "Viel White", image: sparkGo2White }
-    ]
-  },
-  {
-    id: 309,
-    name: "Tecno Spark Slim",
-    title: "Tecno Spark Slim – 5.93mm Ultra-Slim AI Flagship",
-    price: 429.99,
-    image: sparkSlimBlack,
-    images: [sparkSlimBlack, sparkSlimBlue, sparkSlimWhite],
-    rating: 4.7,
-    category: "Smartphones",
-    brand: "Tecno",
-    description: "Spark Slim delivers the world’s thinnest 3D curved smartphone profile without sacrificing power. A 6.78\" 1.5K AMOLED display, Helio G200 processor, and 45W charging pair with AI imaging tools, Dolby Atmos sound, and IP64 durability for a future-ready experience.",
-    features: [
-      "Only 5.93mm thin with 3D curved glass and Corning Gorilla Glass 7i protection.",
-      "6.78\" 1.5K AMOLED display, 144Hz refresh, 4500 nits peak brightness, SGS low blue light certified.",
-      "MediaTek Helio G200 with 16GB RAM (8GB extended) + 256GB storage for flagship-class multitasking.",
-      "5160mAh battery with 45W super charging, bypass charging, and wired reverse charging.",
-      "Dual stereo speakers with Dolby Atmos plus advanced cooling using a 24,532mm² vapor chamber.",
-      "50MP ultra-clear rear camera and 13MP selfie camera with AI tools like Ask Ella, AI Translate, and AI Eraser 2.0.",
-      "FreeLink connectivity, NFC, infrared remote control, dual-system privacy, and IP64 rating."
-    ],
-    specifications: [
-      { label: "Display", value: "6.78\" 1.5K 3D AMOLED, 144Hz, 1224 x 2720" },
-      { label: "Processor", value: "MediaTek Helio G200 + Mali-G57 MC2 GPU" },
-      { label: "RAM/Storage", value: "16GB (8GB extended) + 256GB" },
-      { label: "Battery", value: "5160mAh with 45W Super Charging & bypass charge" },
-      { label: "Camera", value: "50MP rear + 13MP front, dual flash, FlashSnap" },
-      { label: "Durability", value: "IP64 + military-grade shock resistance" },
-      { label: "Audio", value: "Dual speakers, Dolby Atmos" },
-      { label: "Software", value: "Android 15 with AI suite (AI Translate, AI Eraser, AI Writing)" }
-    ],
-    variants: [
-      {
-        key: "sparkslim-16-256",
-        ram: "16GB RAM (8GB Extended)",
-        storage: "256GB Storage",
-        label: "16GB + 256GB",
-        price: 429.99,
-        description: "Single premium configuration with AI features and 45W super charging."
-      }
-    ],
-    colors: [
-      { name: "Obsidian Black", image: sparkSlimBlack },
-      { name: "Glacier Blue", image: sparkSlimBlue },
-      { name: "Pearl White", image: sparkSlimWhite }
-    ]
-  },
-  {
-    id: 310,
-    name: "Tecno Spark 40C",
-    title: "Tecno Spark 40C – 6000mAh All-Day Entertainment Phone",
-    price: 219.99,
-    image: spark40CBlack,
-    images: [spark40CBlack, spark40CBlue, spark40CWhite, spark40CGrey],
-    rating: 4.6,
-    category: "Smartphones",
-    brand: "Tecno",
-    description: "Spark 40C blends a 120Hz hole display with Helio G81 power, 8GB RAM, and 256GB storage for smooth everyday multitasking. Dual DTS speakers, a gigantic 6000mAh battery, and Android 15 optimizations make it perfect for streaming, gaming, and productivity on the go.",
-    features: [
-      "6.67\" HD+ hole screen with 120Hz refresh rate for fluid visuals.",
-      "Helio G81 processor plus Android 15 ensures responsive performance.",
-      "256GB storage + 8GB RAM (memory fusion) for large app libraries.",
-      "6000mAh battery with 18W fast charging handles multi-day use.",
-      "Dual loudspeakers tuned with DTS audio for immersive sound.",
-      "Side fingerprint sensor, software gyroscope, and IR remote control.",
-      "Dual camera system with 13MP rear + 8MP selfie, both with dual flash."
-    ],
-    specifications: [
-      { label: "Display", value: "6.67\" 120Hz hole screen, 720 x 1600" },
-      { label: "Processor", value: "MediaTek Helio G81" },
-      { label: "RAM/Storage", value: "8GB RAM + 256GB storage (expandable)" },
-      { label: "Battery", value: "6000mAh with 18W fast charging" },
-      { label: "Rear Camera", value: "13MP Dual Flash" },
-      { label: "Front Camera", value: "8MP Dual Flash" },
-      { label: "Connectivity", value: "GPS, Wi-Fi, Bluetooth, FM, OTG" },
-      { label: "Audio", value: "Dual speakers with DTS Sound" }
-    ],
-    variants: [
-      {
-        key: "spark40c-8-256",
-        ram: "8GB RAM",
-        storage: "256GB Storage",
-        label: "8GB + 256GB",
-        price: 219.99,
-        description: "Standard configuration with maximum storage and memory fusion."
-      }
-    ],
-    colors: [
-      { name: "Carbon Black", image: spark40CBlack },
-      { name: "Ripple Blue", image: spark40CBlue },
-      { name: "Viel White", image: spark40CWhite },
-      { name: "Titanium Grey", image: spark40CGrey }
-    ]
-  },
-  {
-    id: 314,
-    name: "Tecno Spark 40",
-    title: "Tecno Spark 40 – 120Hz IPS with 45W Charging",
-    price: 249.99,
-    image: spark40Black,
-    images: [spark40Black, spark40Blue, spark40Grey, spark40White],
-    rating: 4.6,
-    category: "Smartphones",
-    brand: "Tecno",
-    description: "Spark 40 levels up the Spark family with a 6.67\" 120Hz IPS display, Helio G81 chipset, and 45W charging. With 16GB memory fusion (8GB+8GB), 256GB storage, IP64 resistance, and a 50MP main camera, it is the versatile daily driver for creators and commuters alike.",
-    features: [
-      "6.67\" IPS LCD with 120Hz refresh and slim bezels for immersive content.",
-      "Mediatek Helio G81 + Android 15 (HIOS 15) keeps multitasking smooth.",
-      "16GB total RAM via memory fusion (8GB physical + 8GB extended).",
-      "256GB storage plus microSD support for massive offline libraries.",
-      "50MP main camera with 8MP selfie camera and dual flash support.",
-      "5200mAh battery paired with 45W fast charging and IP64 splash resistance.",
-      "Dual Nano-SIM + microSD slot, dual speakers, and 100-day screen warranty."
-    ],
-    specifications: [
-      { label: "Display", value: "6.67\" IPS LCD, 120Hz" },
-      { label: "Processor", value: "Mediatek Helio G81" },
-      { label: "RAM/Storage", value: "16GB (8GB+8GB) RAM, 256GB storage" },
-      { label: "Battery", value: "5200mAh, 45W charging" },
-      { label: "Camera", value: "50MP main + 8MP selfie" },
-      { label: "Durability", value: "IP64 splash/dust resistance, 100-day screen warranty" },
-      { label: "SIM", value: "Dual Nano-SIM + microSD" }
-    ],
-    variants: [
-      {
-        key: "spark40-16-256",
-        ram: "16GB RAM (8GB+8GB)",
-        storage: "256GB Storage",
-        label: "16GB + 256GB",
-        price: 249.99,
-        description: "Single configuration with 45W charging and IP64 protection."
-      }
-    ],
-    colors: [
-      { name: "Carbon Black", image: spark40Black },
-      { name: "Mirage Blue", image: spark40Blue },
-      { name: "Titanium Grey", image: spark40Grey },
-      { name: "Viel White", image: spark40White }
-    ]
-  },
-  {
-    id: 315,
-    name: "Tecno Camon 40 Pro 4G",
-    title: "Tecno Camon 40 Pro 4G – 120Hz AMOLED & 50MP OIS Camera",
-    price: 329.99,
-    image: camon40ProPlaceholder,
-    images: [camon40ProPlaceholder, camon40ProBlack, camon40ProGreen],
-    rating: 4.7,
-    category: "Smartphones",
-    brand: "Tecno",
-    description: "The Tecno Camon 40 Pro 4G redefines camera performance with a 50MP main sensor featuring OIS, an 8MP ultrawide lens, and a stunning 6.78\" 120Hz AMOLED display. Powered by the Mediatek Helio G100 Ultimate chipset and equipped with a 5200mAh battery with 45W fast charging, this phone delivers flagship-level features at an accessible price. With IP68/IP69 dust and water resistance, Corning Gorilla Glass 7i protection, and support for Circle to Search, it's built for creators and power users who demand the best.",
-    features: [
-      "6.78\" AMOLED display with 120Hz refresh rate and 1080×2436 resolution for stunning visuals.",
-      "50MP main camera with OIS and PDAF for crystal-clear photos in any lighting condition.",
-      "8MP ultrawide camera expands your creative possibilities for landscape and group shots.",
-      "50MP front camera with PDAF ensures sharp, detailed selfies and video calls.",
-      "Mediatek Helio G100 Ultimate (6nm) chipset delivers fast, efficient performance.",
-      "8GB RAM with 256GB storage provides ample space for apps, photos, and videos.",
-      "5200mAh battery with 45W fast charging reaches 50% in 23 minutes, 100% in 43 minutes.",
-      "IP68/IP69 rating protects against dust, water immersion up to 2m for 30 minutes, and high-pressure water jets.",
-      "Corning Gorilla Glass 7i and HDR support for enhanced screen protection and visual quality.",
-      "Under-display optical fingerprint sensor, stereo speakers, and 24-bit/192kHz Hi-Res audio.",
-      "Circle to Search, NFC, Infrared port, FM radio, and USB Type-C with OTG support."
-    ],
-    specifications: [
-      { label: "Display", value: "6.78\" AMOLED, 120Hz, 1080×2436, HDR, Gorilla Glass 7i" },
-      { label: "Processor", value: "Mediatek Helio G100 Ultimate (6nm)" },
-      { label: "RAM/Storage", value: "8GB RAM, 256GB storage" },
-      { label: "Rear Camera", value: "50MP (f/1.9, OIS, PDAF) + 8MP ultrawide" },
-      { label: "Front Camera", value: "50MP (f/2.5, PDAF)" },
-      { label: "Video", value: "4K@30/60fps (HDR), 1080p@30fps" },
-      { label: "Battery", value: "5200mAh, 45W wired (50% in 23min, 100% in 43min)" },
-      { label: "Durability", value: "IP68/IP69 dust/water resistant (up to 2m for 30min)" },
-      { label: "Audio", value: "Stereo speakers, 24-bit/192kHz Hi-Res audio, no 3.5mm jack" },
-      { label: "Security", value: "Under-display optical fingerprint, accelerometer, gyro, proximity, compass" },
-      { label: "Connectivity", value: "Dual Nano-SIM, GPS, NFC, Infrared, FM radio, USB Type-C 2.0 with OTG" },
-      { label: "Dimensions", value: "164.4 x 74.3 x 7.3mm, 178g" },
-      { label: "OS", value: "Android 15, up to 3 major upgrades, HIOS 15" }
-    ],
-    variants: [
-      {
-        key: "camon40pro-8-256",
-        ram: "8GB RAM",
-        storage: "256GB Storage",
-        label: "8GB + 256GB",
-        price: 329.99,
-        description: "Premium configuration with flagship camera system and IP68/IP69 protection."
-      }
-    ],
-    colors: [
-      { name: "Emerald Lake Green", image: camon40ProGreen },
-      { name: "Galaxy Black", image: camon40ProBlack },
-      { name: "Glacier White", stock: "Coming Soon" }
-    ]
-  },
-  {
-    id: 316,
-    name: "Tecno Camon 30 5G",
-    title: "Tecno Camon 30 5G (CL7) – Fast 5G Connectivity",
-    price: 289.99,
-    image: camon30Black,
-    images: [camon30Black, camon30White],
-    rating: 4.5,
-    category: "Smartphones",
-    brand: "Tecno",
-    description: "The Tecno Camon 30 5G brings next-generation connectivity and reliable performance to the Camon series. With 5G support, a vibrant AMOLED display, and a capable camera system, it's designed for users who want to stay connected at high speeds without compromising on features or build quality.",
-    features: [
-      "6.78\" AMOLED display with smooth 120Hz refresh rate for fluid scrolling and gaming.",
-      "5G connectivity ensures ultra-fast download and streaming speeds.",
-      "50MP main camera captures detailed photos in various lighting conditions.",
-      "Large battery with fast charging keeps you powered throughout the day.",
-      "Modern design with premium finish available in black and white.",
-      "Ample storage and RAM for multitasking and media storage."
-    ],
-    specifications: [
-      { label: "Display", value: "6.78\" AMOLED, 120Hz" },
-      { label: "Connectivity", value: "5G, Dual SIM" },
-      { label: "Camera", value: "50MP main camera" },
-      { label: "Processor", value: "Advanced 5G chipset" },
-      { label: "Battery", value: "Large capacity with fast charging" },
-      { label: "OS", value: "Android with HIOS" }
-    ],
-    variants: [
-      {
-        key: "camon30-5g-standard",
-        ram: "8GB RAM",
-        storage: "256GB Storage",
-        label: "8GB + 256GB",
-        price: 289.99,
-        description: "Standard 5G configuration with ample storage and memory."
-      }
-    ],
-    colors: [
-      { name: "Black", image: camon30Black },
-      { name: "White", image: camon30White }
-    ]
-  },
-  {
-    id: 317,
-    name: "Tecno Camon 40 Pro 5G",
-    title: "Tecno Camon 40 Pro 5G (CM5) – Advanced Performance & Pro Photography",
-    price: 349.99,
-    image: camon40Pro5gPlaceholder,
-    images: [camon40Pro5gPlaceholder, camon40Pro5gWhite, camon40Pro5gGreen],
-    rating: 4.8,
-    category: "Smartphones",
-    brand: "Tecno",
-    description: "The Tecno CAMON 40 Pro 5G is designed to deliver advanced performance, superior photography, and a premium smartphone experience. Powered by the MediaTek Helio G100 Ultimate Processor and running on Android 15, this device ensures smooth multitasking and seamless app performance. With its sleek 7.31mm body and a vibrant 6.78-inch AMOLED display featuring a 120Hz refresh rate, an immersive viewing experience is guaranteed whether for gaming, streaming, or browsing.",
-    features: [
-      "6.78\" Full HD+ AMOLED display with 120Hz refresh rate provides fluid scrolling, vivid colors, and immersive visuals.",
-      "50MP OIS main sensor with 1/1.56\" aperture ensures stable and detailed shots even in low light conditions.",
-      "8MP wide-angle lens captures more in every frame with dual flash and flicker sensor support.",
-      "50MP autofocus front camera brings clarity to selfies and video calls with sharp detail.",
-      "MediaTek Helio G100 Ultimate Processor delivers fast, efficient performance for all tasks.",
-      "Extended RAM Technology: 16GB RAM (8GB + 8GB extended) for effortless multitasking and gaming.",
-      "256GB storage provides ample space for apps, files, and media with expandable options.",
-      "5200mAh battery keeps the phone powered through heavy use with 45W Super Charge for rapid recharging.",
-      "Dual speakers with Dolby Atmos deliver immersive sound for entertainment and calls.",
-      "5G connectivity ensures ultra-fast download and streaming speeds for next-generation networks.",
-      "Smart sensors including geomagnetic, electronic compass, infrared remote control, and ambient light improve functionality.",
-      "Comprehensive connectivity: Wi-Fi, Bluetooth, GPS, NFC, OTG, and Type-C support."
-    ],
-    specifications: [
-      { label: "Display", value: "6.78\" AMOLED, 120Hz, 1080×2436 pixels" },
-      { label: "Processor", value: "MediaTek Helio G100 Ultimate" },
-      { label: "OS", value: "Android 15" },
-      { label: "Network", value: "2G, 3G, 4G, 5G" },
-      { label: "Dimensions", value: "164.44 x 74.32 x 7.31 mm" },
-      { label: "Rear Camera", value: "50MP OIS (1/1.56\") + 8MP Wide-angle, Dual Flash, Flicker Sensor" },
-      { label: "Front Camera", value: "50MP AF" },
-      { label: "Memory", value: "256GB ROM + 16GB RAM (8GB + 8GB Extended) or 12GB RAM" },
-      { label: "Battery", value: "5200mAh, 45W Super Charge" },
-      { label: "Audio", value: "Dual Speakers with Dolby Atmos" },
-      { label: "Connectivity", value: "Wi-Fi, Bluetooth, FM, GPS, NFC, Type-C Port, OTG" },
-      { label: "Sensors", value: "Geomagnetic, A+G Sensor, Ambient Light, Distance Sensor, Infrared Remote Control, Electronic Compass" }
-    ],
-    variants: [
-      {
-        key: "camon40pro5g-16-256",
-        ram: "16GB RAM (8GB + 8GB Extended)",
-        storage: "256GB Storage",
-        label: "16GB + 256GB",
-        price: 349.99,
-        description: "Premium configuration with extended RAM technology for maximum performance."
-      },
-      {
-        key: "camon40pro5g-12-256",
-        ram: "12GB RAM",
-        storage: "256GB Storage",
-        label: "12GB + 256GB",
-        price: 339.99,
-        description: "High-performance configuration with ample RAM and storage."
-      }
-    ],
-    colors: [
-      { name: "Black", image: camon40Pro5gPlaceholder },
       { name: "Glacier White", image: camon40Pro5gWhite },
       { name: "Lake Green", image: camon40Pro5gGreen }
     ]
@@ -2237,7 +1731,7 @@ export const tabletProducts: Product[] = [
     id: 401,
     name: "Samsung Galaxy Tab A9",
     title: "Samsung Galaxy Tab A9 X110 – Expand Your Horizons",
-    price: 229.99,
+    price: 110,
     image: galaxyTabA9BlackPlaceholder,
     images: [galaxyTabA9BlackPlaceholder, galaxyTabA9Blue, galaxyTabA9White],
     rating: 4.7,
@@ -2272,7 +1766,7 @@ export const tabletProducts: Product[] = [
         ram: "4GB RAM",
         storage: "64GB Storage",
         label: "4GB + 64GB",
-        price: 199.99,
+        price: 110,
         description: "Everyday configuration with quick access to microSD expansion up to 1TB."
       },
       {
@@ -2280,7 +1774,7 @@ export const tabletProducts: Product[] = [
         ram: "8GB RAM",
         storage: "128GB Storage",
         label: "8GB + 128GB",
-        price: 249.99,
+        price: 140,
         description: "Maximum RAM and storage for heavy multitasking and creative workflows."
       }
     ],
@@ -2411,7 +1905,7 @@ export const tabletProducts: Product[] = [
     id: 404,
     name: "iPad 11-inch (A16 Chip)",
     title: "iPad 11-inch - Supercharged with A16 Chip and Liquid Retina Display",
-    price: 449.99,
+    price: 380,
     image: iPad11Pink,
     images: [iPad11Pink, iPad11Grey, iPad11Blue, iPad11Yellow],
     rating: 4.9,
@@ -2465,7 +1959,7 @@ export const tabletProducts: Product[] = [
         ram: "",
         storage: "128GB Storage",
         label: "128GB Wi-Fi",
-        price: 449.99,
+        price: 380,
         description: "Perfect for everyday use, entertainment, and creative projects with ample storage for apps, photos, and files."
       },
       {
@@ -2473,7 +1967,7 @@ export const tabletProducts: Product[] = [
         ram: "",
         storage: "256GB Storage",
         label: "256GB Wi-Fi",
-        price: 599.99,
+        price: 485,
         description: "Ideal for content creators, students, and professionals who need extra space for large files, videos, and projects."
       },
       {
@@ -2505,7 +1999,7 @@ export const tabletProducts: Product[] = [
     id: 405,
     name: "Apple Pencil Pro",
     title: "Apple Pencil Pro - Revolutionary Precision with Squeeze, Haptic Feedback & Find My",
-    price: 129.99,
+    price: 160,
     image: applePencilPro,
     images: [applePencilPro, applePencilPro1, applePencilPro2],
     rating: 4.9,
@@ -2555,7 +2049,7 @@ export const tabletProducts: Product[] = [
         ram: "",
         storage: "",
         label: "Standard",
-        price: 129.99,
+        price: 160,
         description: "Complete Apple Pencil Pro with all features including squeeze gesture, haptic feedback, and Find My integration."
       }
     ],
@@ -2567,7 +2061,7 @@ export const tabletProducts: Product[] = [
     id: 406,
     name: "Apple iPad Air M3 Chip 11-inch",
     title: "Apple iPad Air M3 Chip 11-inch - Built for Apple Intelligence with Advanced Graphics",
-    price: 569.99,
+    price: 550,
     image: iPadAirM3_11_Blue,
     images: [iPadAirM3_11_Blue, iPadAirM3_11_Grey, iPadAirM3_11_Purple, iPadAirM3_11_Starlight],
     rating: 4.9,
@@ -2637,7 +2131,7 @@ export const tabletProducts: Product[] = [
         ram: "8GB RAM",
         storage: "128GB Storage",
         label: "128GB Wi-Fi",
-        price: 569.99,
+        price: 550,
         description: "Perfect for everyday productivity, creativity, and entertainment with ample storage for apps, photos, and files."
       },
       {
@@ -2645,7 +2139,7 @@ export const tabletProducts: Product[] = [
         ram: "8GB RAM",
         storage: "256GB Storage",
         label: "256GB Wi-Fi",
-        price: 669.99,
+        price: 655,
         description: "Ideal for content creators, professionals, and power users who need extra space for large files, videos, and creative projects."
       }
     ],
@@ -2978,7 +2472,7 @@ export const wearablesProducts: Product[] = [
     id: 205,
     name: "Apple Watch SE (2nd generation) 40mm",
     title: "Apple Watch SE (2nd generation) 40mm - Essential Health & Fitness Companion",
-    price: 249.99,
+    price: 285,
     image: appleWatchSE2_40MM,
     images: [appleWatchSE2_40MM, appleWatchSE2_40MM_1, appleWatchSE2_40MM_Midnight, appleWatchSE2_40MM_Starlight],
     rating: 4.8,
@@ -3051,7 +2545,7 @@ export const wearablesProducts: Product[] = [
     id: 206,
     name: "Apple Watch SE (2nd generation) 44mm",
     title: "Apple Watch SE (2nd generation) 44mm - Larger Display for Enhanced Experience",
-    price: 279.99,
+    price: 265,
     image: appleWatchSE2_44MM,
     images: [appleWatchSE2_44MM],
     rating: 4.8,
@@ -3119,18 +2613,248 @@ export const wearablesProducts: Product[] = [
       { name: "Starlight", image: appleWatchSE2_44MM, stock: "available" },
       { name: "Silver", image: appleWatchSE2_44MM, stock: "available" }
     ]
+  },
+  {
+    id: 207,
+    name: "Apple Watch Series 10 46mm",
+    title: "Apple Watch Series 10 46mm - Thinnest Design with Largest Display",
+    price: 370,
+    image: appleWatchS10_46MM,
+    images: [appleWatchS10_46MM, appleWatchS10_46MM_1, appleWatchS10_46MM_2, appleWatchS10_46MM_3],
+    rating: 4.9,
+    category: "Wearables",
+    brand: "Apple",
+    description: "The Apple Watch Series 10 in 46mm features the largest and most advanced display ever on an Apple Watch, with a wide-angle OLED that's up to 40% brighter when viewed from an angle. It is the thinnest Apple Watch yet, offering a sleek, comfortable fit. Powered by the S10 SiP, it enables new capabilities like sleep apnea notifications and depth gauging for water activities. With faster charging, carbon neutral combinations, and watchOS 11, it's the ultimate companion for health, fitness, and connectivity.",
+    features: [
+      "Largest Display Yet: 46mm wide-angle OLED display offering more screen area than Apple Watch Ultra.",
+      "Thinnest Design: At just 9.7mm thin, it's 10% thinner than Series 9 for all-day comfort.",
+      "S10 SiP: Powerful new custom silicon enables on-device Siri, Double Tap, and advanced health features.",
+      "Sleep Apnea Notifications: FDA-authorized sleep apnea detection helps you uncover potential breathing disturbances.",
+      "Fastest Charging: Charge up to 80% in just 30 minutes, keeping you going day and night.",
+      "Water Depth & Temperature: Built-in depth gauge and water temperature sensor perfect for swimming and snorkeling.",
+      "Vitals App: Get a comprehensive view of your key health metrics overnight directly on your wrist.",
+      "Carbon Neutral: Available in carbon neutral case and band combinations."
+    ],
+    specifications: [
+      { label: "Display", value: "46mm Always-On Retina LTPO3 OLED, up to 2000 nits" },
+      { label: "Processor", value: "S10 SiP with 64-bit dual-core processor" },
+      { label: "Storage", value: "64GB" },
+      { label: "Size", value: "46mm" },
+      { label: "Battery", value: "Up to 18 hours (36 hours Low Power Mode)" },
+      { label: "Water Resistance", value: "50m water resistant, IP6X dust resistant" },
+      { label: "Connectivity", value: "GPS, Wi-Fi, Bluetooth 5.3" }
+    ],
+    variants: [
+      {
+        key: "s10-46-gps",
+        ram: "",
+        storage: "64GB",
+        label: "GPS",
+        price: 370,
+        description: "Aluminum GPS model."
+      }
+    ],
+    colors: [
+      { name: "Jet Black", image: appleWatchS10_46MM },
+      { name: "Rose Gold", image: appleWatchS10_46MM_1 },
+      { name: "Silver", image: appleWatchS10_46MM_2 }
+    ]
+  },
+  {
+    id: 208,
+    name: "Apple Watch Series 11 42mm",
+    title: "Apple Watch Series 11 42mm - Next Generation Compact",
+    price: 415,
+    image: appleWatchS11_42MM,
+    images: [appleWatchS11_42MM, appleWatchS11_42MM_1, appleWatchS11_42MM_2, appleWatchS11_42MM_3],
+    rating: 5.0,
+    category: "Wearables",
+    brand: "Apple",
+    description: "Experience the future with the Apple Watch Series 11 42mm. This compact powerhouse brings all the advanced health and fitness tracking of the Series 10 into a smaller, lighter form factor. Featuring the rumored next-gen health sensors and an even brighter display, the Series 11 42mm is designed for those who prefer a more subtle profile without compromising on performance.",
+    features: [
+      "Compact 42mm Design: Perfect for smaller wrists or those preferring a lighter watch.",
+      "Advanced Health Monitoring: Includes all Series 10 features plus next-gen enhancements.",
+      "Brighter Always-On Display: Easy to read in any lighting condition.",
+      "All-Day Battery: Optimized power management for 18+ hours usage.",
+      "Fast Charging: Quick top-ups to keep you going.",
+      "Water Resistant: Swim-proof design for tracking aquatic workouts."
+    ],
+    specifications: [
+      { label: "Display", value: "42mm Always-On Retina OLED" },
+      { label: "Processor", value: "Next-Gen SiP" },
+      { label: "Storage", value: "64GB" },
+      { label: "Size", value: "42mm" },
+      { label: "Battery", value: "Up to 18 hours" },
+      { label: "Connectivity", value: "GPS, Wi-Fi, Bluetooth" }
+    ],
+    variants: [
+      {
+        key: "s11-42-gps",
+        ram: "",
+        storage: "64GB",
+        label: "GPS",
+        price: 415,
+        description: "Standard model."
+      }
+    ],
+    colors: [
+      { name: "Starlight", image: appleWatchS11_42MM },
+      { name: "Midnight", image: appleWatchS11_42MM_1 },
+      { name: "Silver", image: appleWatchS11_42MM_2 }
+    ]
+  }
+];
+
+// iPhone Cases
+export const iphoneCases: Product[] = [
+  {
+    id: 131,
+    name: "iPhone 17 Pro Max Silicone Case with MagSafe",
+    title: "iPhone 17 Pro Max Silicone Case with MagSafe - Soft Touch Finish",
+    price: 70,
+    image: silicon17ProMaxOrange,
+    images: [silicon17ProMaxOrange, silicon17ProMaxBrown, silicon17ProMaxLemonade, silicon17ProMaxNavyBlue, silicon17ProMaxPurple],
+    rating: 4.9,
+    category: "iPhone Cases",
+    brand: "Apple",
+    description: "Designed by Apple to complement the next-generation iPhone 17 Pro Max, the Silicone Case with MagSafe is a delightful way to protect your iPhone. The silky, soft-touch finish of the silicone exterior feels great in your hand. And on the inside, there's a soft microfiber lining for even more protection. With built-in magnets that align perfectly with iPhone 17 Pro Max, this case offers a magical attach experience and faster wireless charging every time.",
+    features: [
+      "MagSafe Compatible: Built-in magnets for magical attachment and faster wireless charging.",
+      "Soft-Touch Silicone: Silky exterior finish feels premium and comfortable in hand.",
+      "Microfiber Lining: Soft inner lining protects your iPhone from scratches.",
+      "Precise Cutouts: Designed specifically for iPhone 17 Pro Max with precise cutouts for buttons and ports.",
+      "Drop Protection: Helps protect your iPhone from drops and scratches."
+    ],
+    specifications: [
+      { label: "Material", value: "Silicone" },
+      { label: "Compatibility", value: "iPhone 17 Pro Max" },
+      { label: "MagSafe", value: "Yes" },
+      { label: "Lining", value: "Soft Microfiber" }
+    ],
+    colors: [
+      { name: "Orange", image: silicon17ProMaxOrange },
+      { name: "Brown", image: silicon17ProMaxBrown },
+      { name: "Lemonade", image: silicon17ProMaxLemonade },
+      { name: "Navy Blue", image: silicon17ProMaxNavyBlue },
+      { name: "Purple", image: silicon17ProMaxPurple }
+    ]
+  }
+];
+
+// Gaming Consoles
+export const gamingConsoles: Product[] = [
+  {
+    id: 401,
+    name: "Sony PlayStation 4 Slim 500GB Console",
+    title: "Sony PlayStation 4 Slim 500GB - Compact Gaming Console with HDR Support",
+    price: 249.99,
+    image: ps4Slim,
+    rating: 4.8,
+    category: "Gaming",
+    brand: "Sony",
+    isPreorder: true,
+    description: "Experience immersive gaming with the PlayStation 4 Slim 500GB Console. Enjoy stunning 1080p HDR visuals, a massive library of exclusive titles, and seamless multimedia entertainment in a sleek, compact design that's 30% smaller and 16% lighter than the original PS4. Powered by an AMD 8-core processor and 8GB GDDR5 memory, the PS4 Slim delivers exceptional performance with improved energy efficiency and quieter operation. Perfect for gamers seeking a powerful yet space-saving entertainment hub.",
+    features: [
+      "Compact Design: 30% smaller and 16% lighter than the original PS4, with dimensions of 265mm × 39mm × 288mm and weighing only 2.1 kg (4.6 pounds).",
+      "1080p HDR Gaming: Experience vibrant, lifelike colors and enhanced visual quality with High Dynamic Range support on compatible HDR TVs.",
+      "500GB Storage: Ample space for your games, apps, screenshots, and videos on a user-upgradeable hard drive.",
+      "AMD 8-Core Processor: Powered by a custom x86-64 AMD 'Jaguar' 8-core CPU optimized for gaming and multitasking.",
+      "AMD Radeon Graphics: 1.84 TFLOPS AMD Radeon GPU delivers smooth 1080p gameplay with vibrant colors and intricate details.",
+      "8GB GDDR5 Memory: High-speed unified system memory ensures quick data access, efficient task management, and lag-free gaming.",
+      "Extensive Game Library: Access to thousands of exclusive PS4 titles including award-winning AAA games and critically acclaimed indies.",
+      "DualShock 4 Controller: Includes wireless controller with touchpad, Share button for easy gameplay sharing, and built-in light bar.",
+      "Enhanced Wi-Fi: Dual-band 802.11ac Wi-Fi with 5GHz support for stable online gaming and faster downloads.",
+      "Multimedia Hub: Stream movies, TV shows, and music from Netflix, YouTube, Spotify, and more entertainment apps.",
+      "Energy Efficient: Consumes 28% less power than previous PS4 models with maximum power consumption of 165W.",
+      "Quieter Operation: Improved cooling system for quieter gameplay sessions.",
+      "Blu-ray Player: Built-in Blu-ray/DVD drive (BD 6-speed CAV, DVD 8-speed CAV) for watching movies in stunning quality.",
+      "Multiple Connectivity Options: Two USB 3.1 ports, Gigabit Ethernet, Bluetooth 4.0, HDMI output with HDR, and optical audio output."
+    ],
+    specifications: [
+      { label: "Brand", value: "Sony" },
+      { label: "Model", value: "PlayStation 4 Slim (CUH-2000 Series)" },
+      { label: "Storage", value: "500GB HDD (user-upgradeable)" },
+      { label: "Processor", value: "AMD x86-64 8-core \"Jaguar\" CPU" },
+      { label: "Graphics", value: "AMD Radeon GPU (1.84 TFLOPS)" },
+      { label: "Memory", value: "8GB GDDR5 unified system memory" },
+      { label: "Resolution", value: "1080p with HDR support" },
+      { label: "Optical Drive", value: "Blu-ray/DVD (BD 6x CAV, DVD 8x CAV)" },
+      { label: "Dimensions", value: "265mm × 39mm × 288mm (10.4\" × 1.5\" × 11.3\")" },
+      { label: "Weight", value: "2.1 kg (4.6 pounds)" },
+      { label: "USB Ports", value: "2 × Super-Speed USB 3.1 Gen1" },
+      { label: "Video Output", value: "HDMI output with HDR" },
+      { label: "Audio Output", value: "Digital optical audio (S/PDIF)" },
+      { label: "Wi-Fi", value: "802.11 a/b/g/n/ac (dual-band 2.4GHz/5GHz)" },
+      { label: "Ethernet", value: "Gigabit Ethernet (10BASE-T, 100BASE-TX, 1000BASE-T)" },
+      { label: "Bluetooth", value: "Bluetooth 4.0 (LE)" },
+      { label: "Power", value: "AC 100-240V, 50/60Hz, Max 165W" },
+      { label: "Color", value: "Jet Black" },
+      { label: "Includes", value: "DualShock 4 Wireless Controller, HDMI cable, power cord, USB cable" },
+      { label: "Condition", value: "Brand New (Preorder)" }
+    ]
+  },
+  {
+    id: 402,
+    name: "Sony PlayStation 5 Slim Console",
+    title: "Sony PlayStation 5 Slim - 1TB SSD with 4K 120Hz Gaming & Ray Tracing",
+    price: 499.99,
+    image: ps5Slim,
+    rating: 4.9,
+    category: "Gaming",
+    brand: "Sony",
+    isPreorder: true,
+    description: "Step into the next generation of gaming with the PlayStation 5 Slim Console featuring a spacious 1TB SSD, cutting-edge AMD RDNA 2 graphics with ray tracing, and breathtaking 4K gaming at up to 120fps. The PS5 Slim is 30% smaller by volume than the original PS5 while delivering the same incredible performance with an 8-core AMD Ryzen Zen 2 CPU, 16GB GDDR6 RAM, and immersive Tempest 3D AudioTech. Experience lightning-fast load times, revolutionary DualSense controller with haptic feedback and adaptive triggers, and a massive library of exclusive next-gen titles. Includes a detachable 4K Blu-ray disc drive and pre-installed ASTRO's PLAYROOM game.",
+    features: [
+      "30% More Compact Design: Sleek, slim profile that's 30% smaller by volume and lighter than the original PS5, saving space in your entertainment center.",
+      "1TB Ultra-High Speed SSD: Twice the usable storage of the original PS5 (825GB), with custom SSD architecture for near-instant load times and seamless fast travel.",
+      "4K Gaming at 120fps: Experience ultra-smooth, responsive gameplay with support for 4K resolution at up to 120fps on compatible displays with 120Hz output.",
+      "8K TV Ready: Future-proof your gaming with support for stunning 8K resolution output on compatible 8K displays.",
+      "Hardware Ray Tracing: Custom AMD RDNA 2 GPU with 10.3 TFLOPS delivers realistic lighting, shadows, and reflections for immersive next-gen visuals.",
+      "AMD Ryzen Zen 2 CPU: Powerful 8-core, 16-thread processor running at up to 3.5 GHz for lightning-fast performance and seamless multitasking.",
+      "16GB GDDR6 RAM: High-speed memory with 448GB/s bandwidth ensures smooth gameplay, fast loading, and efficient multitasking even in the most demanding games.",
+      "Tempest 3D AudioTech: Immersive spatial audio technology delivers 3D soundscapes that put you in the center of the action with compatible headsets and speakers.",
+      "DualSense Wireless Controller: Revolutionary haptic feedback and adaptive triggers simulate in-game actions like drawing a bow or feeling terrain textures.",
+      "Backward Compatibility: Play the majority of PlayStation 4 games with enhanced performance on your PS5 Slim.",
+      "4K Blu-ray Disc Drive: Watch your favorite 4K Ultra HD Blu-ray movies and play physical PS5 and PS4 game discs with the included detachable drive.",
+      "Wi-Fi 6 & Gigabit Ethernet: Fast, reliable connectivity with Wi-Fi 6 (802.11ax) and Gigabit Ethernet for smooth online gaming and rapid downloads.",
+      "Four USB Ports: Two USB-C ports on the front (one Hi-Speed USB, one Super-Speed USB 10Gbps) and two Super-Speed USB-A ports on the back for accessories.",
+      "ASTRO's PLAYROOM Pre-installed: Explore the PS5's capabilities with this free, pre-installed game showcasing DualSense features.",
+      "Vertical & Horizontal Placement: Includes two plastic stand feet for horizontal setup (vertical stand sold separately for vertical orientation)."
+    ],
+    specifications: [
+      { label: "Brand", value: "Sony" },
+      { label: "Model", value: "PlayStation 5 Slim (CFI-2000 Series)" },
+      { label: "Storage", value: "1TB Custom SSD" },
+      { label: "CPU", value: "AMD Ryzen Zen 2 (8-core, 16-thread, up to 3.5 GHz)" },
+      { label: "GPU", value: "Custom AMD RDNA 2 (10.3 TFLOPS, Ray Tracing support)" },
+      { label: "Memory", value: "16GB GDDR6 (448GB/s bandwidth)" },
+      { label: "Resolution", value: "4K at up to 120fps, 8K output support, 1440p support" },
+      { label: "Audio", value: "Tempest 3D AudioTech" },
+      { label: "Optical Drive", value: "4K UHD Blu-ray (detachable, included with standard model)" },
+      { label: "Video Output", value: "HDMI 2.1" },
+      { label: "USB Ports", value: "2 × USB-C (front: Hi-Speed + Super-Speed 10Gbps), 2 × USB-A (back: Super-Speed)" },
+      { label: "Wi-Fi", value: "Wi-Fi 6 (802.11ax)" },
+      { label: "Ethernet", value: "Gigabit Ethernet" },
+      { label: "Bluetooth", value: "Bluetooth 5.1" },
+      { label: "Dimensions", value: "Approximately 30% smaller than original PS5" },
+      { label: "Design", value: "Four side plates (one designed for detachable disc drive)" },
+      { label: "Included Accessories", value: "DualSense Wireless Controller, HDMI cable, AC power cord, USB cable, 2 plastic stand feet" },
+      { label: "Pre-installed Game", value: "ASTRO's PLAYROOM" },
+      { label: "Vertical Stand", value: "Sold separately" },
+      { label: "Condition", value: "Brand New (Preorder)" }
+    ]
   }
 ];
 
 // Helper function to get product by ID
 export const getProductById = (id: number): Product | undefined => {
-  const allProducts = [...phoneAccessories, ...wearablesProducts, ...smartphoneProducts, ...tabletProducts];
+  const allProducts = [...phoneAccessories, ...wearablesProducts, ...smartphoneProducts, ...tabletProducts, ...iphoneCases, ...gamingConsoles];
   return allProducts.find(product => product.id === id);
 };
 
 // Helper function to get products by category
 export const getProductsByCategory = (category: string): Product[] => {
-  const allProducts = [...phoneAccessories, ...wearablesProducts, ...smartphoneProducts, ...tabletProducts];
+  const allProducts = [...phoneAccessories, ...wearablesProducts, ...smartphoneProducts, ...tabletProducts, ...iphoneCases, ...gamingConsoles];
   return allProducts.filter(product => product.category === category);
 };
 

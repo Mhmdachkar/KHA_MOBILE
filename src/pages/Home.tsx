@@ -21,6 +21,7 @@ import iPhone16Pink from "@/assets/phones/iphone 16/iphone 16 pink.jpeg";
 import iPhone16Teal from "@/assets/phones/iphone 16/iphone 16 teal.jpeg";
 import iPhone16Ultramarine from "@/assets/phones/iphone 16/iphone 16 ultramarine.jpeg";
 import iPhone16White from "@/assets/phones/iphone 16/iphone 16 white.jpeg";
+import silicon17ProMaxOrange from "@/assets/iphone covers/silicon 17 pro max/Screenshot 2025-12-09 010853 orange.png";
 import { getProductsByCategory } from "@/data/products";
 
 // iPhone 16 Showcase Component
@@ -335,6 +336,7 @@ const Home = () => {
     { image: rechargeLogo, name: "Recharges", linkTo: "/recharges" },
     { icon: Gift, name: "Gift Cards", linkTo: "/gift-cards" },
     { icon: Zap, name: "Accessories", linkTo: "/accessories" },
+    { image: silicon17ProMaxOrange, name: "iPhone Cases", linkTo: "/category/iPhone Cases" },
   ];
 
   const trendingSmartphones = getProductsByCategory("Smartphones")

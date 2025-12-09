@@ -9,7 +9,7 @@ export const iPhone16Product = {
     id: 500,
     name: "iPhone 16",
     title: "iPhone 16 - Built for Apple Intelligence",
-    price: 799,
+    price: 820,
     image: iPhone16Ultramarine,
     images: [iPhone16Ultramarine, iPhone16Teal, iPhone16Pink, iPhone16White, iPhone16Black],
     rating: 5.0,
@@ -44,7 +44,7 @@ export const iPhone16Product = {
         { label: "Model", value: "iPhone 16" },
         { label: "Colors", value: "Black, White, Pink, Teal, Ultramarine" },
         { label: "Finish", value: "Aluminum design with color-infused glass back and Ceramic Shield front" },
-        { label: "Capacity", value: "128GB, 256GB, 512GB" },
+        { label: "Capacity", value: "128GB" },
         { label: "Dimensions", value: "147.6mm × 71.6mm × 7.80mm (5.81\" × 2.82\" × 0.31\")" },
         { label: "Weight", value: "170 grams (6.00 ounces)" },
         { label: "Display Type", value: "Super Retina XDR display, 6.1‑inch all‑screen OLED" },
@@ -81,24 +81,8 @@ export const iPhone16Product = {
             ram: "",
             storage: "128GB",
             label: "128GB",
-            price: 799,
-            description: "Perfect for everyday use with ample storage for apps, photos, and videos."
-        },
-        {
-            key: "iphone16-256gb",
-            ram: "",
-            storage: "256GB",
-            label: "256GB",
-            price: 899,
-            description: "Ideal for content creators who need extra space for 4K videos and large photo libraries."
-        },
-        {
-            key: "iphone16-512gb",
-            ram: "",
-            storage: "512GB",
-            label: "512GB",
-            price: 1099,
-            description: "Maximum storage for professionals capturing extensive 4K ProRes video and spatial content."
+            price: 820,
+            description: "Brand new iPhone 16 with 128GB storage - perfect for everyday use with ample storage for apps, photos, and videos."
         }
     ],
     colors: [

@@ -170,7 +170,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 1,
     name: "iTunes USA $2 Gift Card",
-    price: 2,
+    price: 3.5,
     regionalPrice: 2,
     image: itunesUSA2,
     region: "USA",
@@ -181,7 +181,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 2,
     name: "iTunes USA $3 Gift Card",
-    price: 3,
+    price: 4.5,
     regionalPrice: 3,
     image: itunesUSA3,
     region: "USA",
@@ -192,7 +192,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 3,
     name: "iTunes USA $4 Gift Card",
-    price: 4,
+    price: 5.5,
     regionalPrice: 4,
     image: itunesUSA4,
     region: "USA",
@@ -203,7 +203,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 4,
     name: "iTunes USA $5 Gift Card",
-    price: 5,
+    price: 7,
     regionalPrice: 5,
     image: itunesUSA5,
     region: "USA",
@@ -225,7 +225,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 6,
     name: "iTunes USA $15 Gift Card",
-    price: 15,
+    price: 17,
     regionalPrice: 15,
     image: itunesUSA15,
     region: "USA",
@@ -291,7 +291,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 12,
     name: "iTunes USA $150 Gift Card",
-    price: 150,
+    price: 157,
     regionalPrice: 150,
     image: itunesUSA150,
     region: "USA",
@@ -302,7 +302,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 13,
     name: "iTunes USA $200 Gift Card",
-    price: 200,
+    price: 220,
     regionalPrice: 200,
     image: itunesUSA200,
     region: "USA",
@@ -313,7 +313,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 14,
     name: "iTunes USA $300 Gift Card",
-    price: 300,
+    price: 330,
     regionalPrice: 300,
     image: itunesUSA300,
     region: "USA",
@@ -324,7 +324,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 15,
     name: "iTunes USA $400 Gift Card",
-    price: 400,
+    price: 440,
     regionalPrice: 400,
     image: itunesUSA400,
     region: "USA",
@@ -335,7 +335,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 16,
     name: "iTunes USA $500 Gift Card",
-    price: 500,
+    price: 550,
     regionalPrice: 500,
     image: itunesUSA500,
     region: "USA",
@@ -879,7 +879,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 64,
     name: "Anghami $5 Gift Card",
-    price: 5,
+    price: 7,
     regionalPrice: 5,
     image: anghami5,
     region: "Global",
@@ -890,7 +890,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 65,
     name: "Anghami $8 Gift Card",
-    price: 8,
+    price: 12,
     regionalPrice: 8,
     image: anghami8,
     region: "Global",
@@ -901,7 +901,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 66,
     name: "Anghami $15 Gift Card",
-    price: 15,
+    price: 17,
     regionalPrice: 15,
     image: anghami15,
     region: "Global",
@@ -912,7 +912,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 67,
     name: "Anghami $25 Gift Card",
-    price: 28,
+    price: 30,
     regionalPrice: 25,
     image: anghami25,
     region: "Global",
@@ -923,7 +923,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 68,
     name: "Anghami $50 Gift Card",
-    price: 55,
+    price: 70,
     regionalPrice: 50,
     image: anghami50,
     region: "Global",
@@ -934,7 +934,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 69,
     name: "Anghami $88 Gift Card",
-    price: 88,
+    price: 110,
     regionalPrice: 88,
     image: anghami88,
     region: "Global",
@@ -946,7 +946,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 70,
     name: "Anghami $7.5 Family Gift Card",
-    price: 7.5,
+    price: 10,
     regionalPrice: 7.5,
     image: anghami7_5Family,
     region: "Family",
@@ -957,7 +957,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 71,
     name: "Anghami $75 Family Gift Card",
-    price: 78,
+    price: 100,
     regionalPrice: 75,
     image: anghami75Family,
     region: "Family",
@@ -1005,7 +1005,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 75,
     name: "Free Fire $1 Gift Card",
-    price: 1,
+    price: 2.5,
     regionalPrice: 1,
     image: freefire1,
     region: "Global",
@@ -1016,7 +1016,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 76,
     name: "Free Fire $2 Gift Card",
-    price: 2,
+    price: 3.5,
     regionalPrice: 2,
     image: freefire2,
     region: "Global",
@@ -1027,7 +1027,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 77,
     name: "Free Fire $5 Gift Card",
-    price: 5,
+    price: 7,
     regionalPrice: 5,
     image: freefire5,
     region: "Global",
@@ -1062,7 +1062,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 80,
     name: "PUBG $1 Gift Card",
-    price: 1,
+    price: 2.5,
     regionalPrice: 1,
     image: pubg1,
     region: "Global",
@@ -1073,7 +1073,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 81,
     name: "PUBG $5 Gift Card",
-    price: 5,
+    price: 7,
     regionalPrice: 5,
     image: pubg5,
     region: "Global",
@@ -1128,7 +1128,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 86,
     name: "PUBG $200 Gift Card",
-    price: 200,
+    price: 220,
     regionalPrice: 200,
     image: pubg200,
     region: "Global",
@@ -1139,7 +1139,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 87,
     name: "PUBG $300 Gift Card",
-    price: 300,
+    price: 330,
     regionalPrice: 300,
     image: pubg300,
     region: "Global",
@@ -1150,7 +1150,7 @@ const GIFT_CARDS: GiftCard[] = [
   {
     id: 88,
     name: "PUBG $400 Gift Card",
-    price: 400,
+    price: 440,
     regionalPrice: 400,
     image: pubg400,
     region: "Global",

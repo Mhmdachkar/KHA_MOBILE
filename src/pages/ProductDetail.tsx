@@ -6,7 +6,7 @@ import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { useFavorites } from "@/context/FavoritesContext";
 import { useCart } from "@/context/CartContext";
-import { getProductById, phoneAccessories, wearablesProducts, smartphoneProducts, tabletProducts } from "@/data/products";
+import { getProductById, phoneAccessories, wearablesProducts, smartphoneProducts, tabletProducts, iphoneCases, gamingConsoles } from "@/data/products";
 import { getGreenLionProductById, greenLionProducts } from "@/data/greenLionProducts";
 import ProductCard from "@/components/ProductCard";
 import ProductCarousel from "@/components/ProductCarousel";
@@ -263,6 +263,7 @@ const ProductDetail = () => {
       variantLabel: selectedVariant?.label,
       color: selectedColor || undefined,
       colorImage: selectedColorImage || undefined,
+      isPreorder: product.isPreorder,
     });
 
     if (redirect) {
@@ -341,6 +342,31 @@ const ProductDetail = () => {
       brand: p.brand,
       secondaryCategories: p.secondaryCategories || [],
       colors: p.colors || [],
+    })),
+    ...iphoneCases.map(p => ({
+      id: p.id,
+      name: p.name,
+      price: p.price,
+      image: p.image,
+      images: p.images && p.images.length > 0 ? p.images : [p.image],
+      rating: p.rating,
+      category: p.category,
+      brand: p.brand || extractBrand(p.name),
+      secondaryCategories: [],
+      colors: p.colors,
+    })),
+    ...gamingConsoles.map(p => ({
+      id: p.id,
+      name: p.name,
+      price: p.price,
+      image: p.image,
+      images: p.images && p.images.length > 0 ? p.images : [p.image],
+      rating: p.rating,
+      category: p.category,
+      brand: p.brand || extractBrand(p.name),
+      secondaryCategories: [],
+      colors: p.colors,
+      isPreorder: p.isPreorder,
     })),
   ];
 
@@ -964,7 +990,7 @@ const ProductDetail = () => {
                 style={{ touchAction: 'manipulation' }}
               >
                 <ShoppingCart className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-                Add to Cart
+                {product.isPreorder ? "Preorder Now" : "Add to Cart"}
               </Button>
               <Button
                 size="lg"
@@ -973,7 +999,7 @@ const ProductDetail = () => {
                 onClick={() => handleAddToCart(true)}
                 style={{ touchAction: 'manipulation' }}
               >
-                Buy Now
+                {product.isPreorder ? "Preorder & Checkout" : "Buy Now"}
               </Button>
             </div>
 

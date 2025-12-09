@@ -170,6 +170,10 @@ export interface GreenLionProduct {
   features: string[];
   specifications: Array<{ label: string; value: string }>;
   colors?: Array<{ name: string; price?: number; stock?: string; image?: string }>;
+  isPreorder?: boolean;
+  variants?: Array<{ key: string; ram: string; storage: string; label: string; price: number; description?: string }>;
+  connectivityOptions?: string[];
+  video?: string;
 }
 
 export const greenLionProducts: GreenLionProduct[] = [
