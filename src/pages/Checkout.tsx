@@ -98,10 +98,10 @@ const Checkout = () => {
   const { toast } = useToast();
   const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
   const isMobile = useIsMobile();
-
+  
   // Check if this is a recharge/gift card checkout (has URL params) or cart checkout
   const isRechargeCheckout = searchParams.has("name") || searchParams.has("price");
-
+  
   // Get product details from URL params (for recharge/gift cards)
   const productName = searchParams.get("name") || "";
   const productPrice = parseFloat(searchParams.get("price") || "0");
@@ -113,7 +113,7 @@ const Checkout = () => {
   const productCurrency = searchParams.get("currency") || "USD";
   const productRegionalCurrency = searchParams.get("regionalCurrency") || "USD";
   const productCategory = searchParams.get("category") || "Touch Cards";
-
+  
   // Check if this is a streaming service checkout
   const isStreamingServiceCheckout = productCategory === "Streaming Services";
   const requiresAccountType =
@@ -122,17 +122,17 @@ const Checkout = () => {
   // Check if this is a gift card (not a recharge card)
   const isGiftCard = productCategory === "Gift Cards" || productName.toLowerCase().includes("gift card");
   const isRechargeCard = isRechargeCheckout && !isGiftCard && !isStreamingServiceCheckout;
-
+  
   // Monthly fee for streaming services
   const STREAMING_MONTHLY_FEE = 8.00;
-
+  
   // Scroll to top on mount
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
   }, []);
-
+  
   // Redirect to products if cart is empty and not a recharge checkout
   useEffect(() => {
     if (!isRechargeCheckout && cart.length === 0) {
@@ -144,7 +144,7 @@ const Checkout = () => {
       navigate("/products");
     }
   }, [cart, isRechargeCheckout, navigate, toast]);
-
+  
   // Get product image - prefer passed image, fallback to price-based lookup
   const getProductImage = () => {
     if (productImage) {
@@ -203,19 +203,19 @@ const Checkout = () => {
   const validatePhoneNumber = (phone: string): boolean => {
     // Remove all non-digit characters
     const digitsOnly = phone.replace(/\D/g, "");
-
+    
     // Lebanese phone number patterns:
     // Mobile: 03, 70, 71, 76, 78, 79, 81 (followed by 6 digits)
     // Landline: 01, 04, 05, 06, 07, 08, 09 (followed by 6 digits)
     // With country code: +961 or 961 prefix
-
+    
     let phoneToCheck = digitsOnly;
-
+    
     // Remove country code if present
     if (phoneToCheck.startsWith("961")) {
       phoneToCheck = phoneToCheck.substring(3);
     }
-
+    
     // Check if it's a valid Lebanese number (8 digits after removing country code)
     if (phoneToCheck.length !== 8) {
       setErrors(prev => ({
@@ -224,11 +224,11 @@ const Checkout = () => {
       }));
       return false;
     }
-
+    
     // Check if it starts with valid Lebanese prefixes
     const validPrefixes = ["03", "70", "71", "76", "78", "79", "81", "01", "04", "05", "06", "07", "08", "09"];
     const prefix = phoneToCheck.substring(0, 2);
-
+    
     if (!validPrefixes.includes(prefix)) {
       setErrors(prev => ({
         ...prev,
@@ -236,7 +236,7 @@ const Checkout = () => {
       }));
       return false;
     }
-
+    
     setErrors(prev => ({ ...prev, phoneNumber: "" }));
     return true;
   };
@@ -244,7 +244,7 @@ const Checkout = () => {
   // Validate dollars amount
   const validateDollarsAmount = (amount: string): boolean => {
     if (!formData.separateDollars) return true;
-
+    
     const numAmount = parseFloat(amount);
     if (isNaN(numAmount) || numAmount <= 0) {
       setErrors(prev => ({
@@ -253,7 +253,7 @@ const Checkout = () => {
       }));
       return false;
     }
-
+    
     setErrors(prev => ({ ...prev, dollarsAmount: "" }));
     return true;
   };
@@ -262,7 +262,7 @@ const Checkout = () => {
   const formatLebanesePhoneNumber = (value: string): string => {
     // Remove all non-digit characters
     const digitsOnly = value.replace(/\D/g, "");
-
+    
     // Handle country code
     if (digitsOnly.startsWith("961")) {
       const localNumber = digitsOnly.substring(3);
@@ -271,7 +271,7 @@ const Checkout = () => {
       if (localNumber.length <= 5) return `+961 ${localNumber.substring(0, 2)} ${localNumber.substring(2)}`;
       return `+961 ${localNumber.substring(0, 2)} ${localNumber.substring(2, 5)} ${localNumber.substring(5)}`;
     }
-
+    
     // Handle local number without country code
     if (digitsOnly.length === 0) return "";
     if (digitsOnly.length <= 2) return digitsOnly;
@@ -306,8 +306,8 @@ const Checkout = () => {
   };
 
   const handleSeparateDollarsChange = (checked: boolean) => {
-    setFormData(prev => ({
-      ...prev,
+    setFormData(prev => ({ 
+      ...prev, 
       separateDollars: checked,
       dollarsAmount: checked ? prev.dollarsAmount : ""
     }));
@@ -324,12 +324,12 @@ const Checkout = () => {
     } else if (productCategory === "Days Cards") {
       card = ADDITIONAL_DAYS_CARDS.find(c => c.id.toString() === cardId);
     }
-
+    
     if (card && !additionalCards.find(c => c.id === card.id)) {
       setAdditionalCards(prev => [...prev, card]);
     }
   };
-
+  
   // Get available cards based on category
   const getAvailableCards = () => {
     if (productCategory === "Touch Cards") {
@@ -356,12 +356,12 @@ const Checkout = () => {
     } else if (isRechargeCheckout) {
       // Recharge/gift card checkout - no delivery fee
       let total = productPrice;
-
+      
       // Add additional cards prices
       additionalCards.forEach(card => {
         total += card.price;
       });
-
+      
       // Only add separate dollars for recharge cards, not gift cards
       if (isRechargeCard && formData.separateDollars && formData.dollarsAmount) {
         total += parseFloat(formData.dollarsAmount);
@@ -373,7 +373,7 @@ const Checkout = () => {
       return subtotal + DELIVERY_FEE;
     }
   };
-
+  
   // Get cart items with full product details
   const getCartItemsWithDetails = () => {
     return cart.map(item => {
@@ -394,7 +394,7 @@ const Checkout = () => {
   const handleWhatsAppPayment = () => {
     // Validate form based on checkout type
     let isValid = true;
-
+    
     if (isStreamingServiceCheckout) {
       // Streaming service checkout validation - only phone number required
       const isPhoneValid = validatePhoneNumber(formData.phoneNumber);
@@ -412,7 +412,7 @@ const Checkout = () => {
       const isLocationValid = validateDeliveryLocation(formData.deliveryLocation);
       isValid = isNameValid && isPhoneValid && isLocationValid;
     }
-
+    
     if (!isValid) {
       toast({
         title: "Validation Error",
@@ -427,7 +427,7 @@ const Checkout = () => {
     // Prepare WhatsApp message
     const total = calculateTotal();
     let message = `*New Order Request*\n\n`;
-
+    
     if (isStreamingServiceCheckout) {
       // Streaming service checkout message
       message += `• *Service:* ${productName}\n`;
@@ -443,11 +443,11 @@ const Checkout = () => {
       // Recharge/gift card checkout message
       message += `• *Product:* ${productName}\n`;
       message += `• *Product Price:* $${productPrice.toFixed(2)}\n`;
-
+      
       if (productRegion !== "USA" && productRegionalPrice > 0) {
         message += `• *Regional Price:* ${productRegionalCurrency} ${productRegionalPrice}\n`;
       }
-
+      
       // Add additional cards
       if (additionalCards.length > 0) {
         message += `\n• *Additional Cards:*\n`;
@@ -455,16 +455,16 @@ const Checkout = () => {
           message += `  - ${card.name} - $${card.price.toFixed(2)}\n`;
         });
       }
-
+      
       if (productRegion) {
         message += `• *Region:* ${productRegion}\n`;
       }
       if (productBrand) {
         message += `• *Brand:* ${productBrand}\n`;
       }
-
+      
       message += `\n• *Phone Number:* ${formData.phoneNumber}\n`;
-
+      
       // Only include separate dollars for recharge cards, not gift cards
       if (isRechargeCard && formData.separateDollars && formData.dollarsAmount) {
         message += `• *Separate Dollars:* $${parseFloat(formData.dollarsAmount).toFixed(2)}\n`;
@@ -474,7 +474,7 @@ const Checkout = () => {
       message += `• *Customer Name:* ${formData.customerName}\n`;
       message += `• *Phone Number:* ${formData.phoneNumber}\n`;
       message += `• *Delivery Location:* ${formData.deliveryLocation}\n\n`;
-
+      
       message += `• *Order Items:*\n`;
       cart.forEach((item) => {
         let itemLabel = item.name;
@@ -486,18 +486,18 @@ const Checkout = () => {
         }
         message += `  - ${itemLabel} (Qty: ${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}\n`;
       });
-
+      
       const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
       message += `\n• *Subtotal:* $${subtotal.toFixed(2)}\n`;
       message += `• *Delivery:* $${DELIVERY_FEE.toFixed(2)}\n`;
     }
-
+    
     message += `\n*Total Amount:* $${total.toFixed(2)}\n`;
     message += `\nPlease confirm this order. Thank you!`;
 
     // Encode message for URL
     const encodedMessage = encodeURIComponent(message);
-
+    
     // Replace with your WhatsApp business number (format: country code + number without +)
     const whatsappNumber = "96181861811"; // WhatsApp business number for receiving orders
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
@@ -552,9 +552,9 @@ const Checkout = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
           >
-            <div className="bg-white rounded-lg p-4 sm:p-6 md:p-8 shadow-elegant border border-border">
-              <h2 className="text-elegant text-xl sm:text-2xl mb-4 sm:mb-6">Order Summary</h2>
-
+                <div className="bg-white rounded-lg p-4 sm:p-6 md:p-8 shadow-elegant border border-border">
+                  <h2 className="text-elegant text-xl sm:text-2xl mb-4 sm:mb-6">Order Summary</h2>
+              
               {isStreamingServiceCheckout || isRechargeCheckout ? (
                 <>
                   {/* Streaming Service/Recharge/Gift Card Product Image */}
@@ -621,32 +621,32 @@ const Checkout = () => {
                       const uniqueKey = `${item.id}-${item.variantKey || "base"}-${(item as any).color || "no-color"}`;
 
                       return (
-                        <motion.div
+                      <motion.div
                           key={uniqueKey}
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="flex gap-2 sm:gap-3 md:gap-4 p-3 sm:p-4 border border-border rounded-lg bg-gradient-to-r from-primary/5 to-accent/5"
-                        >
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="flex gap-2 sm:gap-3 md:gap-4 p-3 sm:p-4 border border-border rounded-lg bg-gradient-to-r from-primary/5 to-accent/5"
+                      >
                           {/* Product Image - Shows color-specific image if available */}
-                          <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-lg overflow-hidden bg-white border border-border flex-shrink-0">
-                            <img
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-lg overflow-hidden bg-white border border-border flex-shrink-0">
+                          <img
                               src={displayImage}
-                              alt={item.name}
+                            alt={item.name}
                               className="w-full h-full object-contain p-1"
-                              onError={(e) => {
-                                const target = e.target as HTMLImageElement;
-                                target.src = "/placeholder.svg";
-                              }}
-                            />
-                          </div>
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.src = "/placeholder.svg";
+                            }}
+                          />
+                        </div>
 
-                          {/* Product Info */}
-                          <div className="flex-1 min-w-0">
-                            <Link to={`/product/${item.id}`} className="hover:underline">
-                              <h3 className="text-xs sm:text-sm font-medium text-elegant line-clamp-2 mb-1">
-                                {item.name}
-                              </h3>
-                            </Link>
+                        {/* Product Info */}
+                        <div className="flex-1 min-w-0">
+                          <Link to={`/product/${item.id}`} className="hover:underline">
+                            <h3 className="text-xs sm:text-sm font-medium text-elegant line-clamp-2 mb-1">
+                              {item.name}
+                            </h3>
+                          </Link>
                             {item.variantLabel && (
                               <p className="text-[10px] sm:text-xs text-primary/80 mb-1">
                                 {item.variantLabel}
@@ -657,162 +657,162 @@ const Checkout = () => {
                                 Color: {(item as any).color}
                               </p>
                             )}
-                            {item.category && (
-                              <p className="text-[10px] sm:text-xs text-muted-foreground mb-1 sm:mb-2">{item.category}</p>
-                            )}
-                            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mt-1 sm:mt-2">
-                              <div className="flex items-center gap-1 sm:gap-2 border border-border rounded-lg">
-                                <motion.button
-                                  whileHover={{ scale: 1.1 }}
-                                  whileTap={{ scale: 0.9 }}
+                          {item.category && (
+                            <p className="text-[10px] sm:text-xs text-muted-foreground mb-1 sm:mb-2">{item.category}</p>
+                          )}
+                          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mt-1 sm:mt-2">
+                            <div className="flex items-center gap-1 sm:gap-2 border border-border rounded-lg">
+                              <motion.button
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
                                   onClick={() => updateQuantity(item.id, item.quantity - 1, item.variantKey, (item as any).color)}
-                                  className="h-6 w-6 sm:h-7 sm:w-7 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
-                                >
-                                  <Minus className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
-                                </motion.button>
-                                <span className="text-xs sm:text-sm font-medium w-6 sm:w-8 text-center">
-                                  {item.quantity}
-                                </span>
-                                <motion.button
-                                  whileHover={{ scale: 1.1 }}
-                                  whileTap={{ scale: 0.9 }}
+                                className="h-6 w-6 sm:h-7 sm:w-7 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
+                              >
+                                <Minus className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
+                              </motion.button>
+                              <span className="text-xs sm:text-sm font-medium w-6 sm:w-8 text-center">
+                                {item.quantity}
+                              </span>
+                              <motion.button
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
                                   onClick={() => updateQuantity(item.id, item.quantity + 1, item.variantKey, (item as any).color)}
-                                  className="h-6 w-6 sm:h-7 sm:w-7 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
-                                >
-                                  <Plus className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
-                                </motion.button>
-                              </div>
-                              <div className="text-left sm:text-right">
-                                <p className="text-base sm:text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                                  ${(item.price * item.quantity).toFixed(2)}
-                                </p>
-                                <p className="text-[10px] sm:text-xs text-muted-foreground">
-                                  ${item.price.toFixed(2)} each
-                                </p>
-                              </div>
+                                className="h-6 w-6 sm:h-7 sm:w-7 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
+                              >
+                                <Plus className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
+                              </motion.button>
+                            </div>
+                            <div className="text-left sm:text-right">
+                              <p className="text-base sm:text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                                ${(item.price * item.quantity).toFixed(2)}
+                              </p>
+                              <p className="text-[10px] sm:text-xs text-muted-foreground">
+                                ${item.price.toFixed(2)} each
+                              </p>
                             </div>
                           </div>
+                        </div>
 
-                          {/* Remove Button */}
-                          <motion.button
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
+                        {/* Remove Button */}
+                        <motion.button
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
                             onClick={() => removeFromCart(item.id, item.variantKey, (item as any).color)}
-                            className="h-6 w-6 sm:h-8 sm:w-8 rounded-full hover:bg-destructive hover:text-destructive-foreground transition-all flex items-center justify-center self-start"
-                          >
-                            <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
-                          </motion.button>
-                        </motion.div>
+                          className="h-6 w-6 sm:h-8 sm:w-8 rounded-full hover:bg-destructive hover:text-destructive-foreground transition-all flex items-center justify-center self-start"
+                        >
+                          <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
+                        </motion.button>
+                      </motion.div>
                       );
                     })}
                   </div>
                 </>
               )}
 
-              {/* Additional Cards (only for recharge checkout, not streaming services) */}
-              {isRechargeCheckout && !isStreamingServiceCheckout && additionalCards.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  className="space-y-3 pt-4 border-b border-border"
-                >
-                  <p className="text-sm font-medium text-muted-foreground mb-3">Additional Cards</p>
-                  {additionalCards.map((card) => (
-                    <motion.div
-                      key={card.id}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      className="flex items-center justify-between py-2 px-3 bg-primary/5 rounded-lg"
-                    >
-                      <div>
-                        <p className="text-sm font-medium">{card.name}</p>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <p className="text-sm font-medium">${card.price.toFixed(2)}</p>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleRemoveAdditionalCard(card.id)}
-                          className="h-6 w-6 p-0 hover:bg-red-100"
-                        >
-                          <X className="h-3 w-3 text-red-500" />
-                        </Button>
-                      </div>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              )}
+                {/* Additional Cards (only for recharge checkout, not streaming services) */}
+                {isRechargeCheckout && !isStreamingServiceCheckout && additionalCards.length > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    className="space-y-3 pt-4 border-b border-border"
+                  >
+                    <p className="text-sm font-medium text-muted-foreground mb-3">Additional Cards</p>
+                    {additionalCards.map((card) => (
+                      <motion.div
+                        key={card.id}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="flex items-center justify-between py-2 px-3 bg-primary/5 rounded-lg"
+                      >
+                        <div>
+                          <p className="text-sm font-medium">{card.name}</p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <p className="text-sm font-medium">${card.price.toFixed(2)}</p>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleRemoveAdditionalCard(card.id)}
+                            className="h-6 w-6 p-0 hover:bg-red-100"
+                          >
+                            <X className="h-3 w-3 text-red-500" />
+                          </Button>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                )}
 
-              {/* Monthly Fee - Only for streaming service checkout */}
-              {isStreamingServiceCheckout && (
-                <div className="flex items-center justify-between py-4 border-b border-border">
-                  <div className="flex items-center gap-2">
-                    <DollarSign className="h-4 w-4 text-muted-foreground" />
-                    <p className="text-sm">Monthly Fee</p>
+                {/* Monthly Fee - Only for streaming service checkout */}
+                {isStreamingServiceCheckout && (
+                  <div className="flex items-center justify-between py-4 border-b border-border">
+                    <div className="flex items-center gap-2">
+                      <DollarSign className="h-4 w-4 text-muted-foreground" />
+                      <p className="text-sm">Monthly Fee</p>
+                    </div>
+                    <p className="text-lg font-medium">${STREAMING_MONTHLY_FEE.toFixed(2)}</p>
                   </div>
-                  <p className="text-lg font-medium">${STREAMING_MONTHLY_FEE.toFixed(2)}</p>
-                </div>
-              )}
+                )}
 
               {/* Separate Dollars - Only for recharge cards (not gift cards or streaming services) */}
               {isRechargeCard && formData.separateDollars && formData.dollarsAmount && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  className="flex items-center justify-between py-4 border-b border-border"
-                >
-                  <div className="flex items-center gap-2">
-                    <DollarSign className="h-4 w-4 text-muted-foreground" />
-                    <p className="text-sm">Separate Dollars</p>
-                  </div>
-                  <p className="text-lg font-medium">${parseFloat(formData.dollarsAmount).toFixed(2)}</p>
-                </motion.div>
-              )}
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    className="flex items-center justify-between py-4 border-b border-border"
+                  >
+                    <div className="flex items-center gap-2">
+                      <DollarSign className="h-4 w-4 text-muted-foreground" />
+                      <p className="text-sm">Separate Dollars</p>
+                    </div>
+                    <p className="text-lg font-medium">${parseFloat(formData.dollarsAmount).toFixed(2)}</p>
+                  </motion.div>
+                )}
 
-              {/* Subtotal and Total */}
-              <div className="space-y-3 pt-4 border-t border-border">
-                {isStreamingServiceCheckout && (
-                  <>
-                    {productPrice > 0 && (
+                {/* Subtotal and Total */}
+                <div className="space-y-3 pt-4 border-t border-border">
+                  {isStreamingServiceCheckout && (
+                    <>
+                      {productPrice > 0 && (
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-muted-foreground">Service Price</span>
+                          <span className="font-medium">${productPrice.toFixed(2)}</span>
+                        </div>
+                      )}
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">Service Price</span>
-                        <span className="font-medium">${productPrice.toFixed(2)}</span>
+                        <span className="text-muted-foreground">Monthly Fee</span>
+                        <span className="font-medium">${STREAMING_MONTHLY_FEE.toFixed(2)}</span>
                       </div>
-                    )}
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Monthly Fee</span>
-                      <span className="font-medium">${STREAMING_MONTHLY_FEE.toFixed(2)}</span>
-                    </div>
-                  </>
-                )}
-                {!isRechargeCheckout && !isStreamingServiceCheckout && (
-                  <>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Subtotal</span>
-                      <span className="font-medium">
-                        ${cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2)}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Delivery</span>
-                      <span className="font-medium">${DELIVERY_FEE.toFixed(2)}</span>
-                    </div>
-                  </>
-                )}
+                    </>
+                  )}
+                  {!isRechargeCheckout && !isStreamingServiceCheckout && (
+                    <>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-muted-foreground">Subtotal</span>
+                        <span className="font-medium">
+                          ${cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2)}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-muted-foreground">Delivery</span>
+                        <span className="font-medium">${DELIVERY_FEE.toFixed(2)}</span>
+                      </div>
+                    </>
+                  )}
                 {isRechargeCard && formData.separateDollars && formData.dollarsAmount && (
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">Additional Dollars</span>
-                    <span className="font-medium">${parseFloat(formData.dollarsAmount).toFixed(2)}</span>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-muted-foreground">Additional Dollars</span>
+                      <span className="font-medium">${parseFloat(formData.dollarsAmount).toFixed(2)}</span>
+                    </div>
+                  )}
+                  <div className="h-px bg-border" />
+                  <div className="flex items-center justify-between pt-2">
+                    <p className="text-elegant text-xl">Total</p>
+                    <p className="text-elegant text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                      ${calculateTotal().toFixed(2)}
+                    </p>
                   </div>
-                )}
-                <div className="h-px bg-border" />
-                <div className="flex items-center justify-between pt-2">
-                  <p className="text-elegant text-xl">Total</p>
-                  <p className="text-elegant text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                    ${calculateTotal().toFixed(2)}
-                  </p>
                 </div>
-              </div>
 
               {/* Security Notice */}
               <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-primary/5 rounded-lg border border-primary/20">
@@ -1063,8 +1063,8 @@ const Checkout = () => {
                       </SelectTrigger>
                       <SelectContent>
                         {getAvailableCards().map((card) => (
-                          <SelectItem
-                            key={card.id}
+                          <SelectItem 
+                            key={card.id} 
                             value={card.id.toString()}
                             disabled={additionalCards.some(c => c.id === card.id)}
                           >
@@ -1142,11 +1142,11 @@ const Checkout = () => {
                   <Button
                     onClick={handleWhatsAppPayment}
                     disabled={
-                      isProcessing ||
+                      isProcessing || 
                       (isStreamingServiceCheckout
                         ? !formData.phoneNumber
-                        : isRechargeCheckout
-                          ? !formData.phoneNumber
+                        : isRechargeCheckout 
+                          ? !formData.phoneNumber 
                           : !formData.customerName || !formData.phoneNumber || !formData.deliveryLocation)
                     }
                     className="w-full bg-gradient-to-r from-[#25D366] to-[#128C7E] hover:from-[#128C7E] hover:to-[#25D366] text-white py-6 text-lg shadow-lg"

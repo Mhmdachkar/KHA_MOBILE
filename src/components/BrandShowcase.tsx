@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Store, TrendingUp, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { phoneAccessories, smartphoneProducts } from "@/data/products";
+import { phoneAccessories, smartphoneProducts, tabletProducts, wearablesProducts, gamingConsoles } from "@/data/products";
 import { greenLionProducts } from "@/data/greenLionProducts";
 
 // Import brand logos
@@ -22,11 +22,15 @@ const BrandShowcase = () => {
   const navigate = useNavigate();
 
   // Helper function to extract brand from product name
-  const extractBrand = (productName: string): string | null => {
+  const extractBrand = (productName: string, productCategory?: string): string | null => {
+    const nameLower = productName.toLowerCase();
+    
+    // Check for brand patterns
     const brandPatterns = [
       { pattern: /^Green Lion\s+/i, name: "Green Lion" },
       { pattern: /^Apple\s+/i, name: "Apple" },
       { pattern: /^Samsung\s+/i, name: "Samsung" },
+      { pattern: /^Galaxy\s+/i, name: "Samsung" }, // Galaxy products are Samsung
       { pattern: /^Hoco\s+/i, name: "Hoco" },
       { pattern: /^Smart\s+/i, name: "Smart" },
       { pattern: /^Tecno\s+/i, name: "Tecno" },
@@ -35,6 +39,7 @@ const BrandShowcase = () => {
       { pattern: /^Borofone\s+/i, name: "BOROFONE" },
       { pattern: /^JBL\s+/i, name: "JBL" },
       { pattern: /^Kakusiga\s+/i, name: "Kakusiga" },
+      { pattern: /^YESIDO\s+/i, name: "YESIDO" },
     ];
     
     for (const { pattern, name } of brandPatterns) {
@@ -42,6 +47,15 @@ const BrandShowcase = () => {
         return name;
       }
     }
+    
+    // Additional checks for common brand indicators in product names
+    if (nameLower.includes("airpods") || nameLower.includes("airpod")) return "Apple";
+    if (nameLower.includes("galaxy") && !nameLower.includes("green lion")) return "Samsung";
+    if (nameLower.includes("apple watch")) return "Apple";
+    if (nameLower.includes("iphone")) return "Apple";
+    if (nameLower.includes("ipad")) return "Apple";
+    if (nameLower.includes("playstation") || nameLower.includes("ps4") || nameLower.includes("ps5")) return "Sony";
+    
     return null;
   };
 
@@ -49,12 +63,27 @@ const BrandShowcase = () => {
   const allProducts = [
     ...phoneAccessories.map(p => ({
       ...p,
-      brand: p.brand || extractBrand(p.name) || "Other",
+      brand: p.brand || extractBrand(p.name, p.category) || "Other",
       images: [p.image],
     })),
     ...smartphoneProducts.map(p => ({
       ...p,
-      brand: p.brand || extractBrand(p.name) || "Other",
+      brand: p.brand || extractBrand(p.name, p.category) || "Other",
+      images: p.images && p.images.length > 0 ? p.images : [p.image],
+    })),
+    ...tabletProducts.map(p => ({
+      ...p,
+      brand: p.brand || extractBrand(p.name, p.category) || "Other",
+      images: p.images && p.images.length > 0 ? p.images : [p.image],
+    })),
+    ...wearablesProducts.map(p => ({
+      ...p,
+      brand: p.brand || extractBrand(p.name, p.category) || "Other",
+      images: p.images && p.images.length > 0 ? p.images : [p.image],
+    })),
+    ...gamingConsoles.map(p => ({
+      ...p,
+      brand: p.brand || extractBrand(p.name, p.category) || "Other",
       images: p.images && p.images.length > 0 ? p.images : [p.image],
     })),
     ...greenLionProducts.map(p => ({
@@ -65,7 +94,7 @@ const BrandShowcase = () => {
       images: p.images,
       rating: p.rating,
       category: p.category,
-      brand: p.brand,
+      brand: p.brand || "Green Lion", // Ensure Green Lion products are always branded
     })),
   ];
 

@@ -118,7 +118,7 @@ const mockProducts = {
   Wearables: [],
 };
 
-// Category mapping - maps URL paths to category names
+// Category mapping - maps URL paths to category names (normalized to lowercase and decoded)
 const categoryMap: Record<string, string> = {
   "/smartphones": "Smartphones",
   "/audio": "Audio",
@@ -126,6 +126,9 @@ const categoryMap: Record<string, string> = {
   "/wearables": "Wearables",
   "/gaming": "Gaming",
   "/tablets": "Tablets",
+  "/iphone cases": "iPhone Cases",
+  "/iphone%20cases": "iPhone Cases",
+  "/iphonecases": "iPhone Cases",
 };
 
 const CategoryPage = () => {
@@ -146,15 +149,20 @@ const CategoryPage = () => {
   // Get category display name from pathname
   // Handle both direct routes (/audio) and dynamic routes (/category/audio)
   const getCategoryFromPath = (pathname: string): string => {
+    const normalizedPath = decodeURIComponent(pathname).toLowerCase();
+
     // Check direct route first
-    if (categoryMap[pathname]) {
-      return categoryMap[pathname];
+    if (categoryMap[normalizedPath]) {
+      return categoryMap[normalizedPath];
     }
 
     // Check dynamic route (/category/:categoryName)
-    const categoryMatch = pathname.match(/^\/category\/(.+)$/);
+    const categoryMatch = normalizedPath.match(/^\/category\/(.+)$/);
     if (categoryMatch) {
-      const categoryParam = categoryMatch[1];
+      const categoryParam = decodeURIComponent(categoryMatch[1]).toLowerCase();
+      if (categoryParam === "iphone cases" || categoryParam === "iphone%20cases" || categoryParam === "iphonecases") {
+        return "iPhone Cases";
+      }
       // Capitalize first letter for category name
       return categoryParam.charAt(0).toUpperCase() + categoryParam.slice(1);
     }

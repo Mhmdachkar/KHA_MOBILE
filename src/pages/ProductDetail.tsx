@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Heart, ShoppingCart, Star, ChevronLeft, ChevronRight, CheckCircle2 } from "lucide-react";
 import { Link, useParams, useNavigate, useSearchParams } from "react-router-dom";
@@ -6,8 +6,8 @@ import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { useFavorites } from "@/context/FavoritesContext";
 import { useCart } from "@/context/CartContext";
-import { getProductById, phoneAccessories, wearablesProducts, smartphoneProducts, tabletProducts, iphoneCases, gamingConsoles } from "@/data/products";
-import { getGreenLionProductById, greenLionProducts } from "@/data/greenLionProducts";
+import { getProductById, phoneAccessories, wearablesProducts, smartphoneProducts, tabletProducts, getProductsByCategory } from "@/data/products";
+import { getGreenLionProductById, greenLionProducts, getGreenLionProductsByCategory } from "@/data/greenLionProducts";
 import ProductCard from "@/components/ProductCard";
 import ProductCarousel from "@/components/ProductCarousel";
 import ImageLightbox from "@/components/ImageLightbox";
@@ -115,10 +115,8 @@ const ProductDetail = () => {
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
-  const [showStickyCart, setShowStickyCart] = useState(false);
   const { isFavorite, toggleFavorite } = useFavorites();
   const { addToCart } = useCart();
-  const desktopCartRef = useRef<HTMLDivElement>(null);
 
   const productId = id ? parseInt(id, 10) : null;
 
@@ -133,22 +131,6 @@ const ProductDetail = () => {
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
   }, [id]);
-
-  // Handle sticky Add to Cart button visibility
-  useEffect(() => {
-    const handleScroll = () => {
-      if (desktopCartRef.current) {
-        const rect = desktopCartRef.current.getBoundingClientRect();
-        // Show sticky button when desktop cart buttons scroll out of view
-        setShowStickyCart(rect.bottom < 0);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Check initial state
-
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   // If product not found, redirect to products page
   useEffect(() => {
@@ -361,31 +343,6 @@ const ProductDetail = () => {
       secondaryCategories: p.secondaryCategories || [],
       colors: p.colors || [],
     })),
-    ...iphoneCases.map(p => ({
-      id: p.id,
-      name: p.name,
-      price: p.price,
-      image: p.image,
-      images: p.images && p.images.length > 0 ? p.images : [p.image],
-      rating: p.rating,
-      category: p.category,
-      brand: p.brand || extractBrand(p.name),
-      secondaryCategories: [],
-      colors: p.colors,
-    })),
-    ...gamingConsoles.map(p => ({
-      id: p.id,
-      name: p.name,
-      price: p.price,
-      image: p.image,
-      images: p.images && p.images.length > 0 ? p.images : [p.image],
-      rating: p.rating,
-      category: p.category,
-      brand: p.brand || extractBrand(p.name),
-      secondaryCategories: [],
-      colors: p.colors,
-      isPreorder: p.isPreorder,
-    })),
   ];
 
   // Helper function to extract brand from product name
@@ -482,7 +439,7 @@ const ProductDetail = () => {
   const getSmartAccessories = () => {
     if (!isSmartphone) return [];
 
-    // Combine all accessories from different sources
+    // Combine all accessories from different sources (including Audio products)
     const allAccessories = [
       ...phoneAccessories.map(p => ({
         id: p.id,
@@ -499,7 +456,9 @@ const ProductDetail = () => {
           p.category === "Accessories" ||
           p.secondaryCategories?.includes("Accessories") ||
           p.secondaryCategories?.includes("Charging") ||
-          p.category === "Charging"
+          p.category === "Charging" ||
+          p.category === "Audio" ||
+          p.secondaryCategories?.includes("Audio")
         )
         .map(p => ({
           id: p.id,
@@ -539,12 +498,15 @@ const ProductDetail = () => {
       // Boost charging accessories
       if (acc.category === "Charging") score += 7;
 
+      // Boost audio accessories
+      if (acc.category === "Audio") score += 6;
+
       return { ...acc, score };
     });
 
+    // Don't limit the results - return all accessories so Audio filter can show all audio products
     return scoredAccessories
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 12);
+      .sort((a, b) => b.score - a.score);
   };
 
   const smartAccessories = getSmartAccessories();
@@ -556,24 +518,29 @@ const ProductDetail = () => {
     const name = accessory.name.toLowerCase();
     const primaryCategory = accessory.category?.toLowerCase() || "";
 
-    const matchesCharging =
-      primaryCategory === "charging" ||
-      ["charger", "charging", "power bank", "adapter", "cable", "usb", "type-c", "lightning", "wall", "dock"].some((keyword) =>
-        name.includes(keyword)
-      );
+    // Check Audio FIRST to ensure audio products are never categorized as Charging or Protection
+    const matchesAudio =
+      primaryCategory === "audio" ||
+      ["earbud", "speaker", "headphone", "neckband", "buds", "audio", "sound", "airpods", "airpod", "wireless earbuds", "true wireless"].some((keyword) => name.includes(keyword));
 
-    const matchesProtection =
+    // Only check charging if it's NOT an audio product
+    const matchesCharging = !matchesAudio && (
+      primaryCategory === "charging" ||
+      ["charger", "charging", "power bank", "adapter", "cable", "usb", "type-c", "lightning", "wall", "dock", "magsafe"].some((keyword) =>
+        name.includes(keyword)
+      )
+    );
+
+    // Only check protection if it's NOT an audio product
+    const matchesProtection = !matchesAudio && 
       ["case", "cover", "protector", "screen", "holder", "stand", "mount", "armour", "sleeve"].some((keyword) =>
         name.includes(keyword)
       );
 
-    const matchesAudio =
-      primaryCategory === "audio" ||
-      ["earbud", "speaker", "headphone", "neckband", "buds", "audio", "sound"].some((keyword) => name.includes(keyword));
-
+    // Priority: Audio first, then Charging, then Protection
+    if (matchesAudio) return "Audio" as const;
     if (matchesCharging) return "Charging" as const;
     if (matchesProtection) return "Protection" as const;
-    if (matchesAudio) return "Audio" as const;
     return "All Essentials" as const;
   };
 
@@ -854,26 +821,16 @@ const ProductDetail = () => {
 
             <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
               <div className="flex flex-col">
-                {product.isPreorder && displayPrice === 0 ? (
-                  <p className="text-elegant text-2xl sm:text-3xl font-bold">Pre-order</p>
-                ) : (
-                  <p className="text-elegant text-2xl sm:text-3xl font-bold">${displayPrice.toFixed(2)}</p>
-                )}
+                <p className="text-elegant text-2xl sm:text-3xl font-bold">${displayPrice.toFixed(2)}</p>
                 {selectedVariant?.label && (
                   <span className="text-xs sm:text-sm text-muted-foreground mt-1">
                     Configuration: {selectedVariant.label}
                   </span>
                 )}
               </div>
-              {product.isPreorder ? (
-                <span className="text-xs sm:text-sm text-primary bg-primary/10 px-2 sm:px-3 py-1 rounded-full">
-                  Pre-order
-                </span>
-              ) : (
               <span className="text-xs sm:text-sm text-green-600 bg-green-50 px-2 sm:px-3 py-1 rounded-full">
                 In Stock
               </span>
-              )}
             </div>
 
             {(colorOptions.length > 0 || variantOptions.length > 0) && (
@@ -1010,7 +967,7 @@ const ProductDetail = () => {
             </div>
 
             {/* Actions - Hidden on mobile (buttons shown in image gallery), visible on desktop */}
-            <div ref={desktopCartRef} className="hidden md:flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6">
+            <div className="hidden md:flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6">
               <Button 
                 size="lg" 
                 className="flex-1 text-elegant text-sm sm:text-base py-4 sm:py-5 md:py-6"
@@ -1330,12 +1287,62 @@ const ProductDetail = () => {
         {(() => {
           // Get frequently bought together items based on product category
           const getFrequentlyBoughtTogether = () => {
+            const productCategory = product.category?.toLowerCase() || '';
             const productName = product.name.toLowerCase();
+            
+            // Get all audio products (regular + Green Lion)
+            // Get all products from all arrays with Audio category
+            const allRegularProducts = [...phoneAccessories, ...wearablesProducts, ...smartphoneProducts, ...tabletProducts];
+            const regularAudio = allRegularProducts.filter(p => p.category === "Audio");
+            const greenLionAudio = getGreenLionProductsByCategory("Audio");
+            
+            // Combine and remove duplicates by ID
+            const audioProductsMap = new Map();
+            
+            // Add regular audio products
+            regularAudio.forEach(p => {
+              audioProductsMap.set(p.id, {
+                ...p,
+                image: p.image || p.images?.[0],
+                images: p.images || [p.image],
+              });
+            });
+            
+            // Add Green Lion audio products
+            greenLionAudio.forEach(p => {
+              if (!audioProductsMap.has(p.id)) {
+                audioProductsMap.set(p.id, {
+                  ...p,
+                  image: p.images[0],
+                  images: p.images,
+                });
+              }
+            });
+            
+            // Convert map to array
+            const audioProducts = Array.from(audioProductsMap.values());
+            
+            // Get all charging products (regular + Green Lion)
+            const chargingProducts = [
+              ...getProductsByCategory("Charging").map(p => ({
+                ...p,
+                image: p.image || p.images?.[0],
+                images: p.images || [p.image],
+              })),
+              ...getGreenLionProductsByCategory("Charging").map(p => ({
+                ...p,
+                image: p.images[0],
+                images: p.images,
+              })),
+            ];
+            
             const allProducts = [
               ...phoneAccessories,
               ...wearablesProducts,
               ...smartphoneProducts,
               ...tabletProducts,
+              ...audioProducts,
+              ...chargingProducts,
               ...greenLionProducts.map(p => ({
                 ...p,
                 image: p.images[0],
@@ -1345,8 +1352,52 @@ const ProductDetail = () => {
 
             let bundleItems: any[] = [];
 
+            // Audio products - show ALL audio items (excluding current product)
+            if (productCategory === 'audio' || productName.includes('headphone') || productName.includes('earbud') || productName.includes('speaker') || productName.includes('airpods') || productName.includes('buds') || productName.includes('neckband')) {
+              // Get ALL audio products and exclude the current product
+              // Remove duplicates by ID
+              const uniqueAudioProducts = audioProducts.filter((p, index, self) => 
+                index === self.findIndex((t) => t.id === p.id)
+              );
+              
+              bundleItems = uniqueAudioProducts
+                .filter(p => p.id !== product.id)
+                .map(p => ({
+                  id: p.id,
+                  name: p.name,
+                  price: p.price,
+                  image: p.image || p.images?.[0],
+                  images: p.images || [p.image],
+                  rating: p.rating || 4.5,
+                  category: p.category,
+                }));
+            }
+            // Charging products - show ALL charging items (excluding current product)
+            else if (productCategory === 'charging' || productName.includes('charger') || productName.includes('cable') || productName.includes('power bank') || productName.includes('adapter')) {
+              bundleItems = chargingProducts
+                .filter(p => {
+                  if (p.id === product.id) return false;
+                  const name = p.name?.toLowerCase() || '';
+                  const category = p.category?.toLowerCase() || '';
+                  return category === 'charging' || 
+                         name.includes('charger') || 
+                         name.includes('cable') || 
+                         name.includes('power bank') || 
+                         name.includes('adapter') ||
+                         name.includes('charging');
+                })
+                .map(p => ({
+                  id: p.id,
+                  name: p.name,
+                  price: p.price,
+                  image: p.image || p.images?.[0],
+                  images: p.images || [p.image],
+                  rating: p.rating || 4.5,
+                  category: p.category,
+                }));
+            }
             // USB Flash Drive bundles
-            if (productName.includes('usb') || productName.includes('flash') || productName.includes('cruzer') || productName.includes('philips')) {
+            else if (productName.includes('usb') || productName.includes('flash') || productName.includes('cruzer') || productName.includes('philips')) {
               bundleItems = allProducts
                 .filter(p => {
                   const name = p.name?.toLowerCase() || '';
@@ -1378,25 +1429,10 @@ const ProductDetail = () => {
               bundleItems = allProducts
                 .filter(p => {
                   if (p.id === product.id) return false;
-                  const name = p.name?.toLowerCase() || '';
                   const category = p.category?.toLowerCase() || '';
-
-                  // Include products from specified categories
-                  return (
-                    category === 'all essentials' ||
-                    category === 'charging' ||
-                    category === 'audio' ||
-                    category === 'protection' ||
-                    category === 'accessories' ||
-                    name.includes('case') ||
-                    name.includes('cable') ||
-                    name.includes('adapter') ||
-                    name.includes('charger') ||
-                    name.includes('power bank') ||
-                    name.includes('screen protector') ||
-                    name.includes('headphone') ||
-                    name.includes('earphone')
-                  );
+                  return category === 'accessories' || 
+                         category === 'charging' ||
+                         category === 'protection';
                 })
                 .slice(0, 3)
                 .map(p => ({
@@ -1453,36 +1489,37 @@ const ProductDetail = () => {
                   </div>
 
                   {/* Bundle Items Grid */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
-                    {/* Current Product */}
-                    <div className="bg-white border-2 border-primary/30 rounded-lg p-4 sm:p-5 relative">
-                      <div className="aspect-square mb-3 bg-white rounded-md overflow-hidden">
-                        <img
-                          src={primaryImage}
-                          alt={product.name}
-                          className="w-full h-full object-contain p-2"
-                          loading="lazy"
-                        />
+                  <div className="overflow-x-auto -mx-4 sm:mx-0 mb-6 sm:mb-8">
+                    <div className="inline-flex sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 px-4 sm:px-0 min-w-max sm:min-w-0">
+                      {/* Current Product */}
+                      <div className="bg-white border-2 border-primary/30 rounded-lg p-4 sm:p-5 relative flex-shrink-0 sm:flex-shrink w-[280px] sm:w-auto">
+                        <div className="aspect-square mb-3 bg-white rounded-md overflow-hidden">
+                          <img
+                            src={primaryImage}
+                            alt={product.name}
+                            className="w-full h-full object-contain p-2"
+                            loading="lazy"
+                          />
+                        </div>
+                        <h3 className="text-sm font-semibold text-elegant mb-1 line-clamp-2 min-h-[2.5rem]">
+                          {product.name}
+                        </h3>
+                        <p className="text-lg font-bold text-primary mb-2">${displayPrice.toFixed(2)}</p>
+                        <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                          <CheckCircle2 className="w-5 h-5 text-white" />
+                        </div>
                       </div>
-                      <h3 className="text-sm font-semibold text-elegant mb-1 line-clamp-2 min-h-[2.5rem]">
-                        {product.name}
-                      </h3>
-                      <p className="text-lg font-bold text-primary mb-2">${displayPrice.toFixed(2)}</p>
-                      <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                        <CheckCircle2 className="w-5 h-5 text-white" />
-                      </div>
-                    </div>
 
-                    {/* Plus Icon (Desktop Only) */}
-                    <div className="hidden lg:flex items-center justify-center">
-                      <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center">
-                        <span className="text-2xl font-bold text-primary">+</span>
+                      {/* Plus Icon (Desktop Only) */}
+                      <div className="hidden lg:flex items-center justify-center flex-shrink-0">
+                        <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center">
+                          <span className="text-2xl font-bold text-primary">+</span>
+                        </div>
                       </div>
-                    </div>
 
-                    {/* Bundle Items */}
-                    {bundleItems.slice(0, 2).map((item, index) => (
-                      <div key={item.id}>
+                      {/* Bundle Items */}
+                      {bundleItems.map((item, index) => (
+                      <div key={item.id} className="flex-shrink-0 sm:flex-shrink w-[280px] sm:w-auto">
                         {index === 0 && (
                           <div className="lg:hidden flex items-center justify-center mb-4">
                             <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
@@ -1490,8 +1527,15 @@ const ProductDetail = () => {
                             </div>
                           </div>
                         )}
-                        <div className="bg-white border-2 border-border hover:border-primary/50 rounded-lg p-4 sm:p-5 transition-all duration-300 group">
-                          <Link to={`/product/${item.id}`}>
+                        {index > 0 && index % 3 === 0 && (
+                          <div className="hidden lg:flex items-center justify-center my-4">
+                            <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center">
+                              <span className="text-2xl font-bold text-primary">+</span>
+                            </div>
+                          </div>
+                        )}
+                        <Link to={`/product/${item.id}`}>
+                          <div className="bg-white border-2 border-border hover:border-primary/50 rounded-lg p-4 sm:p-5 transition-all duration-300 cursor-pointer group">
                             <div className="aspect-square mb-3 bg-white rounded-md overflow-hidden">
                               <img
                                 src={item.image}
@@ -1511,30 +1555,9 @@ const ProductDetail = () => {
                                 />
                               ))}
                             </div>
-                            <p className="text-lg font-bold text-elegant mb-3">${item.price.toFixed(2)}</p>
-                          </Link>
-                          <Button
-                            size="sm"
-                            className="w-full text-xs sm:text-sm"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              addToCart({
-                                id: item.id,
-                                name: item.name,
-                                price: item.price,
-                                image: item.image,
-                                rating: item.rating,
-                                category: item.category,
-                                quantity: 1,
-                              });
-                            }}
-                            style={{ touchAction: 'manipulation' }}
-                          >
-                            <ShoppingCart className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
-                            Add to Cart
-                          </Button>
-                        </div>
+                            <p className="text-lg font-bold text-elegant">${item.price.toFixed(2)}</p>
+                          </div>
+                        </Link>
                         {index < bundleItems.length - 1 && (
                           <div className="lg:hidden flex items-center justify-center my-4">
                             <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
@@ -1544,6 +1567,7 @@ const ProductDetail = () => {
                         )}
                       </div>
                     ))}
+                    </div>
                   </div>
 
                   {/* Bundle Pricing & CTA */}
@@ -1623,56 +1647,6 @@ const ProductDetail = () => {
           </motion.section>
         )}
       </div>
-
-      {/* Sticky Add to Cart Button - Desktop Only */}
-      {showStickyCart && (
-        <motion.div
-          initial={{ y: 100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 100, opacity: 0 }}
-          className="hidden md:block fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-t border-border shadow-lg"
-        >
-          <div className="container mx-auto px-4 sm:px-6 py-4">
-            <div className="flex items-center justify-between gap-4">
-              <div className="flex items-center gap-4 flex-1">
-                <img
-                  src={primaryImage}
-                  alt={product.name}
-                  className="w-16 h-16 object-contain rounded-md border border-border"
-                />
-                <div className="flex-1">
-                  <h3 className="text-sm font-semibold text-elegant line-clamp-1">{product.name}</h3>
-                  {product.isPreorder && displayPrice === 0 ? (
-                    <p className="text-sm font-bold text-primary">Pre-order</p>
-                  ) : (
-                    <p className="text-sm font-bold text-primary">${displayPrice.toFixed(2)}</p>
-                  )}
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <Button
-                  size="lg"
-                  className="text-elegant text-sm sm:text-base px-6 sm:px-8"
-                  onClick={() => handleAddToCart()}
-                  style={{ touchAction: 'manipulation' }}
-                >
-                  <ShoppingCart className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-                  {product.isPreorder ? "Preorder Now" : "Add to Cart"}
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="text-elegant text-sm sm:text-base px-6 sm:px-8"
-                  onClick={() => handleAddToCart(true)}
-                  style={{ touchAction: 'manipulation' }}
-                >
-                  {product.isPreorder ? "Preorder & Checkout" : "Buy Now"}
-                </Button>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      )}
 
       {/* Image Lightbox */}
       <ImageLightbox

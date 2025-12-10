@@ -39,7 +39,7 @@ const FlagshipiPhone16Showcase = () => {
   const currentColor = colors.find(c => c.name === selectedColor) || colors[0];
 
   return (
-    <section className="relative py-16 sm:py-20 md:py-24 lg:py-32 overflow-hidden">
+    <section className="relative py-12 sm:py-16 md:py-20 lg:py-24 xl:py-32 overflow-hidden">
       {/* Dynamic Background Gradient */}
       <motion.div
         className="absolute inset-0 -z-10"
@@ -55,7 +55,7 @@ const FlagshipiPhone16Showcase = () => {
 
       {/* Floating Orbs */}
       <motion.div
-        className="absolute top-20 left-10 w-64 h-64 rounded-full blur-3xl opacity-20"
+        className="absolute top-10 left-4 sm:top-20 sm:left-10 w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 rounded-full blur-3xl opacity-20"
         style={{ backgroundColor: currentColor.hex }}
         animate={{
           scale: [1, 1.2, 1],
@@ -66,7 +66,7 @@ const FlagshipiPhone16Showcase = () => {
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
-        className="absolute bottom-20 right-10 w-96 h-96 rounded-full blur-3xl opacity-20"
+        className="absolute bottom-10 right-4 sm:bottom-20 sm:right-10 w-40 h-40 sm:w-64 sm:h-64 md:w-96 md:h-96 rounded-full blur-3xl opacity-20"
         style={{ backgroundColor: currentColor.hex }}
         animate={{
           scale: [1, 1.3, 1],
@@ -77,15 +77,15 @@ const FlagshipiPhone16Showcase = () => {
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
       />
 
-      <div className="container mx-auto px-4 sm:px-6">
-        <div className="grid lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12 lg:gap-16 items-center">
           {/* Left: Content */}
           <motion.div
             initial={{ opacity: 0, x: -80 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="space-y-6 md:space-y-8 text-center lg:text-left order-2 lg:order-1"
+            className="space-y-4 sm:space-y-6 md:space-y-8 text-center lg:text-left order-2 lg:order-1"
           >
             {/* Badge */}
             <motion.div
@@ -95,8 +95,8 @@ const FlagshipiPhone16Showcase = () => {
               transition={{ delay: 0.2, duration: 0.6, type: "spring" }}
               className="inline-block"
             >
-              <Badge className="text-xs sm:text-sm px-4 py-1.5 glassmorphism border-primary/30">
-                <Sparkles className="h-3 w-3 mr-1.5" />
+              <Badge className="text-[10px] sm:text-xs md:text-sm px-3 sm:px-4 py-1 sm:py-1.5 glassmorphism border-primary/30">
+                <Sparkles className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-1 sm:mr-1.5" />
                 Flagship Innovation
               </Badge>
             </motion.div>
@@ -131,7 +131,7 @@ const FlagshipiPhone16Showcase = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.5, duration: 0.8 }}
-              className="grid grid-cols-2 gap-4 max-w-md mx-auto lg:mx-0"
+              className="grid grid-cols-2 gap-3 sm:gap-4 max-w-md mx-auto lg:mx-0"
             >
               {[
                 { label: "A18 Pro Chip", sublabel: "Next-Gen Performance" },
@@ -146,10 +146,10 @@ const FlagshipiPhone16Showcase = () => {
                   viewport={{ once: true }}
                   transition={{ delay: 0.6 + i * 0.1, duration: 0.5 }}
                   whileHover={{ scale: 1.05, y: -5 }}
-                  className="glassmorphism p-4 rounded-xl border border-border/50 hover:border-primary/50 transition-all duration-300"
+                  className="glassmorphism p-3 sm:p-4 rounded-lg sm:rounded-xl border border-border/50 hover:border-primary/50 transition-all duration-300"
                 >
-                  <div className="text-sm font-semibold text-elegant">{feature.label}</div>
-                  <div className="text-xs text-muted-foreground mt-1">{feature.sublabel}</div>
+                  <div className="text-xs sm:text-sm font-semibold text-elegant leading-tight">{feature.label}</div>
+                  <div className="text-[10px] sm:text-xs text-muted-foreground mt-1 leading-tight">{feature.sublabel}</div>
                 </motion.div>
               ))}
             </motion.div>
@@ -160,10 +160,10 @@ const FlagshipiPhone16Showcase = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.7, duration: 0.8 }}
-              className="space-y-4"
+              className="space-y-3 sm:space-y-4"
             >
-              <div className="text-sm font-medium text-elegant">Choose your color:</div>
-              <div className="flex gap-3 justify-center lg:justify-start flex-wrap">
+              <div className="text-xs sm:text-sm font-medium text-elegant">Choose your color:</div>
+              <div className="flex gap-2 sm:gap-3 justify-center lg:justify-start flex-wrap">
                 {colors.map((color, i) => (
                   <motion.button
                     key={color.name}
@@ -174,7 +174,7 @@ const FlagshipiPhone16Showcase = () => {
                     whileHover={{ scale: 1.15, y: -2 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setSelectedColor(color.name)}
-                    className={`relative w-12 h-12 rounded-full border-2 transition-all duration-300 ${selectedColor === color.name
+                    className={`relative w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 transition-all duration-300 ${selectedColor === color.name
                       ? "border-primary shadow-lg scale-110"
                       : "border-border/30 hover:border-primary/50"
                       }`}
@@ -195,7 +195,7 @@ const FlagshipiPhone16Showcase = () => {
                 key={selectedColor}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-sm text-muted-foreground"
+                className="text-xs sm:text-sm text-muted-foreground"
               >
                 Selected: <span className="font-medium text-elegant">{currentColor.label}</span>
               </motion.div>
@@ -207,25 +207,25 @@ const FlagshipiPhone16Showcase = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.9, duration: 0.8 }}
-              className="flex gap-4 justify-center lg:justify-start flex-wrap pt-4"
+              className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start pt-2 sm:pt-4"
             >
-              <Link to="/product/500">
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button variant="gradient" size="lg" className="group shadow-glow">
-                    <ShoppingCart className="mr-2 h-5 w-5" />
+              <Link to="/product/500" className="w-full sm:w-auto">
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto">
+                  <Button variant="gradient" size="lg" className="group shadow-glow w-full sm:w-auto text-sm sm:text-base">
+                    <ShoppingCart className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                     Order Now
                     <motion.div
                       whileHover={{ x: 4 }}
                       className="ml-2"
                     >
-                      <ArrowRight className="h-5 w-5" />
+                      <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
                     </motion.div>
                   </Button>
                 </motion.div>
               </Link>
-              <Link to="/smartphones">
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button variant="outline" size="lg" className="glassmorphism">
+              <Link to="/smartphones" className="w-full sm:w-auto">
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto">
+                  <Button variant="outline" size="lg" className="glassmorphism w-full sm:w-auto text-sm sm:text-base">
                     View All iPhones
                   </Button>
                 </motion.div>
@@ -272,7 +272,7 @@ const FlagshipiPhone16Showcase = () => {
               <motion.img
                 src={currentColor.image}
                 alt={`iPhone 16 ${currentColor.label}`}
-                className="w-full h-auto max-w-md mx-auto drop-shadow-2xl"
+                className="w-full h-auto max-w-[280px] sm:max-w-sm md:max-w-md mx-auto drop-shadow-2xl"
                 whileHover={{
                   scale: 1.05,
                   rotateY: 5,

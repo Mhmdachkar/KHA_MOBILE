@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
-import { Grid3x3, List, Battery, Smartphone, Filter, Laptop, Cable, Shield, Scissors } from "lucide-react";
+import { Grid3x3, List, Battery, Smartphone, Filter, Laptop, Cable, Shield, Scissors, Briefcase } from "lucide-react";
 import Header from "@/components/Header";
 import ProductCard from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
@@ -203,6 +203,21 @@ const Accessories = () => {
                  nameLower.includes("flash drive");
         }
         
+        // Handle "bags" - show dopp kits, pouches, toiletry/travel/gym bags
+        if (selectedCat === "bags") {
+          // Explicitly exclude kitchen scale or other kitchen items
+          if (nameLower.includes("kitchen")) return false;
+          
+          return nameLower.includes("dopp") ||
+                 nameLower.includes("toiletry") ||
+                 nameLower.includes("wash bag") ||
+                 nameLower.includes("travel bag") ||
+                 nameLower.includes("gym bag") ||
+                 nameLower.includes("pouch") ||
+                 nameLower.includes("kit") ||
+                 nameLower.includes("organizer") ||
+                 nameLower.includes("elegant pouch");
+        }
         
         // Standard category matching
         return category === selectedCat;
@@ -260,7 +275,7 @@ const Accessories = () => {
           className="mb-6 sm:mb-8 overflow-x-auto scrollbar-hide"
         >
           <Tabs value={selectedCategory} onValueChange={setSelectedCategory}>
-            <TabsList className="grid w-full max-w-5xl grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 h-auto p-1 gap-1 sm:gap-2">
+            <TabsList className="grid w-full max-w-5xl grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 h-auto p-1 gap-1 sm:gap-2">
               <TabsTrigger value="all" className="text-elegant text-[10px] sm:text-xs px-2 sm:px-4 py-2">
                 <span className="hidden sm:inline">All Products</span>
                 <span className="sm:hidden">All</span>
@@ -284,6 +299,11 @@ const Accessories = () => {
                 <Cable className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                 <span className="hidden sm:inline">LED Lights</span>
                 <span className="sm:hidden">LED</span>
+              </TabsTrigger>
+              <TabsTrigger value="bags" className="text-elegant text-[10px] sm:text-xs px-2 sm:px-4 py-2">
+                <Briefcase className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                <span className="hidden sm:inline">Bags</span>
+                <span className="sm:hidden">Bags</span>
               </TabsTrigger>
               <TabsTrigger value="stands" className="text-elegant text-[10px] sm:text-xs px-2 sm:px-4 py-2">
                 <Smartphone className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
@@ -377,7 +397,7 @@ const Accessories = () => {
           className={`grid gap-2 sm:gap-3 md:gap-4 lg:gap-6 ${viewMode === "grid"
               ? "grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
               : "grid-cols-1"
-            }`}
+          }`}
         >
           {filteredProducts.length > 0 ? (
             filteredProducts.map((product, index) => (

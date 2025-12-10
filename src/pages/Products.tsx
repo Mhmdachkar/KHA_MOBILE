@@ -278,7 +278,7 @@ const Products = () => {
         });
         break;
       default:
-        // Default: Green Lion first, then by popularity (rating)
+        // Default: Sort by price (highest to lowest)
         filtered.sort((a, b) => {
           const aIsGreenLion = isGreenLionProduct(a);
           const bIsGreenLion = isGreenLionProduct(b);
@@ -287,8 +287,8 @@ const Products = () => {
           if (aIsGreenLion && !bIsGreenLion) return -1;
           if (!aIsGreenLion && bIsGreenLion) return 1;
 
-          // Then by rating
-          return (b.rating || 0) - (a.rating || 0);
+          // Then by price (highest to lowest)
+          return b.price - a.price;
         });
         break;
     }

@@ -202,12 +202,12 @@ const useFilteredCards = (cards: RechargeCard[], filters: FilterState) => {
     let filtered = [...cards];
 
     // Filter by categories
-    filtered = filtered.filter(card =>
+    filtered = filtered.filter(card => 
       filters.categories.includes(card.category)
     );
 
     // Filter by price range slider
-    filtered = filtered.filter(card =>
+    filtered = filtered.filter(card => 
       card.price >= filters.priceRange[0] && card.price <= filters.priceRange[1]
     );
 
@@ -217,8 +217,8 @@ const useFilteredCards = (cards: RechargeCard[], filters: FilterState) => {
         return filters.selectedPriceRanges.some(rangeLabel => {
           const range = PRICE_RANGES.find(r => r.label === rangeLabel);
           if (!range) return false;
-          return card.price >= range.min &&
-            (range.max === Infinity ? true : card.price <= range.max);
+          return card.price >= range.min && 
+                 (range.max === Infinity ? true : card.price <= range.max);
         });
       });
     }
@@ -271,79 +271,79 @@ const FilterSidebar = ({ filters, onUpdateFilters, onClearFilters }: FilterSideb
     <div className="space-y-6 sm:space-y-8">
       <div className="flex items-center justify-between mb-4 sm:mb-6">
         <h2 className="text-elegant text-base sm:text-lg">Filters</h2>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="text-elegant text-xs"
-          onClick={onClearFilters}
-        >
-          Clear All
-        </Button>
-      </div>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="text-elegant text-xs"
+            onClick={onClearFilters}
+          >
+            Clear All
+          </Button>
+        </div>
 
-      {/* Category */}
-      <div>
+        {/* Category */}
+        <div>
         <h3 className="text-elegant text-xs sm:text-sm mb-3 sm:mb-4">Category</h3>
         <div className="space-y-2 sm:space-y-3">
-          {CATEGORIES.map((category) => (
-            <div key={category} className="flex items-center space-x-2">
-              <Checkbox
-                id={category}
-                checked={filters.categories.includes(category)}
-                onCheckedChange={(checked) =>
-                  handleCategoryChange(category, checked as boolean)
-                }
-              />
-              <Label
-                htmlFor={category}
+            {CATEGORIES.map((category) => (
+              <div key={category} className="flex items-center space-x-2">
+                <Checkbox 
+                  id={category} 
+                  checked={filters.categories.includes(category)}
+                  onCheckedChange={(checked) => 
+                    handleCategoryChange(category, checked as boolean)
+                  }
+                />
+                <Label
+                  htmlFor={category}
                 className="text-xs sm:text-sm font-light cursor-pointer"
-              >
-                {category}
-              </Label>
-            </div>
-          ))}
+                >
+                  {category}
+                </Label>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
 
-      {/* Price Range Slider */}
-      <div>
+        {/* Price Range Slider */}
+        <div>
         <h3 className="text-elegant text-xs sm:text-sm mb-3 sm:mb-4">Price Range</h3>
-        <Slider
-          value={filters.priceRange}
-          onValueChange={(value) => onUpdateFilters({ priceRange: value })}
-          max={100}
-          step={5}
+          <Slider
+            value={filters.priceRange}
+            onValueChange={(value) => onUpdateFilters({ priceRange: value })}
+            max={100}
+            step={5}
           className="mb-3 sm:mb-4"
-        />
+          />
         <div className="flex items-center justify-between text-xs sm:text-sm">
-          <span>${filters.priceRange[0]}</span>
-          <span>${filters.priceRange[1]}</span>
+            <span>${filters.priceRange[0]}</span>
+            <span>${filters.priceRange[1]}</span>
+          </div>
         </div>
-      </div>
 
-      {/* Quick Price Filters */}
-      <div>
+        {/* Quick Price Filters */}
+        <div>
         <h3 className="text-elegant text-xs sm:text-sm mb-3 sm:mb-4">Quick Filters</h3>
         <div className="space-y-2 sm:space-y-3">
-          {PRICE_RANGES.map((range) => (
-            <div key={range.label} className="flex items-center space-x-2">
-              <Checkbox
-                id={range.label}
-                checked={filters.selectedPriceRanges.includes(range.label)}
-                onCheckedChange={(checked) =>
-                  handlePriceRangeChange(range.label, checked as boolean)
-                }
-              />
-              <Label
-                htmlFor={range.label}
+            {PRICE_RANGES.map((range) => (
+              <div key={range.label} className="flex items-center space-x-2">
+                <Checkbox 
+                  id={range.label}
+                  checked={filters.selectedPriceRanges.includes(range.label)}
+                  onCheckedChange={(checked) => 
+                    handlePriceRangeChange(range.label, checked as boolean)
+                  }
+                />
+                <Label
+                  htmlFor={range.label}
                 className="text-xs sm:text-sm font-light cursor-pointer"
-              >
-                {range.label}
-              </Label>
-            </div>
-          ))}
+                >
+                  {range.label}
+                </Label>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
     </div>
   );
 
@@ -408,8 +408,8 @@ const FilterSidebar = ({ filters, onUpdateFilters, onClearFilters }: FilterSideb
       >
         <div className="sticky top-24">
           <FilterContent />
-        </div>
-      </motion.aside>
+      </div>
+    </motion.aside>
     </>
   );
 };
@@ -470,7 +470,7 @@ interface RechargeCardProps extends RechargeCard {
 
 const RechargeCard = ({ id, name, price, image, category, viewMode }: RechargeCardProps) => {
   const navigate = useNavigate();
-
+  
   const handleBuyNow = () => {
     // Navigate to checkout with all product details
     const params = new URLSearchParams({
@@ -490,7 +490,7 @@ const RechargeCard = ({ id, name, price, image, category, viewMode }: RechargeCa
       className="group relative bg-white rounded-sm overflow-hidden border border-border hover:border-primary/40 transition-all duration-500 shadow-card hover:shadow-elegant"
     >
       <div className={`overflow-hidden bg-white relative border-b border-border ${viewMode === "grid" ? "aspect-[4/3]" : "aspect-[16/9]"
-        }`}>
+      }`}>
         <motion.img
           src={image}
           alt={name}
@@ -498,7 +498,7 @@ const RechargeCard = ({ id, name, price, image, category, viewMode }: RechargeCa
         />
       </div>
       <div className="p-4">
-        <motion.p
+        <motion.p 
           initial={{ opacity: 0.7 }}
           whileHover={{ opacity: 1 }}
           className="text-elegant text-[10px] text-primary mb-1"
@@ -511,9 +511,9 @@ const RechargeCard = ({ id, name, price, image, category, viewMode }: RechargeCa
         <p className="text-elegant text-sm font-normal bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
           ${price.toFixed(2)}
         </p>
-
-        <Button
-          size="sm"
+        
+        <Button 
+          size="sm" 
           className="w-full mt-3 text-elegant"
           variant="outline"
           onClick={handleBuyNow}
@@ -551,7 +551,7 @@ const Recharges = () => {
         >
           Touch Cards
         </motion.h1>
-
+        
         <motion.p
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -562,7 +562,7 @@ const Recharges = () => {
         </motion.p>
 
         <div className="grid lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-          <FilterSidebar
+          <FilterSidebar 
             filters={filters}
             onUpdateFilters={updateFilters}
             onClearFilters={clearAllFilters}
@@ -585,8 +585,8 @@ const Recharges = () => {
             {/* Recharge Cards */}
             <div className={`grid gap-3 sm:gap-4 md:gap-5 lg:gap-6 ${viewMode === "grid"
               ? "grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
-              : "grid-cols-1"
-              }`}>
+                : "grid-cols-1"
+            }`}>
               {filteredCards.map((card, index) => (
                 <motion.div
                   key={card.id}
@@ -609,8 +609,8 @@ const Recharges = () => {
                 <p className="text-muted-foreground text-lg">
                   No recharge cards found matching your filters.
                 </p>
-                <Button
-                  variant="outline"
+                <Button 
+                  variant="outline" 
                   onClick={clearAllFilters}
                   className="mt-4"
                 >

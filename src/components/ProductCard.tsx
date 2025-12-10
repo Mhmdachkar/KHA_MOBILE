@@ -40,14 +40,21 @@ const ProductCard = ({ id, name, price, image, images, rating = 4.5, category, c
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
+
+    // If the product has colors, default to the first color for cart context
+    const defaultColor = colors && colors.length > 0 ? colors[0] : undefined;
+    const colorImage = defaultColor?.image || defaultImage;
+
     addToCart({
       id,
       name,
       price,
-      image: defaultImage,
+      image: colorImage,
       rating,
       category,
       quantity: 1,
+      color: defaultColor?.name,
+      colorImage: colorImage,
     });
   };
 

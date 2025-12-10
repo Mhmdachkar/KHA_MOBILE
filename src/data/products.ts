@@ -44,6 +44,9 @@ import rgbMj33Ring from "@/assets/accessories/RGB MJ33 RING 13INCH.avif";
 import rgbMj33RingGif from "@/assets/accessories/RGB MJ33 RING 13INCH.gif";
 import rl19LedSoft from "@/assets/accessories/RL-19 LED SOFT.jpg";
 import rl19LedSoft1 from "@/assets/accessories/RL-19 LED SOFT1.jpg";
+import doppKitBlack from "@/assets/accessories/dopp kit/black.png";
+import doppKitBeige from "@/assets/accessories/dopp kit/beije.png";
+import doppKitSandGrey from "@/assets/accessories/dopp kit/sand grey.png";
 import fonengUsbCable from "@/assets/phone_accessories/USB to Type-C foneng.webp";
 import borofoneUsbCable from "@/assets/phone_accessories/usb to type-C BOROFONE.jpg";
 import fonengDesktopHolder from "@/assets/phone_accessories/foldable desktop holder foneng.webp";
@@ -83,10 +86,10 @@ import magsafeCharger from "@/assets/recharges/magsafe charger/magsafe charger.g
 import magsafeCharger2 from "@/assets/recharges/magsafe charger/magsafe chargerr.gif";
 import magsafeCharger3 from "@/assets/recharges/magsafe charger/magsafe.gif";
 // Apple Watch S11 42MM imports
-import appleWatchS11_42MM from "@/assets/wearables/S11 42MM/Screenshot 2025-12-06 022651.png";
-import appleWatchS11_42MM_1 from "@/assets/wearables/S11 42MM/Screenshot 2025-12-06 022702.png";
-import appleWatchS11_42MM_2 from "@/assets/wearables/S11 42MM/Screenshot 2025-12-06 022714.png";
-import appleWatchS11_42MM_3 from "@/assets/wearables/S11 42MM/Screenshot 2025-12-06 022724.png";
+import appleWatchS11_42MM_JetBlack from "@/assets/wearables/S11 42MM/black.png";
+import appleWatchS11_42MM_RoseGold from "@/assets/wearables/S11 42MM/rose gold.png";
+import appleWatchS11_42MM_Silver from "@/assets/wearables/S11 42MM/silver.png";
+import appleWatchS11_42MM_SpaceGrey from "@/assets/wearables/S11 42MM/space grey.png";
 // Smartphone image imports
 import a06Main from "@/assets/phones/A06 128gb/A06 5G (FAST PROCESSOR,HIGHER DISPLAY REFRESH RATE-90HZ, WATER RESISTANT ) 128GB.jpg";
 import a075Purple from "@/assets/phones/A075 samsunng galaxy/A075 Mediatek Helio G99 (6 nm)  purple.webp";
@@ -153,14 +156,15 @@ import camon40Pro5gGreen from "@/assets/phones/tecno camon 40 pro 5g (CM5)/tecno
 import galaxyTabA9BlackPlaceholder from "@/assets/Tablets/Samsung Galaxy Tab A9/Samsung Galaxy Tab A9 Black placeholder.webp";
 import galaxyTabA9Blue from "@/assets/Tablets/Samsung Galaxy Tab A9/Samsung Galaxy Tab A9 BLUE.webp";
 import galaxyTabA9White from "@/assets/Tablets/Samsung Galaxy Tab A9/Samsung Galaxy Tab A9 WHITE.webp";
-import galaxyTabA11GreyPlaceholder from "@/assets/Tablets/SAMSUNG Galaxy Tab A11/SAMSUNG Galaxy Tab A11 grey placeholder.webp";
-import galaxyTabA11Grey from "@/assets/Tablets/SAMSUNG Galaxy Tab A11/SAMSUNG Galaxy Tab A11 grey.webp";
-import galaxyTabA11Blue from "@/assets/Tablets/SAMSUNG Galaxy Tab A11/SAMSUNG Galaxy Tab A11 blue.webp";
-import galaxyTabA11Silver from "@/assets/Tablets/SAMSUNG Galaxy Tab A11/SAMSUNG Galaxy Tab A11 silver.webp";
-import galaxyTabA11X135SilverPlaceholder from "@/assets/Tablets/Samsung Galaxy Tab A11 X135 4G/Samsung Galaxy Tab 4g LTE 8GB 128GB silver placeholder.webp";
-import galaxyTabA11X135Grey from "@/assets/Tablets/Samsung Galaxy Tab A11 X135 4G/Samsung Galaxy Tab grey.webp";
-import galaxyTabA11X135DarkGrey from "@/assets/Tablets/Samsung Galaxy Tab A11 X135 4G/Samsung Galaxy Tab greyy.webp";
-import galaxyTabA11X135Silver from "@/assets/Tablets/Samsung Galaxy Tab A11 X135 4G/Samsung Galaxy Tab silver.webp";
+// Samsung Galaxy Tab A8 imports
+import galaxyTabA8_1 from "@/assets/Tablets/Samsung Galaxy TAB A8 - 10.5 Tablet Wifi/Screenshot 2025-12-10 005004.png";
+import galaxyTabA8_2 from "@/assets/Tablets/Samsung Galaxy TAB A8 - 10.5 Tablet Wifi/Screenshot 2025-12-10 005016.png";
+// Samsung Galaxy Tab A9+ imports
+import galaxyTabA9PlusGraphite from "@/assets/Tablets/Samsung Galaxy Tab A9+ - 11 Tablet/graphite.png";
+import galaxyTabA9PlusSilver from "@/assets/Tablets/Samsung Galaxy Tab A9+ - 11 Tablet/silver.png";
+import galaxyTabA9Plus_2 from "@/assets/Tablets/Samsung Galaxy Tab A9+ - 11 Tablet/Screenshot 2025-12-10 011131.png";
+import galaxyTabA9Plus_3 from "@/assets/Tablets/Samsung Galaxy Tab A9+ - 11 Tablet/Screenshot 2025-12-10 011140.png";
+import galaxyTabA9Plus_4 from "@/assets/Tablets/Samsung Galaxy Tab A9+ - 11 Tablet/Screenshot 2025-12-10 011157.png";
 // Apple Pencil Pro imports
 import applePencilPro from "@/assets/Tablets/pencil pro/Pencil pro.webp";
 import applePencilPro1 from "@/assets/Tablets/pencil pro/MX2D3_AV1-scaled.webp";
@@ -1245,6 +1249,36 @@ export const phoneAccessories: Product[] = [
       { label: "Charging Standard", value: "MagSafe / Qi" }
     ]
   },
+  {
+    id: 136,
+    name: "Urban Traveler Dopp Kit",
+    title: "Urban Traveler Dopp Kit - Pebbled Leather Toiletry Bag",
+    price: 32,
+    image: doppKitBlack,
+    images: [doppKitBlack, doppKitBeige, doppKitSandGrey],
+    rating: 4.8,
+    category: "Accessories",
+    brand: "Other",
+    description: "Elevate your grooming routine with this sleek, minimalist toiletry bag. Crafted from durable pebbled leather with a modern matte finish, it’s designed to keep your essentials organized—whether you’re at home or on the go.",
+    features: [
+      "Premium Pebbled Finish: Textured grain for a luxury feel with scratch and splash resistance.",
+      "Grab-and-Go Handle: Reinforced side handle for easy carry or hanging.",
+      "Modern Minimalist Design: Clean profile with signature vertical seam and contrast stitching.",
+      "Smooth Zipper Access: High-quality zipper that glides effortlessly and secures essentials.",
+      "Compact Yet Spacious: Upright structure sized for shaving kit, skincare, toothbrush, and travel colognes."
+    ],
+    specifications: [
+      { label: "Color", value: "Dove Grey with Black Zipper Tape" },
+      { label: "Material", value: "High-Grade PU Leather (Water-Resistant)" },
+      { label: "Dimensions", value: "22cm x 12cm x 10cm" },
+      { label: "Ideal For", value: "Travel, Gym, Daily Storage, Gifting" }
+    ],
+    colors: [
+      { name: "Black", image: doppKitBlack, stock: "available" },
+      { name: "Beige", image: doppKitBeige, stock: "available" },
+      { name: "Sand Grey", image: doppKitSandGrey, stock: "available" }
+    ]
+  },
 
 ];
 
@@ -1830,122 +1864,6 @@ export const tabletProducts: Product[] = [
     connectivityOptions: ["Wi-Fi only", "Wi-Fi + LTE"]
   },
   {
-    id: 402,
-    name: "Samsung Galaxy Tab A11 X133",
-    title: "Samsung Galaxy Tab A11 X133 – 8.7\" Wi-Fi-Only Productivity Tablet",
-    price: 259.99,
-    image: galaxyTabA11GreyPlaceholder,
-    images: [galaxyTabA11GreyPlaceholder, galaxyTabA11Blue, galaxyTabA11Grey, galaxyTabA11Silver],
-    rating: 4.6,
-    category: "Tablets",
-    brand: "Samsung",
-    description: "The X133 variant of the Galaxy Tab A11 focuses on ultra-portable productivity with Wi-Fi-only connectivity, an 8.7-inch 90Hz TFT LCD, and the efficient MediaTek Helio G99 platform. Running Android 15 with One UI 7, it keeps your Samsung ecosystem synced while dual Dolby Atmos speakers, a 5100mAh battery, and USB-C charging support full days of research, note taking, and streaming.",
-    features: [
-      "8.7\" WXGA+ TFT LCD with 90Hz refresh rate keeps scrolling, sketching, and reading fluid.",
-      "MediaTek Helio G99 octa-core chipset balances performance and battery efficiency for study or travel.",
-      "Ships with Android 15 + One UI 7 for the latest privacy tools, split-screen multitasking, and seamless Samsung account syncing.",
-      "Dual Dolby Atmos tuned speakers and a 3.5mm headphone jack cover private listening or classroom presentations.",
-      "Wi-Fi 802.11 a/b/g/n/ac, Bluetooth 5.3, GPS, and USB-C cover every essential connection minus cellular radios.",
-      "Available in 4GB/64GB or 8GB/128GB configurations with microSD expansion (up to 1TB) for offline libraries."
-    ],
-    specifications: [
-      { label: "Display", value: "8.7\" TFT LCD, 800 × 1340, 90Hz" },
-      { label: "Processor", value: "MediaTek Helio G99, Octa-core" },
-      { label: "Memory", value: "4GB RAM / 8GB RAM options" },
-      { label: "Storage", value: "64GB or 128GB, microSD up to 1TB" },
-      { label: "Rear Camera", value: "8MP AF, FHD 1080p @30fps video" },
-      { label: "Front Camera", value: "5MP" },
-      { label: "Audio", value: "Dual Dolby Atmos speakers, 3.5mm headphone jack" },
-      { label: "Connectivity", value: "Wi-Fi 802.11 a/b/g/n/ac, Bluetooth 5.3, GPS, USB Type-C" },
-      { label: "Battery", value: "5100mAh, 15W wired charging" },
-      { label: "OS", value: "Android 15 with One UI 7" },
-      { label: "Dimensions", value: "211 x 124.7 x 8.0 mm, 335 g" }
-    ],
-    variants: [
-      {
-        key: "tabA11-4-64",
-        ram: "4GB RAM",
-        storage: "64GB Storage",
-        label: "4GB + 64GB",
-        price: 229.99,
-        description: "Wi-Fi-only base model that’s perfect for digital textbooks and streaming."
-      },
-      {
-        key: "tabA11-8-128",
-        ram: "8GB RAM",
-        storage: "128GB Storage",
-        label: "8GB + 128GB",
-        price: 279.99,
-        description: "Extra RAM and storage for heavier multitasking, sketching apps, or larger offline files."
-      }
-    ],
-    colors: [
-      { name: "Graphite Grey ", image: galaxyTabA11GreyPlaceholder },
-      { name: "Storm Grey", image: galaxyTabA11Grey },
-      { name: "Navy Blue", image: galaxyTabA11Blue },
-      { name: "Silver Mist", image: galaxyTabA11Silver }
-    ],
-    connectivityOptions: ["Wi-Fi only"]
-  },
-  {
-    id: 403,
-    name: "Samsung Galaxy Tab A11 X135 4G",
-    title: "Samsung Galaxy Tab A11 X135 4G – 8.7\" LTE Companion Tablet",
-    price: 309.99,
-    image: galaxyTabA11X135SilverPlaceholder,
-    images: [
-      galaxyTabA11X135SilverPlaceholder,
-      galaxyTabA11X135Grey,
-      galaxyTabA11X135DarkGrey,
-      galaxyTabA11X135Silver
-    ],
-    rating: 4.7,
-    category: "Tablets",
-    brand: "Samsung",
-    description: "The Galaxy Tab A11 X135 adds LTE to Samsung’s ultra-portable 8.7-inch platform, pairing a 90Hz TFT LCD with the Helio G99 chipset, dual Dolby Atmos speakers, and Android 15 / One UI 7 continuity. With GPS-grade positioning, Wi-Fi Direct, and a 5100mAh battery with 15W charging, it is built for travelers and field teams that need dependable 4G data without tethering.",
-    features: [
-      "8.7\" 800×1340 TFT LCD with 90Hz refresh ensures smooth browsing, drawing, and split-screen note taking.",
-      "MediaTek Helio G99 octa-core CPU (2×2.2GHz + 6×2.0GHz) with Mali-G57 MC2 GPU balances power and efficiency for productivity apps.",
-      "Native Android 15 with One UI 7 delivers secure workspace profiles, updated privacy controls, and multi-window enhancements.",
-      "Integrated LTE modem with Nano-SIM slot plus Wi-Fi 802.11 a/b/g/n/ac and Bluetooth 5.3 keep you connected anywhere.",
-      "Dual Dolby Atmos stereo speakers and a 3.5mm headphone jack cover both presentations and private monitoring.",
-      "128GB storage + 8GB RAM standard, with a dedicated microSD slot supporting up to 1TB for offline libraries."
-    ],
-    specifications: [
-      { label: "Dimensions", value: "211 x 124.7 x 8.0 mm (335–337 g)" },
-      { label: "Display", value: "8.7\" TFT LCD, 800 × 1340, 90Hz (~179 ppi)" },
-      { label: "Processor", value: "MediaTek Helio G99 (6nm), Octa-core 2×2.2GHz Cortex-A76 + 6×2.0GHz Cortex-A55" },
-      { label: "GPU", value: "Mali-G57 MC2" },
-      { label: "Memory", value: "8GB RAM" },
-      { label: "Storage", value: "128GB internal, microSDXC (dedicated slot)" },
-      { label: "Rear Camera", value: "8MP AF, 1080p@30fps" },
-      { label: "Front Camera", value: "5MP" },
-      { label: "Audio", value: "Dual stereo speakers with Dolby Atmos, 3.5mm jack" },
-      { label: "Connectivity", value: "LTE (Nano-SIM), Wi-Fi 802.11 a/b/g/n/ac dual-band, Wi-Fi Direct, Bluetooth 5.3, USB Type-C 2.0" },
-      { label: "Positioning", value: "GPS, GLONASS, BDS, GALILEO, QZSS" },
-      { label: "Sensors", value: "Accelerometer, proximity, compass" },
-      { label: "Battery", value: "5100 mAh, 15W wired charging" },
-      { label: "OS", value: "Android 15, One UI 7" }
-    ],
-    variants: [
-      {
-        key: "tabA11-4g-8-128",
-        ram: "8GB RAM",
-        storage: "128GB Storage",
-        label: "8GB + 128GB LTE",
-        price: 309.99,
-        description: "LTE-enabled configuration with full GPS suite for mobile professionals."
-      }
-    ],
-    colors: [
-      { name: "Silver", image: galaxyTabA11X135SilverPlaceholder },
-      { name: "Matte Grey", image: galaxyTabA11X135Grey },
-      { name: "Graphite Grey", image: galaxyTabA11X135DarkGrey },
-      { name: "Polished Silver", image: galaxyTabA11X135Silver }
-    ],
-    connectivityOptions: ["Wi-Fi + LTE (Nano-SIM)"]
-  },
-  {
     id: 404,
     name: "iPad 11-inch (A16 Chip)",
     title: "iPad 11-inch - Supercharged with A16 Chip and Liquid Retina Display",
@@ -2383,6 +2301,88 @@ export const tabletProducts: Product[] = [
       { name: "Starlight", image: iPadAirM2_13_Starlight, stock: "available" }
     ],
     connectivityOptions: ["Wi-Fi only"]
+  },
+  {
+    id: 409,
+    name: "Samsung Galaxy TAB A8 - 10.5 Tablet Wifi",
+    title: "Samsung Galaxy TAB A8 - 10.5\" Wi-Fi Tablet with Octa-Core Performance",
+    price: 179.99,
+    image: galaxyTabA8_1,
+    images: [galaxyTabA8_1, galaxyTabA8_2],
+    rating: 4.6,
+    category: "Tablets",
+    brand: "Samsung",
+    description: "The Samsung Galaxy TAB A8 delivers a premium tablet experience with its spacious 10.5-inch display, powerful octa-core processor, and long-lasting battery. Perfect for entertainment, productivity, and everyday use, this Wi-Fi-enabled tablet features a vibrant display, capable cameras, and Samsung's intuitive One UI for a seamless user experience. Whether you're streaming content, browsing the web, or working on the go, the Galaxy TAB A8 provides reliable performance and exceptional value.",
+    features: [
+      "10.5-inch Large Display: Spacious 1200 x 1920 resolution display with 16:10 aspect ratio delivers crisp visuals and immersive viewing experience for movies, games, and productivity tasks.",
+      "Octa-Core Processor: Powerful dual-cluster processor with 2x2.0 GHz Cortex-A75 performance cores and 6x2.0 GHz Cortex-A55 efficiency cores for smooth multitasking and responsive performance.",
+      "4GB RAM: Ample memory for running multiple apps simultaneously, smooth browsing, and efficient multitasking without lag.",
+      "64GB Storage: Generous internal storage for apps, photos, videos, and documents with microSD expansion support for additional storage needs.",
+      "Long-Lasting Battery: Large 7040mAh non-removable battery provides extended usage time for all-day productivity and entertainment.",
+      "Dual Cameras: 8MP rear camera captures clear photos and videos, while the 5MP front camera is perfect for video calls and selfies.",
+      "Advanced Sensors: Accelerometer, gyroscope, proximity sensor, and compass enable smart features and responsive user interactions.",
+      "Wi-Fi Connectivity: Fast and reliable Wi-Fi connection for streaming, downloading, browsing, and staying connected.",
+      "Samsung One UI: Intuitive user interface optimized for tablets with enhanced multitasking, split-screen capabilities, and seamless device integration.",
+      "Sleek Design: Modern, slim design that's comfortable to hold and easy to carry for work, travel, or home use."
+    ],
+    specifications: [
+      { label: "Display", value: "10.5 inches, 319.7 cm², ~80.0% screen-to-body ratio, 1200 x 1920 pixels, 16:10 ratio, ~216 ppi density" },
+      { label: "Processor", value: "Octa-core (2x2.0 GHz Cortex-A75 & 6x2.0 GHz Cortex-A55)" },
+      { label: "Memory", value: "4GB RAM" },
+      { label: "Storage", value: "64GB internal storage, expandable via microSD" },
+      { label: "Main Camera", value: "8 MP, autofocus" },
+      { label: "Front Camera", value: "5 MP" },
+      { label: "Battery", value: "Li-Po 7040mAh, non-removable" },
+      { label: "Connectivity", value: "Wi-Fi 802.11 a/b/g/n/ac, dual-band, Wi-Fi Direct, hotspot" },
+      { label: "Sensors", value: "Accelerometer, gyro, proximity, compass" },
+      { label: "Dimensions", value: "Approximately 246.8 x 161.9 x 6.9 mm" },
+      { label: "Operating System", value: "Android with Samsung One UI" },
+      { label: "Audio", value: "Stereo speakers, 3.5mm headphone jack" }
+    ],
+    connectivityOptions: ["Wi-Fi only"]
+  },
+  {
+    id: 410,
+    name: "Samsung Galaxy Tab A9+ - 11\" Tablet",
+    title: "Samsung Galaxy Tab A9+ - 11\" Wi-Fi & 5G Tablet with Elegant Metal Design",
+    price: 219.99,
+    image: galaxyTabA9PlusGraphite,
+    images: [galaxyTabA9PlusGraphite, galaxyTabA9PlusSilver, galaxyTabA9Plus_2, galaxyTabA9Plus_3, galaxyTabA9Plus_4],
+    rating: 4.7,
+    category: "Tablets",
+    brand: "Samsung",
+    description: "The Samsung Galaxy Tab A9+ offers a perfect blend of style and functionality with its sleek metal body and modern design. Available in Graphite and Silver, this tablet combines elegant aesthetics with high-performance features including Wi-Fi and 5G cellular connectivity. Its smooth, metal finish not only adds a touch of sophistication but also ensures durability and a premium feel. The expansive 11\" TFT LCD display provides a brilliant and vibrant viewing experience with smooth visuals whether you're streaming videos, playing games, or browsing the web. Even under direct sunlight, the screen maintains clarity and brightness, making it suitable for various lighting conditions and usage scenarios. With 5G connectivity for ultra-fast internet speeds on the go, enhanced audio technology delivering rich, clear 3D sound, and robust security features including Samsung's Secure Folder and Privacy Dashboard, the Galaxy Tab A9+ delivers a complete and enjoyable tablet experience tailored to meet the needs of modern users.",
+    features: [
+      "Elegant Metal Design: Sleek metal body available in sophisticated Graphite and Silver colors, offering a stylish appearance suitable for any environment with a premium feel and durability.",
+      "Vivid 11\" Display: TFT LCD screen with 1340 x 800 resolution ensures clear and bright visuals. High refresh rate enhances the fluidity of motion in videos and games, providing an immersive viewing experience even under direct sunlight.",
+      "High Performance: Equipped with 4GB RAM and octa-core 2.0GHz processor, the Galaxy Tab A9+ handles multitasking with ease, minimizing lag for smooth operation.",
+      "Generous Storage: 64GB internal storage, expandable up to 1TB with a microSD card, offers ample space for your apps, media, and files.",
+      "Enhanced Audio: Advanced audio technology delivers rich, clear 3D sound through the tablet's speakers, enhancing your media experience whether you're watching movies or listening to music.",
+      "Robust Security: Samsung's Secure Folder and Privacy Dashboard provide comprehensive protection for your data, ensuring that your personal information remains secure and accessible only to you.",
+      "Long-Lasting Battery: 5100mAh battery provides extended usage time for all-day productivity and entertainment.",
+      "Advanced Connectivity: 5G cellular connectivity, Bluetooth 5.3, and Wi-Fi 802.11 a/b/g/n/ac ensure fast and reliable connections for streaming, downloading, and browsing wherever you go.",
+      "Premium Build Quality: Smooth metal finish not only adds sophistication but also ensures durability and a comfortable grip.",
+      "Optimized User Experience: Samsung One UI optimized for tablets with enhanced multitasking capabilities and seamless device integration."
+    ],
+    specifications: [
+      { label: "Display", value: "11\" TFT LCD, 1340 x 800 resolution, high refresh rate" },
+      { label: "Processor", value: "Octa-Core 2.0GHz" },
+      { label: "Memory", value: "4GB RAM" },
+      { label: "Storage", value: "64GB internal storage, expandable up to 1TB with microSD card" },
+      { label: "Battery", value: "5100mAh, non-removable" },
+      { label: "Connectivity", value: "5G cellular, Bluetooth 5.3, Wi-Fi 802.11 a/b/g/n/ac, dual-band, Nano-SIM support" },
+      { label: "Audio", value: "Advanced audio technology with 3D sound, stereo speakers, 3.5mm headphone jack" },
+      { label: "Operating System", value: "Android with Samsung One UI" },
+      { label: "Security", value: "Samsung Secure Folder, Privacy Dashboard" },
+      { label: "Colors", value: "Graphite, Silver" },
+      { label: "Dimensions", value: "Approximately 257.1 x 168.7 x 6.9 mm" },
+      { label: "Build", value: "Metal body with premium finish" }
+    ],
+    colors: [
+      { name: "Graphite", image: galaxyTabA9PlusGraphite },
+      { name: "Silver", image: galaxyTabA9PlusSilver }
+    ],
+    connectivityOptions: ["Wi-Fi + 5G Cellular"]
   }
 ];
 
@@ -2709,8 +2709,8 @@ export const wearablesProducts: Product[] = [
     name: "Apple Watch Series 11 42mm",
     title: "Apple Watch Series 11 42mm - Next Generation Compact",
     price: 415,
-    image: appleWatchS11_42MM,
-    images: [appleWatchS11_42MM, appleWatchS11_42MM_1, appleWatchS11_42MM_2, appleWatchS11_42MM_3],
+    image: appleWatchS11_42MM_JetBlack,
+    images: [appleWatchS11_42MM_JetBlack, appleWatchS11_42MM_RoseGold, appleWatchS11_42MM_Silver, appleWatchS11_42MM_SpaceGrey],
     rating: 5.0,
     category: "Wearables",
     brand: "Apple",
@@ -2742,9 +2742,10 @@ export const wearablesProducts: Product[] = [
       }
     ],
     colors: [
-      { name: "Starlight", image: appleWatchS11_42MM },
-      { name: "Midnight", image: appleWatchS11_42MM_1 },
-      { name: "Silver", image: appleWatchS11_42MM_2 }
+      { name: "Jet Black", image: appleWatchS11_42MM_JetBlack, stock: "available" },
+      { name: "Rose Gold", image: appleWatchS11_42MM_RoseGold, stock: "available" },
+      { name: "Silver", image: appleWatchS11_42MM_Silver, stock: "available" },
+      { name: "Space Grey", image: appleWatchS11_42MM_SpaceGrey, stock: "available" }
     ]
   }
 ];
