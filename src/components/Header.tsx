@@ -1,13 +1,17 @@
-import { Search, Heart, ShoppingCart, Menu } from "lucide-react";
+import { Search, Heart, ShoppingCart, Menu, MessageSquarePlus, Send, Phone, Package, X, Sparkles } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { motion, useScroll, useMotionValueEvent } from "framer-motion";
-import { useState, useRef, useMemo } from "react";
+import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
+import { useState, useRef, useMemo, useEffect } from "react";
 import AnnouncementBar from "./AnnouncementBar";
 import { useFavorites } from "@/context/FavoritesContext";
 import { useCart } from "@/context/CartContext";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "./ui/sheet";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "./ui/dialog";
 import { Input } from "./ui/input";
+import { Textarea } from "./ui/textarea";
+import { Button } from "./ui/button";
+import { Label } from "./ui/label";
+import { useToast } from "@/hooks/use-toast";
 import { phoneAccessories, wearablesProducts, smartphoneProducts, tabletProducts } from "@/data/products";
 
 const Header = () => {
@@ -19,7 +23,40 @@ const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [requestDialogOpen, setRequestDialogOpen] = useState(false);
+  const [requestForm, setRequestForm] = useState({
+    productName: "",
+    description: "",
+    quantity: "1",
+    budget: "",
+    phoneNumber: "",
+  });
+  const [requestErrors, setRequestErrors] = useState({
+    productName: "",
+    phoneNumber: "",
+  });
+  const [showTooltip, setShowTooltip] = useState(false);
   const lastScrollY = useRef(0);
+  const { toast } = useToast();
+
+  // Show tooltip on first visit to guide users
+  useEffect(() => {
+    const hasSeenTooltip = localStorage.getItem("hasSeenRequestTooltip");
+    
+    if (!hasSeenTooltip) {
+      // Show tooltip after 2 seconds on first load
+      const timer = setTimeout(() => {
+        setShowTooltip(true);
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  const handleTooltipClose = () => {
+    setShowTooltip(false);
+    localStorage.setItem("hasSeenRequestTooltip", "true");
+  };
 
   // Get all products for search
   const allProducts = useMemo(() => [...phoneAccessories, ...wearablesProducts, ...smartphoneProducts, ...tabletProducts], []);
@@ -71,6 +108,138 @@ const Header = () => {
     setSearchOpen(false);
     setSearchQuery("");
     navigate(`/product/${productId}`);
+  };
+
+  // Request Product Form Handlers
+  const validatePhoneNumber = (phone: string): boolean => {
+    const digitsOnly = phone.replace(/\D/g, "");
+    let phoneToCheck = digitsOnly;
+    
+    if (phoneToCheck.startsWith("961")) {
+      phoneToCheck = phoneToCheck.substring(3);
+    }
+    
+    if (phoneToCheck.length !== 8) {
+      setRequestErrors(prev => ({
+        ...prev,
+        phoneNumber: "Lebanese phone numbers must be 8 digits"
+      }));
+      return false;
+    }
+    
+    const validPrefixes = ["03", "70", "71", "76", "78", "79", "81", "01", "04", "05", "06", "07", "08", "09"];
+    const prefix = phoneToCheck.substring(0, 2);
+    
+    if (!validPrefixes.includes(prefix)) {
+      setRequestErrors(prev => ({
+        ...prev,
+        phoneNumber: "Please enter a valid Lebanese phone number"
+      }));
+      return false;
+    }
+    
+    setRequestErrors(prev => ({ ...prev, phoneNumber: "" }));
+    return true;
+  };
+
+  const formatPhoneNumber = (value: string): string => {
+    const digitsOnly = value.replace(/\D/g, "");
+    
+    if (digitsOnly.startsWith("961")) {
+      const localNumber = digitsOnly.substring(3);
+      if (localNumber.length === 0) return "+961 ";
+      if (localNumber.length <= 2) return `+961 ${localNumber}`;
+      if (localNumber.length <= 5) return `+961 ${localNumber.substring(0, 2)} ${localNumber.substring(2)}`;
+      return `+961 ${localNumber.substring(0, 2)} ${localNumber.substring(2, 5)} ${localNumber.substring(5)}`;
+    }
+    
+    if (digitsOnly.length === 0) return "";
+    if (digitsOnly.length <= 2) return digitsOnly;
+    if (digitsOnly.length <= 5) return `${digitsOnly.substring(0, 2)} ${digitsOnly.substring(2)}`;
+    return `${digitsOnly.substring(0, 2)} ${digitsOnly.substring(2, 5)} ${digitsOnly.substring(5)}`;
+  };
+
+  const handleRequestFormChange = (field: string, value: string) => {
+    if (field === "phoneNumber") {
+      value = formatPhoneNumber(value);
+    }
+    setRequestForm(prev => ({ ...prev, [field]: value }));
+    
+    if (field === "productName" && value.trim()) {
+      setRequestErrors(prev => ({ ...prev, productName: "" }));
+    }
+    if (field === "phoneNumber" && value) {
+      validatePhoneNumber(value);
+    }
+  };
+
+  const handleSubmitRequest = () => {
+    // Validate
+    let isValid = true;
+    
+    if (!requestForm.productName.trim()) {
+      setRequestErrors(prev => ({
+        ...prev,
+        productName: "Please describe what you're looking for"
+      }));
+      isValid = false;
+    }
+    
+    if (!requestForm.phoneNumber || !validatePhoneNumber(requestForm.phoneNumber)) {
+      isValid = false;
+    }
+    
+    if (!isValid) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in all required fields correctly.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Prepare WhatsApp message
+    let message = `*🛍️ New Product Request*\n\n`;
+    message += `• *Product/Item Needed:* ${requestForm.productName}\n`;
+    
+    if (requestForm.description.trim()) {
+      message += `• *Details:* ${requestForm.description}\n`;
+    }
+    
+    if (requestForm.quantity && requestForm.quantity !== "1") {
+      message += `• *Quantity:* ${requestForm.quantity}\n`;
+    }
+    
+    if (requestForm.budget.trim()) {
+      message += `• *Budget:* $${requestForm.budget}\n`;
+    }
+    
+    message += `• *Contact Number:* ${requestForm.phoneNumber}\n`;
+    message += `\n_Customer is requesting this product. Please check availability and respond._`;
+
+    // Encode and send via WhatsApp
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappNumber = "96181861811";
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+
+    window.open(whatsappUrl, "_blank");
+
+    // Show success message
+    toast({
+      title: "Request Sent! 📱",
+      description: "We'll get back to you shortly with availability and pricing.",
+    });
+
+    // Reset form and close dialog
+    setRequestForm({
+      productName: "",
+      description: "",
+      quantity: "1",
+      budget: "",
+      phoneNumber: "",
+    });
+    setRequestErrors({ productName: "", phoneNumber: "" });
+    setRequestDialogOpen(false);
   };
 
   // Optimized scroll handler with throttling using requestAnimationFrame
@@ -198,7 +367,97 @@ const Header = () => {
           </nav>
 
           {/* Icons & Mobile Menu */}
-          <div className="flex items-center gap-3 sm:gap-4 md:gap-6">
+          <div className="flex items-center gap-2 sm:gap-3 md:gap-4 lg:gap-6">
+            {/* Request Product Button - NEW */}
+            <div className="relative">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => {
+                  setRequestDialogOpen(true);
+                  handleTooltipClose();
+                }}
+                className="relative group"
+                aria-label="Request a product"
+                title="Request a Product"
+              >
+                <div className="relative">
+                  <MessageSquarePlus className="h-4 w-4 sm:h-5 sm:w-5 text-foreground hover:text-primary transition-all duration-300" />
+                  <motion.div
+                    className="absolute -top-1 -right-1 h-2 w-2 bg-gradient-to-r from-primary to-accent rounded-full"
+                    animate={{
+                      scale: [1, 1.2, 1],
+                      opacity: [0.5, 1, 0.5],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                  />
+                </div>
+              </motion.button>
+
+              {/* Tooltip Guide - Shows on first visit */}
+              <AnimatePresence>
+                {showTooltip && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.8, y: 10 }}
+                    transition={{ type: "spring", duration: 0.5 }}
+                    className="absolute top-full right-0 sm:right-auto sm:left-1/2 sm:-translate-x-1/2 mt-2 sm:mt-3 z-[100] w-[260px] sm:w-[280px]"
+                  >
+                    <div className="bg-gradient-to-br from-primary via-primary/95 to-accent text-white rounded-lg shadow-2xl p-3 sm:p-4 relative">
+                      {/* Close Button */}
+                      <button
+                        onClick={handleTooltipClose}
+                        className="absolute -top-2 -right-2 h-6 w-6 bg-white text-primary rounded-full flex items-center justify-center shadow-lg hover:bg-gray-100 transition-colors"
+                        aria-label="Close tooltip"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+
+                      {/* Arrow pointing up */}
+                      <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-primary" />
+
+                      {/* Content */}
+                      <div className="flex items-start gap-2 sm:gap-3">
+                        <motion.div
+                          animate={{ rotate: [0, 10, -10, 0] }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                        >
+                          <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 flex-shrink-0 mt-0.5" />
+                        </motion.div>
+                        <div>
+                          <h4 className="font-bold text-sm sm:text-base mb-1">
+                            NEW! Request Any Product
+                          </h4>
+                          <p className="text-[11px] sm:text-xs leading-relaxed opacity-95">
+                            Can't find what you need? Click here to request any product and we'll source it for you!
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Pulsing border effect */}
+                      <motion.div
+                        className="absolute inset-0 rounded-lg border-2 border-white/30"
+                        animate={{
+                          scale: [1, 1.05, 1],
+                          opacity: [0.5, 1, 0.5],
+                        }}
+                        transition={{
+                          duration: 2,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                        }}
+                      />
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
             {/* Mobile Menu Button */}
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild className="md:hidden">
@@ -415,6 +674,204 @@ const Header = () => {
               )}
             </div>
           )}
+        </div>
+      </DialogContent>
+    </Dialog>
+
+    {/* Request Product Dialog */}
+    <Dialog open={requestDialogOpen} onOpenChange={setRequestDialogOpen}>
+      <DialogContent className="sm:max-w-[550px] max-h-[90vh] overflow-y-auto fixed-center">
+        <DialogHeader>
+          <div className="flex items-center gap-3 mb-2">
+            <motion.div
+              animate={{
+                rotate: [0, 10, -10, 0],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                repeatDelay: 3,
+              }}
+              className="h-12 w-12 rounded-full bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center"
+            >
+              <Package className="h-6 w-6 text-primary" />
+            </motion.div>
+            <div>
+              <DialogTitle className="text-elegant text-xl sm:text-2xl">
+                Request a Product
+              </DialogTitle>
+              <DialogDescription className="text-xs sm:text-sm mt-1">
+                Can't find what you need? Let us know and we'll source it for you!
+              </DialogDescription>
+            </div>
+          </div>
+        </DialogHeader>
+
+        <div className="space-y-5 mt-4">
+          {/* Info Banner */}
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-gradient-to-r from-primary/5 via-accent/5 to-primary/5 border border-primary/20 rounded-lg p-4"
+          >
+            <div className="flex items-start gap-3">
+              <MessageSquarePlus className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+              <div>
+                <h4 className="text-sm font-semibold text-elegant mb-1">
+                  How It Works
+                </h4>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Describe the product you're looking for, and we'll check our suppliers and get back to you with availability and pricing within 24 hours.
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Product Name - Required */}
+          <div>
+            <Label htmlFor="productName" className="text-sm font-medium flex items-center gap-2 mb-2">
+              <Package className="h-4 w-4 text-primary" />
+              What are you looking for?
+              <span className="text-red-500">*</span>
+            </Label>
+            <Input
+              id="productName"
+              placeholder="e.g., iPhone 15 Pro Max, Samsung Galaxy Buds..."
+              value={requestForm.productName}
+              onChange={(e) => handleRequestFormChange("productName", e.target.value)}
+              className={`${requestErrors.productName ? "border-red-500" : ""}`}
+            />
+            {requestErrors.productName && (
+              <motion.p
+                initial={{ opacity: 0, y: -5 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-xs text-red-500 mt-1"
+              >
+                {requestErrors.productName}
+              </motion.p>
+            )}
+            <p className="text-xs text-muted-foreground mt-1.5">
+              Be as specific as possible (brand, model, color, storage, etc.)
+            </p>
+          </div>
+
+          {/* Description - Optional */}
+          <div>
+            <Label htmlFor="description" className="text-sm font-medium mb-2 block">
+              Additional Details (Optional)
+            </Label>
+            <Textarea
+              id="description"
+              placeholder="Any specific requirements, preferences, or features you're looking for..."
+              value={requestForm.description}
+              onChange={(e) => handleRequestFormChange("description", e.target.value)}
+              className="min-h-[80px] resize-y"
+            />
+          </div>
+
+          {/* Quantity and Budget - Row */}
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="quantity" className="text-sm font-medium mb-2 block">
+                Quantity
+              </Label>
+              <Input
+                id="quantity"
+                type="number"
+                min="1"
+                placeholder="1"
+                value={requestForm.quantity}
+                onChange={(e) => handleRequestFormChange("quantity", e.target.value)}
+              />
+            </div>
+            <div>
+              <Label htmlFor="budget" className="text-sm font-medium mb-2 block">
+                Budget (Optional)
+              </Label>
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                  $
+                </span>
+                <Input
+                  id="budget"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  placeholder="0.00"
+                  value={requestForm.budget}
+                  onChange={(e) => handleRequestFormChange("budget", e.target.value)}
+                  className="pl-7"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Phone Number - Required */}
+          <div>
+            <Label htmlFor="requestPhone" className="text-sm font-medium flex items-center gap-2 mb-2">
+              <Phone className="h-4 w-4 text-primary" />
+              Your Phone Number
+              <span className="text-red-500">*</span>
+            </Label>
+            <Input
+              id="requestPhone"
+              type="tel"
+              placeholder="+961 70 123 456"
+              value={requestForm.phoneNumber}
+              onChange={(e) => handleRequestFormChange("phoneNumber", e.target.value)}
+              className={`${requestErrors.phoneNumber ? "border-red-500" : ""}`}
+            />
+            {requestErrors.phoneNumber && (
+              <motion.p
+                initial={{ opacity: 0, y: -5 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-xs text-red-500 mt-1"
+              >
+                {requestErrors.phoneNumber}
+              </motion.p>
+            )}
+            <p className="text-xs text-muted-foreground mt-1.5">
+              We'll contact you via WhatsApp with availability and pricing
+            </p>
+          </div>
+
+          {/* Submit Button */}
+          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+            <Button
+              onClick={handleSubmitRequest}
+              className="w-full bg-gradient-to-r from-[#25D366] to-[#128C7E] hover:from-[#128C7E] hover:to-[#25D366] text-white py-6 text-base font-medium shadow-lg"
+              disabled={!requestForm.productName.trim() || !requestForm.phoneNumber}
+            >
+              <Send className="mr-2 h-5 w-5" />
+              Send Request via WhatsApp
+            </Button>
+          </motion.div>
+
+          {/* Trust Indicators */}
+          <div className="pt-3 border-t border-border space-y-2">
+            <div className="flex items-start gap-2 text-xs text-muted-foreground">
+              <div className="h-4 w-4 rounded-full bg-green-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <motion.div
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="h-2 w-2 rounded-full bg-green-500"
+                />
+              </div>
+              <p>Fast Response: We typically reply within 1-2 hours</p>
+            </div>
+            <div className="flex items-start gap-2 text-xs text-muted-foreground">
+              <div className="h-4 w-4 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <div className="h-2 w-2 rounded-full bg-primary" />
+              </div>
+              <p>No Obligation: Just inquiring, no commitment required</p>
+            </div>
+            <div className="flex items-start gap-2 text-xs text-muted-foreground">
+              <div className="h-4 w-4 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <div className="h-2 w-2 rounded-full bg-accent" />
+              </div>
+              <p>Competitive Pricing: We find the best deals for you</p>
+            </div>
+          </div>
         </div>
       </DialogContent>
     </Dialog>

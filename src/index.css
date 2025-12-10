@@ -489,4 +489,22 @@ All colors MUST be HSL.
     will-change: transform;
     transform: translateZ(0);
   }
+
+  /* Fixed viewport centering for dialogs */
+  .fixed-center {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    max-height: 90vh;
+    margin: 0 !important;
+  }
+
+  /* Mobile responsive for fixed-center dialogs */
+  @media (max-width: 640px) {
+    .fixed-center {
+      width: calc(100vw - 2rem);
+      max-width: 500px;
+    }
+  }
 }
