@@ -84,8 +84,8 @@ const ProductCarousel = ({ title, products }: ProductCarouselProps) => {
   }, []);
 
   return (
-    <div className="relative group">
-      <h2 className="text-elegant text-xl sm:text-2xl mb-4 sm:mb-6 md:mb-8 px-4 sm:px-0">{title}</h2>
+    <div className="relative group w-full overflow-hidden">
+      <h2 className="text-elegant text-xl sm:text-2xl mb-4 sm:mb-6 md:mb-8 px-4 sm:px-0 break-words">{title}</h2>
       
       {/* Left Arrow - Hidden on mobile, visible on hover for desktop */}
       {showLeftArrow && (
@@ -114,7 +114,7 @@ const ProductCarousel = ({ title, products }: ProductCarouselProps) => {
       {/* Scrollable Container - Touch-friendly on mobile */}
       <div
         ref={scrollRef}
-        className="flex gap-3 sm:gap-4 md:gap-6 overflow-x-auto scrollbar-hide scroll-smooth px-4 sm:px-0 snap-x snap-mandatory"
+        className="flex gap-2 sm:gap-3 md:gap-4 lg:gap-6 overflow-x-auto scrollbar-hide scroll-smooth px-4 sm:px-0 snap-x snap-mandatory w-full"
         style={{ 
           scrollbarWidth: "none", 
           msOverflowStyle: "none", 
@@ -124,7 +124,7 @@ const ProductCarousel = ({ title, products }: ProductCarouselProps) => {
         }}
       >
         {products.map((product) => (
-          <div key={product.id} className="flex-none w-[200px] sm:w-[240px] md:w-64 snap-start">
+          <div key={product.id} className="flex-none w-[180px] xs:w-[200px] sm:w-[220px] md:w-[240px] lg:w-64 snap-start flex-shrink-0">
             <ProductCard 
               id={product.id}
               name={product.name}

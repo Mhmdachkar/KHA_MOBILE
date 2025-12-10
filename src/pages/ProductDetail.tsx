@@ -562,7 +562,7 @@ const ProductDetail = () => {
     <div className="min-h-screen bg-white w-full">
       <Header />
 
-      <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12" style={{ touchAction: 'pan-y pinch-zoom' }}>
+      <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12 max-w-full overflow-x-hidden" style={{ touchAction: 'pan-y pinch-zoom' }}>
         {/* Breadcrumb */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -577,7 +577,7 @@ const ProductDetail = () => {
         </motion.div>
 
         {/* Product Section */}
-        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 md:gap-16 mb-12 sm:mb-16 md:mb-24">
+        <div className="grid lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8 lg:gap-12 xl:gap-16 mb-8 sm:mb-12 md:mb-16 lg:mb-24 w-full">
           {/* Image Gallery */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -658,7 +658,7 @@ const ProductDetail = () => {
             {/* Thumbnails */}
             {productImages.length > 1 && (
               <div
-                className="grid grid-cols-4 gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6"
+                className="grid grid-cols-4 gap-1.5 sm:gap-2 md:gap-3 lg:gap-4 mb-4 sm:mb-6 w-full"
                 style={{ touchAction: "pan-y pinch-zoom" }}
               >
                 {productImages.map((image, index) => (
@@ -804,7 +804,7 @@ const ProductDetail = () => {
             <h1 className="text-elegant text-xl sm:text-2xl md:text-3xl mb-2 relative z-10 leading-tight sm:leading-normal" style={{ userSelect: 'text', WebkitUserSelect: 'text', touchAction: 'pan-y' }}>{product.title}</h1>
             <p className="text-muted-foreground text-xs sm:text-sm mb-3 sm:mb-4" style={{ userSelect: 'text', WebkitUserSelect: 'text', touchAction: 'pan-y' }}>{product.category}</p>
             
-            <div className="flex items-center gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 flex-wrap">
+            <div className="flex items-center gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 flex-wrap w-full">
               <div className="flex items-center gap-1">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star
@@ -819,7 +819,7 @@ const ProductDetail = () => {
               <span className="text-xs sm:text-sm text-muted-foreground">({product.rating.toFixed(1)} rating)</span>
             </div>
 
-            <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 w-full">
               <div className="flex flex-col">
                 <p className="text-elegant text-2xl sm:text-3xl font-bold">${displayPrice.toFixed(2)}</p>
                 {selectedVariant?.label && (

@@ -166,7 +166,11 @@ const ProductCard = ({ id, name, price, image, images, rating = 4.5, category, c
               ({rating})
             </span>
           </div>
-          <p className="text-elegant text-xs sm:text-sm font-normal bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">${price.toFixed(2)}</p>
+          {isPreorder && price === 0 ? (
+            <p className="text-elegant text-xs sm:text-sm font-normal text-primary">Pre-order</p>
+          ) : (
+            <p className="text-elegant text-xs sm:text-sm font-normal bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">${price.toFixed(2)}</p>
+          )}
           {colors && colors.length > 0 && (
             <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-1">
               {colors.length} color{colors.length > 1 ? "s" : ""} available

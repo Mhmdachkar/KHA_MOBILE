@@ -356,13 +356,13 @@ const Home = () => {
   const trendingAudio = getProductsByCategory("Audio");
 
   return (
-    <div className="min-h-screen w-full">
+    <div className="min-h-screen w-full overflow-x-hidden">
       <Header />
 
       {/* Revolutionary Hero Section */}
       <motion.section
         ref={heroRef}
-        className="relative min-h-[85vh] sm:min-h-screen flex items-center justify-center overflow-hidden py-8 sm:py-12 md:py-16"
+        className="relative min-h-[85vh] sm:min-h-screen flex items-center justify-center overflow-hidden py-8 sm:py-12 md:py-16 w-full max-w-full"
         style={{
           backgroundColor: "#ffffff",
           backgroundImage: `
@@ -385,8 +385,8 @@ const Home = () => {
         />
 
 
-        <motion.div style={{ opacity, scale }} className="container mx-auto px-4 sm:px-6 relative z-10 w-full">
-          <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12 items-center">
+        <motion.div style={{ opacity, scale }} className="container mx-auto px-4 sm:px-6 relative z-10 w-full max-w-full overflow-hidden">
+          <div className="grid lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8 lg:gap-12 items-center">
             {/* Left Content */}
             <motion.div
               initial={{ opacity: 0, x: -150, rotateY: 30 }}
@@ -493,7 +493,7 @@ const Home = () => {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 1.2, duration: 1 }}
-                  className="text-xs sm:text-sm md:text-base lg:text-lg text-muted-foreground max-w-lg mx-auto lg:mx-0 font-light leading-relaxed px-2 sm:px-0"
+                  className="text-xs sm:text-sm md:text-base lg:text-lg text-muted-foreground max-w-lg mx-auto lg:mx-0 font-light leading-relaxed px-2 sm:px-0 break-words"
                 >
                   Experience the pinnacle of technology with our curated collection of premium devices,
                   smart accessories, and cutting-edge innovations.
@@ -512,7 +512,7 @@ const Home = () => {
                   stiffness: 120,
                   damping: 15
                 }}
-                className="flex flex-wrap gap-2 sm:gap-3 md:gap-4 justify-center lg:justify-start px-2 sm:px-0"
+                className="flex flex-wrap gap-2 sm:gap-3 md:gap-4 justify-center lg:justify-start px-2 sm:px-0 w-full"
               >
                 <motion.div
                   whileHover={{ scale: 1.05 }}
@@ -564,7 +564,7 @@ const Home = () => {
                   stiffness: 100,
                   damping: 18
                 }}
-                className="flex gap-4 sm:gap-6 md:gap-8 pt-4 sm:pt-6 md:pt-8 justify-center lg:justify-start"
+                className="flex flex-wrap gap-3 sm:gap-4 md:gap-6 lg:gap-8 pt-4 sm:pt-6 md:pt-8 justify-center lg:justify-start w-full"
               >
                 {[
                   { value: "10K+", label: "Products" },
@@ -948,8 +948,8 @@ const Home = () => {
       <FlagshipiPhone16Showcase />
 
       {/* Shop by Category */}
-      <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-background">
-        <div className="container mx-auto px-4 sm:px-6">
+      <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-background w-full overflow-hidden">
+        <div className="container mx-auto px-4 sm:px-6 max-w-full">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -963,7 +963,7 @@ const Home = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ delay: 0.2 }}
-            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6"
+            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3 md:gap-4 lg:gap-6 w-full"
           >
             {categories.map((category, index) => (
               <motion.div
@@ -981,8 +981,8 @@ const Home = () => {
       </section>
 
       {/* Trending Now - Smartphones */}
-      <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-secondary">
-        <div className="container mx-auto px-4 sm:px-6">
+      <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-secondary w-full overflow-hidden">
+        <div className="container mx-auto px-4 sm:px-6 max-w-full">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -1012,9 +1012,9 @@ const Home = () => {
       <WhyShopWithUs />
 
       {/* Footer */}
-      <footer className="py-16 bg-accent text-accent-foreground">
-        <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+      <footer className="py-12 sm:py-16 bg-accent text-accent-foreground w-full overflow-hidden">
+        <div className="container mx-auto px-4 sm:px-6 max-w-full">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 md:gap-12 mb-8 sm:mb-12">
             <div>
               <h3 className="text-elegant text-lg mb-4">TechStore</h3>
               <p className="text-sm font-light tracking-wide opacity-80">

@@ -1,6 +1,6 @@
-import { Search, Heart, ShoppingCart, Menu, MessageSquarePlus, Send, Phone, Package, X, Sparkles } from "lucide-react";
+import { Search, Heart, ShoppingCart, Menu, MessageSquarePlus, Send, Phone, Package, X } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { useState, useRef, useMemo, useEffect } from "react";
 import AnnouncementBar from "./AnnouncementBar";
 import { useFavorites } from "@/context/FavoritesContext";
@@ -35,28 +35,8 @@ const Header = () => {
     productName: "",
     phoneNumber: "",
   });
-  const [showTooltip, setShowTooltip] = useState(false);
   const lastScrollY = useRef(0);
   const { toast } = useToast();
-
-  // Show tooltip on first visit to guide users
-  useEffect(() => {
-    const hasSeenTooltip = localStorage.getItem("hasSeenRequestTooltip");
-    
-    if (!hasSeenTooltip) {
-      // Show tooltip after 2 seconds on first load
-      const timer = setTimeout(() => {
-        setShowTooltip(true);
-      }, 2000);
-
-      return () => clearTimeout(timer);
-    }
-  }, []);
-
-  const handleTooltipClose = () => {
-    setShowTooltip(false);
-    localStorage.setItem("hasSeenRequestTooltip", "true");
-  };
 
   // Get all products for search
   const allProducts = useMemo(() => [...phoneAccessories, ...wearablesProducts, ...smartphoneProducts, ...tabletProducts], []);
@@ -286,10 +266,10 @@ const Header = () => {
         }}
         className="sticky top-0 z-50 border-b border-border/50 glassmorphism shadow-card"
       >
-      <div className="container mx-auto px-4 sm:px-6">
-        <div className="flex h-14 sm:h-16 items-center justify-between">
+      <div className="container mx-auto px-4 sm:px-6 max-w-full overflow-hidden">
+        <div className="flex h-14 sm:h-16 items-center justify-between gap-2 sm:gap-4">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 sm:gap-3 group">
+          <Link to="/" className="flex items-center gap-1.5 sm:gap-2 md:gap-3 group flex-shrink-0 min-w-0">
             <motion.div
               className="relative flex-shrink-0"
               whileHover={{ scale: 1.05 }}
@@ -298,7 +278,7 @@ const Header = () => {
               <img
                 src="/LOGO.png"
                 alt="KHA_MOBILE Logo"
-                className="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 object-contain filter drop-shadow-sm group-hover:drop-shadow-md transition-all duration-300"
+                className="h-7 w-7 sm:h-9 sm:w-9 md:h-10 md:w-10 lg:h-12 lg:w-12 object-contain filter drop-shadow-sm group-hover:drop-shadow-md transition-all duration-300"
                 loading="eager"
                 onError={(e) => {
                   // Fallback to text-only if image fails to load
@@ -307,59 +287,59 @@ const Header = () => {
                 }}
               />
             </motion.div>
-            <span className="text-elegant text-base sm:text-xl font-light tracking-widest relative">
+            <span className="text-elegant text-xs sm:text-sm md:text-base lg:text-xl font-light tracking-wider sm:tracking-widest relative truncate">
               KHA_MOBILE
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-accent group-hover:w-full transition-all duration-500"></span>
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-6 lg:gap-8">
+          <nav className="hidden lg:flex items-center gap-4 xl:gap-6 2xl:gap-8 flex-shrink-0">
             <Link
               to="/"
-              className="text-elegant text-xs hover:text-primary transition-all duration-300 relative group"
+              className="text-elegant text-[10px] xl:text-xs hover:text-primary transition-all duration-300 relative group whitespace-nowrap"
             >
               Home
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
             </Link>
             <Link
               to="/products"
-              className="text-elegant text-xs hover:text-primary transition-all duration-300 relative group"
+              className="text-elegant text-[10px] xl:text-xs hover:text-primary transition-all duration-300 relative group whitespace-nowrap"
             >
               Products
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
             </Link>
             <Link
               to="/recharges"
-              className="text-elegant text-xs hover:text-primary transition-all duration-300 relative group"
+              className="text-elegant text-[10px] xl:text-xs hover:text-primary transition-all duration-300 relative group whitespace-nowrap"
             >
               Recharges
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
             </Link>
             <Link
               to="/gift-cards"
-              className="text-elegant text-xs hover:text-primary transition-all duration-300 relative group"
+              className="text-elegant text-[10px] xl:text-xs hover:text-primary transition-all duration-300 relative group whitespace-nowrap"
             >
               Gift Cards
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
             </Link>
             <a
               href="#services"
-              className="text-elegant text-xs hover:text-primary transition-all duration-300 relative group"
+              className="text-elegant text-[10px] xl:text-xs hover:text-primary transition-all duration-300 relative group whitespace-nowrap"
             >
               Services
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
             </a>
             <a
               href="#offers"
-              className="text-elegant text-xs hover:text-primary transition-all duration-300 relative group"
+              className="text-elegant text-[10px] xl:text-xs hover:text-primary transition-all duration-300 relative group whitespace-nowrap"
             >
               Offers
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
             </a>
             <a
               href="#contact"
-              className="text-elegant text-xs hover:text-primary transition-all duration-300 relative group"
+              className="text-elegant text-[10px] xl:text-xs hover:text-primary transition-all duration-300 relative group whitespace-nowrap"
             >
               Contact
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
@@ -367,96 +347,34 @@ const Header = () => {
           </nav>
 
           {/* Icons & Mobile Menu */}
-          <div className="flex items-center gap-2 sm:gap-3 md:gap-4 lg:gap-6">
+          <div className="flex items-center gap-1.5 sm:gap-2 md:gap-3 lg:gap-4 flex-shrink-0">
             {/* Request Product Button - NEW */}
-            <div className="relative">
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => {
-                  setRequestDialogOpen(true);
-                  handleTooltipClose();
-                }}
-                className="relative group"
-                aria-label="Request a product"
-                title="Request a Product"
-              >
-                <div className="relative">
-                  <MessageSquarePlus className="h-4 w-4 sm:h-5 sm:w-5 text-foreground hover:text-primary transition-all duration-300" />
-                  <motion.div
-                    className="absolute -top-1 -right-1 h-2 w-2 bg-gradient-to-r from-primary to-accent rounded-full"
-                    animate={{
-                      scale: [1, 1.2, 1],
-                      opacity: [0.5, 1, 0.5],
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    }}
-                  />
-                </div>
-              </motion.button>
-
-              {/* Tooltip Guide - Shows on first visit */}
-              <AnimatePresence>
-                {showTooltip && (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.8, y: 10 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.8, y: 10 }}
-                    transition={{ type: "spring", duration: 0.5 }}
-                    className="absolute top-full right-0 sm:right-auto sm:left-1/2 sm:-translate-x-1/2 mt-2 sm:mt-3 z-[100] w-[260px] sm:w-[280px]"
-                  >
-                    <div className="bg-gradient-to-br from-primary via-primary/95 to-accent text-white rounded-lg shadow-2xl p-3 sm:p-4 relative">
-                      {/* Close Button */}
-                      <button
-                        onClick={handleTooltipClose}
-                        className="absolute -top-2 -right-2 h-6 w-6 bg-white text-primary rounded-full flex items-center justify-center shadow-lg hover:bg-gray-100 transition-colors"
-                        aria-label="Close tooltip"
-                      >
-                        <X className="h-3 w-3" />
-                      </button>
-
-                      {/* Arrow pointing up */}
-                      <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-primary" />
-
-                      {/* Content */}
-                      <div className="flex items-start gap-2 sm:gap-3">
-                        <motion.div
-                          animate={{ rotate: [0, 10, -10, 0] }}
-                          transition={{ duration: 2, repeat: Infinity }}
-                        >
-                          <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 flex-shrink-0 mt-0.5" />
-                        </motion.div>
-                        <div>
-                          <h4 className="font-bold text-sm sm:text-base mb-1">
-                            NEW! Request Any Product
-                          </h4>
-                          <p className="text-[11px] sm:text-xs leading-relaxed opacity-95">
-                            Can't find what you need? Click here to request any product and we'll source it for you!
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Pulsing border effect */}
-                      <motion.div
-                        className="absolute inset-0 rounded-lg border-2 border-white/30"
-                        animate={{
-                          scale: [1, 1.05, 1],
-                          opacity: [0.5, 1, 0.5],
-                        }}
-                        transition={{
-                          duration: 2,
-                          repeat: Infinity,
-                          ease: "easeInOut",
-                        }}
-                      />
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => {
+                setRequestDialogOpen(true);
+              }}
+              className="relative group"
+              aria-label="Request a product"
+              title="Request a Product"
+            >
+              <div className="relative">
+                <MessageSquarePlus className="h-4 w-4 sm:h-5 sm:w-5 text-foreground hover:text-primary transition-all duration-300" />
+                <motion.div
+                  className="absolute -top-1 -right-1 h-2 w-2 bg-gradient-to-r from-primary to-accent rounded-full"
+                  animate={{
+                    scale: [1, 1.2, 1],
+                    opacity: [0.5, 1, 0.5],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                />
+              </div>
+            </motion.button>
 
             {/* Mobile Menu Button */}
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
@@ -680,7 +598,9 @@ const Header = () => {
 
     {/* Request Product Dialog */}
     <Dialog open={requestDialogOpen} onOpenChange={setRequestDialogOpen}>
-      <DialogContent className="sm:max-w-[550px] max-h-[90vh] overflow-y-auto fixed-center">
+      <DialogContent 
+        className="sm:max-w-[550px] max-h-[90vh] overflow-y-auto viewport-centered-dialog"
+      >
         <DialogHeader>
           <div className="flex items-center gap-3 mb-2">
             <motion.div

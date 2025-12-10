@@ -405,8 +405,33 @@ All colors MUST be HSL.
 
   /* Ensure all containers don't cause horizontal overflow */
   .container {
-    max-width: 100vw;
-    /* overflow-x: hidden; REMOVED */
+    max-width: 100%;
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Prevent horizontal overflow globally */
+  * {
+    max-width: 100%;
+  }
+
+  /* Allow specific elements to overflow when needed */
+  img,
+  video,
+  svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Ensure flex containers don't overflow */
+  .flex {
+    min-width: 0;
+  }
+
+  /* Ensure grid containers don't overflow */
+  .grid {
+    min-width: 0;
   }
 
   /* Fix scroll conflicts on touch devices */
@@ -490,21 +515,36 @@ All colors MUST be HSL.
     transform: translateZ(0);
   }
 
-  /* Fixed viewport centering for dialogs */
-  .fixed-center {
+  /* Fixed viewport centering for dialogs - Force viewport positioning */
+  .viewport-centered-dialog {
     position: fixed !important;
-    top: 50% !important;
-    left: 50% !important;
+    top: 50vh !important;
+    left: 50vw !important;
     transform: translate(-50%, -50%) !important;
-    max-height: 90vh;
+    max-height: 90vh !important;
     margin: 0 !important;
+    z-index: 9999 !important;
   }
 
-  /* Mobile responsive for fixed-center dialogs */
+  /* Ensure dialog overlay is also viewport-fixed */
+  [data-radix-dialog-overlay] {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 9998 !important;
+  }
+
+  /* Mobile responsive for viewport-centered dialogs */
   @media (max-width: 640px) {
-    .fixed-center {
-      width: calc(100vw - 2rem);
-      max-width: 500px;
+    .viewport-centered-dialog {
+      width: calc(100vw - 2rem) !important;
+      max-width: 500px !important;
+      left: 50vw !important;
+      top: 50vh !important;
     }
+  }
+
+  /* Prevent body scroll when dialog is open */
+  body:has([data-radix-dialog-content]) {
+    overflow: hidden !important;
   }
 }

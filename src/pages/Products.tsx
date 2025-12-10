@@ -319,10 +319,10 @@ const Products = () => {
   };
 
   return (
-    <div className="min-h-screen w-full">
+    <div className="min-h-screen w-full overflow-x-hidden">
       <Header />
 
-      <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12">
+      <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12 max-w-full">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 sm:mb-8 md:mb-12">
           <motion.h1
             initial={{ opacity: 0, y: -20 }}
@@ -496,7 +496,7 @@ const Products = () => {
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
+        <div className="grid lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8 w-full">
           {/* Filters Sidebar - Hidden on mobile, visible on lg+ */}
           <motion.aside
             initial={{ opacity: 0, x: -50 }}
@@ -653,7 +653,7 @@ const Products = () => {
 
             {/* Products */}
             {filteredAndSortedProducts.length > 0 ? (
-              <div className={`grid gap-2 sm:gap-3 md:gap-4 lg:gap-6 ${viewMode === "grid" ? "grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5" : "grid-cols-1"}`}>
+              <div className={`grid gap-2 sm:gap-3 md:gap-4 lg:gap-6 w-full ${viewMode === "grid" ? "grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5" : "grid-cols-1"}`}>
                 {filteredAndSortedProducts.map((product, index) => (
                   <motion.div
                     key={product.id}
