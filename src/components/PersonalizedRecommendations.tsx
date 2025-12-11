@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Battery, Smartphone, Zap, Gamepad2, Headphones } from "lucide-react";
 import ProductCard from "./ProductCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-import { phoneAccessories, getProductsByCategory } from "@/data/products";
+import { phoneAccessories, wearablesProducts, smartphoneProducts, tabletProducts, iphoneCases, gamingConsoles, getProductsByCategory } from "@/data/products";
 import { greenLionProducts, getGreenLionProductsByCategory } from "@/data/greenLionProducts";
 import { useState, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -117,6 +117,7 @@ const HorizontalScrollContainer = ({ products }: { products: any[] }) => {
               rating={product.rating}
               category={product.category}
               colors={product.colors}
+              isPreorder={product.isPreorder}
             />
           </div>
         ))}
@@ -131,24 +132,101 @@ const PersonalizedRecommendations = () => {
     return product.id >= 5000 || product.brand === "Green Lion" || product.name?.startsWith("Green Lion");
   };
 
+  // Helper function to determine if a product matches a category
+  const matchesCategory = (product: any, category: string): boolean => {
+    const nameLower = product.name?.toLowerCase() || "";
+    const productCategory = product.category?.toLowerCase() || "";
+    
+    if (category === "Charging") {
+      return productCategory === "charging" ||
+             productCategory === "phone accessories" && (
+               nameLower.includes("charg") ||
+               nameLower.includes("power bank") ||
+               nameLower.includes("adapter") ||
+               nameLower.includes("ups") ||
+               nameLower.includes("battery") ||
+               nameLower.includes("charger") ||
+               nameLower.includes("cable") ||
+               nameLower.includes("dock") ||
+               nameLower.includes("magsafe")
+             );
+    }
+    
+    if (category === "Audio") {
+      return productCategory === "audio" ||
+             nameLower.includes("headphone") ||
+             nameLower.includes("earbud") ||
+             nameLower.includes("speaker") ||
+             nameLower.includes("airpod") ||
+             nameLower.includes("buds") ||
+             nameLower.includes("neckband") ||
+             nameLower.includes("audio");
+    }
+    
+    if (category === "Gaming") {
+      return productCategory === "gaming" ||
+             productCategory === "gaming consoles" ||
+             nameLower.includes("gaming") ||
+             nameLower.includes("ps4") ||
+             nameLower.includes("ps5") ||
+             nameLower.includes("controller") ||
+             nameLower.includes("console");
+    }
+    
+    if (category === "Accessories") {
+      // Accessories: everything that's not charging, audio, or gaming
+      const isCharging = matchesCategory(product, "Charging");
+      const isAudio = matchesCategory(product, "Audio");
+      const isGaming = matchesCategory(product, "Gaming");
+      
+      return !isCharging && !isAudio && !isGaming && (
+        productCategory === "accessories" ||
+        productCategory === "phone accessories" ||
+        productCategory === "iphone cases" ||
+        nameLower.includes("case") ||
+        nameLower.includes("cover") ||
+        nameLower.includes("stand") ||
+        nameLower.includes("holder") ||
+        nameLower.includes("protector") ||
+        nameLower.includes("dopp") ||
+        nameLower.includes("led") ||
+        nameLower.includes("usb") ||
+        nameLower.includes("flash")
+      );
+    }
+    
+    return false;
+  };
+
   // Helper function to get and sort products by category (Green Lion first)
   const getProductsForCategory = (category: string) => {
-    // Get regular products from phoneAccessories
-    const regularProducts = phoneAccessories
-      .filter(p => p.category === category)
+    // Get ALL products from all sources
+    const allRegularProducts = [
+      ...phoneAccessories,
+      ...wearablesProducts,
+      ...smartphoneProducts,
+      ...tabletProducts,
+      ...iphoneCases,
+      ...gamingConsoles
+    ];
+
+    // Filter regular products by category
+    const regularProducts = allRegularProducts
+      .filter(p => matchesCategory(p, category))
       .map(p => ({
         id: p.id,
         name: p.name,
         price: p.price,
         image: p.image,
-        images: [p.image],
+        images: p.images || [p.image],
         rating: p.rating,
         category: p.category,
         brand: p.brand || "Other",
+        colors: p.colors,
+        isPreorder: p.isPreorder,
       }));
 
     // Get Green Lion products for this category
-    // Match by primary category, secondary categories, or name patterns
     const greenLionCategoryProducts = greenLionProducts
       .filter(p => {
         const nameLower = p.name.toLowerCase();
@@ -166,7 +244,6 @@ const PersonalizedRecommendations = () => {
         }
         
         if (category === "Audio") {
-          // Match by secondaryCategories or specific product names
           return primaryMatch || 
                  secondaryMatch ||
                  p.secondaryCategories?.includes("Audio") ||
@@ -193,8 +270,11 @@ const PersonalizedRecommendations = () => {
         }
         
         if (category === "Accessories") {
-          // Accessories category includes all Green Lion products (they all have category "Accessories")
-          return true;
+          // Accessories category includes all Green Lion products that aren't charging/audio/gaming
+          const isCharging = nameLower.includes("charg") || nameLower.includes("power bank") || nameLower.includes("battery");
+          const isAudio = nameLower.includes("speaker") || nameLower.includes("earbud") || nameLower.includes("headphone");
+          const isGaming = nameLower.includes("gaming");
+          return !isCharging && !isAudio && !isGaming;
         }
         
         return primaryMatch || secondaryMatch;
@@ -208,6 +288,8 @@ const PersonalizedRecommendations = () => {
         rating: p.rating,
         category: p.category,
         brand: p.brand,
+        colors: p.colors,
+        isPreorder: p.isPreorder,
       }));
 
     // Combine and sort: Green Lion products first, then others

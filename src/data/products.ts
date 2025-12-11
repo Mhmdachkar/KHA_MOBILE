@@ -49,6 +49,7 @@ import doppKitBeige from "@/assets/accessories/dopp kit/beije.png";
 import doppKitSandGrey from "@/assets/accessories/dopp kit/sand grey.png";
 import fonengUsbCable from "@/assets/phone_accessories/USB to Type-C foneng.webp";
 import borofoneUsbCable from "@/assets/phone_accessories/usb to type-C BOROFONE.jpg";
+import usbCChargeCable from "@/assets/phone_accessories/USB-C charging cable/Gemini_Generated_Image_rzv4yfrzv4yfrzv4.png";
 import fonengDesktopHolder from "@/assets/phone_accessories/foldable desktop holder foneng.webp";
 import samsung25WAdapter from "@/assets/phone_accessories/Samsung 25W PD Adapter.png";
 // USB Flash Drives imports
@@ -101,7 +102,17 @@ import a16Display from "@/assets/phones/A16/Screenshot 2025-11-24 153248.png";
 import a16Lifestyle from "@/assets/phones/A16/Screenshot 2025-11-24 153315.png";
 import a17Hero from "@/assets/phones/A17/A17 placeholder.webp";
 import a17Blue from "@/assets/phones/A17/Screenshot 2025-11-24 153834.png";
+import a17Image1 from "@/assets/phones/A17/Screenshot 2025-11-24 153843.png";
+import a17Image2 from "@/assets/phones/A17/Screenshot 2025-11-24 153902.png";
+import a17Image3 from "@/assets/phones/A17/Screenshot 2025-11-24 153919.png";
+import a17Image4 from "@/assets/phones/A17/Screenshot 2025-11-24 153928.png";
+import a17SkylineBlue from "@/assets/phones/A17/Screenshot 2025-11-24 153939.png";
+import a17Image6 from "@/assets/phones/A17/Screenshot 2025-11-24 153946.png";
 import a17Camera from "@/assets/phones/A17/Screenshot 2025-11-24 153952.png";
+import a17Grey from "@/assets/phones/A17/Screenshot 2025-11-24 154103.png";
+import a17Image10 from "@/assets/phones/A17/Screenshot 2025-11-24 154111.png";
+import a17Image11 from "@/assets/phones/A17/Screenshot 2025-11-24 154119.png";
+import a17Image12 from "@/assets/phones/A17/Screenshot 2025-11-24 154127.png";
 import a26Front from "@/assets/phones/A26/Screenshot 2025-11-24 233921.png";
 import a26Angles from "@/assets/phones/A26/Screenshot 2025-11-24 233959.png";
 import a26Lifestyle from "@/assets/phones/A26/Screenshot 2025-11-24 234052.png";
@@ -118,6 +129,15 @@ import silicon17ProMaxBrown from "@/assets/iphone covers/silicon 17 pro max/Scre
 import silicon17ProMaxLemonade from "@/assets/iphone covers/silicon 17 pro max/Screenshot 2025-12-09 010909 lemonade.png";
 import silicon17ProMaxNavyBlue from "@/assets/iphone covers/silicon 17 pro max/Screenshot 2025-12-09 010915 navy blue.png";
 import silicon17ProMaxPurple from "@/assets/iphone covers/silicon 17 pro max/purple.png";
+// Silicone Phone Sticky Grip imports
+import siliconeStickyGripBabyBlue from "@/assets/iphone covers/Silicone Phone sticky Grip/Silicone Phone sticky Grip baby blue.jpg";
+import siliconeStickyGripPink from "@/assets/iphone covers/Silicone Phone sticky Grip/Silicone Phone sticky Grip pink.jpg";
+import siliconeStickyGripPurple from "@/assets/iphone covers/Silicone Phone sticky Grip/Silicone Phone sticky Grip purple.jpg";
+import siliconeStickyGripHeavyPink from "@/assets/iphone covers/Silicone Phone sticky Grip/Silicone Phone sticky Grip heavy pink.jpg";
+import siliconeStickyGripBabyBlueWebp from "@/assets/iphone covers/Silicone Phone sticky Grip/baby blue.webp";
+import siliconeStickyGripPinkWebp from "@/assets/iphone covers/Silicone Phone sticky Grip/pink.webp";
+import siliconeStickyGripPurpleWebp from "@/assets/iphone covers/Silicone Phone sticky Grip/purple.webp";
+import siliconeStickyGripHeavyPinkWebp from "@/assets/iphone covers/Silicone Phone sticky Grip/heavy pink.webp";
 import a56Front from "@/assets/phones/A56/Screenshot 2025-11-24 234542.png";
 import a56Side from "@/assets/phones/A56/Screenshot 2025-11-24 234605.png";
 import a56Camera from "@/assets/phones/A56/Screenshot 2025-11-24 234628.png";
@@ -1253,7 +1273,7 @@ export const phoneAccessories: Product[] = [
     id: 136,
     name: "Urban Traveler Dopp Kit",
     title: "Urban Traveler Dopp Kit - Pebbled Leather Toiletry Bag",
-    price: 32,
+    price: 20,
     image: doppKitBlack,
     images: [doppKitBlack, doppKitBeige, doppKitSandGrey],
     rating: 4.8,
@@ -1279,6 +1299,40 @@ export const phoneAccessories: Product[] = [
       { name: "Sand Grey", image: doppKitSandGrey, stock: "available" }
     ]
   },
+  {
+    id: 137,
+    name: "USB-C Charge Cable",
+    title: "USB-C Charge Cable - Dual USB-C Connectors with Woven Design",
+    price: 12,
+    image: usbCChargeCable,
+    rating: 4.7,
+    category: "Charging",
+    brand: "Generic",
+    description: "Experience the convenience of modern charging with this premium USB-C Charge Cable. Featuring dual USB-C connectors on both ends, this cable is designed for the latest generation of smartphones, tablets, and laptops. The woven/braided exterior provides superior durability and resistance to fraying, while the tangle-free design ensures hassle-free use. Finished in a clean, matte white color that matches premium tech accessories, this cable supports USB Power Delivery (PD) for fast charging compatible devices efficiently. Perfect for iPhone 15/16, iPad Pro/Air, MacBook, Android devices, and laptops.",
+    features: [
+      "Dual USB-C Connectors: Features reversible USB-C connectors on both ends, making it compatible with the latest smartphones, tablets, and laptops.",
+      "Woven/Braided Design: Unlike standard rubber cables, this cable sports a woven exterior texture. This usually indicates reinforced durability, resistance to fraying, and a tangle-free experience.",
+      "Minimalist Aesthetic: Finished in a clean, matte white color that matches premium tech accessories.",
+      "Fast Charging Support: Designed primarily as a \"Charge Cable,\" implying support for USB Power Delivery (PD) to fast-charge compatible devices efficiently.",
+      "Data Syncing: Supports data transfer in addition to charging capabilities.",
+      "Premium Packaging: Housed in a sleek, white retail box with a minimalist design and built-in hang tab for easy retail display.",
+      "Universal Compatibility: Works with iPhone 15/16, iPad Pro/Air, MacBook, Android devices, and laptops with USB-C ports.",
+      "Durable Construction: Woven fabric exterior provides enhanced durability compared to standard rubber cables.",
+      "Tangle-Free: The braided design prevents tangling for easy storage and use.",
+      "Reversible Connectors: USB-C connectors are reversible, making it easy to plug in either direction."
+    ],
+    specifications: [
+      { label: "Product Name", value: "USB-C Charge Cable" },
+      { label: "Connector Type", value: "USB-C Male to USB-C Male" },
+      { label: "Cable Material", value: "Woven/Braided Fabric (Reinforced)" },
+      { label: "Color", value: "White" },
+      { label: "Primary Function", value: "Charging & Data Syncing" },
+      { label: "Compatibility", value: "iPhone 15/16, iPad Pro/Air, MacBook, Android Devices, Laptops" },
+      { label: "Charging Standard", value: "USB Power Delivery (PD)" },
+      { label: "Design", value: "Woven/Braided exterior with matte white finish" },
+      { label: "Packaging", value: "Sleek white retail box with minimalist design and hang tab" }
+    ]
+  }
 
 ];
 
@@ -1602,7 +1656,11 @@ export const smartphoneProducts: Product[] = [
     title: "Samsung Galaxy A17 – Pro-Grade Camera Choices",
     price: 175,
     image: a17Hero,
-    images: [a17Hero, a17Blue, a17Camera],
+    images: [
+      a17Hero,
+      a17SkylineBlue,
+      a17Grey
+    ],
     rating: 4.9,
     category: "Smartphones",
     brand: "Samsung",
@@ -1652,7 +1710,8 @@ export const smartphoneProducts: Product[] = [
     ],
     colors: [
       { name: "Phantom Black", image: a17Hero },
-      { name: "Skyline Blue", image: a17Blue }
+      { name: "Skyline Blue", image: a17SkylineBlue },
+      { name: "Grey", image: a17Grey }
     ]
   },
   {
@@ -2814,6 +2873,52 @@ export const iphoneCases: Product[] = [
       { name: "Lemonade", image: silicon17ProMaxLemonade },
       { name: "Navy Blue", image: silicon17ProMaxNavyBlue },
       { name: "Purple", image: silicon17ProMaxPurple }
+    ]
+  },
+  {
+    id: 138,
+    name: "Silicone Phone Sticky Grip",
+    title: "Silicone Sticky Grip / Suction Mount - Universal Phone Mount",
+    price: 3.34,
+    image: siliconeStickyGripBabyBlue,
+    images: [siliconeStickyGripBabyBlue, siliconeStickyGripPink, siliconeStickyGripPurple, siliconeStickyGripHeavyPink, siliconeStickyGripBabyBlueWebp, siliconeStickyGripPinkWebp, siliconeStickyGripPurpleWebp, siliconeStickyGripHeavyPinkWebp],
+    rating: 4.6,
+    category: "iPhone Cases",
+    brand: "Generic",
+    description: "Transform your smartphone into a versatile hands-free device with the Silicone Sticky Grip. This innovative suction mount features advanced suction technology with a grid of powerful individual suction cups that provide a reliable, gravity-defying hold on smooth surfaces. The universal peel-and-stick adhesive backing safely attaches to any smartphone brand or smooth case surface, making it perfect for content creation, hands-free viewing, and daily convenience. Made from premium, velvety-soft silicone that is durable, washable, and comfortable to hold, this slim and unobtrusive grip adds functionality without adding bulk. Perfect for filming TikToks and Reels in front of mirrors, reading recipes in the kitchen, listening to music in the shower, or mounting for navigation. Available in vibrant colors to match your style.",
+    features: [
+      "Advanced Suction Technology: Engineered with a grid of powerful individual suction cups that provide a reliable, gravity-defying hold on smooth surfaces like glass, mirrors, screens, and tiles.",
+      "Universal Compatibility: Features a strong, peel-and-stick adhesive backing (safe for phone cases) that attaches universally to any smartphone brand or smooth case surface.",
+      "Slim & Unobtrusive: Designed to be lightweight and low-profile, it adds grip without adding bulk to your pocket or bag.",
+      "Soft-Touch Silicone: Made from premium, velvety-soft silicone that is durable, washable, and comfortable to hold.",
+      "Content Creation: Perfect for filming TikToks, Reels, and makeup tutorials in front of a mirror.",
+      "Hands-Free Viewing: Stick it to the kitchen tile to read recipes or the shower glass to listen to music.",
+      "Multi-Surface Mounting: Works on glass, mirrors, whiteboards, metal, and tile surfaces.",
+      "Easy Installation: Simple peel-and-stick application with 3M adhesive backing for secure attachment.",
+      "Washable & Reusable: Premium silicone material is easy to clean and maintain for long-lasting use.",
+      "No Residue: Safe adhesive backing won't damage your phone case and can be removed without leaving residue.",
+      "Color Options: Available in vibrant colors including Baby Blue, Pink, Purple, and Heavy Pink to match your personal style.",
+      "Versatile Use Cases: Ideal for content creation, hands-free viewing, recipe following, and navigation mounting."
+    ],
+    specifications: [
+      { label: "Product Name", value: "Silicone Sticky Grip / Suction Mount" },
+      { label: "Material", value: "High-Grade Anti-Slip Silicone" },
+      { label: "Mounting Type", value: "Multi-Suction Cup Grid" },
+      { label: "Adhesive", value: "3M Peel-and-Stick Backing" },
+      { label: "Surface Compatibility", value: "Glass, Mirrors, Whiteboards, Metal, Tile" },
+      { label: "Phone Compatibility", value: "Universal (iPhone, Samsung, Pixel, etc.)" },
+      { label: "Design", value: "Slim, lightweight, and unobtrusive profile" },
+      { label: "Texture", value: "Velvety-soft silicone with premium feel" },
+      { label: "Maintenance", value: "Washable and durable for long-lasting use" },
+      { label: "Installation", value: "Peel-and-stick application - no tools required" },
+      { label: "Color Options", value: "Baby Blue, Pink, Purple, Heavy Pink" },
+      { label: "Ideal Use Cases", value: "Content creation (TikToks, Reels, tutorials), hands-free viewing, recipe reading, music listening, navigation mounting" }
+    ],
+    colors: [
+      { name: "Baby Blue", image: siliconeStickyGripBabyBlue },
+      { name: "Pink", image: siliconeStickyGripPink },
+      { name: "Purple", image: siliconeStickyGripPurple },
+      { name: "Heavy Pink", image: siliconeStickyGripHeavyPink }
     ]
   }
 ];

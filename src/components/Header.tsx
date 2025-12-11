@@ -323,27 +323,20 @@ const Header = () => {
               Gift Cards
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
             </Link>
-            <a
-              href="#services"
+            <Link
+              to="/services"
               className="text-elegant text-[10px] xl:text-xs hover:text-primary transition-all duration-300 relative group whitespace-nowrap"
             >
               Services
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
-            </a>
-            <a
-              href="#offers"
+            </Link>
+            <Link
+              to="/about"
               className="text-elegant text-[10px] xl:text-xs hover:text-primary transition-all duration-300 relative group whitespace-nowrap"
             >
-              Offers
+              About Us
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
-            </a>
-            <a
-              href="#contact"
-              className="text-elegant text-[10px] xl:text-xs hover:text-primary transition-all duration-300 relative group whitespace-nowrap"
-            >
-              Contact
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
-            </a>
+            </Link>
           </nav>
 
           {/* Icons & Mobile Menu */}
@@ -428,27 +421,24 @@ const Header = () => {
                           Gift Cards
                         </Link>
                       </SheetClose>
-                      <a
-                        href="#services"
-                        className="text-elegant text-sm hover:text-primary transition-all duration-300 py-2 border-b border-border/50"
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
-                        Services
-                      </a>
-                      <a
-                        href="#offers"
-                        className="text-elegant text-sm hover:text-primary transition-all duration-300 py-2 border-b border-border/50"
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
-                        Offers
-                      </a>
-                      <a
-                        href="#contact"
-                        className="text-elegant text-sm hover:text-primary transition-all duration-300 py-2 border-b border-border/50"
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
-                        Contact
-                      </a>
+                      <SheetClose asChild>
+                        <Link
+                          to="/services"
+                          className="text-elegant text-sm hover:text-primary transition-all duration-300 py-2 border-b border-border/50"
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          Services
+                        </Link>
+                      </SheetClose>
+                      <SheetClose asChild>
+                        <Link
+                          to="/about"
+                          className="text-elegant text-sm hover:text-primary transition-all duration-300 py-2 border-b border-border/50"
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          About Us
+                        </Link>
+                      </SheetClose>
                     </nav>
                   </div>
                 </div>

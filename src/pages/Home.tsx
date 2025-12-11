@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Smartphone, Headphones, Gamepad2, CreditCard, Gift, Tv, Watch, Zap, ArrowRight, Star, Sparkles, ShoppingCart, Tablet } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import rechargeLogo from "@/assets/recharges/logo.png";
 import Header from "@/components/Header";
@@ -14,7 +14,6 @@ import ThisWeeksFavorites from "@/components/ThisWeeksFavorites";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import heroProduct from "@/assets/Gemini_Generated_Image_3qc0nc3qc0nc3qc0.png";
-import { useRef, useEffect } from "react";
 // iPhone 16 imports
 import iPhone16Black from "@/assets/phones/iphone 16/iphone 16 black.jpeg";
 import iPhone16Pink from "@/assets/phones/iphone 16/iphone 16 pink.jpeg";
@@ -27,6 +26,62 @@ import { getProductsByCategory } from "@/data/products";
 // iPhone 16 Showcase Component
 const FlagshipiPhone16Showcase = () => {
   const [selectedColor, setSelectedColor] = useState("ultramarine");
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const scrollPositionRef = useRef<number>(0);
+
+  // Track scroll position continuously on mobile
+  useEffect(() => {
+    const handleScroll = () => {
+      scrollPositionRef.current = window.scrollY;
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Prevent scroll on mobile when color changes
+  useEffect(() => {
+    if (window.innerWidth < 768) {
+      const savedScrollY = scrollPositionRef.current;
+      
+      // Immediately restore scroll position
+      window.scrollTo({ 
+        top: savedScrollY, 
+        left: 0, 
+        behavior: 'instant' 
+      });
+      
+      // Use requestAnimationFrame to ensure DOM has updated
+      requestAnimationFrame(() => {
+        window.scrollTo({ 
+          top: savedScrollY, 
+          left: 0, 
+          behavior: 'instant' 
+        });
+      });
+      
+      // Check and restore after image transition starts
+      setTimeout(() => {
+        if (Math.abs(window.scrollY - savedScrollY) > 5) {
+          window.scrollTo({ 
+            top: savedScrollY, 
+            left: 0, 
+            behavior: 'instant' 
+          });
+        }
+      }, 50);
+      
+      // Final check after image animation completes
+      setTimeout(() => {
+        if (Math.abs(window.scrollY - savedScrollY) > 5) {
+          window.scrollTo({ 
+            top: savedScrollY, 
+            left: 0, 
+            behavior: 'instant' 
+          });
+        }
+      }, 650); // Match image transition duration (0.6s)
+    }
+  }, [selectedColor]);
 
   const colors = [
     { name: "ultramarine", label: "Ultramarine", image: iPhone16Ultramarine, hex: "#003d82" },
@@ -39,53 +94,69 @@ const FlagshipiPhone16Showcase = () => {
   const currentColor = colors.find(c => c.name === selectedColor) || colors[0];
 
   return (
-    <section className="relative py-12 sm:py-16 md:py-20 lg:py-24 xl:py-32 overflow-hidden">
-      {/* Dynamic Background Gradient */}
+    <section 
+      ref={sectionRef}
+      className="relative py-12 sm:py-16 md:py-20 lg:py-24 xl:py-32 overflow-hidden"
+      style={{ scrollMarginTop: '0' }}
+    >
+      {/* Dynamic Background Gradient - Matching iPhone photo backgrounds */}
       <motion.div
         className="absolute inset-0 -z-10"
         animate={{
-          background: [
-            `linear-gradient(135deg, ${currentColor.hex}15 0%, ${currentColor.hex}05 50%, ${currentColor.hex}15 100%)`,
-            `linear-gradient(135deg, ${currentColor.hex}20 0%, ${currentColor.hex}10 50%, ${currentColor.hex}20 100%)`,
-            `linear-gradient(135deg, ${currentColor.hex}15 0%, ${currentColor.hex}05 50%, ${currentColor.hex}15 100%)`,
-          ]
+          background: selectedColor === "white" 
+            ? `linear-gradient(135deg, #f5f5f7 0%, #ffffff 50%, #f5f5f7 100%)`
+            : selectedColor === "black"
+            ? `linear-gradient(135deg, #1d1d1f 0%, #2d2d2f 50%, #1d1d1f 100%)`
+            : selectedColor === "pink"
+            ? `linear-gradient(135deg, #f7c3d3 0%, #ffffff 30%, #f7c3d3 100%)`
+            : selectedColor === "teal"
+            ? `linear-gradient(135deg, #4a7c7e 0%, #ffffff 30%, #4a7c7e 100%)`
+            : `linear-gradient(135deg, #003d82 0%, #ffffff 30%, #003d82 100%)`
         }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        transition={{ duration: 0.8, ease: "easeInOut" }}
+      />
+      
+      {/* Additional subtle gradient overlay for depth */}
+      <motion.div
+        className="absolute inset-0 -z-10"
+        style={{
+          background: `radial-gradient(ellipse at center, transparent 0%, ${currentColor.hex}08 100%)`
+        }}
       />
 
-      {/* Floating Orbs */}
+      {/* Subtle Floating Orbs - Reduced opacity for seamless blend */}
       <motion.div
-        className="absolute top-10 left-4 sm:top-20 sm:left-10 w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 rounded-full blur-3xl opacity-20"
+        className="absolute top-10 left-4 sm:top-20 sm:left-10 w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 rounded-full blur-3xl"
         style={{ backgroundColor: currentColor.hex }}
         animate={{
           scale: [1, 1.2, 1],
-          opacity: [0.2, 0.3, 0.2],
+          opacity: selectedColor === "white" || selectedColor === "pink" ? [0.05, 0.08, 0.05] : [0.08, 0.12, 0.08],
           x: [0, 50, 0],
           y: [0, -30, 0],
         }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
-        className="absolute bottom-10 right-4 sm:bottom-20 sm:right-10 w-40 h-40 sm:w-64 sm:h-64 md:w-96 md:h-96 rounded-full blur-3xl opacity-20"
+        className="absolute bottom-10 right-4 sm:bottom-20 sm:right-10 w-40 h-40 sm:w-64 sm:h-64 md:w-96 md:h-96 rounded-full blur-3xl"
         style={{ backgroundColor: currentColor.hex }}
         animate={{
           scale: [1, 1.3, 1],
-          opacity: [0.2, 0.25, 0.2],
+          opacity: selectedColor === "white" || selectedColor === "pink" ? [0.05, 0.08, 0.05] : [0.08, 0.12, 0.08],
           x: [0, -40, 0],
           y: [0, 40, 0],
         }}
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
       />
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12 lg:gap-16 items-center">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-full overflow-hidden">
+        <div className="grid lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8 lg:gap-12 xl:gap-16 items-center min-h-[400px] sm:min-h-[500px] md:min-h-[600px] w-full">
           {/* Left: Content */}
           <motion.div
             initial={{ opacity: 0, x: -80 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="space-y-4 sm:space-y-6 md:space-y-8 text-center lg:text-left order-2 lg:order-1"
+              className="space-y-4 sm:space-y-6 md:space-y-8 text-center lg:text-left order-2 lg:order-1 w-full max-w-full"
           >
             {/* Badge */}
             <motion.div
@@ -108,7 +179,7 @@ const FlagshipiPhone16Showcase = () => {
               viewport={{ once: true }}
               transition={{ delay: 0.3, duration: 0.8 }}
             >
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight break-words">
                 <span className="text-elegant block mb-2">iPhone 16</span>
                 <span className="text-gradient block">Redefining Excellence</span>
               </h2>
@@ -120,7 +191,7 @@ const FlagshipiPhone16Showcase = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.4, duration: 0.8 }}
-              className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0 leading-relaxed"
+              className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0 leading-relaxed break-words px-2 sm:px-0"
             >
               Experience unparalleled performance with the A18 Pro chip, stunning camera system, and revolutionary design. The most advanced iPhone ever created.
             </motion.p>
@@ -131,7 +202,7 @@ const FlagshipiPhone16Showcase = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.5, duration: 0.8 }}
-              className="grid grid-cols-2 gap-3 sm:gap-4 max-w-md mx-auto lg:mx-0"
+              className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 max-w-md mx-auto lg:mx-0 w-full"
             >
               {[
                 { label: "A18 Pro Chip", sublabel: "Next-Gen Performance" },
@@ -173,12 +244,42 @@ const FlagshipiPhone16Showcase = () => {
                     transition={{ delay: 0.8 + i * 0.05, type: "spring" }}
                     whileHover={{ scale: 1.15, y: -2 }}
                     whileTap={{ scale: 0.95 }}
-                    onClick={() => setSelectedColor(color.name)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      // Save current scroll position before state change
+                      scrollPositionRef.current = window.scrollY;
+                      setSelectedColor(color.name);
+                    }}
+                    onMouseDown={(e) => {
+                      // Prevent focus on mobile to avoid scroll
+                      if (window.innerWidth < 768) {
+                        e.preventDefault();
+                      }
+                    }}
+                    onTouchStart={(e) => {
+                      // Prevent default touch behavior that might cause scroll
+                      if (window.innerWidth < 768) {
+                        e.stopPropagation();
+                      }
+                    }}
+                    onFocus={(e) => {
+                      // Prevent focus on mobile to avoid scroll
+                      if (window.innerWidth < 768) {
+                        e.target.blur();
+                      }
+                    }}
                     className={`relative w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 transition-all duration-300 ${selectedColor === color.name
                       ? "border-primary shadow-lg scale-110"
                       : "border-border/30 hover:border-primary/50"
                       }`}
-                    style={{ backgroundColor: color.hex }}
+                    style={{ 
+                      backgroundColor: color.hex,
+                      touchAction: 'manipulation',
+                      WebkitTapHighlightColor: 'transparent',
+                      outline: 'none',
+                    }}
+                    aria-label={`Select ${color.label} color`}
                   >
                     {selectedColor === color.name && (
                       <motion.div
@@ -207,7 +308,7 @@ const FlagshipiPhone16Showcase = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.9, duration: 0.8 }}
-              className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start pt-2 sm:pt-4"
+                className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start pt-2 sm:pt-4 w-full"
             >
               <Link to="/product/500" className="w-full sm:w-auto">
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto">
@@ -239,24 +340,27 @@ const FlagshipiPhone16Showcase = () => {
             whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1, ease: "easeOut" }}
-            className="relative order-1 lg:order-2"
+            className="relative order-1 lg:order-2 w-full max-w-full"
           >
-            {/* Glow Effect */}
+            {/* Subtle Glow Effect - Reduced for seamless blend */}
             <motion.div
-              className="absolute inset-0 rounded-full blur-3xl opacity-30"
+              className="absolute inset-0 rounded-full blur-3xl"
               style={{ backgroundColor: currentColor.hex }}
               animate={{
                 scale: [1, 1.1, 1],
-                opacity: [0.2, 0.4, 0.2],
+                opacity: selectedColor === "white" || selectedColor === "pink" ? [0.05, 0.1, 0.05] : [0.1, 0.15, 0.1],
               }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             />
 
-            {/* Rotating Ring */}
+            {/* Subtle Rotating Ring */}
             <motion.div
-              className="absolute inset-0 border-2 rounded-full opacity-20"
+              className="absolute inset-0 border-2 rounded-full"
               style={{ borderColor: currentColor.hex }}
-              animate={{ rotate: 360 }}
+              animate={{ 
+                rotate: 360,
+                opacity: selectedColor === "white" || selectedColor === "pink" ? 0.05 : 0.1
+              }}
               transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
             />
 
@@ -267,22 +371,36 @@ const FlagshipiPhone16Showcase = () => {
               animate={{ opacity: 1, scale: 1, rotateY: 0 }}
               exit={{ opacity: 0, scale: 0.9, rotateY: -90 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
-              className="relative z-10"
+              className="relative z-10 flex items-center justify-center"
+              style={{ 
+                minHeight: '300px',
+                padding: '1rem 0.5rem',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              className="w-full max-w-full"
             >
               <motion.img
                 src={currentColor.image}
                 alt={`iPhone 16 ${currentColor.label}`}
-                className="w-full h-auto max-w-[280px] sm:max-w-sm md:max-w-md mx-auto drop-shadow-2xl"
+                className="w-full h-auto max-w-full sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl 2xl:max-w-3xl mx-auto drop-shadow-2xl"
+                style={{
+                  willChange: 'opacity, transform',
+                  backfaceVisibility: 'hidden',
+                  objectFit: 'contain',
+                  maxHeight: '500px',
+                  width: 'auto',
+                  height: 'auto',
+                }}
                 whileHover={{
                   scale: 1.05,
                   rotateY: 5,
                   rotateX: 5,
                   transition: { duration: 0.3 }
                 }}
+                loading="eager"
               />
-
-              {/* Reflection */}
-              <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-background/50 to-transparent rounded-b-3xl" />
             </motion.div>
 
             {/* Floating Specs */}

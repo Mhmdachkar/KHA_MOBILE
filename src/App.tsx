@@ -19,6 +19,8 @@ import Accessories from "./pages/Accessories";
 import CategoryPage from "./pages/CategoryPage";
 import Checkout from "./pages/Checkout";
 import Favorites from "./pages/Favorites";
+import Services from "./pages/Services";
+import AboutUs from "./pages/AboutUs";
 import NotFound from "./pages/NotFound";
 
 // ScrollToTop component to scroll to top on route change
@@ -82,6 +84,8 @@ const App = () => (
                 <Route path="/streaming-services" element={<StreamingServices />} />
                 <Route path="/streaming-service/:id" element={<StreamingServiceDetail />} />
                 <Route path="/accessories" element={<Accessories />} />
+                <Route path="/services" element={<Services />} />
+                <Route path="/about" element={<AboutUs />} />
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/favorites" element={<Favorites />} />
                 <Route path="/product/:id" element={<ProductDetail />} />
