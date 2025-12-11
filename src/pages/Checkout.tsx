@@ -123,8 +123,17 @@ const Checkout = () => {
   const isGiftCard = productCategory === "Gift Cards" || productName.toLowerCase().includes("gift card");
   const isRechargeCard = isRechargeCheckout && !isGiftCard && !isStreamingServiceCheckout;
   
-  // Monthly fee for streaming services
-  const STREAMING_MONTHLY_FEE = 8.00;
+  // Streaming plan pricing tables
+  const STREAMING_PRICING: Record<string, Record<string, Record<string, number>>> = {
+    Netflix: {
+      "1 user": { "1 month": 5, "3 months": 10, "1 year": 30 },
+      "full account": { "1 month": 15, "3 months": 35, "1 year": 110 },
+    },
+    Shahid: {
+      "1 user": { "1 month": 5, "3 months": 10, "1 year": 25 },
+      "full account": { "1 month": 10, "3 months": 15, "1 year": 50 },
+    },
+  };
   
   // Scroll to top on mount
   useEffect(() => {
@@ -162,6 +171,9 @@ const Checkout = () => {
     dollarsAmount: "",
     accountType: "1 user", // Default to "1 user"
   });
+
+  // Streaming plan selections
+  const [streamingPlanDuration, setStreamingPlanDuration] = useState<string>(searchParams.get("duration") || "1 month");
 
   const [errors, setErrors] = useState({
     customerName: "",
@@ -348,11 +360,18 @@ const Checkout = () => {
   // Delivery fee constant
   const DELIVERY_FEE = 4.00;
 
+  const getStreamingPlanPrice = () => {
+    const brandPricing = STREAMING_PRICING[productBrand];
+    if (!brandPricing) return productPrice; // fallback to passed price
+    const accountPricing = brandPricing[formData.accountType] || brandPricing["1 user"];
+    return accountPricing[streamingPlanDuration] ?? productPrice;
+  };
+
   // Calculate total
   const calculateTotal = (): number => {
     if (isStreamingServiceCheckout) {
-      // Streaming service checkout - includes $8 per month fee
-      return productPrice + STREAMING_MONTHLY_FEE;
+      // Streaming service checkout - use selected plan price (no extra monthly fee)
+      return getStreamingPlanPrice();
     } else if (isRechargeCheckout) {
       // Recharge/gift card checkout - no delivery fee
       let total = productPrice;
@@ -434,10 +453,10 @@ const Checkout = () => {
       if (productPrice > 0) {
         message += `• *Service Price:* $${productPrice.toFixed(2)}\n`;
       }
-      message += `• *Monthly Fee:* $${STREAMING_MONTHLY_FEE.toFixed(2)} per month\n`;
       if (requiresAccountType && formData.accountType) {
         message += `• *Account Type:* ${formData.accountType === "1 user" ? "1 User" : "Full Account"}\n`;
       }
+      message += `• *Plan Duration:* ${streamingPlanDuration}\n`;
       message += `\n• *Phone Number:* ${formData.phoneNumber}\n`;
     } else if (isRechargeCheckout) {
       // Recharge/gift card checkout message
@@ -592,10 +611,12 @@ const Checkout = () => {
                       <div className="text-left sm:text-right flex-shrink-0">
                         {isStreamingServiceCheckout ? (
                           <>
-                            {productPrice > 0 && (
-                              <p className="text-elegant text-lg sm:text-xl font-medium">${productPrice.toFixed(2)}</p>
-                            )}
-                            <p className="text-xs sm:text-sm text-muted-foreground">+ $8.00/month</p>
+                            <p className="text-elegant text-lg sm:text-xl font-medium">
+                              ${getStreamingPlanPrice().toFixed(2)}
+                            </p>
+                            <p className="text-[11px] sm:text-xs text-muted-foreground">
+                              {streamingPlanDuration.charAt(0).toUpperCase() + streamingPlanDuration.slice(1)}
+                            </p>
                           </>
                         ) : (
                           <>
@@ -743,17 +764,6 @@ const Checkout = () => {
                   </motion.div>
                 )}
 
-                {/* Monthly Fee - Only for streaming service checkout */}
-                {isStreamingServiceCheckout && (
-                  <div className="flex items-center justify-between py-4 border-b border-border">
-                    <div className="flex items-center gap-2">
-                      <DollarSign className="h-4 w-4 text-muted-foreground" />
-                      <p className="text-sm">Monthly Fee</p>
-                    </div>
-                    <p className="text-lg font-medium">${STREAMING_MONTHLY_FEE.toFixed(2)}</p>
-                  </div>
-                )}
-
               {/* Separate Dollars - Only for recharge cards (not gift cards or streaming services) */}
               {isRechargeCard && formData.separateDollars && formData.dollarsAmount && (
                   <motion.div
@@ -773,15 +783,13 @@ const Checkout = () => {
                 <div className="space-y-3 pt-4 border-t border-border">
                   {isStreamingServiceCheckout && (
                     <>
-                      {productPrice > 0 && (
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="text-muted-foreground">Service Price</span>
-                          <span className="font-medium">${productPrice.toFixed(2)}</span>
-                        </div>
-                      )}
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-muted-foreground">Plan Price</span>
+                      <span className="font-medium">${getStreamingPlanPrice().toFixed(2)}</span>
+                    </div>
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">Monthly Fee</span>
-                        <span className="font-medium">${STREAMING_MONTHLY_FEE.toFixed(2)}</span>
+                      <span className="text-muted-foreground">Duration</span>
+                      <span className="font-medium capitalize">{streamingPlanDuration}</span>
                       </div>
                     </>
                   )}
@@ -841,57 +849,104 @@ const Checkout = () => {
               <div className="space-y-4 sm:space-y-6">
                 {isStreamingServiceCheckout ? (
                   <>
-                    {/* Account Type Dropdown - Only for Netflix and Shahid */}
+                    {/* Account Type & Duration Dropdowns - For Netflix/Shahid */}
                     {requiresAccountType && (
-                      <div>
-                        <Label className="text-elegant text-sm mb-2 flex items-center gap-2">
-                          Account Type
-                          <span className="text-red-500">*</span>
-                        </Label>
-                        {isMobile ? (
-                          <select
-                            value={formData.accountType}
-                            onChange={(event) =>
-                              setFormData({ ...formData, accountType: event.target.value })
-                            }
-                            className="mt-2 w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
-                            style={{ touchAction: "manipulation" }}
-                          >
-                            <option value="1 user">1 User</option>
-                            <option value="full account">Full Account</option>
-                          </select>
-                        ) : (
-                          <Select
-                            value={formData.accountType}
-                            onValueChange={(value) => {
-                              setFormData({ ...formData, accountType: value });
-                            }}
-                          >
-                            <SelectTrigger
-                              className="mt-2"
-                              id="accountType"
-                              type="button"
+                      <div className="space-y-4">
+                        <div>
+                          <Label className="text-elegant text-sm mb-2 flex items-center gap-2">
+                            Account Type
+                            <span className="text-red-500">*</span>
+                          </Label>
+                          {isMobile ? (
+                            <select
+                              value={formData.accountType}
+                              onChange={(event) =>
+                                setFormData({ ...formData, accountType: event.target.value })
+                              }
+                              className="mt-2 w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+                              style={{ touchAction: "manipulation" }}
                             >
-                              <SelectValue placeholder="Select account type" />
-                            </SelectTrigger>
-                            <SelectContent
-                              position="popper"
-                              className="z-[100]"
-                              onCloseAutoFocus={(e) => {
-                                e.preventDefault();
-                              }}
-                              onEscapeKeyDown={(e) => {
-                                e.stopPropagation();
+                              <option value="1 user">1 User</option>
+                              <option value="full account">Full Account</option>
+                            </select>
+                          ) : (
+                            <Select
+                              value={formData.accountType}
+                              onValueChange={(value) => {
+                                setFormData({ ...formData, accountType: value });
                               }}
                             >
-                              <SelectItem value="1 user">1 User</SelectItem>
-                              <SelectItem value="full account">Full Account</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        )}
-                        <p className="text-xs text-muted-foreground mt-2">
-                          Choose between single user access or full account access
-                        </p>
+                              <SelectTrigger
+                                className="mt-2"
+                                id="accountType"
+                                type="button"
+                              >
+                                <SelectValue placeholder="Select account type" />
+                              </SelectTrigger>
+                              <SelectContent
+                                position="popper"
+                                className="z-[100]"
+                                onCloseAutoFocus={(e) => {
+                                  e.preventDefault();
+                                }}
+                                onEscapeKeyDown={(e) => {
+                                  e.stopPropagation();
+                                }}
+                              >
+                                <SelectItem value="1 user">1 User</SelectItem>
+                                <SelectItem value="full account">Full Account</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          )}
+                          <p className="text-xs text-muted-foreground mt-2">
+                            Choose between single user access or full account access
+                          </p>
+                        </div>
+
+                        <div>
+                          <Label className="text-elegant text-sm mb-2 flex items-center gap-2">
+                            Plan Duration
+                            <span className="text-red-500">*</span>
+                          </Label>
+                          {isMobile ? (
+                            <select
+                              value={streamingPlanDuration}
+                              onChange={(event) => setStreamingPlanDuration(event.target.value)}
+                              className="mt-2 w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+                              style={{ touchAction: "manipulation" }}
+                            >
+                              <option value="1 month">1 Month</option>
+                              <option value="3 months">3 Months</option>
+                              <option value="1 year">1 Year</option>
+                            </select>
+                          ) : (
+                            <Select
+                              value={streamingPlanDuration}
+                              onValueChange={(value) => setStreamingPlanDuration(value)}
+                            >
+                              <SelectTrigger className="mt-2" id="planDuration" type="button">
+                                <SelectValue placeholder="Select duration" />
+                              </SelectTrigger>
+                              <SelectContent
+                                position="popper"
+                                className="z-[100]"
+                                onCloseAutoFocus={(e) => {
+                                  e.preventDefault();
+                                }}
+                                onEscapeKeyDown={(e) => {
+                                  e.stopPropagation();
+                                }}
+                              >
+                                <SelectItem value="1 month">1 Month</SelectItem>
+                                <SelectItem value="3 months">3 Months</SelectItem>
+                                <SelectItem value="1 year">1 Year</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          )}
+                          <p className="text-xs text-muted-foreground mt-2">
+                            Select your billing period (1 month, 3 months, or 1 year)
+                          </p>
+                        </div>
                       </div>
                     )}
 

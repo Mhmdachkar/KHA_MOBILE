@@ -38,14 +38,10 @@ const STREAMING_SERVICES: StreamingService[] = [
     image: netflixImage,
     category: "Netflix",
     plans: [
-      // User Plans
-      { id: 1, duration: "1 user - 1 month", price: 5, accountType: 'user' },
-      { id: 2, duration: "1 user - 3 months", price: 10, accountType: 'user' },
-      { id: 3, duration: "1 user - 1 year", price: 30, accountType: 'user' },
-      // Full Account Plans
-      { id: 4, duration: "Full account - 1 month", price: 15, accountType: 'full' },
-      { id: 5, duration: "Full account - 3 months", price: 35, accountType: 'full' }, // Changed to $35 as requested
-      { id: 6, duration: "Full account - 1 year", price: 110, accountType: 'full' },
+      // Duration only (account type chosen at checkout)
+      { id: 1, duration: "1 month", price: 5 },
+      { id: 2, duration: "3 months", price: 10 },
+      { id: 3, duration: "1 year", price: 30 },
     ]
   },
   {
@@ -55,14 +51,10 @@ const STREAMING_SERVICES: StreamingService[] = [
     image: shahidImage,
     category: "Shahid",
     plans: [
-      // User Plans
-      { id: 1, duration: "1 user - 1 month", price: 5, accountType: 'user' },
-      { id: 2, duration: "1 user - 3 months", price: 10, accountType: 'user' },
-      { id: 3, duration: "1 user - 1 year", price: 25, accountType: 'user' },
-      // Full Account Plans
-      { id: 4, duration: "Full account - 1 month", price: 10, accountType: 'full' },
-      { id: 5, duration: "Full account - 3 months", price: 15, accountType: 'full' },
-      { id: 6, duration: "Full account - 1 year", price: 50, accountType: 'full' },
+      // Duration only (account type chosen at checkout)
+      { id: 1, duration: "1 month", price: 5 },
+      { id: 2, duration: "3 months", price: 10 },
+      { id: 3, duration: "1 year", price: 25 },
     ]
   },
   {
@@ -154,7 +146,7 @@ const StreamingServiceDetail = () => {
     const params = new URLSearchParams({
       id: `${service.id}-${plan.id}`,
       name: `${service.name} - ${plan.duration}`,
-      price: plan.isFreeTrial ? "0" : "0",
+      price: plan.isFreeTrial ? "0" : `${plan.price ?? 0}`,
       image: service.image,
       region: "Global",
       brand: service.category,

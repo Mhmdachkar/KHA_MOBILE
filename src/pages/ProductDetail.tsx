@@ -11,105 +11,6 @@ import { getGreenLionProductById, greenLionProducts, getGreenLionProductsByCateg
 import ProductCard from "@/components/ProductCard";
 import ProductCarousel from "@/components/ProductCarousel";
 import ImageLightbox from "@/components/ImageLightbox";
-
-// Mock customer reviews data
-interface Review {
-  id: number;
-  name: string;
-  rating: number;
-  date: string;
-  comment: string;
-  verified: boolean;
-}
-
-const generateProductReviews = (productId: number, productName: string, productRating: number): Review[] => {
-  // Base reviews that can be customized per product
-  const reviewTemplates: Record<string, Review[]> = {
-    // Smartphones
-    'samsung': [
-      { id: 1, name: "Muhammad Ali", rating: 5, date: "2 weeks ago", comment: "Excellent phone! The display is stunning and the camera quality is outstanding. Battery life lasts all day with heavy use.", verified: true },
-      { id: 2, name: "Fatima Hassan", rating: 5, date: "1 month ago", comment: "Love this device! Fast performance, great build quality. The 5G connectivity is super fast. Highly recommend!", verified: true },
-      { id: 3, name: "Ahmed Khalid", rating: 4, date: "3 weeks ago", comment: "Very good phone for the price. Camera could be better in low light, but overall satisfied with my purchase.", verified: true },
-      { id: 4, name: "Aisha Omar", rating: 5, date: "1 week ago", comment: "Perfect for my needs! The screen is beautiful and the software is smooth. No complaints so far.", verified: true },
-      { id: 5, name: "Ibrahim Yusuf", rating: 4, date: "2 months ago", comment: "Solid phone with good features. The charging speed is impressive. Would buy again.", verified: true },
-    ],
-    'tecno': [
-      { id: 1, name: "Hassan Hamza", rating: 5, date: "1 week ago", comment: "Amazing value for money! The camera system is impressive and the display is vibrant. Great for photography.", verified: true },
-      { id: 2, name: "Layla Ahmad", rating: 4, date: "3 weeks ago", comment: "Really happy with this purchase. The battery life is excellent and the design is sleek. Good performance overall.", verified: true },
-      { id: 3, name: "Omar Zain", rating: 5, date: "2 weeks ago", comment: "Outstanding phone! The fast charging is a game changer. Build quality feels premium. Highly satisfied!", verified: true },
-      { id: 4, name: "Mariam Salma", rating: 4, date: "1 month ago", comment: "Great phone with modern features. The screen quality is good and the UI is smooth. Worth the investment.", verified: true },
-      { id: 5, name: "Yusuf Nour", rating: 5, date: "5 days ago", comment: "Best phone I've owned! The camera takes amazing photos and the performance is flawless. Love it!", verified: true },
-    ],
-    'smart': [
-      { id: 1, name: "Khadija Amira", rating: 4, date: "2 weeks ago", comment: "Good budget-friendly option. The display is nice and the performance is adequate for daily tasks.", verified: true },
-      { id: 2, name: "Mohammed Ali", rating: 5, date: "1 week ago", comment: "Surprised by the quality! Great features for the price. Battery lasts long and the design is modern.", verified: true },
-      { id: 3, name: "Yasmin Hassan", rating: 4, date: "3 weeks ago", comment: "Solid phone that does everything I need. The camera is decent and the storage is sufficient. Good value.", verified: true },
-      { id: 4, name: "Hamza Ibrahim", rating: 5, date: "1 month ago", comment: "Excellent budget smartphone! Fast, reliable, and well-built. Perfect for students and everyday use.", verified: true },
-      { id: 5, name: "Nour Ahmed", rating: 4, date: "2 months ago", comment: "Happy with my purchase. The phone works well for calls, messaging, and social media. Good battery life.", verified: true },
-    ],
-    // Audio products
-    'audio': [
-      { id: 1, name: "Muhammad Khalid", rating: 5, date: "1 week ago", comment: "Amazing sound quality! The bass is deep and the clarity is excellent. Comfortable to wear for hours.", verified: true },
-      { id: 2, name: "Aisha Fatima", rating: 5, date: "2 weeks ago", comment: "Best headphones I've tried! Noise cancellation works perfectly. Battery life is impressive.", verified: true },
-      { id: 3, name: "Ahmed Omar", rating: 4, date: "3 weeks ago", comment: "Great sound and build quality. The wireless connection is stable. Good value for money.", verified: true },
-      { id: 4, name: "Layla Mariam", rating: 5, date: "1 month ago", comment: "Love these! The sound is crystal clear and they're very comfortable. Perfect for music and calls.", verified: true },
-      { id: 5, name: "Hassan Zain", rating: 4, date: "2 months ago", comment: "Solid headphones with good features. The design is sleek and the sound quality meets my expectations.", verified: true },
-    ],
-    // Accessories
-    'accessories': [
-      { id: 1, name: "Fatima Khadija", rating: 5, date: "1 week ago", comment: "Perfect accessory! Works exactly as described. Fast charging and good build quality. Highly recommend!", verified: true },
-      { id: 2, name: "Ali Hamza", rating: 4, date: "2 weeks ago", comment: "Good product that does its job well. The design is nice and it's durable. Worth the purchase.", verified: true },
-      { id: 3, name: "Mariam Yasmin", rating: 5, date: "3 weeks ago", comment: "Excellent quality! Exactly what I needed. Fast delivery and great customer service. Very satisfied!", verified: true },
-      { id: 4, name: "Ibrahim Ahmed", rating: 4, date: "1 month ago", comment: "Good accessory for the price. Works reliably and looks professional. Would buy again.", verified: true },
-      { id: 5, name: "Salma Nour", rating: 5, date: "2 months ago", comment: "Love this product! It's well-made and functions perfectly. Great addition to my setup.", verified: true },
-    ],
-    // Wearables
-    'wearables': [
-      { id: 1, name: "Mohammed Zain", rating: 5, date: "1 week ago", comment: "Fantastic smartwatch! The fitness tracking is accurate and the battery lasts for days. Great value!", verified: true },
-      { id: 2, name: "Aisha Amira", rating: 4, date: "2 weeks ago", comment: "Nice watch with good features. The display is clear and the health monitoring works well.", verified: true },
-      { id: 3, name: "Omar Hassan", rating: 5, date: "3 weeks ago", comment: "Excellent smartwatch! All the features I need. Comfortable to wear and looks stylish.", verified: true },
-      { id: 4, name: "Layla Fatima", rating: 4, date: "1 month ago", comment: "Good watch for fitness tracking. The app is easy to use and the notifications work perfectly.", verified: true },
-      { id: 5, name: "Yusuf Khalid", rating: 5, date: "2 months ago", comment: "Love my new watch! The battery life is impressive and the design is modern. Highly recommend!", verified: true },
-    ],
-  };
-
-  // Determine product category
-  const nameLower = productName.toLowerCase();
-  let category = 'accessories';
-
-  if (nameLower.includes('samsung') || nameLower.includes('galaxy')) {
-    category = 'samsung';
-  } else if (nameLower.includes('tecno') || nameLower.includes('camon') || nameLower.includes('spark')) {
-    category = 'tecno';
-  } else if (nameLower.includes('smart')) {
-    category = 'smart';
-  } else if (nameLower.includes('headphone') || nameLower.includes('earbud') || nameLower.includes('speaker') || nameLower.includes('audio')) {
-    category = 'audio';
-  } else if (nameLower.includes('watch') || nameLower.includes('wearable')) {
-    category = 'wearables';
-  }
-
-  // Get reviews for category or use default
-  const reviews = reviewTemplates[category] || reviewTemplates['accessories'];
-
-  // Adjust ratings slightly based on product rating
-  return reviews.map((review, index) => ({
-    ...review,
-    rating: Math.min(5, Math.max(3, Math.round(productRating + (Math.random() - 0.5) * 0.5))),
-    date: index === 0 ? "1 week ago" : index === 1 ? "2 weeks ago" : index === 2 ? "3 weeks ago" : index === 3 ? "1 month ago" : "2 months ago"
-  }));
-};
-
-const calculateReviewStats = (reviews: Review[]) => {
-  const totalReviews = reviews.length;
-  const averageRating = reviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews;
-  const ratingDistribution = [5, 4, 3, 2, 1].map(rating => {
-    const count = reviews.filter(r => r.rating === rating).length;
-    return { rating, count, percentage: (count / totalReviews) * 100 };
-  });
-  return { totalReviews, averageRating, ratingDistribution };
-};
-
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -237,14 +138,22 @@ const ProductDetail = () => {
   
   const favorite = isFavorite(product.id);
 
-  // Generate product-specific reviews
-  const productReviews = useMemo(() => {
-    return generateProductReviews(product.id, product.name, product.rating);
-  }, [product.id, product.name, product.rating]);
+  // Show-more toggles to reduce scrolling on mobile
+  const [showFullDescription, setShowFullDescription] = useState(false);
+  const [showAllFeatures, setShowAllFeatures] = useState(false);
+  const [showAllSpecs, setShowAllSpecs] = useState(false);
 
-  const reviewStats = useMemo(() => {
-    return calculateReviewStats(productReviews);
-  }, [productReviews]);
+  const truncatedDescription =
+    product.description && product.description.length > 220 && !showFullDescription
+      ? `${product.description.slice(0, 220)}…`
+      : product.description;
+
+  const FEATURE_LIMIT = 6;
+  const SPEC_LIMIT = 6;
+  const displayedFeatures =
+    product.features && !showAllFeatures ? product.features.slice(0, FEATURE_LIMIT) : product.features;
+  const displayedSpecs =
+    product.specifications && !showAllSpecs ? product.specifications.slice(0, SPEC_LIMIT) : product.specifications;
 
   const handleAddToCart = (redirect?: boolean) => {
     // Get the color image if a color is selected
@@ -946,22 +855,46 @@ const ProductDetail = () => {
             {/* Description */}
             <div className="mb-8" style={{ touchAction: 'pan-y' }}>
               <h3 className="text-elegant text-lg mb-3 font-medium" style={{ userSelect: 'text', WebkitUserSelect: 'text' }}>Description</h3>
-              <p className="text-sm font-light leading-relaxed text-muted-foreground mb-4" style={{ userSelect: 'text', WebkitUserSelect: 'text', touchAction: 'pan-y' }}>
-                {product.description}
+              <p className="text-sm font-light leading-relaxed text-muted-foreground mb-3 break-words" style={{ userSelect: 'text', WebkitUserSelect: 'text', touchAction: 'pan-y' }}>
+                {truncatedDescription}
               </p>
+              {product.description && product.description.length > 220 && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="text-xs"
+                  onClick={() => setShowFullDescription(!showFullDescription)}
+                  style={{ touchAction: 'manipulation' }}
+                >
+                  {showFullDescription ? "Show less" : "Show more"}
+                </Button>
+              )}
               
               {/* Key Features */}
-              {product.features && product.features.length > 0 && (
+              {displayedFeatures && displayedFeatures.length > 0 && (
                 <div className="mt-6">
                   <h4 className="text-elegant text-base mb-3 font-medium">Key Features</h4>
                   <ul className="flex flex-col gap-2">
-                    {product.features.map((feature, index) => (
-                      <li key={index} className="flex items-start gap-2 text-sm text-muted-foreground">
+                    {displayedFeatures.map((feature, index) => (
+                      <li key={index} className="flex items-start gap-2 text-sm text-muted-foreground break-words">
                         <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
                         <span>{feature}</span>
                       </li>
                     ))}
                   </ul>
+                  {product.features && product.features.length > FEATURE_LIMIT && (
+                    <div className="mt-3">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="text-xs"
+                        onClick={() => setShowAllFeatures(!showAllFeatures)}
+                        style={{ touchAction: 'manipulation' }}
+                      >
+                        {showAllFeatures ? "Show less" : "Show more features"}
+                      </Button>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -1005,127 +938,34 @@ const ProductDetail = () => {
             </motion.button>
 
             {/* Specifications */}
-            {product.specifications && product.specifications.length > 0 && (
+            {displayedSpecs && displayedSpecs.length > 0 && (
               <div className="border-t border-border pt-8 mt-8">
                 <h3 className="text-elegant text-xl mb-6 font-medium">Technical Specifications</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {product.specifications.map((spec, index) => (
-                    <div key={index} className="py-3 border-b border-border last:border-b-0">
+                  {displayedSpecs.map((spec, index) => (
+                    <div key={index} className="py-3 border-b border-border last:border-b-0 break-words">
                       <p className="text-xs text-muted-foreground mb-1 font-medium">{spec.label}</p>
                       <p className="text-sm font-light text-foreground">{spec.value}</p>
                     </div>
                   ))}
                 </div>
+                {product.specifications && product.specifications.length > SPEC_LIMIT && (
+                  <div className="mt-3">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="text-xs"
+                      onClick={() => setShowAllSpecs(!showAllSpecs)}
+                      style={{ touchAction: 'manipulation' }}
+                    >
+                      {showAllSpecs ? "Show less" : "Show more specs"}
+                    </Button>
+                  </div>
+                )}
               </div>
             )}
           </motion.div>
         </div>
-
-        {/* Customer Feedback */}
-        <motion.section
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mb-12 sm:mb-16 md:mb-24"
-        >
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 sm:mb-8">
-            <h2 className="text-elegant text-xl sm:text-2xl">Customer Feedback</h2>
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full sm:w-auto">
-              <Button variant="outline" size="sm" className="text-elegant w-full sm:w-auto">
-                Filter Reviews
-              </Button>
-              <Button variant="default" size="sm" className="text-elegant w-full sm:w-auto">
-                Write a Review
-              </Button>
-            </div>
-          </div>
-
-          <div className="bg-white border border-border rounded-sm p-8 mb-8">
-            <div className="flex items-center gap-8">
-              <div className="text-center">
-                <p className="text-6xl font-light mb-2">{reviewStats.averageRating.toFixed(1)}</p>
-                <div className="flex items-center gap-1 mb-2 justify-center">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`h-4 w-4 ${i < Math.floor(reviewStats.averageRating)
-                        ? "fill-primary text-primary"
-                        : "text-border"
-                        }`}
-                    />
-                  ))}
-                </div>
-                <p className="text-xs text-muted-foreground">{reviewStats.totalReviews} reviews</p>
-              </div>
-              <div className="flex-1">
-                {reviewStats.ratingDistribution.map((dist) => (
-                  <div key={dist.rating} className="flex items-center gap-4 mb-2">
-                    <span className="text-xs w-12">{dist.rating} stars</span>
-                    <div className="flex-1 h-2 bg-border rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-primary"
-                        style={{
-                          width: `${dist.percentage}%`,
-                        }}
-                      />
-                    </div>
-                    <span className="text-xs text-muted-foreground w-12">
-                      {dist.percentage.toFixed(0)}%
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Individual Reviews */}
-          <div className="flex flex-col gap-4">
-            {productReviews.map((review) => (
-              <motion.div
-                key={review.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="bg-white border border-border rounded-sm p-4 sm:p-6"
-              >
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                      <span className="text-sm font-semibold text-primary">
-                        {review.name.split(' ').map(n => n[0]).join('')}
-                      </span>
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <p className="text-sm font-medium">{review.name}</p>
-                        {review.verified && (
-                          <span className="text-xs text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-                            Verified Purchase
-                          </span>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-2 mt-1">
-                        <div className="flex items-center gap-0.5">
-                          {Array.from({ length: 5 }).map((_, i) => (
-                            <Star
-                              key={i}
-                              className={`h-3 w-3 ${i < review.rating
-                                ? "fill-primary text-primary"
-                                : "text-border"
-                                }`}
-                            />
-                          ))}
-                        </div>
-                        <span className="text-xs text-muted-foreground">{review.date}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <p className="text-sm text-muted-foreground leading-relaxed">{review.comment}</p>
-              </motion.div>
-            ))}
-          </div>
-        </motion.section>
 
         {/* Product Video Section */}
         {product.video && (

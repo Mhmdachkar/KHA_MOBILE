@@ -29,7 +29,7 @@ const FlagshipiPhone16Showcase = () => {
   const sectionRef = useRef<HTMLElement | null>(null);
   const scrollPositionRef = useRef<number>(0);
 
-  // Track scroll position continuously on mobile
+  // Track scroll position (for reference, no auto-restore to avoid scroll lock)
   useEffect(() => {
     const handleScroll = () => {
       scrollPositionRef.current = window.scrollY;
@@ -37,51 +37,6 @@ const FlagshipiPhone16Showcase = () => {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  // Prevent scroll on mobile when color changes
-  useEffect(() => {
-    if (window.innerWidth < 768) {
-      const savedScrollY = scrollPositionRef.current;
-      
-      // Immediately restore scroll position
-      window.scrollTo({ 
-        top: savedScrollY, 
-        left: 0, 
-        behavior: 'instant' 
-      });
-      
-      // Use requestAnimationFrame to ensure DOM has updated
-      requestAnimationFrame(() => {
-        window.scrollTo({ 
-          top: savedScrollY, 
-          left: 0, 
-          behavior: 'instant' 
-        });
-      });
-      
-      // Check and restore after image transition starts
-      setTimeout(() => {
-        if (Math.abs(window.scrollY - savedScrollY) > 5) {
-          window.scrollTo({ 
-            top: savedScrollY, 
-            left: 0, 
-            behavior: 'instant' 
-          });
-        }
-      }, 50);
-      
-      // Final check after image animation completes
-      setTimeout(() => {
-        if (Math.abs(window.scrollY - savedScrollY) > 5) {
-          window.scrollTo({ 
-            top: savedScrollY, 
-            left: 0, 
-            behavior: 'instant' 
-          });
-        }
-      }, 650); // Match image transition duration (0.6s)
-    }
-  }, [selectedColor]);
 
   const colors = [
     { name: "ultramarine", label: "Ultramarine", image: iPhone16Ultramarine, hex: "#003d82" },
@@ -250,24 +205,6 @@ const FlagshipiPhone16Showcase = () => {
                       // Save current scroll position before state change
                       scrollPositionRef.current = window.scrollY;
                       setSelectedColor(color.name);
-                    }}
-                    onMouseDown={(e) => {
-                      // Prevent focus on mobile to avoid scroll
-                      if (window.innerWidth < 768) {
-                        e.preventDefault();
-                      }
-                    }}
-                    onTouchStart={(e) => {
-                      // Prevent default touch behavior that might cause scroll
-                      if (window.innerWidth < 768) {
-                        e.stopPropagation();
-                      }
-                    }}
-                    onFocus={(e) => {
-                      // Prevent focus on mobile to avoid scroll
-                      if (window.innerWidth < 768) {
-                        e.target.blur();
-                      }
                     }}
                     className={`relative w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 transition-all duration-300 ${selectedColor === color.name
                       ? "border-primary shadow-lg scale-110"

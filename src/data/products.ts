@@ -383,46 +383,6 @@ export const phoneAccessories: Product[] = [
     ]
   },
   {
-    id: 132,
-    name: "Apple MagSafe Charger",
-    title: "Apple MagSafe Charger - Official Wireless Fast Charging for iPhone",
-    price: 39,
-    image: magsafeCharger,
-    images: [magsafeCharger, magsafeCharger2, magsafeCharger3],
-    rating: 4.8,
-    category: "Charging",
-    brand: "Apple",
-    description: "The Apple MagSafe Charger makes wireless charging a snap. The perfectly aligned magnets attach to your iPhone 16, iPhone 15, iPhone 14, and iPhone 13 series for faster wireless charging up to 25W. The MagSafe Charger maintains compatibility with Qi charging, so it can be used to wirelessly charge your iPhone 8 or later, as well as AirPods models with a wireless charging case, as you would with any Qi-certified charger.",
-    features: [
-      "Fast Wireless Charging: Delivers up to 25W of power for MagSafe-compatible iPhones, providing faster wireless charging than standard Qi chargers.",
-      "Perfect Magnetic Alignment: Built-in magnets automatically snap into perfect alignment with iPhone 16, 15, 14, 13, and 12 series for optimal charging efficiency.",
-      "Universal Qi Compatibility: Works with any Qi-enabled device, including iPhone 8 and later, AirPods with wireless charging case, and other Qi-certified accessories.",
-      "Upgraded 25W Charging: Newer MagSafe chargers support up to 25W charging for iPhone 16 series with a 30W+ power adapter.",
-      "1-Meter USB-C Cable: Includes a long 1m (3.3 feet) integrated USB-C cable for flexible placement and convenience.",
-      "Sleek Aluminum Design: Premium aluminum finish with Apple logo looks elegant on any desk or nightstand.",
-      "Case Friendly: Charges through most cases with MagSafe compatibility, no need to remove your iPhone case.",
-      "Foreign Object Detection: Advanced safety features detect metallic foreign objects and prevent charging to avoid damage.",
-      "Apple Certified: Official Apple accessory with guaranteed compatibility and safety.",
-      "LED Indicator: Built-in LED light confirms proper magnetic alignment and charging status."
-    ],
-    specifications: [
-      { label: "Brand", value: "Apple" },
-      { label: "Model", value: "MagSafe Charger (Official)" },
-      { label: "Maximum Power", value: "25W (with compatible iPhone and 30W+ adapter)" },
-      { label: "Standard Power", value: "15W (iPhone 13/14/15), 25W (iPhone 16)" },
-      { label: "Cable Length", value: "1m (3.3 feet) integrated USB-C cable" },
-      { label: "Connector", value: "USB-C" },
-      { label: "Compatibility", value: "iPhone 16/15/14/13/12 series, AirPods Pro, AirPods with wireless charging" },
-      { label: "Qi Compatible", value: "Yes (iPhone 8 and later)" },
-      { label: "Material", value: "Aluminum body, integrated cable" },
-      { label: "Magnetic Charging", value: "Yes (MagSafe)" },
-      { label: "Foreign Object Detection", value: "Yes" },
-      { label: "Color", value: "Silver/White" },
-      { label: "Recommended Adapter", value: "20W USB-C (minimum), 30W+ (for 25W charging)" },
-      { label: "Condition", value: "Brand New" }
-    ]
-  },
-  {
     id: 106,
     name: "Apple AirPods",
     title: "Apple AirPods",
@@ -1932,7 +1892,7 @@ export const tabletProducts: Product[] = [
     rating: 4.9,
     category: "Tablets",
     brand: "Apple",
-    description: "The 11-inch iPad is now more capable than ever with the superfast A16 chip, stunning Liquid Retina display, advanced cameras, fast Wi-Fi 6 and 5G connectivity, USB-C connector, and four gorgeous colors. iPad delivers a powerful way to create, stay connected, and get things done—all for a surprisingly affordable price. Whether you're creating digital art, editing videos, taking notes, or streaming content, this iPad handles it all with ease while delivering all-day battery life. With iPadOS and a million apps designed specifically for iPad, you can do more than ever before.",
+    description: "The 11-inch iPad is now more capable than ever with the superfast A16 chip, stunning Liquid Retina display, advanced cameras, and fast Wi-Fi 6. This Wi‑Fi-only model delivers a powerful way to create, stay connected, and get things done—all for a surprisingly affordable price. Whether you're creating digital art, editing videos, taking notes, or streaming content, this iPad handles it all with ease while delivering all-day battery life. With iPadOS and a million apps designed specifically for iPad, you can do more than ever before.",
     features: [
       "Superfast A16 Chip: The same powerful chip used in iPhone 15 Pro delivers incredible performance for gaming, video editing, multitasking, and creative work with remarkable efficiency.",
       "11-inch Liquid Retina Display: Gorgeous 2388 x 1668 resolution display brings your content to life with vibrant colors, crisp text, and incredible detail—perfect for watching movies or drawing your next masterpiece.",
@@ -1943,7 +1903,6 @@ export const tabletProducts: Product[] = [
       "Apple Pencil Compatible: Works with Apple Pencil (USB-C) and Apple Pencil (1st generation) for precise drawing, note-taking, and markup with pixel-perfect accuracy and low latency.",
       "Magic Keyboard Folio Support: Transform your iPad into a powerful laptop with the versatile two-piece Magic Keyboard Folio featuring a detachable keyboard and protective back panel.",
       "Fast Wi-Fi 6: Experience faster wireless speeds for downloading files, streaming 4K content, playing online games, and video conferencing with minimal lag.",
-      "5G Cellular Option: Stay connected anywhere with optional 5G connectivity for fast downloads, smooth video streaming, and reliable internet access when away from Wi-Fi.",
       "USB-C Connector: Universal USB-C port for charging, data transfer, and connecting to external displays, cameras, and other accessories with one versatile connector.",
       "Touch ID Security: Built into the top button, Touch ID provides secure and convenient authentication for unlocking your iPad, authorizing purchases, and signing into apps.",
       "Landscape Stereo Speakers: Immersive sound experience with two high-quality speakers positioned for optimal audio when using iPad in landscape orientation.",
@@ -1957,13 +1916,13 @@ export const tabletProducts: Product[] = [
       { label: "Storage Options", value: "128GB or 256GB" },
       { label: "Operating System", value: "iPadOS 18 (upgradable to latest version)" },
       { label: "Dimensions", value: "247.6mm x 178.5mm x 7.0mm (9.75\" x 7.03\" x 0.28\")" },
-      { label: "Weight", value: "477 grams (Wi-Fi), 481 grams (Wi-Fi + Cellular)" },
+      { label: "Weight", value: "477 grams (Wi-Fi)" },
       { label: "Rear Camera", value: "12MP Wide camera, f/1.8 aperture, 4K video recording at 24/25/30/60fps, 1080p HD video at 25/30/60fps" },
       { label: "Front Camera", value: "12MP Ultra Wide camera, f/2.4 aperture, Center Stage, 1080p HD video at 25/30/60fps" },
       { label: "Video Recording", value: "4K video at 24/25/30/60fps, 1080p HD video at 25/30/60fps, Extended dynamic range for video up to 30fps" },
       { label: "Battery Life", value: "Up to 10 hours of surfing the web on Wi‑Fi, watching video, or listening to music" },
       { label: "Charging", value: "USB-C connector, 20W USB-C Power Adapter included" },
-      { label: "Connectivity", value: "Wi-Fi 6 (802.11ax), Bluetooth 5.3, optional 5G (Sub‑6GHz and mmWave)" },
+      { label: "Connectivity", value: "Wi-Fi 6 (802.11ax), Bluetooth 5.3" },
       { label: "Ports", value: "USB-C connector for charging and accessories" },
       { label: "Security", value: "Touch ID built into top button" },
       { label: "Audio", value: "Landscape stereo speakers, dual microphones" },
@@ -1990,22 +1949,6 @@ export const tabletProducts: Product[] = [
         label: "256GB Wi-Fi",
         price: 485,
         description: "Ideal for content creators, students, and professionals who need extra space for large files, videos, and projects."
-      },
-      {
-        key: "ipad11-128gb-5g",
-        ram: "",
-        storage: "128GB Storage",
-        label: "128GB Wi-Fi + 5G",
-        price: 599.99,
-        description: "Stay connected anywhere with 5G cellular connectivity for work and play on the go."
-      },
-      {
-        key: "ipad11-256gb-5g",
-        ram: "",
-        storage: "256GB Storage",
-        label: "256GB Wi-Fi + 5G",
-        price: 749.99,
-        description: "Maximum storage and connectivity for professionals who need to work from anywhere."
       }
     ],
     colors: [
@@ -2014,7 +1957,7 @@ export const tabletProducts: Product[] = [
       { name: "Blue", image: iPad11Blue, stock: "available" },
       { name: "Yellow", image: iPad11Yellow, stock: "available" }
     ],
-    connectivityOptions: ["Wi-Fi only", "Wi-Fi + 5G Cellular"]
+    connectivityOptions: ["Wi‑Fi only"]
   },
   {
     id: 405,
