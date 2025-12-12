@@ -8,6 +8,7 @@ import { useCart } from "@/context/CartContext";
 interface ProductCardProps {
   id: number;
   name: string;
+  title?: string; // Optional title - if provided, will be used instead of name
   price: number;
   image: string;
   images?: string[]; // Optional images array for hover switching
@@ -17,7 +18,7 @@ interface ProductCardProps {
   isPreorder?: boolean;
 }
 
-const ProductCard = ({ id, name, price, image, images, rating = 4.5, category, colors, isPreorder = false }: ProductCardProps) => {
+const ProductCard = ({ id, name, title, price, image, images, rating = 4.5, category, colors, isPreorder = false }: ProductCardProps) => {
   const { isFavorite, toggleFavorite } = useFavorites();
   const { addToCart } = useCart();
   const favorite = isFavorite(id);
@@ -145,7 +146,7 @@ const ProductCard = ({ id, name, price, image, images, rating = 4.5, category, c
               {category}
             </motion.p>
           )}
-          <h3 className="text-elegant text-[10px] sm:text-xs mb-1 sm:mb-2 line-clamp-2 group-hover:text-primary transition-colors duration-300 leading-tight sm:leading-normal">{name}</h3>
+          <h3 className="text-elegant text-[10px] sm:text-xs mb-1 sm:mb-2 line-clamp-2 group-hover:text-primary transition-colors duration-300 leading-tight sm:leading-normal">{title || name}</h3>
           <div className="flex items-center gap-0.5 sm:gap-1 mb-1 sm:mb-2">
             {Array.from({ length: 5 }).map((_, i) => (
               <motion.div

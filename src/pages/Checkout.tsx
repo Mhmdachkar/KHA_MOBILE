@@ -133,6 +133,9 @@ const Checkout = () => {
       "1 user": { "1 month": 5, "3 months": 10, "1 year": 25 },
       "full account": { "1 month": 10, "3 months": 15, "1 year": 50 },
     },
+    IPTV: {
+      "standard": { "1 month": 10, "3 months": 20, "6 months": 35, "1 year": 50 },
+    },
   };
   
   // Scroll to top on mount
@@ -363,6 +366,14 @@ const Checkout = () => {
   const getStreamingPlanPrice = () => {
     const brandPricing = STREAMING_PRICING[productBrand];
     if (!brandPricing) return productPrice; // fallback to passed price
+    
+    // IPTV doesn't have account types, use "standard" key
+    if (productBrand === "IPTV") {
+      const iptvPricing = brandPricing["standard"];
+      return iptvPricing[streamingPlanDuration] ?? productPrice;
+    }
+    
+    // For Netflix/Shahid, use account type
     const accountPricing = brandPricing[formData.accountType] || brandPricing["1 user"];
     return accountPricing[streamingPlanDuration] ?? productPrice;
   };
@@ -382,8 +393,10 @@ const Checkout = () => {
       });
       
       // Only add separate dollars for recharge cards, not gift cards
+      // Each dollar entered is calculated as $1.45
       if (isRechargeCard && formData.separateDollars && formData.dollarsAmount) {
-        total += parseFloat(formData.dollarsAmount);
+        const dollarsEntered = parseFloat(formData.dollarsAmount);
+        total += dollarsEntered * 1.45;
       }
       return total;
     } else {
@@ -486,7 +499,10 @@ const Checkout = () => {
       
       // Only include separate dollars for recharge cards, not gift cards
       if (isRechargeCard && formData.separateDollars && formData.dollarsAmount) {
-        message += `• *Separate Dollars:* $${parseFloat(formData.dollarsAmount).toFixed(2)}\n`;
+        const dollarsEntered = parseFloat(formData.dollarsAmount);
+        const dollarsTotal = dollarsEntered * 1.45;
+        message += `• *Separate Dollars:* ${dollarsEntered} × $1.45 = $${dollarsTotal.toFixed(2)}\n`;
+        message += `  (Note: Each dollar added is calculated as $1.45)\n`;
       }
     } else {
       // Product checkout message
@@ -769,13 +785,21 @@ const Checkout = () => {
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
-                    className="flex items-center justify-between py-4 border-b border-border"
+                    className="py-4 border-b border-border"
                   >
-                    <div className="flex items-center gap-2">
-                      <DollarSign className="h-4 w-4 text-muted-foreground" />
-                      <p className="text-sm">Separate Dollars</p>
+                    <div className="flex items-center justify-between mb-1">
+                      <div className="flex items-center gap-2">
+                        <DollarSign className="h-4 w-4 text-muted-foreground" />
+                        <p className="text-sm">Separate Dollars</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-lg font-medium">${(parseFloat(formData.dollarsAmount) * 1.45).toFixed(2)}</p>
+                        <p className="text-xs text-muted-foreground">({formData.dollarsAmount} × $1.45)</p>
+                      </div>
                     </div>
-                    <p className="text-lg font-medium">${parseFloat(formData.dollarsAmount).toFixed(2)}</p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Note: Each dollar added is calculated as $1.45 in the total price.
+                    </p>
                   </motion.div>
                 )}
 
@@ -809,8 +833,8 @@ const Checkout = () => {
                   )}
                 {isRechargeCard && formData.separateDollars && formData.dollarsAmount && (
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Additional Dollars</span>
-                      <span className="font-medium">${parseFloat(formData.dollarsAmount).toFixed(2)}</span>
+                      <span className="text-muted-foreground">Additional Dollars ({formData.dollarsAmount} × $1.45)</span>
+                      <span className="font-medium">${(parseFloat(formData.dollarsAmount) * 1.45).toFixed(2)}</span>
                     </div>
                   )}
                   <div className="h-px bg-border" />
@@ -1181,7 +1205,7 @@ const Checkout = () => {
                           </motion.p>
                         )}
                         <p className="text-xs text-muted-foreground mt-2">
-                          Optional: Add extra dollars to your purchase
+                          Optional: Add extra dollars to your purchase. Each dollar entered will be calculated as $1.45 in the total price.
                         </p>
                       </motion.div>
                     )}

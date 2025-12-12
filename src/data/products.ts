@@ -182,6 +182,8 @@ import galaxyTabA8_2 from "@/assets/Tablets/Samsung Galaxy TAB A8 - 10.5 Tablet 
 // Samsung Galaxy Tab A9+ imports
 import galaxyTabA9PlusGraphite from "@/assets/Tablets/Samsung Galaxy Tab A9+ - 11 Tablet/graphite.png";
 import galaxyTabA9PlusSilver from "@/assets/Tablets/Samsung Galaxy Tab A9+ - 11 Tablet/silver.png";
+// TODO: Replace with actual navy.png when available
+import galaxyTabA9PlusNavy from "@/assets/Tablets/Samsung Galaxy Tab A9+ - 11 Tablet/graphite.png";
 import galaxyTabA9Plus_2 from "@/assets/Tablets/Samsung Galaxy Tab A9+ - 11 Tablet/Screenshot 2025-12-10 011131.png";
 import galaxyTabA9Plus_3 from "@/assets/Tablets/Samsung Galaxy Tab A9+ - 11 Tablet/Screenshot 2025-12-10 011140.png";
 import galaxyTabA9Plus_4 from "@/assets/Tablets/Samsung Galaxy Tab A9+ - 11 Tablet/Screenshot 2025-12-10 011157.png";
@@ -1363,7 +1365,7 @@ export const smartphoneProducts: Product[] = [
     id: 304,
     name: "Samsung Galaxy S24 FE",
     title: "Samsung Galaxy S24 FE 256GB/8GB RAM - AI-Powered Creativity",
-    price: 560,
+    price: 585,
     image: s24FeBlack,
     images: [s24FeBlack, s24FeGrey, s24Fe_1, s24Fe_2, s24Fe_3],
     rating: 4.9,
@@ -1423,7 +1425,7 @@ export const smartphoneProducts: Product[] = [
     id: 305,
     name: "Samsung Galaxy S25 FE",
     title: "Samsung Galaxy S25 FE 256GB/8GB RAM - Flagship Performance Redefined",
-    price: 690,
+    price: 700,
     image: s25FeBlack,
     images: [s25FeBlack, s25FeNavy, s25FeIceBlue, s25FeWhite],
     rating: 5.0,
@@ -1764,7 +1766,7 @@ export const smartphoneProducts: Product[] = [
         ram: "8GB RAM",
         storage: "256GB Storage",
         label: "8GB + 256GB",
-        price: 325,
+        price: 235,
         description: "Maxed-out storage for RAW shooters and gamers."
       }
     ]
@@ -1811,7 +1813,7 @@ export const smartphoneProducts: Product[] = [
         ram: "8GB RAM",
         storage: "256GB Storage",
         label: "12GB + 256GB",
-        price: 420,
+        price: 450,
         description: "Extra storage for 8K footage and Pro RAW projects."
       }
     ],
@@ -1947,7 +1949,7 @@ export const tabletProducts: Product[] = [
         ram: "",
         storage: "256GB Storage",
         label: "256GB Wi-Fi",
-        price: 485,
+        price: 520,
         description: "Ideal for content creators, students, and professionals who need extra space for large files, videos, and projects."
       }
     ],
@@ -2119,7 +2121,7 @@ export const tabletProducts: Product[] = [
     id: 407,
     name: "Apple iPad Air M3 Chip 13-inch",
     title: "Apple iPad Air M3 Chip 13-inch - Largest Display with Advanced Graphics & Apple Intelligence",
-    price: 749.99,
+    price: 870,
     image: iPadAirM3_13_Blue,
     images: [iPadAirM3_13_Blue, iPadAirM3_13_Grey, iPadAirM3_13_Purple, iPadAirM3_13_Starlight],
     rating: 4.9,
@@ -2218,7 +2220,7 @@ export const tabletProducts: Product[] = [
     id: 408,
     name: "Apple iPad Air 6th Generation 13-inch (M2 Chip)",
     title: "Apple iPad Air 6th Generation 13-inch (M2 Chip) - Powerful Performance with Largest Display",
-    price: 699.99,
+    price: 800,
     image: iPadAirM2_13_Blue,
     images: [iPadAirM2_13_Blue, iPadAirM2_13_SpaceGrey, iPadAirM2_13_Purple, iPadAirM2_13_Starlight],
     rating: 4.8,
@@ -2353,9 +2355,9 @@ export const tabletProducts: Product[] = [
     rating: 4.7,
     category: "Tablets",
     brand: "Samsung",
-    description: "The Samsung Galaxy Tab A9+ offers a perfect blend of style and functionality with its sleek metal body and modern design. Available in Graphite and Silver, this tablet combines elegant aesthetics with high-performance features including Wi-Fi and 5G cellular connectivity. Its smooth, metal finish not only adds a touch of sophistication but also ensures durability and a premium feel. The expansive 11\" TFT LCD display provides a brilliant and vibrant viewing experience with smooth visuals whether you're streaming videos, playing games, or browsing the web. Even under direct sunlight, the screen maintains clarity and brightness, making it suitable for various lighting conditions and usage scenarios. With 5G connectivity for ultra-fast internet speeds on the go, enhanced audio technology delivering rich, clear 3D sound, and robust security features including Samsung's Secure Folder and Privacy Dashboard, the Galaxy Tab A9+ delivers a complete and enjoyable tablet experience tailored to meet the needs of modern users.",
+    description: "The Samsung Galaxy Tab A9+ offers a perfect blend of style and functionality with its sleek metal body and modern design. Available in Graphite, Silver, and Navy Blue, this tablet combines elegant aesthetics with high-performance features including Wi-Fi and 5G cellular connectivity. Its smooth, metal finish not only adds a touch of sophistication but also ensures durability and a premium feel. The expansive 11\" TFT LCD display provides a brilliant and vibrant viewing experience with smooth visuals whether you're streaming videos, playing games, or browsing the web. Even under direct sunlight, the screen maintains clarity and brightness, making it suitable for various lighting conditions and usage scenarios. With 5G connectivity for ultra-fast internet speeds on the go, enhanced audio technology delivering rich, clear 3D sound, and robust security features including Samsung's Secure Folder and Privacy Dashboard, the Galaxy Tab A9+ delivers a complete and enjoyable tablet experience tailored to meet the needs of modern users.",
     features: [
-      "Elegant Metal Design: Sleek metal body available in sophisticated Graphite and Silver colors, offering a stylish appearance suitable for any environment with a premium feel and durability.",
+      "Elegant Metal Design: Sleek metal body available in sophisticated Graphite, Silver, and Navy Blue colors, offering a stylish appearance suitable for any environment with a premium feel and durability.",
       "Vivid 11\" Display: TFT LCD screen with 1340 x 800 resolution ensures clear and bright visuals. High refresh rate enhances the fluidity of motion in videos and games, providing an immersive viewing experience even under direct sunlight.",
       "High Performance: Equipped with 4GB RAM and octa-core 2.0GHz processor, the Galaxy Tab A9+ handles multitasking with ease, minimizing lag for smooth operation.",
       "Generous Storage: 64GB internal storage, expandable up to 1TB with a microSD card, offers ample space for your apps, media, and files.",
@@ -2376,13 +2378,14 @@ export const tabletProducts: Product[] = [
       { label: "Audio", value: "Advanced audio technology with 3D sound, stereo speakers, 3.5mm headphone jack" },
       { label: "Operating System", value: "Android with Samsung One UI" },
       { label: "Security", value: "Samsung Secure Folder, Privacy Dashboard" },
-      { label: "Colors", value: "Graphite, Silver" },
+      { label: "Colors", value: "Graphite, Silver, Navy Blue" },
       { label: "Dimensions", value: "Approximately 257.1 x 168.7 x 6.9 mm" },
       { label: "Build", value: "Metal body with premium finish" }
     ],
     colors: [
       { name: "Graphite", image: galaxyTabA9PlusGraphite },
-      { name: "Silver", image: galaxyTabA9PlusSilver }
+      { name: "Silver", image: galaxyTabA9PlusSilver },
+      { name: "Navy Blue", image: galaxyTabA9PlusNavy }
     ],
     connectivityOptions: ["Wi-Fi + 5G Cellular"]
   }
@@ -2517,8 +2520,8 @@ export const wearablesProducts: Product[] = [
   {
     id: 205,
     name: "Apple Watch SE (2nd generation) 40mm",
-    title: "Apple Watch SE (2nd generation) 40mm - Essential Health & Fitness Companion",
-    price: 285,
+    title: "Apple Watch SE3 (2nd generation) 40mm - Essential Health & Fitness Companion",
+    price: 300,
     image: appleWatchSE2_40MM,
     images: [appleWatchSE2_40MM, appleWatchSE2_40MM_1, appleWatchSE2_40MM_Midnight, appleWatchSE2_40MM_Starlight],
     rating: 4.8,
@@ -2533,7 +2536,7 @@ export const wearablesProducts: Product[] = [
       "Heart Rate Monitoring: Second-generation heart rate sensor provides accurate readings and alerts for high or low heart rate.",
       "Sleep Tracking: Track your sleep stages and get personalized insights to improve your sleep quality.",
       "Fitness Tracking: Comprehensive workout app with automatic workout detection for running, walking, cycling, swimming, and more.",
-      "GPS + Cellular Options: Built-in GPS for precise location tracking, with optional LTE connectivity for calling and messaging without your iPhone.",
+      "Built-in GPS: Precise location tracking for workouts and navigation.",
       "Water Resistant: Swim-proof design with 50-meter water resistance rating for swimming and water activities.",
       "Retina Display: Bright LTPO OLED Retina display with up to 1,000 nits brightness for excellent visibility in all conditions.",
       "32GB Storage: Ample space for apps, music, podcasts, and photos directly on your wrist.",
@@ -2550,36 +2553,18 @@ export const wearablesProducts: Product[] = [
       { label: "Storage", value: "32GB internal storage" },
       { label: "Operating System", value: "watchOS 9 (upgradable to watchOS 11)" },
       { label: "Dimensions", value: "40mm x 34mm x 10.7mm (1.57\" x 1.34\" x 0.42\")" },
-      { label: "Weight", value: "26.4 grams (GPS), 27.8 grams (GPS + Cellular)" },
+      { label: "Weight", value: "26.4 grams" },
       { label: "Battery Life", value: "Up to 18 hours (36 hours in Low Power Mode)" },
       { label: "Charging", value: "Wireless charging with Apple Watch magnetic charging cable" },
       { label: "Water Resistance", value: "50 meters (WR50) - ISO standard 22810:2010" },
       { label: "Sensors", value: "Second-generation heart rate sensor, accelerometer, gyroscope, ambient light sensor, always-on altimeter, compass" },
       { label: "Health Features", value: "Heart rate monitoring, sleep tracking, fall detection, crash detection, cycle tracking, high/low heart rate notifications" },
       { label: "Fitness Features", value: "Workout app with 70+ workout types, automatic workout detection, activity rings, fitness awards" },
-      { label: "Connectivity", value: "Wi-Fi 802.11 b/g/n, Bluetooth 5.3, GPS, GLONASS, GALILEO, QZSS, NFC (Apple Pay), optional LTE (eSIM)" },
+      { label: "Connectivity", value: "Wi-Fi 802.11 b/g/n, Bluetooth 5.3, GPS, GLONASS, GALILEO, QZSS, NFC (Apple Pay)" },
       { label: "Safety Features", value: "Emergency SOS, Crash Detection, Fall Detection, International emergency calling" },
       { label: "Compatibility", value: "Requires iPhone Xs or later with iOS 18 or later" },
       { label: "Materials", value: "100% recycled aluminum case with Ion-X front glass" },
       { label: "Warranty", value: "1-year limited warranty with 90 days of complimentary technical support" }
-    ],
-    variants: [
-      {
-        key: "se2-40mm-gps",
-        ram: "",
-        storage: "32GB Storage",
-        label: "GPS",
-        price: 249.99,
-        description: "GPS model for tracking workouts and location without cellular connectivity."
-      },
-      {
-        key: "se2-40mm-cellular",
-        ram: "",
-        storage: "32GB Storage",
-        label: "GPS + Cellular",
-        price: 299.99,
-        description: "GPS + Cellular model for calls, texts, and streaming without your iPhone nearby."
-      }
     ],
     colors: [
       { name: "Midnight", image: appleWatchSE2_40MM_Midnight, stock: "available" },
@@ -2591,7 +2576,7 @@ export const wearablesProducts: Product[] = [
     id: 206,
     name: "Apple Watch SE (2nd generation) 44mm",
     title: "Apple Watch SE (2nd generation) 44mm - Larger Display for Enhanced Experience",
-    price: 265,
+    price: 290,
     image: appleWatchSE2_44MM,
     images: [appleWatchSE2_44MM],
     rating: 4.8,
@@ -2623,36 +2608,18 @@ export const wearablesProducts: Product[] = [
       { label: "Storage", value: "32GB internal storage" },
       { label: "Operating System", value: "watchOS 9 (upgradable to watchOS 11)" },
       { label: "Dimensions", value: "44mm x 38mm x 10.7mm (1.73\" x 1.50\" x 0.42\")" },
-      { label: "Weight", value: "32.9 grams (GPS), 33.0 grams (GPS + Cellular)" },
+      { label: "Weight", value: "32.9 grams" },
       { label: "Battery Life", value: "Up to 18 hours (36 hours in Low Power Mode)" },
       { label: "Charging", value: "Wireless charging with Apple Watch magnetic charging cable" },
       { label: "Water Resistance", value: "50 meters (WR50) - ISO standard 22810:2010" },
       { label: "Sensors", value: "Second-generation heart rate sensor, accelerometer, gyroscope, ambient light sensor, always-on altimeter, compass" },
       { label: "Health Features", value: "Heart rate monitoring, sleep tracking, fall detection, crash detection, cycle tracking, high/low heart rate notifications" },
       { label: "Fitness Features", value: "Workout app with 70+ workout types, automatic workout detection, activity rings, fitness awards, route tracking" },
-      { label: "Connectivity", value: "Wi-Fi 802.11 b/g/n, Bluetooth 5.3, GPS, GLONASS, GALILEO, QZSS, NFC (Apple Pay), optional LTE (eSIM)" },
+      { label: "Connectivity", value: "Wi-Fi 802.11 b/g/n, Bluetooth 5.3, GPS, GLONASS, GALILEO, QZSS, NFC (Apple Pay)" },
       { label: "Safety Features", value: "Emergency SOS, Crash Detection, Fall Detection, International emergency calling, Find My" },
       { label: "Compatibility", value: "Requires iPhone Xs or later with iOS 18 or later" },
       { label: "Materials", value: "100% recycled aluminum case with Ion-X front glass" },
       { label: "Warranty", value: "1-year limited warranty with 90 days of complimentary technical support" }
-    ],
-    variants: [
-      {
-        key: "se2-44mm-gps",
-        ram: "",
-        storage: "32GB Storage",
-        label: "GPS",
-        price: 279.99,
-        description: "GPS model for tracking workouts and location without cellular connectivity."
-      },
-      {
-        key: "se2-44mm-cellular",
-        ram: "",
-        storage: "32GB Storage",
-        label: "GPS + Cellular",
-        price: 329.99,
-        description: "GPS + Cellular model for calls, texts, and streaming without your iPhone nearby."
-      }
     ],
     colors: [
       { name: "Midnight", image: appleWatchSE2_44MM, stock: "available" },
@@ -2664,7 +2631,7 @@ export const wearablesProducts: Product[] = [
     id: 207,
     name: "Apple Watch Series 10 46mm",
     title: "Apple Watch Series 10 46mm - Thinnest Design with Largest Display",
-    price: 370,
+    price: 400,
     image: appleWatchS10_46MM,
     images: [appleWatchS10_46MM, appleWatchS10_46MM_1, appleWatchS10_46MM_2, appleWatchS10_46MM_3],
     rating: 4.9,
@@ -2710,7 +2677,7 @@ export const wearablesProducts: Product[] = [
     id: 208,
     name: "Apple Watch Series 11 42mm",
     title: "Apple Watch Series 11 42mm - Next Generation Compact",
-    price: 415,
+    price: 425,
     image: appleWatchS11_42MM_JetBlack,
     images: [appleWatchS11_42MM_JetBlack, appleWatchS11_42MM_RoseGold, appleWatchS11_42MM_Silver, appleWatchS11_42MM_SpaceGrey],
     rating: 5.0,

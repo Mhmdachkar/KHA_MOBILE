@@ -128,12 +128,14 @@ const ProductCarousel = ({ title, products }: ProductCarouselProps) => {
             <ProductCard 
               id={product.id}
               name={product.name}
+              title={product.title}
               price={product.price}
               image={product.image}
               images={product.images || [product.image]}
               rating={product.rating}
               category={product.category}
               colors={product.colors}
+              isPreorder={product.isPreorder}
             />
           </div>
         ))}

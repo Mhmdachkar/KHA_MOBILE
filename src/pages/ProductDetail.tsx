@@ -195,6 +195,7 @@ const ProductDetail = () => {
     ...phoneAccessories.map(p => ({
       id: p.id,
       name: p.name,
+      title: p.title,
       price: p.price,
       image: p.image,
       images: [p.image],
@@ -203,10 +204,12 @@ const ProductDetail = () => {
       brand: p.brand || extractBrand(p.name),
       secondaryCategories: [],
       colors: p.colors,
+      isPreorder: p.isPreorder,
     })),
     ...wearablesProducts.map(p => ({
       id: p.id,
       name: p.name,
+      title: p.title,
       price: p.price,
       image: p.image,
       images: [p.image],
@@ -215,10 +218,12 @@ const ProductDetail = () => {
       brand: p.brand || extractBrand(p.name),
       secondaryCategories: [],
       colors: p.colors,
+      isPreorder: p.isPreorder,
     })),
     ...smartphoneProducts.map(p => ({
       id: p.id,
       name: p.name,
+      title: p.title,
       price: p.price,
       image: p.image,
       images: p.images && p.images.length > 0 ? p.images : [p.image],
@@ -227,10 +232,12 @@ const ProductDetail = () => {
       brand: p.brand || extractBrand(p.name),
       secondaryCategories: [],
       colors: p.colors,
+      isPreorder: p.isPreorder,
     })),
     ...tabletProducts.map(p => ({
       id: p.id,
       name: p.name,
+      title: p.title,
       price: p.price,
       image: p.image,
       images: p.images && p.images.length > 0 ? p.images : [p.image],
@@ -239,10 +246,12 @@ const ProductDetail = () => {
       brand: p.brand || extractBrand(p.name),
       secondaryCategories: [],
       colors: p.colors,
+      isPreorder: p.isPreorder,
     })),
     ...greenLionProducts.map((p) => ({
       id: p.id,
       name: p.name,
+      title: p.title,
       price: p.price,
       image: p.images[0],
       images: p.images,
@@ -251,6 +260,7 @@ const ProductDetail = () => {
       brand: p.brand,
       secondaryCategories: p.secondaryCategories || [],
       colors: p.colors || [],
+      isPreorder: p.isPreorder,
     })),
   ];
 
@@ -783,7 +793,7 @@ const ProductDetail = () => {
                   ))}
                 </div>
                 <p className="text-[11px] sm:text-xs text-muted-foreground mt-3">
-                  Choose the Wi-Fi + LTE version if you need cellular data on the go, or stick with Wi-Fi only for home and office use.
+                  Choose the + LTE version if you need cellular data on the go, or stick with Wi-Fi only for home and office use.
                 </p>
               </div>
             ) : null}
@@ -1089,12 +1099,14 @@ const ProductDetail = () => {
                     <ProductCard
                       id={accessory.id}
                       name={accessory.name}
+                      title={accessory.title}
                       price={accessory.price}
                       image={accessory.image}
                       images={accessory.images}
                       rating={accessory.rating}
                       category={accessory.category}
                       colors={accessory.colors}
+                      isPreorder={accessory.isPreorder}
                     />
                   </motion.div>
                 ))}

@@ -22,7 +22,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { phoneAccessories, wearablesProducts, smartphoneProducts, tabletProducts, iphoneCases } from "@/data/products";
+import { phoneAccessories, wearablesProducts, smartphoneProducts, tabletProducts, iphoneCases, gamingConsoles } from "@/data/products";
 import { greenLionProducts } from "@/data/greenLionProducts";
 
 const Products = () => {
@@ -71,6 +71,10 @@ const Products = () => {
       ...p,
       images: p.images && p.images.length > 0 ? p.images : [p.image]
     })),
+    ...gamingConsoles.map(p => ({
+      ...p,
+      images: p.images && p.images.length > 0 ? p.images : [p.image]
+    })),
     ...greenLionProducts.map(p => ({
       id: p.id,
       name: p.name,
@@ -81,7 +85,8 @@ const Products = () => {
       category: p.category,
       brand: p.brand,
       description: p.description,
-      title: p.title
+      title: p.title,
+      isPreorder: p.isPreorder
     }))
   ];
 
@@ -664,12 +669,14 @@ const Products = () => {
                     <ProductCard
                       id={product.id}
                       name={product.name}
+                      title={product.title}
                       price={product.price}
                       image={product.image}
                       images={product.images || [product.image]}
                       rating={product.rating}
                       category={product.category}
                       colors={product.colors}
+                      isPreorder={product.isPreorder}
                     />
                   </motion.div>
                 ))}

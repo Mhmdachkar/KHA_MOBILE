@@ -111,6 +111,7 @@ const HorizontalScrollContainer = ({ products }: { products: any[] }) => {
             <ProductCard
               id={product.id}
               name={product.name}
+              title={product.title}
               price={product.price}
               image={product.image}
               images={product.images || [product.image]}
