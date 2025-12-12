@@ -487,7 +487,7 @@ const AboutUs = () => {
                     WhatsApp
                   </h3>
                   <a 
-                    href="https://wa.me/96181861811" 
+                    href="https://wa.me/96176982454" 
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-sm sm:text-base text-primary hover:underline break-all"
