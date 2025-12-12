@@ -173,6 +173,16 @@ const CategoryPage = () => {
   const categoryDisplayName = getCategoryFromPath(location.pathname);
   const isSmartphoneCategory = categoryDisplayName === "Smartphones";
 
+  // Helper function to get display price (uses first variant price if variants exist, otherwise base price)
+  const getDisplayPrice = (product: any): number => {
+    if (!product) return 0;
+    if (product.variants && product.variants.length > 0) {
+      // Use the first variant price to match what ProductDetail shows by default
+      return product.variants[0].price || product.price || 0;
+    }
+    return product.price || 0;
+  };
+
   // Get products for this category
   const categoryProducts = useMemo(() => {
     let products: any[] = [];
@@ -192,7 +202,8 @@ const CategoryPage = () => {
         if (Array.isArray(audioProducts) && audioProducts.length > 0) {
           products = [...products, ...audioProducts.map(p => ({
             ...p,
-            images: [p.image],
+            image: p.image || (p.images && p.images.length > 0 ? p.images[0] : "/placeholder.svg"),
+            images: p.images && p.images.length > 0 ? p.images : [p.image || "/placeholder.svg"],
             price: getDisplayPrice(p)
           }))];
         }
@@ -203,8 +214,8 @@ const CategoryPage = () => {
             id: p.id,
             name: p.name,
             price: getDisplayPrice(p),
-            image: p.images[0],
-            images: p.images,
+            image: p.images && p.images.length > 0 ? p.images[0] : "/placeholder.svg",
+            images: p.images && p.images.length > 0 ? p.images : ["/placeholder.svg"],
             rating: p.rating,
             category: p.category
           }))];
@@ -258,7 +269,8 @@ const CategoryPage = () => {
         if (Array.isArray(gamingProducts) && gamingProducts.length > 0) {
           products = [...products, ...gamingProducts.map(p => ({
             ...p,
-            images: [p.image],
+            image: p.image || (p.images && p.images.length > 0 ? p.images[0] : "/placeholder.svg"),
+            images: p.images && p.images.length > 0 ? p.images : [p.image || "/placeholder.svg"],
             price: getDisplayPrice(p)
           }))];
         }
@@ -271,8 +283,8 @@ const CategoryPage = () => {
             id: p.id,
             name: p.name,
             price: getDisplayPrice(p),
-            image: p.images[0],
-            images: p.images,
+            image: p.images && p.images.length > 0 ? p.images[0] : "/placeholder.svg",
+            images: p.images && p.images.length > 0 ? p.images : ["/placeholder.svg"],
             rating: p.rating,
             category: p.category
           }))];
@@ -284,7 +296,8 @@ const CategoryPage = () => {
             ...products,
             ...smartphones.map(p => ({
               ...p,
-              images: p.images && p.images.length > 0 ? p.images : [p.image],
+              image: p.image || (p.images && p.images.length > 0 ? p.images[0] : "/placeholder.svg"),
+              images: p.images && p.images.length > 0 ? p.images : [p.image || "/placeholder.svg"],
               price: getDisplayPrice(p)
             }))
           ];
@@ -306,7 +319,8 @@ const CategoryPage = () => {
         if (Array.isArray(wearables) && wearables.length > 0) {
           products = [...products, ...wearables.map(p => ({
             ...p,
-            images: [p.image],
+            image: p.image || (p.images && p.images.length > 0 ? p.images[0] : "/placeholder.svg"),
+            images: p.images && p.images.length > 0 ? p.images : [p.image || "/placeholder.svg"],
             price: getDisplayPrice(p)
           }))];
         }
@@ -317,8 +331,8 @@ const CategoryPage = () => {
             id: p.id,
             name: p.name,
             price: getDisplayPrice(p),
-            image: p.images[0],
-            images: p.images,
+            image: p.images && p.images.length > 0 ? p.images[0] : "/placeholder.svg",
+            images: p.images && p.images.length > 0 ? p.images : ["/placeholder.svg"],
             rating: p.rating,
             category: p.category
           }))];
@@ -375,7 +389,8 @@ const CategoryPage = () => {
             ...products,
             ...tablets.map(p => ({
               ...p,
-              images: p.images && p.images.length > 0 ? p.images : [p.image],
+              image: p.image || (p.images && p.images.length > 0 ? p.images[0] : "/placeholder.svg"),
+              images: p.images && p.images.length > 0 ? p.images : [p.image || "/placeholder.svg"],
               price: getDisplayPrice(p)
             }))
           ];
@@ -399,7 +414,8 @@ const CategoryPage = () => {
             ...products,
             ...cases.map(p => ({
               ...p,
-              images: p.images && p.images.length > 0 ? p.images : [p.image],
+              image: p.image || (p.images && p.images.length > 0 ? p.images[0] : "/placeholder.svg"),
+              images: p.images && p.images.length > 0 ? p.images : [p.image || "/placeholder.svg"],
               price: getDisplayPrice(p)
             }))
           ];
@@ -416,6 +432,121 @@ const CategoryPage = () => {
           // Sort by price (highest to lowest)
           return b.price - a.price;
         });
+      } else if (categoryDisplayName === "Charging") {
+        const chargingProducts = getProductsByCategory("Charging");
+        if (Array.isArray(chargingProducts) && chargingProducts.length > 0) {
+          products = [...products, ...chargingProducts.map(p => ({
+            ...p,
+            image: p.image || (p.images && p.images.length > 0 ? p.images[0] : "/placeholder.svg"),
+            images: p.images && p.images.length > 0 ? p.images : [p.image || "/placeholder.svg"],
+            price: getDisplayPrice(p)
+          }))];
+        }
+        // Add Green Lion charging products
+        const greenLionCharging = getGreenLionProductsByCategory("Charging");
+        if (Array.isArray(greenLionCharging) && greenLionCharging.length > 0) {
+          products = [...products, ...greenLionCharging.map(p => ({
+            id: p.id,
+            name: p.name,
+            price: getDisplayPrice(p),
+            image: p.images && p.images.length > 0 ? p.images[0] : "/placeholder.svg",
+            images: p.images && p.images.length > 0 ? p.images : ["/placeholder.svg"],
+            rating: p.rating,
+            category: p.category
+          }))];
+        }
+        // Sort by price (highest to lowest)
+        products.sort((a, b) => b.price - a.price);
+      } else if (categoryDisplayName === "Accessories") {
+        const accessoriesProducts = getProductsByCategory("Accessories");
+        if (Array.isArray(accessoriesProducts) && accessoriesProducts.length > 0) {
+          products = [...products, ...accessoriesProducts.map(p => ({
+            ...p,
+            image: p.image || (p.images && p.images.length > 0 ? p.images[0] : "/placeholder.svg"),
+            images: p.images && p.images.length > 0 ? p.images : [p.image || "/placeholder.svg"],
+            price: getDisplayPrice(p)
+          }))];
+        }
+        // Add Green Lion accessories products
+        const greenLionAccessories = getGreenLionProductsByCategory("Accessories");
+        if (Array.isArray(greenLionAccessories) && greenLionAccessories.length > 0) {
+          products = [...products, ...greenLionAccessories.map(p => ({
+            id: p.id,
+            name: p.name,
+            price: getDisplayPrice(p),
+            image: p.images && p.images.length > 0 ? p.images[0] : "/placeholder.svg",
+            images: p.images && p.images.length > 0 ? p.images : ["/placeholder.svg"],
+            rating: p.rating,
+            category: p.category
+          }))];
+        }
+        // Sort by price (highest to lowest)
+        products.sort((a, b) => b.price - a.price);
+      } else if (categoryDisplayName === "All Essentials") {
+        const allEssentialsProducts = getProductsByCategory("All Essentials");
+        if (Array.isArray(allEssentialsProducts) && allEssentialsProducts.length > 0) {
+          products = [...products, ...allEssentialsProducts.map(p => ({
+            ...p,
+            image: p.image || (p.images && p.images.length > 0 ? p.images[0] : "/placeholder.svg"),
+            images: p.images && p.images.length > 0 ? p.images : [p.image || "/placeholder.svg"],
+            price: getDisplayPrice(p)
+          }))];
+        }
+        // Sort by price (highest to lowest)
+        products.sort((a, b) => b.price - a.price);
+      } else if (categoryDisplayName === "Phone Accessories") {
+        const phoneAccessoriesProducts = getProductsByCategory("Phone Accessories");
+        if (Array.isArray(phoneAccessoriesProducts) && phoneAccessoriesProducts.length > 0) {
+          products = [...products, ...phoneAccessoriesProducts.map(p => ({
+            ...p,
+            image: p.image || (p.images && p.images.length > 0 ? p.images[0] : "/placeholder.svg"),
+            images: p.images && p.images.length > 0 ? p.images : [p.image || "/placeholder.svg"],
+            price: getDisplayPrice(p)
+          }))];
+        }
+        // Add Green Lion phone accessories products
+        const greenLionPhoneAccessories = getGreenLionProductsByCategory("Phone Accessories");
+        if (Array.isArray(greenLionPhoneAccessories) && greenLionPhoneAccessories.length > 0) {
+          products = [...products, ...greenLionPhoneAccessories.map(p => ({
+            id: p.id,
+            name: p.name,
+            price: getDisplayPrice(p),
+            image: p.images && p.images.length > 0 ? p.images[0] : "/placeholder.svg",
+            images: p.images && p.images.length > 0 ? p.images : ["/placeholder.svg"],
+            rating: p.rating,
+            category: p.category
+          }))];
+        }
+        // Sort by price (highest to lowest)
+        products.sort((a, b) => b.price - a.price);
+      } else {
+        // Fallback: Try to get products by category name for any other category
+        const fallbackProducts = getProductsByCategory(categoryDisplayName);
+        if (Array.isArray(fallbackProducts) && fallbackProducts.length > 0) {
+          products = [...products, ...fallbackProducts.map(p => ({
+            ...p,
+            image: p.image || (p.images && p.images.length > 0 ? p.images[0] : "/placeholder.svg"),
+            images: p.images && p.images.length > 0 ? p.images : [p.image || "/placeholder.svg"],
+            price: getDisplayPrice(p)
+          }))];
+        }
+        // Try Green Lion products for this category
+        const greenLionFallback = getGreenLionProductsByCategory(categoryDisplayName);
+        if (Array.isArray(greenLionFallback) && greenLionFallback.length > 0) {
+          products = [...products, ...greenLionFallback.map(p => ({
+            id: p.id,
+            name: p.name,
+            price: getDisplayPrice(p),
+            image: p.images && p.images.length > 0 ? p.images[0] : "/placeholder.svg",
+            images: p.images && p.images.length > 0 ? p.images : ["/placeholder.svg"],
+            rating: p.rating,
+            category: p.category
+          }))];
+        }
+        // Sort by price (highest to lowest)
+        if (products.length > 0) {
+          products.sort((a, b) => b.price - a.price);
+        }
       }
     } catch (error) {
       console.error("Error fetching products for category:", categoryDisplayName, error);
