@@ -191,12 +191,21 @@ const ProductDetail = () => {
 
   // Get all products from all sources (for comprehensive recommendations)
   // Combine regular products and Green Lion products
+  // Helper function to get display price (uses first variant price if variants exist, otherwise base price)
+  const getDisplayPrice = (product: any): number => {
+    if (product.variants && product.variants.length > 0) {
+      // Use the first variant price to match what ProductDetail shows by default
+      return product.variants[0].price;
+    }
+    return product.price;
+  };
+
   const allProducts = [
     ...phoneAccessories.map(p => ({
       id: p.id,
       name: p.name,
       title: p.title,
-      price: p.price,
+      price: getDisplayPrice(p),
       image: p.image,
       images: [p.image],
       rating: p.rating,
@@ -210,7 +219,7 @@ const ProductDetail = () => {
       id: p.id,
       name: p.name,
       title: p.title,
-      price: p.price,
+      price: getDisplayPrice(p),
       image: p.image,
       images: [p.image],
       rating: p.rating,
@@ -224,7 +233,7 @@ const ProductDetail = () => {
       id: p.id,
       name: p.name,
       title: p.title,
-      price: p.price,
+      price: getDisplayPrice(p),
       image: p.image,
       images: p.images && p.images.length > 0 ? p.images : [p.image],
       rating: p.rating,
@@ -238,7 +247,7 @@ const ProductDetail = () => {
       id: p.id,
       name: p.name,
       title: p.title,
-      price: p.price,
+      price: getDisplayPrice(p),
       image: p.image,
       images: p.images && p.images.length > 0 ? p.images : [p.image],
       rating: p.rating,
@@ -252,7 +261,7 @@ const ProductDetail = () => {
       id: p.id,
       name: p.name,
       title: p.title,
-      price: p.price,
+      price: getDisplayPrice(p),
       image: p.images[0],
       images: p.images,
       rating: p.rating,

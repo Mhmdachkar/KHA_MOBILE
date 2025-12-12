@@ -79,7 +79,7 @@ const FeaturedProductCard = ({
     e.preventDefault();
     e.stopPropagation();
     // Recharge cards go directly to checkout, others go to product page
-    if (product.category === "Touch Cards" || product.category === "Days Cards") {
+    if (product.category === "Touch Cards" || product.category === "Days Cards" || product.category === "Alfa Cards") {
       const params = new URLSearchParams({
         id: product.id.toString(),
         name: product.name,
@@ -124,7 +124,7 @@ const FeaturedProductCard = ({
       style={{ touchAction: 'pan-y' }}
     >
       <Link 
-        to={product.category === "Touch Cards" || product.category === "Days Cards" ? "/recharges" : `/product/${product.id}`}
+        to={product.category === "Touch Cards" || product.category === "Days Cards" || product.category === "Alfa Cards" ? "/recharges" : `/product/${product.id}`}
       >
         {/* Image Container with Badges */}
         <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-secondary/30 to-background">
@@ -231,6 +231,14 @@ const FeaturedProductCard = ({
 };
 
 const ThisWeeksFavorites = () => {
+  // Helper function to get display price (uses first variant price if variants exist, otherwise base price)
+  const getDisplayPrice = (product: any): number => {
+    if (product?.variants && product.variants.length > 0) {
+      return product.variants[0].price;
+    }
+    return product?.price || 0;
+  };
+
   // Get products data
   const featuredProductsData = FEATURED_PRODUCTS.map((item, index) => {
     let product;
@@ -244,6 +252,14 @@ const ThisWeeksFavorites = () => {
       }
     } else {
       product = getProductById(item.id);
+    }
+
+    // Update price to use display price (first variant if exists)
+    if (product) {
+      product = {
+        ...product,
+        price: getDisplayPrice(product)
+      };
     }
 
     return {

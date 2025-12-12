@@ -35,6 +35,22 @@ import recharge90days from "@/assets/recharges/days/90days.png";
 import recharge180days from "@/assets/recharges/days/180days.png";
 import recharge360days from "@/assets/recharges/days/360days.png";
 
+// Import Alfa recharge images
+import alfa3_03 from "@/assets/recharges/alfa/3.03$.png";
+import alfa4_50 from "@/assets/recharges/alfa/4.50$.png";
+import alfa7_58 from "@/assets/recharges/alfa/7.58$.png";
+import alfa10_00 from "@/assets/recharges/alfa/10.00$.png";
+import alfa15_15 from "@/assets/recharges/alfa/15.15$.png";
+import alfa22_73 from "@/assets/recharges/alfa/22.73$.png";
+import alfa77_28 from "@/assets/recharges/alfa/77.28$.png";
+
+// Import Alfa gift (data) images
+import alfa1GB from "@/assets/recharges/alfa/1GB.png";
+import alfa7GB from "@/assets/recharges/alfa/7GB.png";
+import alfa22GB from "@/assets/recharges/alfa/22GB.png";
+import alfa44GB from "@/assets/recharges/alfa/44GB.png";
+import alfa77GB from "@/assets/recharges/alfa/77GB.png";
+
 // Recharge cards mapping
 const RECHARGE_IMAGES: { [key: string]: string } = {
   "1.67": recharge1_67,
@@ -72,6 +88,26 @@ const ADDITIONAL_DAYS_CARDS = [
   { id: 14, name: "90 Days Card", price: 8.4, image: recharge90days },
   { id: 15, name: "180 Days Card", price: 16.8, image: recharge180days },
   { id: 16, name: "360 Days Card", price: 33.6, image: recharge360days },
+];
+
+// Additional Alfa Cards for the dropdown (same pricing as Touch Cards)
+const ADDITIONAL_ALFA_CARDS = [
+  { id: 17, name: "Alfa $3.03 Card", price: 5, image: alfa3_03 },
+  { id: 18, name: "Alfa $4.50 Card", price: 7, image: alfa4_50 },
+  { id: 19, name: "Alfa $7.58 Card", price: 10, image: alfa7_58 },
+  { id: 20, name: "Alfa $10 Card", price: 15, image: alfa10_00 },
+  { id: 21, name: "Alfa $15.15 Card", price: 20, image: alfa15_15 },
+  { id: 22, name: "Alfa $22.73 Card", price: 30, image: alfa22_73 },
+  { id: 23, name: "Alfa $77.28 Card", price: 100, image: alfa77_28 },
+];
+
+// Additional Alfa Gift Cards for the dropdown
+const ADDITIONAL_ALFA_GIFT_CARDS = [
+  { id: 24, name: "Alfa Gift 1GB", price: 6, image: alfa1GB },
+  { id: 25, name: "Alfa Gift 7GB", price: 13, image: alfa7GB },
+  { id: 26, name: "Alfa Gift 22GB", price: 20, image: alfa22GB },
+  { id: 27, name: "Alfa Gift 44GB", price: 27, image: alfa44GB },
+  { id: 28, name: "Alfa Gift 77GB", price: 40, image: alfa77GB },
 ];
 
 interface CheckoutFormData {
@@ -338,6 +374,10 @@ const Checkout = () => {
       card = ADDITIONAL_TOUCH_CARDS.find(c => c.id.toString() === cardId);
     } else if (productCategory === "Days Cards") {
       card = ADDITIONAL_DAYS_CARDS.find(c => c.id.toString() === cardId);
+    } else if (productCategory === "Alfa Cards") {
+      card = ADDITIONAL_ALFA_CARDS.find(c => c.id.toString() === cardId);
+    } else if (productCategory === "Alfa Gift") {
+      card = ADDITIONAL_ALFA_GIFT_CARDS.find(c => c.id.toString() === cardId);
     }
     
     if (card && !additionalCards.find(c => c.id === card.id)) {
@@ -351,6 +391,10 @@ const Checkout = () => {
       return ADDITIONAL_TOUCH_CARDS;
     } else if (productCategory === "Days Cards") {
       return ADDITIONAL_DAYS_CARDS;
+    } else if (productCategory === "Alfa Cards") {
+      return ADDITIONAL_ALFA_CARDS;
+    } else if (productCategory === "Alfa Gift") {
+      return ADDITIONAL_ALFA_GIFT_CARDS;
     }
     return [];
   };
@@ -1129,8 +1173,8 @@ const Checkout = () => {
                   </>
                 )}
 
-                {/* Additional Cards Dropdown - Only for Touch Cards and Days Cards (recharge checkout, not streaming services) */}
-                {isRechargeCheckout && !isStreamingServiceCheckout && (productCategory === "Touch Cards" || productCategory === "Days Cards") && (
+                {/* Additional Cards Dropdown - Only for Touch Cards, Days Cards, Alfa Cards, and Alfa Gift (recharge checkout, not streaming services) */}
+                {isRechargeCheckout && !isStreamingServiceCheckout && (productCategory === "Touch Cards" || productCategory === "Days Cards" || productCategory === "Alfa Cards" || productCategory === "Alfa Gift") && (
                   <div className="pt-4 border-t border-border">
                     <Label className="text-elegant text-sm mb-3 flex items-center gap-2">
                       <Plus className="h-4 w-4" />

@@ -211,13 +211,21 @@ const PersonalizedRecommendations = () => {
       ...gamingConsoles
     ];
 
+    // Helper function to get display price (uses first variant price if variants exist, otherwise base price)
+    const getDisplayPrice = (product: any): number => {
+      if (product.variants && product.variants.length > 0) {
+        return product.variants[0].price;
+      }
+      return product.price;
+    };
+
     // Filter regular products by category
     const regularProducts = allRegularProducts
       .filter(p => matchesCategory(p, category))
       .map(p => ({
         id: p.id,
         name: p.name,
-        price: p.price,
+        price: getDisplayPrice(p),
         image: p.image,
         images: p.images || [p.image],
         rating: p.rating,
@@ -283,7 +291,7 @@ const PersonalizedRecommendations = () => {
       .map(p => ({
         id: p.id,
         name: p.name,
-        price: p.price,
+        price: getDisplayPrice(p),
         image: p.images[0],
         images: p.images,
         rating: p.rating,

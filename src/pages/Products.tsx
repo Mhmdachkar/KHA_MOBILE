@@ -49,36 +49,51 @@ const Products = () => {
     document.body.scrollTop = 0;
   }, [location.pathname, location.search]);
 
+  // Helper function to get display price (uses first variant price if variants exist, otherwise base price)
+  const getDisplayPrice = (product: any): number => {
+    if (product.variants && product.variants.length > 0) {
+      // Use the first variant price to match what ProductDetail shows by default
+      return product.variants[0].price;
+    }
+    return product.price;
+  };
+
   // Get all real products from products.ts (including wearables + Green Lion)
   const allProducts = [
     ...phoneAccessories.map(p => ({
       ...p,
-      images: [p.image]
+      images: [p.image],
+      price: getDisplayPrice(p)
     })),
     ...wearablesProducts.map(p => ({
       ...p,
-      images: [p.image]
+      images: [p.image],
+      price: getDisplayPrice(p)
     })),
     ...smartphoneProducts.map(p => ({
       ...p,
-      images: p.images && p.images.length > 0 ? p.images : [p.image]
+      images: p.images && p.images.length > 0 ? p.images : [p.image],
+      price: getDisplayPrice(p)
     })),
     ...tabletProducts.map(p => ({
       ...p,
-      images: p.images && p.images.length > 0 ? p.images : [p.image]
+      images: p.images && p.images.length > 0 ? p.images : [p.image],
+      price: getDisplayPrice(p)
     })),
     ...iphoneCases.map(p => ({
       ...p,
-      images: p.images && p.images.length > 0 ? p.images : [p.image]
+      images: p.images && p.images.length > 0 ? p.images : [p.image],
+      price: getDisplayPrice(p)
     })),
     ...gamingConsoles.map(p => ({
       ...p,
-      images: p.images && p.images.length > 0 ? p.images : [p.image]
+      images: p.images && p.images.length > 0 ? p.images : [p.image],
+      price: getDisplayPrice(p)
     })),
     ...greenLionProducts.map(p => ({
       id: p.id,
       name: p.name,
-      price: p.price,
+      price: getDisplayPrice(p),
       image: p.images[0],
       images: p.images,
       rating: p.rating,

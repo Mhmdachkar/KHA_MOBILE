@@ -35,6 +35,22 @@ import recharge90days from "@/assets/recharges/days/90days.png";
 import recharge180days from "@/assets/recharges/days/180days.png";
 import recharge360days from "@/assets/recharges/days/360days.png";
 
+// Import Alfa recharge images
+import alfa3_03 from "@/assets/recharges/alfa/3.03$.png";
+import alfa4_50 from "@/assets/recharges/alfa/4.50$.png";
+import alfa7_58 from "@/assets/recharges/alfa/7.58$.png";
+import alfa10_00 from "@/assets/recharges/alfa/10.00$.png";
+import alfa15_15 from "@/assets/recharges/alfa/15.15$.png";
+import alfa22_73 from "@/assets/recharges/alfa/22.73$.png";
+import alfa77_28 from "@/assets/recharges/alfa/77.28$.png";
+
+// Import Alfa gift (data) images
+import alfa1GB from "@/assets/recharges/alfa/1GB.png";
+import alfa7GB from "@/assets/recharges/alfa/7GB.png";
+import alfa22GB from "@/assets/recharges/alfa/22GB.png";
+import alfa44GB from "@/assets/recharges/alfa/44GB.png";
+import alfa77GB from "@/assets/recharges/alfa/77GB.png";
+
 // Types
 interface RechargeCard {
   id: number;
@@ -155,9 +171,97 @@ const RECHARGE_CARDS: RechargeCard[] = [
     image: recharge360days,
     category: "Days Cards"
   },
+
+  // Alfa Cards (same pricing structure as Touch Cards)
+  {
+    id: 17,
+    name: "Alfa $3.03 Card",
+    price: 5,
+    image: alfa3_03,
+    category: "Alfa Cards"
+  },
+  {
+    id: 18,
+    name: "Alfa $4.50 Card",
+    price: 7,
+    image: alfa4_50,
+    category: "Alfa Cards"
+  },
+  {
+    id: 19,
+    name: "Alfa $7.58 Card",
+    price: 10,
+    image: alfa7_58,
+    category: "Alfa Cards"
+  },
+  {
+    id: 20,
+    name: "Alfa $10 Card",
+    price: 15,
+    image: alfa10_00,
+    category: "Alfa Cards"
+  },
+  {
+    id: 21,
+    name: "Alfa $15.15 Card",
+    price: 20,
+    image: alfa15_15,
+    category: "Alfa Cards"
+  },
+  {
+    id: 22,
+    name: "Alfa $22.73 Card",
+    price: 30,
+    image: alfa22_73,
+    category: "Alfa Cards"
+  },
+  {
+    id: 23,
+    name: "Alfa $77.28 Card",
+    price: 100,
+    image: alfa77_28,
+    category: "Alfa Cards"
+  },
+
+  // Alfa Gift Cards (Data Cards)
+  {
+    id: 24,
+    name: "Alfa Gift 1GB",
+    price: 6,
+    image: alfa1GB,
+    category: "Alfa Gift"
+  },
+  {
+    id: 25,
+    name: "Alfa Gift 7GB",
+    price: 13,
+    image: alfa7GB,
+    category: "Alfa Gift"
+  },
+  {
+    id: 26,
+    name: "Alfa Gift 22GB",
+    price: 20,
+    image: alfa22GB,
+    category: "Alfa Gift"
+  },
+  {
+    id: 27,
+    name: "Alfa Gift 44GB",
+    price: 27,
+    image: alfa44GB,
+    category: "Alfa Gift"
+  },
+  {
+    id: 28,
+    name: "Alfa Gift 77GB",
+    price: 40,
+    image: alfa77GB,
+    category: "Alfa Gift"
+  },
 ];
 
-const CATEGORIES = ["Touch Cards", "Days Cards"];
+const CATEGORIES = ["Touch Cards", "Days Cards", "Alfa Cards", "Alfa Gift"];
 const PRICE_RANGES = [
   { label: "$0-$10", min: 0, max: 10 },
   { label: "$10-$20", min: 10, max: 20 },

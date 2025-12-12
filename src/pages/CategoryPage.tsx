@@ -192,7 +192,8 @@ const CategoryPage = () => {
         if (Array.isArray(audioProducts) && audioProducts.length > 0) {
           products = [...products, ...audioProducts.map(p => ({
             ...p,
-            images: [p.image]
+            images: [p.image],
+            price: getDisplayPrice(p)
           }))];
         }
         // Add Green Lion audio products
@@ -201,7 +202,7 @@ const CategoryPage = () => {
           products = [...products, ...greenLionAudio.map(p => ({
             id: p.id,
             name: p.name,
-            price: p.price,
+            price: getDisplayPrice(p),
             image: p.images[0],
             images: p.images,
             rating: p.rating,
@@ -257,7 +258,8 @@ const CategoryPage = () => {
         if (Array.isArray(gamingProducts) && gamingProducts.length > 0) {
           products = [...products, ...gamingProducts.map(p => ({
             ...p,
-            images: [p.image]
+            images: [p.image],
+            price: getDisplayPrice(p)
           }))];
         }
         // Add Green Lion gaming products if any
@@ -268,7 +270,7 @@ const CategoryPage = () => {
           products = [...products, ...greenLionGaming.map(p => ({
             id: p.id,
             name: p.name,
-            price: p.price,
+            price: getDisplayPrice(p),
             image: p.images[0],
             images: p.images,
             rating: p.rating,
@@ -283,6 +285,7 @@ const CategoryPage = () => {
             ...smartphones.map(p => ({
               ...p,
               images: p.images && p.images.length > 0 ? p.images : [p.image],
+              price: getDisplayPrice(p)
             }))
           ];
         }
@@ -303,7 +306,8 @@ const CategoryPage = () => {
         if (Array.isArray(wearables) && wearables.length > 0) {
           products = [...products, ...wearables.map(p => ({
             ...p,
-            images: [p.image]
+            images: [p.image],
+            price: getDisplayPrice(p)
           }))];
         }
         // Add Green Lion smartwatches
@@ -312,7 +316,7 @@ const CategoryPage = () => {
           products = [...products, ...greenLionWearables.map(p => ({
             id: p.id,
             name: p.name,
-            price: p.price,
+            price: getDisplayPrice(p),
             image: p.images[0],
             images: p.images,
             rating: p.rating,
@@ -372,6 +376,7 @@ const CategoryPage = () => {
             ...tablets.map(p => ({
               ...p,
               images: p.images && p.images.length > 0 ? p.images : [p.image],
+              price: getDisplayPrice(p)
             }))
           ];
         }
@@ -395,6 +400,7 @@ const CategoryPage = () => {
             ...cases.map(p => ({
               ...p,
               images: p.images && p.images.length > 0 ? p.images : [p.image],
+              price: getDisplayPrice(p)
             }))
           ];
         }
