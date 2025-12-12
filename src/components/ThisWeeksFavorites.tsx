@@ -24,11 +24,11 @@ const getRechargeCardById = (id: number) => {
 // Define 6 strategically selected products for maximum sales
 // Mix of high-demand, trending, and best-selling items
 const FEATURED_PRODUCTS = [
-  { id: 7, type: "recharge" },     // Touch $10 Card (10 MTC)
+  { id: 101, type: "regular" },    // Hoco Q37 Fast Charging Power Bank (10000mAh)
   { id: 9, type: "recharge" },     // Touch $15.15 Card (15 MTC)
-  { id: 309, type: "regular" },    // Tecno Spark Slim - Top Professional Phone
-  { id: 5031, type: "greenLion" }, // Green Lion Ultimate 10 Smart Watch
-  { id: 5027, type: "greenLion" }, // Green Lion Rhythm X50 ANC Headphone
+  { id: 309, type: "regular" },    // Samsung Galaxy A56
+  { id: 205, type: "regular" },    // Apple Watch SE3 (2nd generation) 40mm
+  { id: 128, type: "regular" },    // Apple AirPods 4 (Original)
   { id: 401, type: "regular" },    // Samsung Galaxy Tab A9
 ];
 
@@ -262,14 +262,17 @@ const ThisWeeksFavorites = () => {
       };
     }
 
+    // Products that should not have discounts
+    const noDiscountProducts = [309, 401]; // Samsung Galaxy A56 and Samsung Galaxy Tab A9
+    
     return {
       product,
       index,
       // Sales-focused labels - rotate for variety
       isBestSeller: index % 3 === 0, // Every 3rd product is best seller
       isTrending: index % 3 === 1, // Every 3rd product is trending
-      hasDiscount: index % 3 === 2, // Every 3rd product has discount
-      discountPercent: index % 3 === 2 ? 15 : 0, // 15% discount
+      hasDiscount: index % 3 === 2 && !noDiscountProducts.includes(item.id), // Every 3rd product has discount (except excluded products)
+      discountPercent: index % 3 === 2 && !noDiscountProducts.includes(item.id) ? 15 : 0, // 15% discount (except excluded products)
     };
   }).filter(item => item.product); // Filter out any null products
 
