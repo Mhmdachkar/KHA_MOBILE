@@ -182,8 +182,7 @@ import galaxyTabA8_2 from "@/assets/Tablets/Samsung Galaxy TAB A8 - 10.5 Tablet 
 // Samsung Galaxy Tab A9+ imports
 import galaxyTabA9PlusGraphite from "@/assets/Tablets/Samsung Galaxy Tab A9+ - 11 Tablet/graphite.png";
 import galaxyTabA9PlusSilver from "@/assets/Tablets/Samsung Galaxy Tab A9+ - 11 Tablet/silver.png";
-// TODO: Replace with actual navy.png when available
-import galaxyTabA9PlusNavy from "@/assets/Tablets/Samsung Galaxy Tab A9+ - 11 Tablet/graphite.png";
+import galaxyTabA9PlusNavy from "@/assets/Tablets/Samsung Galaxy Tab A9+ - 11 Tablet/Screenshot 2025-12-10 011140.png";
 import galaxyTabA9Plus_2 from "@/assets/Tablets/Samsung Galaxy Tab A9+ - 11 Tablet/Screenshot 2025-12-10 011131.png";
 import galaxyTabA9Plus_3 from "@/assets/Tablets/Samsung Galaxy Tab A9+ - 11 Tablet/Screenshot 2025-12-10 011140.png";
 import galaxyTabA9Plus_4 from "@/assets/Tablets/Samsung Galaxy Tab A9+ - 11 Tablet/Screenshot 2025-12-10 011157.png";
@@ -904,7 +903,7 @@ export const phoneAccessories: Product[] = [
     id: 116,
     name: "Foneng USB to USB-C Cable",
     title: "Foneng USB-A to USB-C Fast Charging Cable",
-    price: 15.99,
+    price: 6.99,
     image: fonengUsbCable,
     rating: 4.6,
     category: "Charging",
@@ -1888,7 +1887,7 @@ export const tabletProducts: Product[] = [
     id: 404,
     name: "iPad 11-inch (A16 Chip)",
     title: "iPad 11-inch - Supercharged with A16 Chip and Liquid Retina Display",
-    price: 380,
+    price: 400,
     image: iPad11Pink,
     images: [iPad11Pink, iPad11Grey, iPad11Blue, iPad11Yellow],
     rating: 4.9,
@@ -1941,7 +1940,7 @@ export const tabletProducts: Product[] = [
         ram: "",
         storage: "128GB Storage",
         label: "128GB Wi-Fi",
-        price: 380,
+        price: 400,
         description: "Perfect for everyday use, entertainment, and creative projects with ample storage for apps, photos, and files."
       },
       {
@@ -2789,7 +2788,7 @@ export const iphoneCases: Product[] = [
     id: 138,
     name: "Silicone Phone Sticky Grip",
     title: "Silicone Sticky Grip / Suction Mount - Universal Phone Mount",
-    price: 3.34,
+    price: 7.78,
     image: siliconeStickyGripBabyBlue,
     images: [siliconeStickyGripBabyBlue, siliconeStickyGripPink, siliconeStickyGripPurple, siliconeStickyGripHeavyPink, siliconeStickyGripBabyBlueWebp, siliconeStickyGripPinkWebp, siliconeStickyGripPurpleWebp, siliconeStickyGripHeavyPinkWebp],
     rating: 4.6,

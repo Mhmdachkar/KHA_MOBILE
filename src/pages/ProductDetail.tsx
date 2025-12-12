@@ -793,7 +793,7 @@ const ProductDetail = () => {
                   ))}
                 </div>
                 <p className="text-[11px] sm:text-xs text-muted-foreground mt-3">
-                  Choose the + LTE version if you need cellular data on the go, or stick with Wi-Fi only for home and office use.
+                  Choose the + LTE / + cellular version if you need cellular data on the go, or stick with Wi-Fi only for home and office use.
                 </p>
               </div>
             ) : null}

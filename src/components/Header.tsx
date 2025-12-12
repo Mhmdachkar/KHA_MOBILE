@@ -12,7 +12,8 @@ import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { phoneAccessories, wearablesProducts, smartphoneProducts, tabletProducts } from "@/data/products";
+import { phoneAccessories, wearablesProducts, smartphoneProducts, tabletProducts, iphoneCases, gamingConsoles } from "@/data/products";
+import { greenLionProducts } from "@/data/greenLionProducts";
 
 const Header = () => {
   const { favorites } = useFavorites();
@@ -39,7 +40,39 @@ const Header = () => {
   const { toast } = useToast();
 
   // Get all products for search
-  const allProducts = useMemo(() => [...phoneAccessories, ...wearablesProducts, ...smartphoneProducts, ...tabletProducts], []);
+  const allProducts = useMemo(() => {
+    // Combine all regular products
+    const regularProducts = [
+      ...phoneAccessories,
+      ...wearablesProducts,
+      ...smartphoneProducts,
+      ...tabletProducts,
+      ...iphoneCases,
+      ...gamingConsoles,
+    ];
+    
+    // Map Green Lion products to match Product interface structure
+    const mappedGreenLionProducts = greenLionProducts.map(p => ({
+      id: p.id,
+      name: p.name,
+      title: p.title,
+      price: p.price,
+      image: p.images[0],
+      images: p.images,
+      rating: p.rating,
+      category: p.category,
+      brand: p.brand,
+      description: p.description,
+      features: p.features || [],
+      specifications: p.specifications || [],
+      variants: p.variants,
+      colors: p.colors,
+      connectivityOptions: p.connectivityOptions,
+      isPreorder: p.isPreorder,
+    }));
+    
+    return [...regularProducts, ...mappedGreenLionProducts];
+  }, []);
 
   // Filter products based on search query (case-insensitive)
   const searchResults = useMemo(() => {
