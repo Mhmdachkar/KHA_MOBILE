@@ -61,68 +61,7 @@ const InstagramGenerator = () => {
     }
   }, []);
 
-  // Handle password authentication
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Simple password protection - change this to your desired password
-    const correctPassword = "admin2024"; // Change this to your preferred password
-    
-    if (password === correctPassword) {
-      setIsAuthenticated(true);
-      sessionStorage.setItem("instagram_generator_auth", "authenticated");
-      toast({
-        title: "Access Granted",
-        description: "Welcome to Instagram Generator",
-      });
-    } else {
-      toast({
-        title: "Access Denied",
-        description: "Incorrect password",
-        variant: "destructive",
-      });
-      setPassword("");
-    }
-  };
-
-  // Password protection screen
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Instagram className="h-6 w-6 text-pink-600" />
-              Instagram Generator
-            </CardTitle>
-            <CardDescription>
-              This is an internal admin tool. Please enter the password to continue.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleLogin} className="space-y-4">
-              <div>
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter password"
-                  className="mt-1"
-                  autoFocus
-                />
-              </div>
-              <Button type="submit" className="w-full">
-                Access Generator
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  // Get all products including Green Lion
+  // Get all products including Green Lion - MUST be called before any conditional returns
   const allProducts = useMemo(() => {
     const getDisplayPrice = (product: any): number => {
       if (product.variants && product.variants.length > 0) {
@@ -369,6 +308,34 @@ const InstagramGenerator = () => {
     });
   };
 
+  // Download image
+  const downloadImage = async (imageUrl: string, productName: string) => {
+    try {
+      const response = await fetch(imageUrl);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      // Clean product name for filename
+      const cleanName = productName.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+      a.download = `${cleanName}_${Date.now()}.jpg`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+      toast({
+        title: "Downloaded!",
+        description: "Image downloaded successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Download Failed",
+        description: "Could not download image. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
   // Export all posts as text
   const exportAllPosts = () => {
     let text = "INSTAGRAM POSTS SCHEDULE\n";
@@ -437,6 +404,68 @@ const InstagramGenerator = () => {
     return unique.sort();
   }, [allProducts]);
 
+  // Handle password authentication
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Simple password protection - change this to your desired password
+    const correctPassword = "admin2024"; // Change this to your preferred password
+    
+    if (password === correctPassword) {
+      setIsAuthenticated(true);
+      sessionStorage.setItem("instagram_generator_auth", "authenticated");
+      toast({
+        title: "Access Granted",
+        description: "Welcome to Instagram Generator",
+      });
+    } else {
+      toast({
+        title: "Access Denied",
+        description: "Incorrect password",
+        variant: "destructive",
+      });
+      setPassword("");
+    }
+  };
+
+  // Password protection screen - render this if not authenticated
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+        <Card className="w-full max-w-md">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Instagram className="h-6 w-6 text-pink-600" />
+              Instagram Generator
+            </CardTitle>
+            <CardDescription>
+              This is an internal admin tool. Please enter the password to continue.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div>
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter password"
+                  className="mt-1"
+                  autoFocus
+                />
+              </div>
+              <Button type="submit" className="w-full">
+                Access Generator
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Main content - only rendered if authenticated
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <Header />
@@ -562,7 +591,7 @@ const InstagramGenerator = () => {
                       >
                         {/* Post Preview */}
                         <Card className="overflow-hidden border-2 border-pink-200">
-                          <div className="aspect-square bg-gradient-to-br from-pink-100 to-purple-100 relative">
+                          <div className="aspect-square bg-gradient-to-br from-pink-100 to-purple-100 relative group">
                             <img
                               src={post.product.image}
                               alt={post.product.name}
@@ -572,6 +601,17 @@ const InstagramGenerator = () => {
                               <Badge variant="secondary" className="bg-white/90">
                                 ${post.product.price.toFixed(2)}
                               </Badge>
+                            </div>
+                            <div className="absolute top-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                              <Button
+                                size="sm"
+                                variant="secondary"
+                                className="bg-white/90 hover:bg-white shadow-md"
+                                onClick={() => downloadImage(post.product.image, post.product.name)}
+                              >
+                                <Download className="h-3 w-3 mr-1" />
+                                Download
+                              </Button>
                             </div>
                           </div>
                           <CardContent className="p-4">
@@ -583,6 +623,16 @@ const InstagramGenerator = () => {
                             </p>
                             
                             <div className="space-y-2">
+                              <Button
+                                size="sm"
+                                variant="default"
+                                className="w-full text-xs"
+                                onClick={() => downloadImage(post.product.image, post.product.name)}
+                              >
+                                <Download className="h-3 w-3 mr-1" />
+                                Download Image
+                              </Button>
+                              
                               <Button
                                 size="sm"
                                 variant="outline"
@@ -635,14 +685,36 @@ const InstagramGenerator = () => {
                         {post.date} • {post.product.category} • ${post.product.price.toFixed(2)}
                       </CardDescription>
                     </div>
-                    <img
-                      src={post.product.image}
-                      alt={post.product.name}
-                      className="w-20 h-20 object-contain rounded-lg border"
-                    />
+                    <div className="relative group">
+                      <img
+                        src={post.product.image}
+                        alt={post.product.name}
+                        className="w-20 h-20 object-contain rounded-lg border"
+                      />
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity shadow-md text-xs"
+                        onClick={() => downloadImage(post.product.image, post.product.name)}
+                      >
+                        <Download className="h-3 w-3 mr-1" />
+                        Download
+                      </Button>
+                    </div>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Button
+                      size="sm"
+                      variant="default"
+                      onClick={() => downloadImage(post.product.image, post.product.name)}
+                    >
+                      <Download className="h-4 w-4 mr-2" />
+                      Download Image
+                    </Button>
+                  </div>
+                  
                   <div>
                     <h4 className="font-semibold mb-2">Caption:</h4>
                     <div className="bg-gray-50 p-4 rounded-lg text-sm whitespace-pre-wrap">

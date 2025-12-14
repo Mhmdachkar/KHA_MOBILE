@@ -37,17 +37,13 @@ interface FeaturedProductCardProps {
   index: number;
   isBestSeller?: boolean;
   isTrending?: boolean;
-  hasDiscount?: boolean;
-  discountPercent?: number;
 }
 
 const FeaturedProductCard = ({ 
   product, 
   index, 
   isBestSeller = false,
-  isTrending = false,
-  hasDiscount = false,
-  discountPercent = 0
+  isTrending = false
 }: FeaturedProductCardProps) => {
   const navigate = useNavigate();
   const { addToCart, openCart } = useCart();
@@ -108,11 +104,6 @@ const FeaturedProductCard = ({
 
   if (!product) return null;
 
-  const displayPrice = hasDiscount 
-    ? product.price * (1 - discountPercent / 100)
-    : product.price;
-  const originalPrice = hasDiscount ? product.price : null;
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
@@ -140,11 +131,6 @@ const FeaturedProductCard = ({
               <Badge className="bg-gradient-to-r from-red-500 to-pink-500 text-white border-0 text-[10px] sm:text-xs px-2 py-0.5 font-semibold shadow-md">
                 <Zap className="w-3 h-3 mr-1" />
                 Trending
-              </Badge>
-            )}
-            {hasDiscount && (
-              <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0 text-[10px] sm:text-xs px-2 py-0.5 font-semibold shadow-md">
-                {discountPercent}% OFF
               </Badge>
             )}
           </div>
@@ -191,13 +177,8 @@ const FeaturedProductCard = ({
 
           {/* Price */}
           <div className="flex items-center gap-2 mb-4">
-            {hasDiscount && originalPrice && (
-              <span className="text-xs sm:text-sm text-muted-foreground line-through">
-                ${originalPrice.toFixed(2)}
-              </span>
-            )}
             <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              ${displayPrice.toFixed(2)}
+              ${product.price.toFixed(2)}
             </span>
           </div>
 
@@ -268,8 +249,6 @@ const ThisWeeksFavorites = () => {
       // Sales-focused labels - rotate for variety
       isBestSeller: index % 3 === 0, // Every 3rd product is best seller
       isTrending: index % 3 === 1, // Every 3rd product is trending
-      hasDiscount: index % 3 === 2, // Every 3rd product has discount
-      discountPercent: index % 3 === 2 ? 15 : 0, // 15% discount
     };
   }).filter(item => item.product); // Filter out any null products
 
@@ -315,15 +294,13 @@ const ThisWeeksFavorites = () => {
 
         {/* Products Grid - Responsive for Desktop: 2 rows x 3 columns = 6 products */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-8 xl:gap-10">
-          {featuredProductsData.map(({ product, index, isBestSeller, isTrending, hasDiscount, discountPercent }) => (
+          {featuredProductsData.map(({ product, index, isBestSeller, isTrending }) => (
             <FeaturedProductCard
               key={product.id}
               product={product}
               index={index}
               isBestSeller={isBestSeller}
               isTrending={isTrending}
-              hasDiscount={hasDiscount}
-              discountPercent={discountPercent}
             />
           ))}
         </div>
