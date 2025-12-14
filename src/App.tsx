@@ -21,6 +21,7 @@ import Checkout from "./pages/Checkout";
 import Favorites from "./pages/Favorites";
 import Services from "./pages/Services";
 import AboutUs from "./pages/AboutUs";
+import InstagramGenerator from "./pages/InstagramGenerator";
 import NotFound from "./pages/NotFound";
 
 // ScrollToTop component to scroll to top on route change
@@ -89,6 +90,7 @@ const App = () => (
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/favorites" element={<Favorites />} />
                 <Route path="/product/:id" element={<ProductDetail />} />
+                <Route path="/instagram-generator" element={<InstagramGenerator />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

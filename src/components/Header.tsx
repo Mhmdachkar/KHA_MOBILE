@@ -232,7 +232,7 @@ const Header = () => {
 
     // Encode and send via WhatsApp
     const encodedMessage = encodeURIComponent(message);
-    const whatsappNumber = "96176982454"; // WhatsApp business number for receiving orders
+    const whatsappNumber = "96181861811";
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
     window.open(whatsappUrl, "_blank");

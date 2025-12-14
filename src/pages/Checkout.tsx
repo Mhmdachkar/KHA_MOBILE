@@ -573,13 +573,12 @@ const Checkout = () => {
     
     message += `\n*Total Amount:* $${total.toFixed(2)}\n`;
     message += `\nPlease confirm this order. Thank you!`;
-    message += `\n\n💳 *Payment Information:*\nYou can pay via whish on 81861811`;
 
     // Encode message for URL
     const encodedMessage = encodeURIComponent(message);
     
     // Replace with your WhatsApp business number (format: country code + number without +)
-    const whatsappNumber = "96176982454"; // WhatsApp business number for receiving orders
+    const whatsappNumber = "96181861811"; // WhatsApp business number for receiving orders
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
     // Open WhatsApp
@@ -1300,10 +1299,6 @@ const Checkout = () => {
                   <div className="flex items-start gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-muted-foreground">
                     <Check className="h-3 w-3 sm:h-4 sm:w-4 text-primary mt-0.5 flex-shrink-0" />
                     <p>Instant delivery via WhatsApp after payment confirmation</p>
-                  </div>
-                  <div className="flex items-start gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-primary font-medium">
-                    <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4 text-primary mt-0.5 flex-shrink-0" />
-                    <p>💳 You can pay via whish on 81861811</p>
                   </div>
                   <div className="flex items-start gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-muted-foreground">
                     <Check className="h-3 w-3 sm:h-4 sm:w-4 text-primary mt-0.5 flex-shrink-0" />
