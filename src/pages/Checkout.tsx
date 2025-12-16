@@ -211,8 +211,28 @@ const Checkout = () => {
     accountType: "1 user", // Default to "1 user"
   });
 
-  // Streaming plan selections
-  const [streamingPlanDuration, setStreamingPlanDuration] = useState<string>(searchParams.get("duration") || "1 month");
+  // Get available plan durations based on product brand
+  const getAvailablePlanDurations = () => {
+    if (productBrand === "IPTV") {
+      return [
+        { value: "3 months", label: "3 Months" },
+        { value: "6 months", label: "6 Months" },
+        { value: "1 year", label: "1 Year" }
+      ];
+    }
+    return [
+      { value: "1 month", label: "1 Month" },
+      { value: "3 months", label: "3 Months" },
+      { value: "1 year", label: "1 Year" }
+    ];
+  };
+
+  const availablePlanDurations = getAvailablePlanDurations();
+
+  // Streaming plan selections - use first available option as default for IPTV
+  const [streamingPlanDuration, setStreamingPlanDuration] = useState<string>(
+    searchParams.get("duration") || availablePlanDurations[0].value
+  );
 
   const [errors, setErrors] = useState({
     customerName: "",
@@ -983,9 +1003,11 @@ const Checkout = () => {
                               className="mt-2 w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
                               style={{ touchAction: "manipulation" }}
                             >
-                              <option value="1 month">1 Month</option>
-                              <option value="3 months">3 Months</option>
-                              <option value="1 year">1 Year</option>
+                              {availablePlanDurations.map((option) => (
+                                <option key={option.value} value={option.value}>
+                                  {option.label}
+                                </option>
+                              ))}
                             </select>
                           ) : (
                             <Select
@@ -1005,14 +1027,16 @@ const Checkout = () => {
                                   e.stopPropagation();
                                 }}
                               >
-                                <SelectItem value="1 month">1 Month</SelectItem>
-                                <SelectItem value="3 months">3 Months</SelectItem>
-                                <SelectItem value="1 year">1 Year</SelectItem>
+                                {availablePlanDurations.map((option) => (
+                                  <SelectItem key={option.value} value={option.value}>
+                                    {option.label}
+                                  </SelectItem>
+                                ))}
                               </SelectContent>
                             </Select>
                           )}
                           <p className="text-xs text-muted-foreground mt-2">
-                            Select your billing period (1 month, 3 months, or 1 year)
+                            Select your billing period ({availablePlanDurations.map(d => d.label.toLowerCase()).join(", ")})
                           </p>
                         </div>
                       </div>
