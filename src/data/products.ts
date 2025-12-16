@@ -1893,7 +1893,7 @@ export const tabletProducts: Product[] = [
     rating: 4.9,
     category: "Tablets",
     brand: "Apple",
-    description: "The 11-inch iPad is now more capable than ever with the superfast A16 chip, stunning Liquid Retina display, advanced cameras, and fast Wi-Fi 6. This Wi‑Fi-only model delivers a powerful way to create, stay connected, and get things done—all for a surprisingly affordable price. Whether you're creating digital art, editing videos, taking notes, or streaming content, this iPad handles it all with ease while delivering all-day battery life. With iPadOS and a million apps designed specifically for iPad, you can do more than ever before.",
+    description: "The 11-inch iPad is now more capable than ever with the superfast A16 chip, stunning Liquid Retina display, advanced cameras, and fast Wi‑Fi 6. It delivers a powerful way to create, stay connected, and get things done—all for a surprisingly affordable price. Whether you're creating digital art, editing videos, taking notes, or streaming content, this iPad handles it all with ease while delivering all-day battery life. With iPadOS and a million apps designed specifically for iPad, you can do more than ever before. Available in Wi‑Fi only and Wi‑Fi + LTE / cellular versions, so you can choose the model that matches how and where you use your iPad.",
     features: [
       "Superfast A16 Chip: The same powerful chip used in iPhone 15 Pro delivers incredible performance for gaming, video editing, multitasking, and creative work with remarkable efficiency.",
       "11-inch Liquid Retina Display: Gorgeous 2388 x 1668 resolution display brings your content to life with vibrant colors, crisp text, and incredible detail—perfect for watching movies or drawing your next masterpiece.",
@@ -1903,7 +1903,8 @@ export const tabletProducts: Product[] = [
       "iPadOS 18: The most advanced mobile operating system designed for iPad, with powerful multitasking, enhanced Apple Pencil features, improved Files app, and seamless integration with your other Apple devices.",
       "Apple Pencil Compatible: Works with Apple Pencil (USB-C) and Apple Pencil (1st generation) for precise drawing, note-taking, and markup with pixel-perfect accuracy and low latency.",
       "Magic Keyboard Folio Support: Transform your iPad into a powerful laptop with the versatile two-piece Magic Keyboard Folio featuring a detachable keyboard and protective back panel.",
-      "Fast Wi-Fi 6: Experience faster wireless speeds for downloading files, streaming 4K content, playing online games, and video conferencing with minimal lag.",
+      "Fast Wi‑Fi 6: Experience faster wireless speeds for downloading files, streaming 4K content, playing online games, and video conferencing with minimal lag.",
+      "Connectivity: Supports fast Wi‑Fi and built‑in LTE / cellular, so you can stay connected both on Wi‑Fi networks and on the go with mobile data—ideal for home, office, and travel.",
       "USB-C Connector: Universal USB-C port for charging, data transfer, and connecting to external displays, cameras, and other accessories with one versatile connector.",
       "Touch ID Security: Built into the top button, Touch ID provides secure and convenient authentication for unlocking your iPad, authorizing purchases, and signing into apps.",
       "Landscape Stereo Speakers: Immersive sound experience with two high-quality speakers positioned for optimal audio when using iPad in landscape orientation.",
@@ -1958,7 +1959,7 @@ export const tabletProducts: Product[] = [
       { name: "Blue", image: iPad11Blue, stock: "available" },
       { name: "Yellow", image: iPad11Yellow, stock: "available" }
     ],
-    connectivityOptions: ["Wi‑Fi only"]
+    connectivityOptions: ["Wi‑Fi only", "Wi‑Fi + LTE / Cellular"]
   },
   {
     id: 405,
@@ -2032,7 +2033,7 @@ export const tabletProducts: Product[] = [
     rating: 4.9,
     category: "Tablets",
     brand: "Apple",
-    description: "Now with the powerful M3 chip, the Apple 11-inch iPad Air delivers optimal performance and is built for Apple Intelligence. The M3 chip brings Apple's advanced graphics architecture to the iPad Air for the first time with support for ray tracing, dynamic caching, and hardware-accelerated mesh shading. With 8GB of RAM, 128GB or 256GB storage options, a portable design, all-day battery life, an 11-inch Liquid Retina Display, and support for optional Apple Pencil Pro, Apple Pencil (USB-C), and Magic Keyboard, the iPad Air empowers you to be even more productive and creative while on the go. Featuring a more powerful 8-core CPU, the M3 is up to 35 percent faster for multithreaded CPU workflows than M1, with a 9-core GPU offering up to 40 percent faster graphics performance.",
+    description: "Now with the powerful M3 chip, the Apple 11-inch iPad Air delivers optimal performance and is built for Apple Intelligence. The M3 chip brings Apple's advanced graphics architecture to the iPad Air for the first time with support for ray tracing, dynamic caching, and hardware-accelerated mesh shading. With 8GB of RAM, 128GB or 256GB storage options, a portable design, all-day battery life, an 11-inch Liquid Retina Display, and support for optional Apple Pencil Pro, Apple Pencil (USB-C), and Magic Keyboard, the iPad Air empowers you to be even more productive and creative while on the go. Featuring a more powerful 8-core CPU, the M3 is up to 35 percent faster for multithreaded CPU workflows than M1, with a 9-core GPU offering up to 40 percent faster graphics performance. Available in Wi‑Fi only and Wi‑Fi + LTE / cellular versions so you can choose the connectivity that fits your lifestyle.",
     features: [
       "Apple M3 Chip: Revolutionary 8-core CPU and 9-core GPU with 16-core Neural Engine delivers desktop-class performance for demanding creative and professional workflows.",
       "Advanced Graphics Architecture: For the first time on iPad Air, M3 brings support for ray tracing, dynamic caching, and hardware-accelerated mesh shading—enabling up to four times faster graphics performance than M1.",
@@ -2045,7 +2046,7 @@ export const tabletProducts: Product[] = [
       "Ultra-Wide 12MP Landscape Front Camera: Now located on the long side for ideal video calling with Center Stage technology that automatically adjusts to keep everyone in view using machine learning.",
       "12MP Wide Rear Camera: Captures vivid photos and detailed 4K videos, perfect for scanning documents and filling them out with Apple Pencil, or editing images and videos directly on the large display.",
       "8GB Unified Memory: Ample RAM ensures smooth multitasking, fast app switching, and seamless performance even with multiple demanding apps running simultaneously.",
-      "Wi-Fi 6E Connectivity: Delivers fast wireless connectivity over two times faster than the previous generation for streaming, downloading, and sharing at high speeds.",
+      "Wi‑Fi 6E Connectivity: Delivers fast wireless connectivity over two times faster than the previous generation for streaming, downloading, and sharing at high speeds.",
       "USB-C Port (10 Gb/s): Fast, versatile connection for external displays, docks, drives, cameras, and more with USB 3 speeds up to 10 Gb/s for rapid data transfer.",
       "Bluetooth 5.3: Low-latency audio support for next-gen headsets and hearing aids using Bluetooth LE technology.",
       "Dual Studio-Quality Mics: Record rich, clear audio for video calls, voice recordings, and content creation with professional-grade microphone quality.",
@@ -2114,7 +2115,7 @@ export const tabletProducts: Product[] = [
       { name: "Purple", image: iPadAirM3_11_Purple, stock: "available" },
       { name: "Starlight", image: iPadAirM3_11_Starlight, stock: "available" }
     ],
-    connectivityOptions: ["Wi-Fi only"]
+    connectivityOptions: ["Wi‑Fi only", "Wi‑Fi + LTE / Cellular"]
   },
   {
     id: 407,
@@ -2126,7 +2127,7 @@ export const tabletProducts: Product[] = [
     rating: 4.9,
     category: "Tablets",
     brand: "Apple",
-    description: "The Apple iPad Air 13-inch with M3 chip delivers the largest and most immersive iPad Air experience ever created. Featuring a stunning 13-inch Liquid Retina display, the powerful Apple M3 chip with advanced graphics architecture, and built for Apple Intelligence, this iPad Air empowers you to be incredibly productive and creative with more screen real estate than ever before. Perfect for professionals, content creators, and creative professionals who need maximum workspace for multitasking, video editing, design work, and content creation. With ray tracing, dynamic caching, hardware-accelerated mesh shading, and Apple Intelligence features like Image Wand and Writing Tools, the 13-inch iPad Air is a powerhouse of creativity and productivity in a beautifully portable design.",
+    description: "The Apple iPad Air 13-inch with M3 chip delivers the largest and most immersive iPad Air experience ever created. Featuring a stunning 13-inch Liquid Retina display, the powerful Apple M3 chip with advanced graphics architecture, and built for Apple Intelligence, this iPad Air empowers you to be incredibly productive and creative with more screen real estate than ever before. Perfect for professionals, content creators, and creative professionals who need maximum workspace for multitasking, video editing, design work, and content creation. With ray tracing, dynamic caching, hardware-accelerated mesh shading, and Apple Intelligence features like Image Wand and Writing Tools, the 13-inch iPad Air is a powerhouse of creativity and productivity in a beautifully portable design. Available in Wi‑Fi only and Wi‑Fi + LTE / cellular versions so you can stay connected the way you prefer.",
     features: [
       "13-inch Liquid Retina Display: The largest iPad Air display ever, featuring 2732 x 2048 resolution (264 ppi) with P3 wide color gamut, True Tone technology, 500 nits brightness, and anti-reflective coating for an immersive viewing and working experience.",
       "Apple M3 Chip: Revolutionary 8-core CPU and 9-core GPU with 16-core Neural Engine delivers desktop-class performance—up to 35% faster CPU and 40% faster graphics than M1 for the most demanding workflows.",
@@ -2142,7 +2143,7 @@ export const tabletProducts: Product[] = [
       "12MP Wide Rear Camera: Capture stunning photos and detailed 4K videos, perfect for scanning documents, creating content, and editing directly on the large 13-inch display.",
       "8GB Unified Memory: Ample RAM ensures smooth multitasking, lightning-fast app switching, and seamless performance even when running multiple demanding creative and professional applications simultaneously.",
       "128GB or 256GB Storage: Choose the storage capacity that fits your needs, from everyday productivity to content creation with large video files and creative projects.",
-      "Wi-Fi 6E Connectivity: Delivers blazing-fast wireless speeds—over two times faster than previous generation—perfect for streaming 4K content, downloading large files, and seamless video conferencing.",
+      "Wi‑Fi 6E Connectivity: Delivers blazing-fast wireless speeds—over two times faster than previous generation—perfect for streaming 4K content, downloading large files, and seamless video conferencing.",
       "USB-C Port (10 Gb/s): Versatile high-speed connection supporting external displays up to 6K, docks, storage drives, cameras, and professional accessories with USB 3 speeds up to 10 Gb/s.",
       "Bluetooth 5.3: Low-latency audio support for next-generation wireless headsets, hearing aids, and professional audio equipment using Bluetooth LE technology.",
       "Dual Studio-Quality Microphones: Professional-grade audio recording for crystal-clear video calls, voice recordings, podcasts, and content creation with advanced noise reduction.",
@@ -2213,7 +2214,7 @@ export const tabletProducts: Product[] = [
       { name: "Purple", image: iPadAirM3_13_Purple, stock: "available" },
       { name: "Starlight", image: iPadAirM3_13_Starlight, stock: "available" }
     ],
-    connectivityOptions: ["Wi-Fi only"]
+    connectivityOptions: ["Wi‑Fi only", "Wi‑Fi + LTE / Cellular"]
   },
   {
     id: 408,
@@ -2225,7 +2226,7 @@ export const tabletProducts: Product[] = [
     rating: 4.8,
     category: "Tablets",
     brand: "Apple",
-    description: "The Apple iPad Air 6th Generation 13-inch with M2 chip delivers exceptional performance and the largest iPad Air display in a beautifully portable design. Featuring Apple's powerful M2 chip with 8-core CPU and 10-core GPU, this iPad Air provides desktop-class performance for demanding creative workflows, multitasking, and productivity tasks. The stunning 13-inch Liquid Retina display offers an immersive viewing experience perfect for content creation, video editing, design work, and entertainment. With 8GB of unified memory, 128GB of storage, advanced cameras with Center Stage, Wi-Fi 6E connectivity, and support for Apple Pencil Pro and Magic Keyboard, the iPad Air 13-inch M2 empowers you to create, work, and play with unparalleled performance and versatility.",
+    description: "The Apple iPad Air 6th Generation 13-inch with M2 chip delivers exceptional performance and the largest iPad Air display in a beautifully portable design. Featuring Apple's powerful M2 chip with 8-core CPU and 10-core GPU, this iPad Air provides desktop-class performance for demanding creative workflows, multitasking, and productivity tasks. The stunning 13-inch Liquid Retina display offers an immersive viewing experience perfect for content creation, video editing, design work, and entertainment. With 8GB of unified memory, 128GB of storage, advanced cameras with Center Stage, Wi‑Fi 6E connectivity, and support for Apple Pencil Pro and Magic Keyboard, the iPad Air 13-inch M2 empowers you to create, work, and play with unparalleled performance and versatility. Available in Wi‑Fi only and Wi‑Fi + LTE / cellular models to match your connectivity needs.",
     features: [
       "13-inch Liquid Retina Display: Stunning 2732 x 2048 resolution (264 ppi) with P3 wide color gamut, True Tone technology, 500 nits brightness, and anti-reflective coating for vibrant, accurate colors and comfortable viewing in any lighting condition.",
       "Apple M2 Chip: Powerful 8-core CPU with 4 performance cores and 4 efficiency cores, plus 10-core GPU delivers exceptional performance—up to 15% faster CPU and 35% faster graphics than M1 for smooth multitasking and demanding apps.",
@@ -2234,7 +2235,7 @@ export const tabletProducts: Product[] = [
       "12MP Ultra Wide Landscape Front Camera: Strategically positioned on the long edge for ideal video calling with Center Stage technology that automatically adjusts to keep everyone in view using advanced machine learning.",
       "12MP Wide Rear Camera: Capture stunning photos and detailed 4K videos with the advanced camera system, perfect for scanning documents, creating content, and capturing life's moments.",
       "Center Stage: Front camera uses machine learning to automatically pan and zoom to keep you centered during video calls, even as you move around.",
-      "Wi-Fi 6E Connectivity: Next-generation Wi-Fi 6E delivers blazing-fast wireless speeds for streaming 4K content, downloading large files, video conferencing, and seamless internet browsing.",
+      "Wi‑Fi 6E Connectivity: Next-generation Wi‑Fi 6E delivers blazing-fast wireless speeds for streaming 4K content, downloading large files, video conferencing, and seamless internet browsing.",
       "USB-C Port (10 Gb/s): Versatile high-speed USB-C connector supports external displays up to 6K resolution, fast data transfer, charging, and connection to professional accessories and peripherals.",
       "Bluetooth 5.3: Advanced Bluetooth technology with low-latency audio support for wireless headphones, keyboards, mice, and other Bluetooth accessories.",
       "Landscape Stereo Speakers: Four-speaker audio system positioned for optimal sound when using iPad Air in landscape orientation—perfect for video editing, music production, movies, and entertainment.",
@@ -2303,7 +2304,7 @@ export const tabletProducts: Product[] = [
       { name: "Purple", image: iPadAirM2_13_Purple, stock: "available" },
       { name: "Starlight", image: iPadAirM2_13_Starlight, stock: "available" }
     ],
-    connectivityOptions: ["Wi-Fi only"]
+    connectivityOptions: ["Wi‑Fi only", "Wi‑Fi + LTE / Cellular"]
   },
   {
     id: 409,

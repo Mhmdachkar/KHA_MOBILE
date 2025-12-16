@@ -170,7 +170,7 @@ const Checkout = () => {
       "full account": { "1 month": 10, "3 months": 15, "1 year": 50 },
     },
     IPTV: {
-      "standard": { "1 month": 10, "3 months": 20, "6 months": 35, "1 year": 50 },
+      "standard": { "3 months": 20, "6 months": 35, "1 year": 50 },
     },
   };
   

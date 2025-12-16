@@ -802,7 +802,7 @@ const ProductDetail = () => {
                   ))}
                 </div>
                 <p className="text-[11px] sm:text-xs text-muted-foreground mt-3">
-                  Choose the + LTE / + cellular version if you need cellular data on the go, or stick with Wi-Fi only for home and office use.
+                  This model supports both fast Wi‑Fi and built‑in LTE / cellular, so you stay connected at home, in the office, and on the go with mobile data.
                 </p>
               </div>
             ) : null}

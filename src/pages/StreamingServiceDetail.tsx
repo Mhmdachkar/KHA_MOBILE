@@ -66,10 +66,9 @@ const STREAMING_SERVICES: StreamingService[] = [
     category: "IPTV",
     plans: [
       { id: 1, duration: "Free Test Account", price: 0, isFreeTrial: true },
-      { id: 2, duration: "1 month", price: 10 },
-      { id: 3, duration: "3 months", price: 20 },
-      { id: 4, duration: "6 months", price: 35 },
-      { id: 5, duration: "1 year", price: 50 },
+      { id: 2, duration: "3 months", price: 20 },
+      { id: 3, duration: "6 months", price: 35 },
+      { id: 4, duration: "1 year", price: 50 },
     ]
   },
 ];
