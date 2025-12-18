@@ -1144,8 +1144,8 @@ const ProductDetail = () => {
           </motion.section>
         )}
 
-        {/* Frequently Bought Together - Sales-Focused Bundle Section */}
-        {(() => {
+        {/* Frequently Bought Together - Sales-Focused Bundle Section (disabled) */}
+        {false && (() => {
           // Get frequently bought together items based on product category
           const getFrequentlyBoughtTogether = () => {
             const productCategory = product.category?.toLowerCase() || '';

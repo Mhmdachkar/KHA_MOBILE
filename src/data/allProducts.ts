@@ -23,6 +23,18 @@ export const smartphonesProducts: Product[] = getProductsByCategory("Smartphones
   }))
   .sort((a, b) => b.price - a.price);
 
+// Tablets products (real data from products.ts) - sorted by price highest to lowest
+export const tabletProducts: Product[] = getProductsByCategory("Tablets")
+  .map(product => ({
+    id: product.id,
+    name: product.name,
+    price: product.price,
+    image: product.image,
+    rating: product.rating,
+    category: product.category,
+  }))
+  .sort((a, b) => b.price - a.price);
+
 // Audio products (merging mock data with real accessories + Green Lion audio) - sorted by price highest to lowest
 export const audioProducts: Product[] = [
   // Real audio accessories
