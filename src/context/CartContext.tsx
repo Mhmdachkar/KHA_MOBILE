@@ -3,7 +3,7 @@ import { createContext, useContext, useState, useEffect, ReactNode } from "react
 export interface CartProduct {
   id: number;
   name: string;
-  price: number;
+  price: number | string;
   image: string;
   rating?: number;
   category?: string;
@@ -126,7 +126,10 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const getTotalPrice = () => {
-    return cart.reduce((total, item) => total + item.price * item.quantity, 0);
+    return cart.reduce((total, item) => {
+      const price = typeof item.price === 'string' ? parseFloat(item.price) || 0 : item.price;
+      return total + price * item.quantity;
+    }, 0);
   };
 
   return (

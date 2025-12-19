@@ -10,6 +10,14 @@ const CartDashboard = () => {
   const { cart, isOpen, closeCart, removeFromCart, updateQuantity, getTotalItems, getTotalPrice } = useCart();
   const cartItemsContainerRef = useRef<HTMLDivElement>(null);
 
+  // Helper function to format price (handles both number and string)
+  const formatPrice = (price: number | string): string => {
+    if (typeof price === 'string') {
+      return price;
+    }
+    return price.toFixed(2);
+  };
+
   // CRITICAL: Force scroll to top IMMEDIATELY when cart opens - before any animation
   useEffect(() => {
     if (isOpen) {
@@ -319,7 +327,7 @@ const CartDashboard = () => {
                           <p className="text-xs text-muted-foreground mb-1">{item.category}</p>
                         )}
                         <p className="text-base sm:text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                          ${item.price.toFixed(2)}
+                          ${formatPrice(item.price)}
                         </p>
                       </div>
 

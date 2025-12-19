@@ -131,6 +131,18 @@ const ProductDetail = () => {
   }, [colorImage]);
 
   const displayPrice = selectedVariant?.price ?? product.price;
+  
+  // Helper function to format price (handles both number and string)
+  const formatPrice = (price: number | string, isPreorder?: boolean): string => {
+    // Show "Pre-order" for preorder items with price 0 or "0.00"
+    if (isPreorder && (price === 0 || price === "0.00" || (typeof price === 'string' && parseFloat(price) === 0))) {
+      return "Pre-order";
+    }
+    if (typeof price === 'string') {
+      return price;
+    }
+    return price.toFixed(2);
+  };
   const primaryImage =
     productImages[0] ||
     regularProduct?.image ||
@@ -192,7 +204,7 @@ const ProductDetail = () => {
   // Get all products from all sources (for comprehensive recommendations)
   // Combine regular products and Green Lion products
   // Helper function to get display price (uses first variant price if variants exist, otherwise base price)
-  const getDisplayPrice = (product: any): number => {
+  const getDisplayPrice = (product: any): number | string => {
     if (product.variants && product.variants.length > 0) {
       // Use the first variant price to match what ProductDetail shows by default
       return product.variants[0].price;
@@ -749,7 +761,11 @@ const ProductDetail = () => {
 
             <div className="flex flex-wrap items-center gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 w-full">
               <div className="flex flex-col">
-                <p className="text-elegant text-2xl sm:text-3xl font-bold">${displayPrice.toFixed(2)}</p>
+                {product.isPreorder && (displayPrice === 0 || displayPrice === "0.00" || (typeof displayPrice === 'string' && parseFloat(displayPrice) === 0)) ? (
+                  <p className="text-elegant text-2xl sm:text-3xl font-bold text-primary">Pre-order</p>
+                ) : (
+                  <p className="text-elegant text-2xl sm:text-3xl font-bold">${formatPrice(displayPrice, product.isPreorder)}</p>
+                )}
                 {selectedVariant?.label && (
                   <span className="text-xs sm:text-sm text-muted-foreground mt-1">
                     Configuration: {selectedVariant.label}
@@ -858,7 +874,13 @@ const ProductDetail = () => {
                         <span className="text-[10px] sm:text-xs text-muted-foreground leading-tight">
                           {variant.ram} · {variant.storage}
                         </span>
-                        <span className="text-xs sm:text-sm text-elegant font-medium">${variant.price.toFixed(2)}</span>
+                        <span className="text-xs sm:text-sm text-elegant font-medium">
+                          {product.isPreorder && (variant.price === 0 || variant.price === "0.00" || (typeof variant.price === 'string' && parseFloat(variant.price) === 0)) ? (
+                            <span className="text-primary">Pre-order</span>
+                          ) : (
+                            `$${formatPrice(variant.price, product.isPreorder)}`
+                          )}
+                        </span>
                         {variant.description && (
                           <span className="text-[10px] sm:text-[11px] text-muted-foreground leading-tight line-clamp-2">
                             {variant.description}
@@ -1365,7 +1387,11 @@ const ProductDetail = () => {
                         <h3 className="text-sm font-semibold text-elegant mb-1 line-clamp-2 min-h-[2.5rem]">
                           {product.name}
                         </h3>
-                        <p className="text-lg font-bold text-primary mb-2">${displayPrice.toFixed(2)}</p>
+                        {product.isPreorder && (displayPrice === 0 || displayPrice === "0.00" || (typeof displayPrice === 'string' && parseFloat(displayPrice) === 0)) ? (
+                          <p className="text-lg font-bold text-primary mb-2">Pre-order</p>
+                        ) : (
+                          <p className="text-lg font-bold text-primary mb-2">${formatPrice(displayPrice, product.isPreorder)}</p>
+                        )}
                         <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-primary rounded-full flex items-center justify-center">
                           <CheckCircle2 className="w-5 h-5 text-white" />
                         </div>
@@ -1416,7 +1442,13 @@ const ProductDetail = () => {
                                 />
                               ))}
                             </div>
-                            <p className="text-lg font-bold text-elegant">${item.price.toFixed(2)}</p>
+                            <p className="text-lg font-bold text-elegant">
+                              {item.isPreorder && (item.price === 0 || item.price === "0.00" || (typeof item.price === 'string' && parseFloat(item.price) === 0)) ? (
+                                <span className="text-primary">Pre-order</span>
+                              ) : (
+                                `$${formatPrice(item.price, item.isPreorder)}`
+                              )}
+                            </p>
                           </div>
                         </Link>
                         {index < bundleItems.length - 1 && (

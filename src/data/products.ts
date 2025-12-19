@@ -240,7 +240,7 @@ export interface Product {
   id: number;
   name: string;
   title: string;
-  price: number;
+  price: number | string;
   image: string;
   images?: string[];
   video?: string;
@@ -2839,7 +2839,7 @@ export const gamingConsoles: Product[] = [
     id: 501,
     name: "Sony PlayStation 4 Slim 500GB Console",
     title: "Sony PlayStation 4 Slim 500GB - Compact Gaming Console with HDR Support",
-    price: 0,
+    price: "0.00",
     image: ps4Slim,
     rating: 4.8,
     category: "Gaming",
@@ -2889,7 +2889,7 @@ export const gamingConsoles: Product[] = [
     id: 502,
     name: "Sony PlayStation 5 Slim Console",
     title: "Sony PlayStation 5 Slim - 1TB SSD with 4K 120Hz Gaming & Ray Tracing",
-    price: 0,
+    price: "0.00",
     image: ps5Slim,
     rating: 4.9,
     category: "Gaming",

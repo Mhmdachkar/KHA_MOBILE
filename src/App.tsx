@@ -22,6 +22,12 @@ import Favorites from "./pages/Favorites";
 import Services from "./pages/Services";
 import AboutUs from "./pages/AboutUs";
 import InstagramGenerator from "./pages/InstagramGenerator";
+import InstagramPromo from "./pages/InstagramPromo";
+import InstagramPromoChristmas from "./pages/InstagramPromoChristmas";
+import InstagramPromoTech from "./pages/InstagramPromoTech";
+import InstagramPromoLuxury from "./pages/InstagramPromoLuxury";
+import InstagramPromoGolden from "./pages/InstagramPromoGolden";
+import InstagramPromoLive from "./pages/InstagramPromoLive";
 import NotFound from "./pages/NotFound";
 
 // ScrollToTop component to scroll to top on route change
@@ -91,6 +97,12 @@ const App = () => (
                 <Route path="/favorites" element={<Favorites />} />
                 <Route path="/product/:id" element={<ProductDetail />} />
                 <Route path="/instagram-generator" element={<InstagramGenerator />} />
+                <Route path="/promo" element={<InstagramPromo />} />
+                <Route path="/promo-christmas" element={<InstagramPromoChristmas />} />
+                <Route path="/promo-tech" element={<InstagramPromoTech />} />
+                <Route path="/promo-luxury" element={<InstagramPromoLuxury />} />
+                <Route path="/promo-golden" element={<InstagramPromoGolden />} />
+                <Route path="/promo-live" element={<InstagramPromoLive />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

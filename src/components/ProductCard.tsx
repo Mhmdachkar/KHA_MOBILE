@@ -9,7 +9,7 @@ interface ProductCardProps {
   id: number;
   name: string;
   title?: string; // Optional title - if provided, will be used instead of name
-  price: number;
+  price: number | string;
   image: string;
   images?: string[]; // Optional images array for hover switching
   rating?: number;
@@ -167,10 +167,10 @@ const ProductCard = ({ id, name, title, price, image, images, rating = 4.5, cate
               ({rating})
             </span>
           </div>
-          {isPreorder && price === 0 ? (
+          {isPreorder && (price === 0 || price === "0.00" || typeof price === "string") ? (
             <p className="text-elegant text-xs sm:text-sm font-normal text-primary">Pre-order</p>
           ) : (
-            <p className="text-elegant text-xs sm:text-sm font-normal bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">${price.toFixed(2)}</p>
+            <p className="text-elegant text-xs sm:text-sm font-normal bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">${typeof price === "string" ? price : price.toFixed(2)}</p>
           )}
           {colors && colors.length > 0 && (
             <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-1">

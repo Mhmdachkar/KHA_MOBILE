@@ -174,7 +174,7 @@ const CategoryPage = () => {
   const isSmartphoneCategory = categoryDisplayName === "Smartphones";
 
   // Helper function to get display price (uses first variant price if variants exist, otherwise base price)
-  const getDisplayPrice = (product: any): number => {
+  const getDisplayPrice = (product: any): number | string => {
     if (product.variants && product.variants.length > 0) {
       return product.variants[0].price;
     }

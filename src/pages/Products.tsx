@@ -50,7 +50,7 @@ const Products = () => {
   }, [location.pathname, location.search]);
 
   // Helper function to get display price (uses first variant price if variants exist, otherwise base price)
-  const getDisplayPrice = (product: any): number => {
+  const getDisplayPrice = (product: any): number | string => {
     if (product.variants && product.variants.length > 0) {
       // Use the first variant price to match what ProductDetail shows by default
       return product.variants[0].price;

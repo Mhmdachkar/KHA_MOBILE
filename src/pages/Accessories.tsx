@@ -128,98 +128,115 @@ const Accessories = () => {
   const getFilteredProducts = useMemo(() => {
     let products = allAccessoryProducts;
 
-    // Filter by category
+    // Filter by category - filters are mutually exclusive, checked in priority order
     if (selectedCategory !== "all") {
       products = products.filter((product: any) => {
         const category = product.category?.toLowerCase();
         const selectedCat = selectedCategory.toLowerCase();
         const nameLower = product.name?.toLowerCase() || "";
         
-        // Handle "advanced accessories" - show gimbal, bedside clock, massage gun
-        if (selectedCat === "advanced accessories") {
-          return nameLower.includes("new york gimbal") ||
-                 nameLower.includes("gimbal smart face") ||
-                 nameLower.includes("bedside clock") ||
-                 nameLower.includes("mini massage gun");
-        }
+        // Helper function to check if product matches a different filter (to avoid conflicts)
+        const matchesLaptopAccessories = nameLower.includes("laptop sleeve") ||
+                                         nameLower.includes("laptop bag") ||
+                                         nameLower.includes("orbit sleeve") ||
+                                         nameLower.includes("sigma laptop") ||
+                                         nameLower.includes("sandisk cruzer blade") ||
+                                         nameLower.includes("cruzer blade") ||
+                                         nameLower.includes("mini metal usb") ||
+                                         nameLower.includes("philips usb 3.2") ||
+                                         nameLower.includes("usb flash drive") ||
+                                         nameLower.includes("flash drive");
         
-        // Handle "stands" - show selfie stick, tripod, phone holders, LED lamps, desktop stands (exclude LED lights)
-        if (selectedCat === "stands") {
-          return (nameLower.includes("magselfie") ||
-                 nameLower.includes("selfie stick") ||
-                 nameLower.includes("tripod") ||
-                 (nameLower.includes("m5") && (nameLower.includes("foldable") || nameLower.includes("holder"))) ||
-                 nameLower.includes("led table lamp") ||
-                 nameLower.includes("kakusiga folding") ||
-                 nameLower.includes("foneng foldable desktop") ||
-                 nameLower.includes("m6-rotating") ||
-                 nameLower.includes("rotating stand")) &&
-                 !nameLower.includes("makeup mirror") &&
-                 !nameLower.includes("ring led") &&
-                 !nameLower.includes("mj33") &&
-                 !nameLower.includes("rl-19 led soft") &&
-                 !nameLower.includes("rl19 led soft");
-        }
+        const matchesBags = (nameLower.includes("dopp") ||
+                            nameLower.includes("toiletry") ||
+                            nameLower.includes("wash bag") ||
+                            nameLower.includes("travel bag") ||
+                            nameLower.includes("gym bag") ||
+                            (nameLower.includes("pouch") && !nameLower.includes("laptop")) ||
+                            (nameLower.includes("kit") && !nameLower.includes("kitchen")) ||
+                            nameLower.includes("organizer") ||
+                            nameLower.includes("elegant pouch")) &&
+                            !matchesLaptopAccessories; // Exclude laptop bags from regular bags
         
-        // Handle "hair & grooming" - show hair dryers, straighteners, trimmers, clippers
-        if (selectedCat === "hair & grooming" || selectedCat === "grooming") {
-          return nameLower.includes("hair dryer") ||
-                 nameLower.includes("blow wave") ||
-                 nameLower.includes("silkwave") ||
-                 nameLower.includes("straightener") ||
-                 nameLower.includes("beard trimmer") ||
-                 nameLower.includes("one blade") ||
-                 nameLower.includes("hair clipper") ||
-                 nameLower.includes("clip pro") ||
-                 nameLower.includes("pro trim duo") ||
-                 nameLower.includes("trim duo") ||
-                 nameLower.includes("pirates hair trimmer") ||
-                 nameLower.includes("pirates trimmer");
-        }
+        const matchesHairGrooming = nameLower.includes("hair dryer") ||
+                                    nameLower.includes("blow wave") ||
+                                    nameLower.includes("silkwave") ||
+                                    nameLower.includes("straightener") ||
+                                    nameLower.includes("beard trimmer") ||
+                                    nameLower.includes("one blade") ||
+                                    nameLower.includes("hair clipper") ||
+                                    nameLower.includes("clip pro") ||
+                                    nameLower.includes("pro trim duo") ||
+                                    nameLower.includes("trim duo") ||
+                                    nameLower.includes("pirates hair trimmer") ||
+                                    nameLower.includes("pirates trimmer");
         
-        // Handle "led lights" - show makeup mirrors, ring lights, light strips
-        if (selectedCat === "led lights") {
-          return nameLower.includes("glam shine makeup mirror") ||
-                 nameLower.includes("makeup mirror") ||
-                 (nameLower.includes("rgb") && nameLower.includes("mj33")) ||
-                 nameLower.includes("mj33 ring") ||
-                 nameLower.includes("ring led light") ||
-                 nameLower.includes("rl-19 led soft") ||
-                 nameLower.includes("rl19 led soft") ||
-                 nameLower.includes("rl-19 led soft light strip");
-        }
+        const matchesLedLights = nameLower.includes("glam shine makeup mirror") ||
+                                 nameLower.includes("makeup mirror") ||
+                                 (nameLower.includes("rgb") && nameLower.includes("mj33")) ||
+                                 nameLower.includes("mj33 ring") ||
+                                 nameLower.includes("ring led light") ||
+                                 nameLower.includes("rl-19 led soft") ||
+                                 nameLower.includes("rl19 led soft") ||
+                                 nameLower.includes("rl-19 led soft light strip");
         
-        // Handle "laptop accessories" - show laptop bags and USB flash drives
+        const matchesStands = (nameLower.includes("magselfie") ||
+                              nameLower.includes("selfie stick") ||
+                              nameLower.includes("tripod") ||
+                              (nameLower.includes("m5") && (nameLower.includes("foldable") || nameLower.includes("holder"))) ||
+                              nameLower.includes("kakusiga folding") ||
+                              nameLower.includes("foneng foldable desktop") ||
+                              nameLower.includes("m6-rotating") ||
+                              nameLower.includes("rotating stand")) &&
+                              !nameLower.includes("makeup mirror") &&
+                              !nameLower.includes("ring led") &&
+                              !nameLower.includes("mj33") &&
+                              !nameLower.includes("rl-19 led soft") &&
+                              !nameLower.includes("rl19 led soft") &&
+                              !nameLower.includes("led table lamp"); // Exclude LED table lamp from stands
+        
+        const matchesAdvanced = nameLower.includes("new york gimbal") ||
+                                nameLower.includes("gimbal smart face") ||
+                                nameLower.includes("bedside clock") ||
+                                nameLower.includes("mini massage gun");
+        
+        // Handle "laptop accessories" - highest priority (most specific)
         if (selectedCat === "laptop accessories") {
-          return nameLower.includes("laptop sleeve") ||
-                 nameLower.includes("laptop bag") ||
-                 nameLower.includes("orbit sleeve") ||
-                 nameLower.includes("sigma laptop") ||
-                 nameLower.includes("sandisk cruzer blade") ||
-                 nameLower.includes("cruzer blade") ||
-                 nameLower.includes("mini metal usb") ||
-                 nameLower.includes("philips usb 3.2") ||
-                 nameLower.includes("usb flash drive") ||
-                 nameLower.includes("flash drive");
+          return matchesLaptopAccessories;
         }
         
-        // Handle "bags" - show dopp kits, pouches, toiletry/travel/gym bags
+        // Handle "bags" - exclude laptop bags
         if (selectedCat === "bags") {
-          // Explicitly exclude kitchen scale or other kitchen items
           if (nameLower.includes("kitchen")) return false;
-          
-          return nameLower.includes("dopp") ||
-                 nameLower.includes("toiletry") ||
-                 nameLower.includes("wash bag") ||
-                 nameLower.includes("travel bag") ||
-                 nameLower.includes("gym bag") ||
-                 nameLower.includes("pouch") ||
-                 nameLower.includes("kit") ||
-                 nameLower.includes("organizer") ||
-                 nameLower.includes("elegant pouch");
+          return matchesBags;
         }
         
-        // Standard category matching
+        // Handle "hair & grooming"
+        if (selectedCat === "hair & grooming" || selectedCat === "grooming") {
+          return matchesHairGrooming;
+        }
+        
+        // Handle "led lights" - exclude LED table lamp (goes to stands)
+        if (selectedCat === "led lights") {
+          return matchesLedLights && !nameLower.includes("led table lamp");
+        }
+        
+        // Handle "stands" - include LED table lamp, exclude LED lights
+        if (selectedCat === "stands") {
+          return matchesStands || nameLower.includes("led table lamp");
+        }
+        
+        // Handle "advanced accessories"
+        if (selectedCat === "advanced accessories") {
+          return matchesAdvanced;
+        }
+        
+        // Handle "charging" - standard category matching
+        if (selectedCat === "charging") {
+          return category === "charging";
+        }
+        
+        // Standard category matching for other categories
         return category === selectedCat;
       });
     }
@@ -275,43 +292,43 @@ const Accessories = () => {
           className="mb-6 sm:mb-8 overflow-x-auto scrollbar-hide"
         >
           <Tabs value={selectedCategory} onValueChange={setSelectedCategory}>
-            <TabsList className="grid w-full max-w-5xl grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 h-auto p-1 gap-1 sm:gap-2">
-              <TabsTrigger value="all" className="text-elegant text-[10px] sm:text-xs px-2 sm:px-4 py-2">
+            <TabsList className="flex flex-wrap w-full max-w-5xl h-auto p-1 gap-1 sm:gap-2 justify-start">
+              <TabsTrigger value="all" className="text-elegant text-[10px] sm:text-xs px-2 sm:px-3 py-2 whitespace-nowrap flex-shrink-0">
                 <span className="hidden sm:inline">All Products</span>
                 <span className="sm:hidden">All</span>
               </TabsTrigger>
-              <TabsTrigger value="charging" className="text-elegant text-[10px] sm:text-xs px-2 sm:px-4 py-2">
-                <Battery className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+              <TabsTrigger value="charging" className="text-elegant text-[10px] sm:text-xs px-2 sm:px-3 py-2 whitespace-nowrap flex-shrink-0">
+                <Battery className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-1.5" />
                 <span className="hidden sm:inline">Charging</span>
                 <span className="sm:hidden">Charge</span>
               </TabsTrigger>
-              <TabsTrigger value="hair & grooming" className="text-elegant text-[10px] sm:text-xs px-2 sm:px-4 py-2">
-                <Scissors className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+              <TabsTrigger value="hair & grooming" className="text-elegant text-[10px] sm:text-xs px-2 sm:px-3 py-2 whitespace-nowrap flex-shrink-0">
+                <Scissors className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-1.5" />
                 <span className="hidden sm:inline">Hair & Grooming</span>
                 <span className="sm:hidden">Hair</span>
               </TabsTrigger>
-              <TabsTrigger value="laptop accessories" className="text-elegant text-[10px] sm:text-xs px-2 sm:px-4 py-2">
-                <Laptop className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+              <TabsTrigger value="laptop accessories" className="text-elegant text-[10px] sm:text-xs px-2 sm:px-3 py-2 whitespace-nowrap flex-shrink-0">
+                <Laptop className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-1.5" />
                 <span className="hidden sm:inline">Laptop Acc</span>
                 <span className="sm:hidden">Laptop</span>
               </TabsTrigger>
-              <TabsTrigger value="led lights" className="text-elegant text-[10px] sm:text-xs px-2 sm:px-4 py-2">
-                <Cable className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+              <TabsTrigger value="led lights" className="text-elegant text-[10px] sm:text-xs px-2 sm:px-3 py-2 whitespace-nowrap flex-shrink-0">
+                <Cable className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-1.5" />
                 <span className="hidden sm:inline">LED Lights</span>
                 <span className="sm:hidden">LED</span>
               </TabsTrigger>
-              <TabsTrigger value="bags" className="text-elegant text-[10px] sm:text-xs px-2 sm:px-4 py-2">
-                <Briefcase className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+              <TabsTrigger value="bags" className="text-elegant text-[10px] sm:text-xs px-2 sm:px-3 py-2 whitespace-nowrap flex-shrink-0">
+                <Briefcase className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-1.5" />
                 <span className="hidden sm:inline">Bags</span>
                 <span className="sm:hidden">Bags</span>
               </TabsTrigger>
-              <TabsTrigger value="stands" className="text-elegant text-[10px] sm:text-xs px-2 sm:px-4 py-2">
-                <Smartphone className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+              <TabsTrigger value="stands" className="text-elegant text-[10px] sm:text-xs px-2 sm:px-3 py-2 whitespace-nowrap flex-shrink-0">
+                <Smartphone className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-1.5" />
                 <span className="hidden sm:inline">Stands</span>
                 <span className="sm:hidden">Stand</span>
               </TabsTrigger>
-              <TabsTrigger value="advanced accessories" className="text-elegant text-[10px] sm:text-xs px-2 sm:px-4 py-2">
-                <Shield className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+              <TabsTrigger value="advanced accessories" className="text-elegant text-[10px] sm:text-xs px-2 sm:px-3 py-2 whitespace-nowrap flex-shrink-0">
+                <Shield className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-1.5" />
                 <span className="hidden sm:inline">Advanced</span>
                 <span className="sm:hidden">Adv</span>
               </TabsTrigger>

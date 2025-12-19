@@ -442,6 +442,14 @@ const Checkout = () => {
     return accountPricing[streamingPlanDuration] ?? productPrice;
   };
 
+  // Helper function to convert price to number (handles both number and string)
+  const getPriceAsNumber = (price: number | string): number => {
+    if (typeof price === 'string') {
+      return parseFloat(price) || 0;
+    }
+    return price;
+  };
+
   // Calculate total
   const calculateTotal = (): number => {
     if (isStreamingServiceCheckout) {
@@ -465,7 +473,10 @@ const Checkout = () => {
       return total;
     } else {
       // Cart checkout - includes delivery fee for physical products
-      const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      const subtotal = cart.reduce((sum, item) => {
+        const price = getPriceAsNumber(item.price);
+        return sum + (price * item.quantity);
+      }, 0);
       return subtotal + DELIVERY_FEE;
     }
   };
@@ -583,10 +594,14 @@ const Checkout = () => {
         if (item.color) {
           itemLabel += ` (Color: ${item.color})`;
         }
-        message += `  - ${itemLabel} (Qty: ${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}\n`;
+        const itemPrice = getPriceAsNumber(item.price);
+        message += `  - ${itemLabel} (Qty: ${item.quantity}) - $${(itemPrice * item.quantity).toFixed(2)}\n`;
       });
       
-      const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      const subtotal = cart.reduce((sum, item) => {
+        const price = getPriceAsNumber(item.price);
+        return sum + (price * item.quantity);
+      }, 0);
       message += `\n• *Subtotal:* $${subtotal.toFixed(2)}\n`;
       message += `• *Delivery:* $${DELIVERY_FEE.toFixed(2)}\n`;
     }
@@ -785,10 +800,10 @@ const Checkout = () => {
                             </div>
                             <div className="text-left sm:text-right">
                               <p className="text-base sm:text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                                ${(item.price * item.quantity).toFixed(2)}
+                                ${(getPriceAsNumber(item.price) * item.quantity).toFixed(2)}
                               </p>
                               <p className="text-[10px] sm:text-xs text-muted-foreground">
-                                ${item.price.toFixed(2)} each
+                                ${getPriceAsNumber(item.price).toFixed(2)} each
                               </p>
                             </div>
                           </div>
@@ -886,7 +901,10 @@ const Checkout = () => {
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-muted-foreground">Subtotal</span>
                         <span className="font-medium">
-                          ${cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2)}
+                          ${cart.reduce((sum, item) => {
+                            const price = getPriceAsNumber(item.price);
+                            return sum + (price * item.quantity);
+                          }, 0).toFixed(2)}
                         </span>
                       </div>
                       <div className="flex items-center justify-between text-sm">
