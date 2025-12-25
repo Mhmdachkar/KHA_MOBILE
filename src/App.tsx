@@ -28,6 +28,8 @@ import InstagramPromoTech from "./pages/InstagramPromoTech";
 import InstagramPromoLuxury from "./pages/InstagramPromoLuxury";
 import InstagramPromoGolden from "./pages/InstagramPromoGolden";
 import InstagramPromoLive from "./pages/InstagramPromoLive";
+import InstagramPromoSale from "./pages/InstagramPromoSale";
+import InstagramPromoIPadBundle from "./pages/InstagramPromoIPadBundle";
 import NotFound from "./pages/NotFound";
 
 // ScrollToTop component to scroll to top on route change
@@ -103,6 +105,8 @@ const App = () => (
                 <Route path="/promo-luxury" element={<InstagramPromoLuxury />} />
                 <Route path="/promo-golden" element={<InstagramPromoGolden />} />
                 <Route path="/promo-live" element={<InstagramPromoLive />} />
+                <Route path="/promo-sale" element={<InstagramPromoSale />} />
+                <Route path="/promo-ipad" element={<InstagramPromoIPadBundle />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

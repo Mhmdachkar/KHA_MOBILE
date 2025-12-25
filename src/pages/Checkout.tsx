@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate, useSearchParams, Link } from "react-router-dom";
-import { Phone, DollarSign, ShoppingBag, MessageCircle, ArrowLeft, Check, Plus, X, Minus, Trash2, MapPin } from "lucide-react";
+import { Phone, DollarSign, ShoppingBag, MessageCircle, ArrowLeft, Check, Plus, X, Minus, Trash2, MapPin, Banknote, Mail } from "lucide-react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -110,9 +110,12 @@ const ADDITIONAL_ALFA_GIFT_CARDS = [
   { id: 28, name: "Alfa Gift 77GB", price: 40, image: alfa77GB },
 ];
 
+type PaymentMethod = "whatsapp" | "cash_on_delivery";
+
 interface CheckoutFormData {
   // For product checkout
   customerName: string;
+  email: string;
   phoneNumber: string;
   deliveryLocation: string;
   // For recharge/gift card checkout
@@ -134,10 +137,10 @@ const Checkout = () => {
   const { toast } = useToast();
   const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
   const isMobile = useIsMobile();
-  
+
   // Check if this is a recharge/gift card checkout (has URL params) or cart checkout
   const isRechargeCheckout = searchParams.has("name") || searchParams.has("price");
-  
+
   // Get product details from URL params (for recharge/gift cards)
   const productName = searchParams.get("name") || "";
   const productPrice = parseFloat(searchParams.get("price") || "0");
@@ -149,7 +152,7 @@ const Checkout = () => {
   const productCurrency = searchParams.get("currency") || "USD";
   const productRegionalCurrency = searchParams.get("regionalCurrency") || "USD";
   const productCategory = searchParams.get("category") || "Touch Cards";
-  
+
   // Check if this is a streaming service checkout
   const isStreamingServiceCheckout = productCategory === "Streaming Services";
   const requiresAccountType =
@@ -158,7 +161,7 @@ const Checkout = () => {
   // Check if this is a gift card (not a recharge card)
   const isGiftCard = productCategory === "Gift Cards" || productName.toLowerCase().includes("gift card");
   const isRechargeCard = isRechargeCheckout && !isGiftCard && !isStreamingServiceCheckout;
-  
+
   // Streaming plan pricing tables
   const STREAMING_PRICING: Record<string, Record<string, Record<string, number>>> = {
     Netflix: {
@@ -173,14 +176,14 @@ const Checkout = () => {
       "standard": { "3 months": 20, "6 months": 35, "1 year": 50 },
     },
   };
-  
+
   // Scroll to top on mount
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
   }, []);
-  
+
   // Redirect to products if cart is empty and not a recharge checkout
   useEffect(() => {
     if (!isRechargeCheckout && cart.length === 0) {
@@ -192,7 +195,7 @@ const Checkout = () => {
       navigate("/products");
     }
   }, [cart, isRechargeCheckout, navigate, toast]);
-  
+
   // Get product image - prefer passed image, fallback to price-based lookup
   const getProductImage = () => {
     if (productImage) {
@@ -204,12 +207,16 @@ const Checkout = () => {
 
   const [formData, setFormData] = useState<CheckoutFormData>({
     customerName: "",
+    email: "",
     phoneNumber: "",
     deliveryLocation: "",
     separateDollars: false,
     dollarsAmount: "",
     accountType: "1 user", // Default to "1 user"
   });
+
+  // Payment method state - default to whatsapp for existing flow
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("whatsapp");
 
   // Get available plan durations based on product brand
   const getAvailablePlanDurations = () => {
@@ -236,6 +243,7 @@ const Checkout = () => {
 
   const [errors, setErrors] = useState({
     customerName: "",
+    email: "",
     phoneNumber: "",
     deliveryLocation: "",
     dollarsAmount: "",
@@ -274,19 +282,19 @@ const Checkout = () => {
   const validatePhoneNumber = (phone: string): boolean => {
     // Remove all non-digit characters
     const digitsOnly = phone.replace(/\D/g, "");
-    
+
     // Lebanese phone number patterns:
     // Mobile: 03, 70, 71, 76, 78, 79, 81 (followed by 6 digits)
     // Landline: 01, 04, 05, 06, 07, 08, 09 (followed by 6 digits)
     // With country code: +961 or 961 prefix
-    
+
     let phoneToCheck = digitsOnly;
-    
+
     // Remove country code if present
     if (phoneToCheck.startsWith("961")) {
       phoneToCheck = phoneToCheck.substring(3);
     }
-    
+
     // Check if it's a valid Lebanese number (8 digits after removing country code)
     if (phoneToCheck.length !== 8) {
       setErrors(prev => ({
@@ -295,11 +303,11 @@ const Checkout = () => {
       }));
       return false;
     }
-    
+
     // Check if it starts with valid Lebanese prefixes
     const validPrefixes = ["03", "70", "71", "76", "78", "79", "81", "01", "04", "05", "06", "07", "08", "09"];
     const prefix = phoneToCheck.substring(0, 2);
-    
+
     if (!validPrefixes.includes(prefix)) {
       setErrors(prev => ({
         ...prev,
@@ -307,7 +315,7 @@ const Checkout = () => {
       }));
       return false;
     }
-    
+
     setErrors(prev => ({ ...prev, phoneNumber: "" }));
     return true;
   };
@@ -315,7 +323,7 @@ const Checkout = () => {
   // Validate dollars amount
   const validateDollarsAmount = (amount: string): boolean => {
     if (!formData.separateDollars) return true;
-    
+
     const numAmount = parseFloat(amount);
     if (isNaN(numAmount) || numAmount <= 0) {
       setErrors(prev => ({
@@ -324,7 +332,7 @@ const Checkout = () => {
       }));
       return false;
     }
-    
+
     setErrors(prev => ({ ...prev, dollarsAmount: "" }));
     return true;
   };
@@ -333,7 +341,7 @@ const Checkout = () => {
   const formatLebanesePhoneNumber = (value: string): string => {
     // Remove all non-digit characters
     const digitsOnly = value.replace(/\D/g, "");
-    
+
     // Handle country code
     if (digitsOnly.startsWith("961")) {
       const localNumber = digitsOnly.substring(3);
@@ -342,7 +350,7 @@ const Checkout = () => {
       if (localNumber.length <= 5) return `+961 ${localNumber.substring(0, 2)} ${localNumber.substring(2)}`;
       return `+961 ${localNumber.substring(0, 2)} ${localNumber.substring(2, 5)} ${localNumber.substring(5)}`;
     }
-    
+
     // Handle local number without country code
     if (digitsOnly.length === 0) return "";
     if (digitsOnly.length <= 2) return digitsOnly;
@@ -377,14 +385,43 @@ const Checkout = () => {
   };
 
   const handleSeparateDollarsChange = (checked: boolean) => {
-    setFormData(prev => ({ 
-      ...prev, 
+    setFormData(prev => ({
+      ...prev,
       separateDollars: checked,
       dollarsAmount: checked ? prev.dollarsAmount : ""
     }));
     if (!checked) {
       setErrors(prev => ({ ...prev, dollarsAmount: "" }));
     }
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setFormData(prev => ({ ...prev, email: value }));
+    if (value) validateEmail(value);
+  };
+
+  // Validate email
+  const validateEmail = (email: string): boolean => {
+    if (!email || email.trim().length === 0) {
+      setErrors(prev => ({
+        ...prev,
+        email: "Email is required for Cash on Delivery"
+      }));
+      return false;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setErrors(prev => ({
+        ...prev,
+        email: "Please enter a valid email address"
+      }));
+      return false;
+    }
+
+    setErrors(prev => ({ ...prev, email: "" }));
+    return true;
   };
 
   // Add additional card
@@ -399,12 +436,12 @@ const Checkout = () => {
     } else if (productCategory === "Alfa Gift") {
       card = ADDITIONAL_ALFA_GIFT_CARDS.find(c => c.id.toString() === cardId);
     }
-    
+
     if (card && !additionalCards.find(c => c.id === card.id)) {
       setAdditionalCards(prev => [...prev, card]);
     }
   };
-  
+
   // Get available cards based on category
   const getAvailableCards = () => {
     if (productCategory === "Touch Cards") {
@@ -430,13 +467,13 @@ const Checkout = () => {
   const getStreamingPlanPrice = () => {
     const brandPricing = STREAMING_PRICING[productBrand];
     if (!brandPricing) return productPrice; // fallback to passed price
-    
+
     // IPTV doesn't have account types, use "standard" key
     if (productBrand === "IPTV") {
       const iptvPricing = brandPricing["standard"];
       return iptvPricing[streamingPlanDuration] ?? productPrice;
     }
-    
+
     // For Netflix/Shahid, use account type
     const accountPricing = brandPricing[formData.accountType] || brandPricing["1 user"];
     return accountPricing[streamingPlanDuration] ?? productPrice;
@@ -458,12 +495,12 @@ const Checkout = () => {
     } else if (isRechargeCheckout) {
       // Recharge/gift card checkout - no delivery fee
       let total = productPrice;
-      
+
       // Add additional cards prices
       additionalCards.forEach(card => {
         total += card.price;
       });
-      
+
       // Only add separate dollars for recharge cards, not gift cards
       // Each dollar entered is calculated as $1.45
       if (isRechargeCard && formData.separateDollars && formData.dollarsAmount) {
@@ -480,7 +517,7 @@ const Checkout = () => {
       return subtotal + DELIVERY_FEE;
     }
   };
-  
+
   // Get cart items with full product details
   const getCartItemsWithDetails = () => {
     return cart.map(item => {
@@ -501,7 +538,7 @@ const Checkout = () => {
   const handleWhatsAppPayment = () => {
     // Validate form based on checkout type
     let isValid = true;
-    
+
     if (isStreamingServiceCheckout) {
       // Streaming service checkout validation - only phone number required
       const isPhoneValid = validatePhoneNumber(formData.phoneNumber);
@@ -519,7 +556,7 @@ const Checkout = () => {
       const isLocationValid = validateDeliveryLocation(formData.deliveryLocation);
       isValid = isNameValid && isPhoneValid && isLocationValid;
     }
-    
+
     if (!isValid) {
       toast({
         title: "Validation Error",
@@ -534,7 +571,7 @@ const Checkout = () => {
     // Prepare WhatsApp message
     const total = calculateTotal();
     let message = `*New Order Request*\n\n`;
-    
+
     if (isStreamingServiceCheckout) {
       // Streaming service checkout message
       message += `• *Service:* ${productName}\n`;
@@ -550,11 +587,11 @@ const Checkout = () => {
       // Recharge/gift card checkout message
       message += `• *Product:* ${productName}\n`;
       message += `• *Product Price:* $${productPrice.toFixed(2)}\n`;
-      
+
       if (productRegion !== "USA" && productRegionalPrice > 0) {
         message += `• *Regional Price:* ${productRegionalCurrency} ${productRegionalPrice}\n`;
       }
-      
+
       // Add additional cards
       if (additionalCards.length > 0) {
         message += `\n• *Additional Cards:*\n`;
@@ -562,16 +599,16 @@ const Checkout = () => {
           message += `  - ${card.name} - $${card.price.toFixed(2)}\n`;
         });
       }
-      
+
       if (productRegion) {
         message += `• *Region:* ${productRegion}\n`;
       }
       if (productBrand) {
         message += `• *Brand:* ${productBrand}\n`;
       }
-      
+
       message += `\n• *Phone Number:* ${formData.phoneNumber}\n`;
-      
+
       // Only include separate dollars for recharge cards, not gift cards
       if (isRechargeCard && formData.separateDollars && formData.dollarsAmount) {
         const dollarsEntered = parseFloat(formData.dollarsAmount);
@@ -584,7 +621,7 @@ const Checkout = () => {
       message += `• *Customer Name:* ${formData.customerName}\n`;
       message += `• *Phone Number:* ${formData.phoneNumber}\n`;
       message += `• *Delivery Location:* ${formData.deliveryLocation}\n\n`;
-      
+
       message += `• *Order Items:*\n`;
       cart.forEach((item) => {
         let itemLabel = item.name;
@@ -597,7 +634,7 @@ const Checkout = () => {
         const itemPrice = getPriceAsNumber(item.price);
         message += `  - ${itemLabel} (Qty: ${item.quantity}) - $${(itemPrice * item.quantity).toFixed(2)}\n`;
       });
-      
+
       const subtotal = cart.reduce((sum, item) => {
         const price = getPriceAsNumber(item.price);
         return sum + (price * item.quantity);
@@ -605,13 +642,13 @@ const Checkout = () => {
       message += `\n• *Subtotal:* $${subtotal.toFixed(2)}\n`;
       message += `• *Delivery:* $${DELIVERY_FEE.toFixed(2)}\n`;
     }
-    
+
     message += `\n*Total Amount:* $${total.toFixed(2)}\n`;
     message += `\nPlease confirm this order. Thank you!`;
 
     // Encode message for URL
     const encodedMessage = encodeURIComponent(message);
-    
+
     // Replace with your WhatsApp business number (format: country code + number without +)
     const whatsappNumber = "96181861811"; // WhatsApp business number for receiving orders
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
@@ -635,6 +672,89 @@ const Checkout = () => {
       setTimeout(() => {
         setIsProcessing(false);
       }, 2000);
+    }
+  };
+
+  // Handle Cash on Delivery payment
+  const handleCashOnDeliveryPayment = async () => {
+    // Validate form
+    const isNameValid = validateCustomerName(formData.customerName);
+    const isEmailValid = validateEmail(formData.email);
+    const isPhoneValid = validatePhoneNumber(formData.phoneNumber);
+    const isLocationValid = validateDeliveryLocation(formData.deliveryLocation);
+
+    if (!isNameValid || !isEmailValid || !isPhoneValid || !isLocationValid) {
+      toast({
+        title: "Validation Error",
+        description: "Please fix the errors before proceeding.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsProcessing(true);
+
+    try {
+      // Prepare order data
+      const orderItems = cart.map(item => ({
+        name: item.name,
+        variantLabel: item.variantLabel,
+        color: (item as any).color,
+        quantity: item.quantity,
+        price: getPriceAsNumber(item.price)
+      }));
+
+      const subtotal = cart.reduce((sum, item) => {
+        const price = getPriceAsNumber(item.price);
+        return sum + (price * item.quantity);
+      }, 0);
+
+      const total = calculateTotal();
+
+      // Send to backend API
+      const response = await fetch('http://localhost:3001/api/send-order-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          paymentMethod: 'cash_on_delivery',
+          customerName: formData.customerName,
+          email: formData.email,
+          phoneNumber: formData.phoneNumber,
+          deliveryLocation: formData.deliveryLocation,
+          orderItems,
+          subtotal,
+          deliveryFee: DELIVERY_FEE,
+          total
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        toast({
+          title: "Order Placed Successfully!",
+          description: "We've received your order. You'll receive a confirmation email shortly.",
+        });
+
+        // Clear cart after successful checkout
+        setTimeout(() => {
+          clearCart();
+          setIsProcessing(false);
+          navigate('/');
+        }, 2000);
+      } else {
+        throw new Error(data.error || 'Failed to place order');
+      }
+    } catch (error) {
+      console.error('Error placing order:', error);
+      toast({
+        title: "Error",
+        description: "Failed to place your order. Please try again or contact support.",
+        variant: "destructive",
+      });
+      setIsProcessing(false);
     }
   };
 
@@ -666,9 +786,9 @@ const Checkout = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
           >
-                <div className="bg-white rounded-lg p-4 sm:p-6 md:p-8 shadow-elegant border border-border">
-                  <h2 className="text-elegant text-xl sm:text-2xl mb-4 sm:mb-6">Order Summary</h2>
-              
+            <div className="bg-white rounded-lg p-4 sm:p-6 md:p-8 shadow-elegant border border-border">
+              <h2 className="text-elegant text-xl sm:text-2xl mb-4 sm:mb-6">Order Summary</h2>
+
               {isStreamingServiceCheckout || isRechargeCheckout ? (
                 <>
                   {/* Streaming Service/Recharge/Gift Card Product Image */}
@@ -737,32 +857,32 @@ const Checkout = () => {
                       const uniqueKey = `${item.id}-${item.variantKey || "base"}-${(item as any).color || "no-color"}`;
 
                       return (
-                      <motion.div
+                        <motion.div
                           key={uniqueKey}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="flex gap-2 sm:gap-3 md:gap-4 p-3 sm:p-4 border border-border rounded-lg bg-gradient-to-r from-primary/5 to-accent/5"
-                      >
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="flex gap-2 sm:gap-3 md:gap-4 p-3 sm:p-4 border border-border rounded-lg bg-gradient-to-r from-primary/5 to-accent/5"
+                        >
                           {/* Product Image - Shows color-specific image if available */}
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-lg overflow-hidden bg-white border border-border flex-shrink-0">
-                          <img
+                          <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-lg overflow-hidden bg-white border border-border flex-shrink-0">
+                            <img
                               src={displayImage}
-                            alt={item.name}
+                              alt={item.name}
                               className="w-full h-full object-contain p-1"
-                            onError={(e) => {
-                              const target = e.target as HTMLImageElement;
-                              target.src = "/placeholder.svg";
-                            }}
-                          />
-                        </div>
+                              onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.src = "/placeholder.svg";
+                              }}
+                            />
+                          </div>
 
-                        {/* Product Info */}
-                        <div className="flex-1 min-w-0">
-                          <Link to={`/product/${item.id}`} className="hover:underline">
-                            <h3 className="text-xs sm:text-sm font-medium text-elegant line-clamp-2 mb-1">
-                              {item.name}
-                            </h3>
-                          </Link>
+                          {/* Product Info */}
+                          <div className="flex-1 min-w-0">
+                            <Link to={`/product/${item.id}`} className="hover:underline">
+                              <h3 className="text-xs sm:text-sm font-medium text-elegant line-clamp-2 mb-1">
+                                {item.name}
+                              </h3>
+                            </Link>
                             {item.variantLabel && (
                               <p className="text-[10px] sm:text-xs text-primary/80 mb-1">
                                 {item.variantLabel}
@@ -773,160 +893,160 @@ const Checkout = () => {
                                 Color: {(item as any).color}
                               </p>
                             )}
-                          {item.category && (
-                            <p className="text-[10px] sm:text-xs text-muted-foreground mb-1 sm:mb-2">{item.category}</p>
-                          )}
-                          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mt-1 sm:mt-2">
-                            <div className="flex items-center gap-1 sm:gap-2 border border-border rounded-lg">
-                              <motion.button
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.9 }}
+                            {item.category && (
+                              <p className="text-[10px] sm:text-xs text-muted-foreground mb-1 sm:mb-2">{item.category}</p>
+                            )}
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mt-1 sm:mt-2">
+                              <div className="flex items-center gap-1 sm:gap-2 border border-border rounded-lg">
+                                <motion.button
+                                  whileHover={{ scale: 1.1 }}
+                                  whileTap={{ scale: 0.9 }}
                                   onClick={() => updateQuantity(item.id, item.quantity - 1, item.variantKey, (item as any).color)}
-                                className="h-6 w-6 sm:h-7 sm:w-7 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
-                              >
-                                <Minus className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
-                              </motion.button>
-                              <span className="text-xs sm:text-sm font-medium w-6 sm:w-8 text-center">
-                                {item.quantity}
-                              </span>
-                              <motion.button
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.9 }}
+                                  className="h-6 w-6 sm:h-7 sm:w-7 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
+                                >
+                                  <Minus className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
+                                </motion.button>
+                                <span className="text-xs sm:text-sm font-medium w-6 sm:w-8 text-center">
+                                  {item.quantity}
+                                </span>
+                                <motion.button
+                                  whileHover={{ scale: 1.1 }}
+                                  whileTap={{ scale: 0.9 }}
                                   onClick={() => updateQuantity(item.id, item.quantity + 1, item.variantKey, (item as any).color)}
-                                className="h-6 w-6 sm:h-7 sm:w-7 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
-                              >
-                                <Plus className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
-                              </motion.button>
-                            </div>
-                            <div className="text-left sm:text-right">
-                              <p className="text-base sm:text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                                ${(getPriceAsNumber(item.price) * item.quantity).toFixed(2)}
-                              </p>
-                              <p className="text-[10px] sm:text-xs text-muted-foreground">
-                                ${getPriceAsNumber(item.price).toFixed(2)} each
-                              </p>
+                                  className="h-6 w-6 sm:h-7 sm:w-7 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
+                                >
+                                  <Plus className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
+                                </motion.button>
+                              </div>
+                              <div className="text-left sm:text-right">
+                                <p className="text-base sm:text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                                  ${(getPriceAsNumber(item.price) * item.quantity).toFixed(2)}
+                                </p>
+                                <p className="text-[10px] sm:text-xs text-muted-foreground">
+                                  ${getPriceAsNumber(item.price).toFixed(2)} each
+                                </p>
+                              </div>
                             </div>
                           </div>
-                        </div>
 
-                        {/* Remove Button */}
-                        <motion.button
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
+                          {/* Remove Button */}
+                          <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
                             onClick={() => removeFromCart(item.id, item.variantKey, (item as any).color)}
-                          className="h-6 w-6 sm:h-8 sm:w-8 rounded-full hover:bg-destructive hover:text-destructive-foreground transition-all flex items-center justify-center self-start"
-                        >
-                          <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
-                        </motion.button>
-                      </motion.div>
+                            className="h-6 w-6 sm:h-8 sm:w-8 rounded-full hover:bg-destructive hover:text-destructive-foreground transition-all flex items-center justify-center self-start"
+                          >
+                            <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
+                          </motion.button>
+                        </motion.div>
                       );
                     })}
                   </div>
                 </>
               )}
 
-                {/* Additional Cards (only for recharge checkout, not streaming services) */}
-                {isRechargeCheckout && !isStreamingServiceCheckout && additionalCards.length > 0 && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    className="space-y-3 pt-4 border-b border-border"
-                  >
-                    <p className="text-sm font-medium text-muted-foreground mb-3">Additional Cards</p>
-                    {additionalCards.map((card) => (
-                      <motion.div
-                        key={card.id}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        className="flex items-center justify-between py-2 px-3 bg-primary/5 rounded-lg"
-                      >
-                        <div>
-                          <p className="text-sm font-medium">{card.name}</p>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <p className="text-sm font-medium">${card.price.toFixed(2)}</p>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleRemoveAdditionalCard(card.id)}
-                            className="h-6 w-6 p-0 hover:bg-red-100"
-                          >
-                            <X className="h-3 w-3 text-red-500" />
-                          </Button>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </motion.div>
-                )}
+              {/* Additional Cards (only for recharge checkout, not streaming services) */}
+              {isRechargeCheckout && !isStreamingServiceCheckout && additionalCards.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  className="space-y-3 pt-4 border-b border-border"
+                >
+                  <p className="text-sm font-medium text-muted-foreground mb-3">Additional Cards</p>
+                  {additionalCards.map((card) => (
+                    <motion.div
+                      key={card.id}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      className="flex items-center justify-between py-2 px-3 bg-primary/5 rounded-lg"
+                    >
+                      <div>
+                        <p className="text-sm font-medium">{card.name}</p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm font-medium">${card.price.toFixed(2)}</p>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleRemoveAdditionalCard(card.id)}
+                          className="h-6 w-6 p-0 hover:bg-red-100"
+                        >
+                          <X className="h-3 w-3 text-red-500" />
+                        </Button>
+                      </div>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              )}
 
               {/* Separate Dollars - Only for recharge cards (not gift cards or streaming services) */}
               {isRechargeCard && formData.separateDollars && formData.dollarsAmount && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    className="py-4 border-b border-border"
-                  >
-                    <div className="flex items-center justify-between mb-1">
-                      <div className="flex items-center gap-2">
-                        <DollarSign className="h-4 w-4 text-muted-foreground" />
-                        <p className="text-sm">Separate Dollars</p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-lg font-medium">${(parseFloat(formData.dollarsAmount) * 1.45).toFixed(2)}</p>
-                        <p className="text-xs text-muted-foreground">({formData.dollarsAmount} × $1.45)</p>
-                      </div>
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  className="py-4 border-b border-border"
+                >
+                  <div className="flex items-center justify-between mb-1">
+                    <div className="flex items-center gap-2">
+                      <DollarSign className="h-4 w-4 text-muted-foreground" />
+                      <p className="text-sm">Separate Dollars</p>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Note: Each dollar added is calculated as $1.45 in the total price.
-                    </p>
-                  </motion.div>
-                )}
+                    <div className="text-right">
+                      <p className="text-lg font-medium">${(parseFloat(formData.dollarsAmount) * 1.45).toFixed(2)}</p>
+                      <p className="text-xs text-muted-foreground">({formData.dollarsAmount} × $1.45)</p>
+                    </div>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Note: Each dollar added is calculated as $1.45 in the total price.
+                  </p>
+                </motion.div>
+              )}
 
-                {/* Subtotal and Total */}
-                <div className="space-y-3 pt-4 border-t border-border">
-                  {isStreamingServiceCheckout && (
-                    <>
+              {/* Subtotal and Total */}
+              <div className="space-y-3 pt-4 border-t border-border">
+                {isStreamingServiceCheckout && (
+                  <>
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-muted-foreground">Plan Price</span>
                       <span className="font-medium">${getStreamingPlanPrice().toFixed(2)}</span>
                     </div>
-                      <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center justify-between text-sm">
                       <span className="text-muted-foreground">Duration</span>
                       <span className="font-medium capitalize">{streamingPlanDuration}</span>
-                      </div>
-                    </>
-                  )}
-                  {!isRechargeCheckout && !isStreamingServiceCheckout && (
-                    <>
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">Subtotal</span>
-                        <span className="font-medium">
-                          ${cart.reduce((sum, item) => {
-                            const price = getPriceAsNumber(item.price);
-                            return sum + (price * item.quantity);
-                          }, 0).toFixed(2)}
-                        </span>
-                      </div>
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">Delivery</span>
-                        <span className="font-medium">${DELIVERY_FEE.toFixed(2)}</span>
-                      </div>
-                    </>
-                  )}
-                {isRechargeCard && formData.separateDollars && formData.dollarsAmount && (
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Additional Dollars ({formData.dollarsAmount} × $1.45)</span>
-                      <span className="font-medium">${(parseFloat(formData.dollarsAmount) * 1.45).toFixed(2)}</span>
                     </div>
-                  )}
-                  <div className="h-px bg-border" />
-                  <div className="flex items-center justify-between pt-2">
-                    <p className="text-elegant text-xl">Total</p>
-                    <p className="text-elegant text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                      ${calculateTotal().toFixed(2)}
-                    </p>
+                  </>
+                )}
+                {!isRechargeCheckout && !isStreamingServiceCheckout && (
+                  <>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-muted-foreground">Subtotal</span>
+                      <span className="font-medium">
+                        ${cart.reduce((sum, item) => {
+                          const price = getPriceAsNumber(item.price);
+                          return sum + (price * item.quantity);
+                        }, 0).toFixed(2)}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-muted-foreground">Delivery</span>
+                      <span className="font-medium">${DELIVERY_FEE.toFixed(2)}</span>
+                    </div>
+                  </>
+                )}
+                {isRechargeCard && formData.separateDollars && formData.dollarsAmount && (
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Additional Dollars ({formData.dollarsAmount} × $1.45)</span>
+                    <span className="font-medium">${(parseFloat(formData.dollarsAmount) * 1.45).toFixed(2)}</span>
                   </div>
+                )}
+                <div className="h-px bg-border" />
+                <div className="flex items-center justify-between pt-2">
+                  <p className="text-elegant text-xl">Total</p>
+                  <p className="text-elegant text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                    ${calculateTotal().toFixed(2)}
+                  </p>
                 </div>
+              </div>
 
               {/* Security Notice */}
               <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-primary/5 rounded-lg border border-primary/20">
@@ -1124,6 +1244,46 @@ const Checkout = () => {
                   </>
                 ) : (
                   <>
+                    {/* Payment Method Selection */}
+                    <div className="mb-6">
+                      <Label className="text-elegant mb-3 block">Payment Method</Label>
+                      <div className="grid grid-cols-2 gap-4">
+                        {/* WhatsApp Payment */}
+                        <motion.button
+                          type="button"
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          onClick={() => setPaymentMethod("whatsapp")}
+                          className={`p-4 rounded-lg border-2 transition-all ${paymentMethod === "whatsapp"
+                            ? "border-[#25D366] bg-[#25D366]/10"
+                            : "border-border hover:border-[#25D366]/50"
+                            }`}
+                        >
+                          <MessageCircle className={`h-6 w-6 mx-auto mb-2 ${paymentMethod === "whatsapp" ? "text-[#25D366]" : "text-muted-foreground"
+                            }`} />
+                          <p className="text-sm font-medium">WhatsApp</p>
+                          <p className="text-xs text-muted-foreground mt-1">Quick checkout</p>
+                        </motion.button>
+
+                        {/* Cash on Delivery */}
+                        <motion.button
+                          type="button"
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          onClick={() => setPaymentMethod("cash_on_delivery")}
+                          className={`p-4 rounded-lg border-2 transition-all ${paymentMethod === "cash_on_delivery"
+                            ? "border-primary bg-primary/10"
+                            : "border-border hover:border-primary/50"
+                            }`}
+                        >
+                          <Banknote className={`h-6 w-6 mx-auto mb-2 ${paymentMethod === "cash_on_delivery" ? "text-primary" : "text-muted-foreground"
+                            }`} />
+                          <p className="text-sm font-medium">Cash on Delivery</p>
+                          <p className="text-xs text-muted-foreground mt-1">Pay when received</p>
+                        </motion.button>
+                      </div>
+                    </div>
+
                     {/* Customer Name Field - Required (for product checkout) */}
                     <div>
                       <Label htmlFor="customerName" className="text-elegant text-sm mb-2 flex items-center gap-2">
@@ -1153,6 +1313,41 @@ const Checkout = () => {
                         Enter your full name for order processing
                       </p>
                     </div>
+
+                    {/* Email Field - Only for Cash on Delivery */}
+                    {paymentMethod === "cash_on_delivery" && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                      >
+                        <Label htmlFor="email" className="text-elegant text-sm mb-2 flex items-center gap-2">
+                          <Mail className="h-4 w-4" />
+                          Email Address
+                          <span className="text-red-500">*</span>
+                        </Label>
+                        <Input
+                          id="email"
+                          type="email"
+                          placeholder="your.email@example.com"
+                          value={formData.email}
+                          onChange={handleEmailChange}
+                          className={`mt-2 ${errors.email ? "border-red-500" : ""}`}
+                        />
+                        {errors.email && (
+                          <motion.p
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="text-xs text-red-500 mt-2"
+                          >
+                            {errors.email}
+                          </motion.p>
+                        )}
+                        <p className="text-xs text-muted-foreground mt-2">
+                          We'll send you order confirmation and updates via email
+                        </p>
+                      </motion.div>
+                    )}
 
                     {/* Phone Number Field - Required (for product checkout) */}
                     <div>
@@ -1228,8 +1423,8 @@ const Checkout = () => {
                       </SelectTrigger>
                       <SelectContent>
                         {getAvailableCards().map((card) => (
-                          <SelectItem 
-                            key={card.id} 
+                          <SelectItem
+                            key={card.id}
                             value={card.id.toString()}
                             disabled={additionalCards.some(c => c.id === card.id)}
                           >
@@ -1305,16 +1500,21 @@ const Checkout = () => {
                   className="pt-6"
                 >
                   <Button
-                    onClick={handleWhatsAppPayment}
+                    onClick={paymentMethod === "whatsapp" ? handleWhatsAppPayment : handleCashOnDeliveryPayment}
                     disabled={
-                      isProcessing || 
+                      isProcessing ||
                       (isStreamingServiceCheckout
                         ? !formData.phoneNumber
-                        : isRechargeCheckout 
-                          ? !formData.phoneNumber 
-                          : !formData.customerName || !formData.phoneNumber || !formData.deliveryLocation)
+                        : isRechargeCheckout
+                          ? !formData.phoneNumber
+                          : paymentMethod === "cash_on_delivery"
+                            ? !formData.customerName || !formData.email || !formData.phoneNumber || !formData.deliveryLocation
+                            : !formData.customerName || !formData.phoneNumber || !formData.deliveryLocation)
                     }
-                    className="w-full bg-gradient-to-r from-[#25D366] to-[#128C7E] hover:from-[#128C7E] hover:to-[#25D366] text-white py-6 text-lg shadow-lg"
+                    className={`w-full py-6 text-lg shadow-lg ${paymentMethod === "whatsapp"
+                        ? "bg-gradient-to-r from-[#25D366] to-[#128C7E] hover:from-[#128C7E] hover:to-[#25D366]"
+                        : "bg-gradient-to-r from-primary to-accent hover:from-accent hover:to-primary"
+                      } text-white`}
                   >
                     {isProcessing ? (
                       <>
@@ -1329,8 +1529,17 @@ const Checkout = () => {
                       </>
                     ) : (
                       <>
-                        <MessageCircle className="mr-2 h-5 w-5" />
-                        Pay with WhatsApp - ${calculateTotal().toFixed(2)}
+                        {paymentMethod === "whatsapp" ? (
+                          <>
+                            <MessageCircle className="mr-2 h-5 w-5" />
+                            Pay with WhatsApp - ${calculateTotal().toFixed(2)}
+                          </>
+                        ) : (
+                          <>
+                            <Banknote className="mr-2 h-5 w-5" />
+                            Place Order (Cash on Delivery) - ${calculateTotal().toFixed(2)}
+                          </>
+                        )}
                       </>
                     )}
                   </Button>

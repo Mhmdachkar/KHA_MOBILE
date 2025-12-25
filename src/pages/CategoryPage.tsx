@@ -32,6 +32,7 @@ import hocoLogo from "@/assets/logo's/hoco logo.webp";
 import samsungLogo from "@/assets/logo's/samsung logo.avif";
 import smartLogo from "@/assets/smart logo.jpg";
 import tecnoLogo from "@/assets/techno logo.jpg";
+import xiaomiLogo from "@/assets/logo's/xiaomi logo.png";
 
 const brandLogoMap: Record<string, string> = {
   "Apple": appleLogo,
@@ -41,6 +42,7 @@ const brandLogoMap: Record<string, string> = {
   "Foneng": fonengLogo,
   "Smart": smartLogo,
   "Tecno": tecnoLogo,
+  "Xiaomi": xiaomiLogo,
 };
 
 // Quote map for each category
@@ -223,11 +225,11 @@ const CategoryPage = () => {
           const bIsGreenLion = b.id >= 5000;
           const aIsApple = a.brand === "Apple" || (typeof a.name === "string" && a.name.toLowerCase().includes("apple"));
           const bIsApple = b.brand === "Apple" || (typeof b.name === "string" && b.name.toLowerCase().includes("apple"));
-          
+
           // Apple products FIRST - use priority order, then by price
           if (aIsApple && !bIsApple) return -1;
           if (!aIsApple && bIsApple) return 1;
-          
+
           // Within Apple products, use priority order first
           if (aIsApple && bIsApple) {
             const airPodsPriority: Record<number, number> = {
@@ -235,10 +237,10 @@ const CategoryPage = () => {
               129: 2, // Apple AirPods Pro (2nd Generation) with USB-C - $215
               128: 3, // Apple AirPods 4 (Original) - $150
             };
-            
+
             const aPriority = airPodsPriority[a.id] || 999;
             const bPriority = airPodsPriority[b.id] || 999;
-            
+
             // If both are in priority list, sort by priority order
             if (aPriority !== 999 && bPriority !== 999) {
               return aPriority - bPriority;
@@ -246,18 +248,18 @@ const CategoryPage = () => {
             // If only one is in priority list, prioritize it
             if (aPriority !== 999 && bPriority === 999) return -1;
             if (aPriority === 999 && bPriority !== 999) return 1;
-            
+
             // If neither is in priority list, sort by price (highest to lowest)
             return b.price - a.price;
           }
-          
+
           // Green Lion second - sort by price (highest to lowest) within Green Lion
           if (aIsGreenLion && !bIsGreenLion) return -1;
           if (!aIsGreenLion && bIsGreenLion) return 1;
           if (aIsGreenLion && bIsGreenLion) {
             return b.price - a.price; // Highest price first within Green Lion
           }
-          
+
           // For non-Apple, non-Green Lion products: sort by price (highest to lowest)
           return b.price - a.price;
         });
@@ -298,11 +300,11 @@ const CategoryPage = () => {
         products.sort((a, b) => {
           const aIsSony = a.brand === "Sony" || (typeof a.name === "string" && a.name.toLowerCase().includes("playstation") || a.name.toLowerCase().includes("sony"));
           const bIsSony = b.brand === "Sony" || (typeof b.name === "string" && b.name.toLowerCase().includes("playstation") || b.name.toLowerCase().includes("sony"));
-          
+
           // Sony products first
           if (aIsSony && !bIsSony) return -1;
           if (!aIsSony && bIsSony) return 1;
-          
+
           // Sort by price (highest to lowest), but keep price 0 items visible
           return b.price - a.price;
         });
@@ -322,11 +324,11 @@ const CategoryPage = () => {
         products.sort((a, b) => {
           const aIsApple = a.brand === "Apple" || (typeof a.name === "string" && a.name.toLowerCase().includes("apple") || a.name.toLowerCase().includes("iphone"));
           const bIsApple = b.brand === "Apple" || (typeof b.name === "string" && b.name.toLowerCase().includes("apple") || b.name.toLowerCase().includes("iphone"));
-          
+
           // Apple products first
           if (aIsApple && !bIsApple) return -1;
           if (!aIsApple && bIsApple) return 1;
-          
+
           // Sort by price (highest to lowest)
           return b.price - a.price;
         });
@@ -358,11 +360,11 @@ const CategoryPage = () => {
           const bIsGreenLion = b.id >= 5000;
           const aIsApple = a.brand === "Apple" || (typeof a.name === "string" && a.name.toLowerCase().includes("apple"));
           const bIsApple = b.brand === "Apple" || (typeof b.name === "string" && b.name.toLowerCase().includes("apple"));
-          
+
           // Apple products FIRST - use priority order, then by price
           if (aIsApple && !bIsApple) return -1;
           if (!aIsApple && bIsApple) return 1;
-          
+
           // Within Apple products, use priority order first
           if (aIsApple && bIsApple) {
             const appleWatchPriority: Record<number, number> = {
@@ -371,10 +373,10 @@ const CategoryPage = () => {
               205: 3, // Apple Watch SE (2nd generation) 40mm - $285
               206: 4, // Apple Watch SE (2nd generation) 44mm - $265
             };
-            
+
             const aPriority = appleWatchPriority[a.id] || 999;
             const bPriority = appleWatchPriority[b.id] || 999;
-            
+
             // If both are in priority list, sort by priority order
             if (aPriority !== 999 && bPriority !== 999) {
               return aPriority - bPriority;
@@ -382,18 +384,18 @@ const CategoryPage = () => {
             // If only one is in priority list, prioritize it
             if (aPriority !== 999 && bPriority === 999) return -1;
             if (aPriority === 999 && bPriority !== 999) return 1;
-            
+
             // If neither is in priority list, sort by price (highest to lowest)
             return b.price - a.price;
           }
-          
+
           // Green Lion second - sort by price (highest to lowest) within Green Lion
           if (aIsGreenLion && !bIsGreenLion) return -1;
           if (!aIsGreenLion && bIsGreenLion) return 1;
           if (aIsGreenLion && bIsGreenLion) {
             return b.price - a.price; // Highest price first within Green Lion
           }
-          
+
           // For non-Apple, non-Green Lion products: sort by price (highest to lowest)
           return b.price - a.price;
         });
@@ -413,11 +415,11 @@ const CategoryPage = () => {
         products.sort((a, b) => {
           const aIsApple = a.brand === "Apple" || (typeof a.name === "string" && a.name.toLowerCase().includes("apple") || a.name.toLowerCase().includes("ipad"));
           const bIsApple = b.brand === "Apple" || (typeof b.name === "string" && b.name.toLowerCase().includes("apple") || b.name.toLowerCase().includes("ipad"));
-          
+
           // Apple products first
           if (aIsApple && !bIsApple) return -1;
           if (!aIsApple && bIsApple) return 1;
-          
+
           // Sort by price (highest to lowest)
           return b.price - a.price;
         });
@@ -441,11 +443,11 @@ const CategoryPage = () => {
         products.sort((a, b) => {
           const aIsApple = a.brand === "Apple" || (typeof a.name === "string" && a.name.toLowerCase().includes("apple"));
           const bIsApple = b.brand === "Apple" || (typeof b.name === "string" && b.name.toLowerCase().includes("apple"));
-          
+
           // Apple products first
           if (aIsApple && !bIsApple) return -1;
           if (!aIsApple && bIsApple) return 1;
-          
+
           // Sort by price (highest to lowest), but keep price 0 items visible
           return b.price - a.price;
         });
@@ -478,6 +480,7 @@ const CategoryPage = () => {
     if (name.includes("samsung")) return "Samsung";
     if (name.includes("apple")) return "Apple";
     if (name.includes("green lion")) return "Green Lion";
+    if (name.includes("xiaomi") || name.includes("redmi") || name.includes("poco")) return "Xiaomi";
     return undefined;
   };
 
@@ -536,10 +539,10 @@ const CategoryPage = () => {
             205: 3, // Apple Watch SE (2nd generation) 40mm - $285
             206: 4, // Apple Watch SE (2nd generation) 44mm - $265
           };
-          
+
           const aPriority = appleWatchPriority[a.id] || 999;
           const bPriority = appleWatchPriority[b.id] || 999;
-          
+
           // If both are in priority list, sort by priority order
           if (aPriority !== 999 && bPriority !== 999) {
             return aPriority - bPriority;
@@ -547,7 +550,7 @@ const CategoryPage = () => {
           // If only one is in priority list, prioritize it
           if (aPriority !== 999 && bPriority === 999) return -1;
           if (aPriority === 999 && bPriority !== 999) return 1;
-          
+
           // If neither is in priority list, sort by price (highest to lowest)
           return b.price - a.price;
         }
@@ -560,10 +563,10 @@ const CategoryPage = () => {
             129: 2, // Apple AirPods Pro (2nd Generation) with USB-C - $215
             128: 3, // Apple AirPods 4 (Original) - $150
           };
-          
+
           const aPriority = airPodsPriority[a.id] || 999;
           const bPriority = airPodsPriority[b.id] || 999;
-          
+
           // If both are in priority list, sort by priority order
           if (aPriority !== 999 && bPriority !== 999) {
             return aPriority - bPriority;
@@ -571,7 +574,7 @@ const CategoryPage = () => {
           // If only one is in priority list, prioritize it
           if (aPriority !== 999 && bPriority === 999) return -1;
           if (aPriority === 999 && bPriority !== 999) return 1;
-          
+
           // If neither is in priority list, sort by price (highest to lowest)
           return b.price - a.price;
         }
