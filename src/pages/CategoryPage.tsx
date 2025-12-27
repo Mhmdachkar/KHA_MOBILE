@@ -486,14 +486,20 @@ const CategoryPage = () => {
 
   const smartphoneBrandOptions = useMemo(() => {
     // Apply this to all categories, not just Smartphones
-    const set = new Set<string>();
+    // Count products per brand
+    const brandCounts = new Map<string, number>();
     categoryProducts.forEach((product) => {
       const brand = inferProductBrand(product);
       if (brand) {
-        set.add(brand);
+        brandCounts.set(brand, (brandCounts.get(brand) || 0) + 1);
       }
     });
-    return Array.from(set).sort();
+    // Sort by product count (descending), then alphabetically for ties
+    return Array.from(brandCounts.keys()).sort((a, b) => {
+      const countDiff = (brandCounts.get(b) || 0) - (brandCounts.get(a) || 0);
+      if (countDiff !== 0) return countDiff;
+      return a.localeCompare(b);
+    });
   }, [categoryProducts]);
 
   useEffect(() => {

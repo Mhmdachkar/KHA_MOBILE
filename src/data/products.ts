@@ -294,6 +294,17 @@ import miSmartBulb from "@/assets/phones/xiaomi/xiaomi accessories/smart bulb 95
 import miSmartPlug2 from "@/assets/phones/xiaomi/xiaomi accessories/MI smart plug 2/MI smart plug 2.webp";
 import miToothbrush from "@/assets/phones/xiaomi/xiaomi accessories/MI toothbrusher/MI toothbrusher xiaomi.webp";
 import mi67WCharger from "@/assets/phones/xiaomi/xiaomi accessories/MI 67W Adapter+charger/MI 67W Adapter+charger xiaomi.jpg";
+import miKeyboardMouse from "@/assets/phones/xiaomi/xiaomi accessories/keyboard+mouse/keyboard+mouse xiaomi.webp";
+import miSmartDoorbell from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Smart Doorbell 3/Xiaomi Smart Doorbell 3.webp";
+import miSmartDoorbell2 from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Smart Doorbell 3/XiaomiSmartDoorbell31102.webp";
+import miSmartDoorbell3 from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Smart Doorbell 3/XiaomiSmartDoorbell31103.webp";
+import miSmartDoorbell4 from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Smart Doorbell 3/XiaomiSmartDoorbell31104.webp";
+import miSmartDoorbell5 from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Smart Doorbell 3/xiaomi-smart-doorbell-3-cle-market-6511744.webp";
+import miSmartDoorbell6 from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Smart Doorbell 3/xiaomi-smart-doorbell-3-cle-market-7830353.webp";
+import miSphereCamera from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Mi Sphere Camera Kit Black/Xiaomi Mi Sphere Camera Kit Black.jpg";
+import miSphereCamera2 from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Mi Sphere Camera Kit Black/51KZ-ErTQVL._AC_SX522_.jpg";
+import miSphereCamera3 from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Mi Sphere Camera Kit Black/41ITVP7FgIL._AC_SX522_.jpg";
+import mi4KTVStick from "@/assets/phones/xiaomi/xiaomi accessories/4K TV Stick Portable Streaming Media Player/4K TV Stick Portable Streaming Media Player.webp";
 
 export interface ProductVariant {
   key: string;
@@ -1622,6 +1633,236 @@ export const phoneAccessories: Product[] = [
       { label: "Special Features", value: "Fast Charging, Short Circuit Protection, Automatic Off, Lightweight" },
       { label: "Package Contents", value: "1 Adapter, 1 Data USB Cable" },
       { label: "Country of Origin", value: "India" }
+    ]
+  },
+  // Xiaomi 2.4G Wireless Keyboard & Mouse Combo (ID: 146)
+  {
+    id: 146,
+    name: "Xiaomi Wireless Keyboard & Mouse Combo",
+    title: "2.4G Wireless 104 Keys Keyboard & Mouse Set - WXJS02YM",
+    price: 35,
+    image: miKeyboardMouse,
+    images: [miKeyboardMouse],
+    rating: 4.6,
+    category: "Accessories",
+    brand: "Xiaomi",
+    description: "The Xiaomi 2.4G Wireless Keyboard & Mouse Set offers a complete wireless desktop solution with stable 2.4GHz transmission. Featuring a 104-key layout with multimedia shortcuts, light chocolate mute keycaps, and a lightweight 45g mouse with TTC micro switches. One receiver connects both devices for a clean, wire-free workspace. Compatible with Windows 10 and above, this combo includes pre-installed batteries for immediate use.",
+    features: [
+      "Single 2.4GHz wireless receiver for both keyboard and mouse",
+      "Stable wireless transmission, goodbye to cable clutter",
+      "104-key full-size layout with numeric keypad",
+      "12 multimedia shortcut keys for quick app access",
+      "Light chocolate mute keycaps with micro-arc surface",
+      "2.8mm key travel for comfortable typing",
+      "Ultra-lightweight mouse (only 45g without batteries)",
+      "TTC micro switches - crisp, pleasant click sound",
+      "1000DPI precision sensor for accurate positioning",
+      "Ergonomic design fits different hand sizes",
+      "Pre-installed AA batteries (2x included)",
+      "Compatible with Windows 10 and above",
+      "Keyboard weight: 534g, Mouse weight: 45g"
+    ],
+    specifications: [
+      { label: "Brand", value: "XIAOMI" },
+      { label: "Model", value: "WXJS02YM" },
+      { label: "Connection", value: "2.4GHz wireless connection" },
+      { label: "Receiver Interface", value: "USB-A" },
+      { label: "Supported Systems", value: "Windows 10 and above" },
+      { label: "Keyboard Keys", value: "104 keys" },
+      { label: "Keyboard Size", value: "43.8 x 12.9 x 3.1 cm" },
+      { label: "Keyboard Weight", value: "534g" },
+      { label: "Mouse Size", value: "10.8 x 5.7 x 3.5 cm" },
+      { label: "Mouse Weight", value: "45g (without batteries)" },
+      { label: "Mouse DPI", value: "1000DPI precision sensor" },
+      { label: "Mouse Switch", value: "TTC micro switch" },
+      { label: "Batteries", value: "2x AA (pre-installed, 1 for keyboard, 1 for mouse)" },
+      { label: "Working Temperature", value: "0℃ ~ 40℃" },
+      { label: "Material", value: "Plastic, metal" },
+      { label: "Package Contents", value: "1 Keyboard, 1 Mouse, 1 Receiver, 2 AA Batteries, User Manual" }
+    ]
+  },
+  // Xiaomi Smart Doorbell 3 (ID: 147)
+  {
+    id: 147,
+    name: "Xiaomi Smart Doorbell 3",
+    title: "Xiaomi Smart Doorbell 3 - 2K Resolution with AI Human Recognition",
+    price: 65,
+    image: miSmartDoorbell,
+    images: [miSmartDoorbell, miSmartDoorbell2, miSmartDoorbell3, miSmartDoorbell4, miSmartDoorbell5, miSmartDoorbell6],
+    rating: 4.8,
+    category: "Accessories",
+    brand: "Xiaomi",
+    description: "The Xiaomi Smart Doorbell 3 delivers ultra-clear 2K resolution monitoring with advanced AI human recognition for your home security. Featuring 180° diagonal ultra-wide view, 24-hour smart motion detection, and automatic video recording, this smart doorbell keeps watch over your door day and night. With two-way audio communication, doorstep motion notifications, and free 72-hour rolling cloud storage, you'll never miss a visitor. Includes a high-volume 72dB wireless chime and boasts an impressive 4.8-month battery life.",
+    features: [
+      "Ultra-clear 2K resolution for crystal-clear video",
+      "Real-time monitoring with live view from your phone",
+      "24-hour smart motion detection",
+      "Automatic video recording when movement detected",
+      "Diagonal 180° ultra-wide field of view",
+      "AI human recognition - distinguishes people from objects",
+      "Two-way audio communication - talk to visitors remotely",
+      "Doorstep motion notifications sent to your phone",
+      "High-volume wireless chime (72dB) included",
+      "Extra-long 4.8-month battery life",
+      "Free rolling 72-hour cloud storage",
+      "Electronic chime included in package",
+      "Weather-resistant for outdoor installation",
+      "Night vision for 24/7 monitoring"
+    ],
+    specifications: [
+      { label: "Brand", value: "XIAOMI" },
+      { label: "Model", value: "Smart Doorbell 3" },
+      { label: "Video Resolution", value: "2K Ultra HD" },
+      { label: "Field of View", value: "180° diagonal ultra-wide" },
+      { label: "Motion Detection", value: "24-hour smart motion detection with automatic recording" },
+      { label: "AI Features", value: "AI human recognition" },
+      { label: "Audio", value: "Two-way audio communication" },
+      { label: "Notifications", value: "Doorstep motion notification to smartphone" },
+      { label: "Wireless Chime", value: "High-volume 72dB electronic chime included" },
+      { label: "Battery Life", value: "4.8 months (extra-long)" },
+      { label: "Cloud Storage", value: "Free rolling 72-hour cloud storage" },
+      { label: "Night Vision", value: "Yes, for 24/7 monitoring" },
+      { label: "Weather Resistance", value: "Outdoor-rated, weather-resistant" },
+      { label: "Connectivity", value: "Wi-Fi, smartphone app control" },
+      { label: "Package Contents", value: "Smart Doorbell 3, Electronic Chime, Mounting Hardware, User Manual" }
+    ]
+  },
+  // Xiaomi Mi Sphere Camera Kit (ID: 148)
+  {
+    id: 148,
+    name: "Xiaomi Mi Sphere Camera Kit",
+    title: "Xiaomi Mi Sphere Camera Kit Black - 360° Panoramic Action Camera",
+    price: 180,
+    image: miSphereCamera,
+    images: [miSphereCamera, miSphereCamera2, miSphereCamera3],
+    rating: 4.7,
+    category: "Accessories",
+    brand: "Xiaomi",
+    description: "The Xiaomi Mi Sphere Camera Kit delivers flawless 360-degree shooting with dual Sony IMX206 sensors and Ambarella image processing. Capture stunning panoramic videos and photos with incredible 3200 x 1800 resolution and 16MP capabilities. Perfect for travel, action sports, and business meetings, this camera features 6-axis electronic stabilization for incredibly stable videos even during extreme activities like skiing or bungee jumping. With long exposure mode for capturing star trails and up to 75 minutes of HD recording, this is the ultimate 360° photography solution.",
+    features: [
+      "Dual Sony IMX206 1/2.3-inch sensors for flawless image quality",
+      "360-degree panoramic video and photo capture",
+      "3200 x 1800 resolution with 16MP photos",
+      "Record at 2304 x 1152 @ 60FPS or 30FPS",
+      "Ambarella image processing chip for seamless color transitions",
+      "6-axis electronic stabilization reduces jitter and blur",
+      "Long exposure mode for star trail photography",
+      "Manual and automatic exposure settings",
+      "Built-in 1600mAh battery - up to 200 shots per charge",
+      "Up to 75 minutes HD video recording with WiFi on",
+      "Perfect for travel, action sports, and business meetings",
+      "Neutralizes hand movement for incredibly stable videos",
+      "Memory card support for expandable storage",
+      "Compact design: 8 x 7 x 3 cm, only 120g"
+    ],
+    specifications: [
+      { label: "Brand", value: "Xiaomi Communication Co. Ltd" },
+      { label: "Model", value: "ZRM4030GL (MiJia)" },
+      { label: "Sensors", value: "Dual Sony IMX206 1/2.3-inch sensors" },
+      { label: "Image Processor", value: "Ambarella chip" },
+      { label: "Resolution", value: "3200 x 1800 pixels" },
+      { label: "Megapixels", value: "16 MP" },
+      { label: "Video Recording", value: "2304 x 1152 @ 60FPS or 30FPS" },
+      { label: "Stabilization", value: "6-axis electronic stabilization system" },
+      { label: "Special Modes", value: "Long exposure, manual/automatic exposure" },
+      { label: "Battery", value: "Built-in 1600mAh 3.8V Lithium Polymer" },
+      { label: "Battery Life", value: "Up to 200 shots or 75 min HD video" },
+      { label: "Supported Media", value: "Memory Card" },
+      { label: "Dimensions", value: "8 x 7 x 3 cm" },
+      { label: "Weight", value: "120g" },
+      { label: "Color", value: "Black" },
+      { label: "Best For", value: "Travel, action sports, panoramic photography, business meetings" }
+    ]
+  },
+  // Xiaomi 4K TV Stick Streaming Media Player (ID: 149)
+  {
+    id: 149,
+    name: "Xiaomi 4K TV Stick",
+    title: "4K TV Stick Portable Streaming Media Player – Android 11, Google Assistant, Smart Cast",
+    price: 45,
+    image: mi4KTVStick,
+    images: [mi4KTVStick],
+    rating: 4.7,
+    category: "Accessories",
+    brand: "Xiaomi",
+    description: "Transform any TV into a smart entertainment hub with the Xiaomi 4K TV Stick. Powered by Android TV 11, this compact streaming device delivers stunning 4K Ultra HD output at 60Hz with support for Dolby Vision HDR and immersive Dolby Atmos surround sound. Access thousands of apps via Google Play, use built-in Google Assistant for voice control, and enjoy seamless streaming from all your favorite services. The lightweight, portable design makes it perfect for home, travel, or turning any display into a smart screen.",
+    features: [
+      "4K Ultra HD output support (up to 4K@60Hz)",
+      "HDR & advanced picture formats including Dolby Vision®",
+      "Immersive Dolby Atmos® surround sound",
+      "DTS-HD and DTS surround audio output",
+      "Runs on Android TV™ 11",
+      "Access thousands of apps via Google Play",
+      "Large catalog of movies, shows, and streaming services",
+      "Built-in Google Assistant for voice control",
+      "Voice search for content and apps",
+      "Control smart home devices with voice",
+      "Compact, lightweight, and portable design",
+      "Easy plug-and-play via HDMI",
+      "Compatible with any TV/monitor/projector with HDMI",
+      "Smart Cast support for easy content streaming"
+    ],
+    specifications: [
+      { label: "Brand", value: "Xiaomi" },
+      { label: "Model", value: "4K TV Stick" },
+      { label: "Operating System", value: "Android TV™ 11" },
+      { label: "Video Output", value: "4K Ultra HD (up to 4K@60Hz)" },
+      { label: "HDR Support", value: "Yes, including Dolby Vision®" },
+      { label: "Audio Support", value: "Dolby Atmos®, DTS-HD, DTS Surround" },
+      { label: "Voice Assistant", value: "Built-in Google Assistant" },
+      { label: "App Store", value: "Google Play (thousands of apps)" },
+      { label: "Connectivity", value: "HDMI, Wi-Fi" },
+      { label: "Design", value: "Compact, lightweight, portable" },
+      { label: "Smart Features", value: "Smart Cast, voice control, smart home integration" },
+      { label: "Compatibility", value: "Any TV/monitor/projector with HDMI port" },
+      { label: "Package Contents", value: "1x Streaming Device" },
+      { label: "Best For", value: "Home entertainment, travel, turning any display into smart TV" }
+    ]
+  },
+  // Xiaomi Mi TV Stick FHD (ID: 150)
+  {
+    id: 150,
+    name: "Mi TV Stick FHD",
+    title: "MI TV STICK FHD XIAOMI - Portable Streaming Media Player with Bluetooth Remote",
+    price: 30,
+    image: mi4KTVStick,
+    images: [mi4KTVStick],
+    rating: 4.6,
+    category: "Accessories",
+    brand: "Xiaomi",
+    description: "Transform any screen into a smart TV with the ultra-portable Mi TV Stick FHD. Weighing less than 30g (lighter than a cherry tomato!), this pocket-sized streaming device is powered by Android TV 9.0 and delivers limitless entertainment. Just plug it into any HDMI port and enjoy your favorite streaming apps, games, TV shows, and more. The included Bluetooth remote features voice search powered by Google Assistant, making it easy to find content without typing. Set up in three simple steps and start streaming instantly!",
+    features: [
+      "Ultra-light and portable - weighs less than 30g",
+      "Pocket-sized design fits anywhere",
+      "Plug into any TV/monitor/projector with HDMI port",
+      "Turns any display into a smart TV instantly",
+      "Easy 3-step setup - ready in minutes",
+      "Powered by Android TV 9.0",
+      "Voice search with Google Assistant",
+      "Limitless entertainment - download streaming and gaming apps",
+      "Personalized recommendations from YouTube and Google Play",
+      "Bluetooth remote with built-in microphone",
+      "Press mic button for quick voice search",
+      "Search for shows, songs, weather, and more hands-free",
+      "No more typing - just speak",
+      "Access to thousands of apps and content",
+      "Watch TV shows, play games, listen to radio, check news"
+    ],
+    specifications: [
+      { label: "Brand", value: "Xiaomi" },
+      { label: "Model", value: "Mi TV Stick FHD" },
+      { label: "Operating System", value: "Android TV 9.0" },
+      { label: "Video Output", value: "Full HD (FHD)" },
+      { label: "Weight", value: "Less than 30g" },
+      { label: "Design", value: "Ultra-light, pocket-sized, portable" },
+      { label: "Remote Control", value: "Bluetooth remote with microphone" },
+      { label: "Voice Assistant", value: "Google Assistant (voice search)" },
+      { label: "App Support", value: "Streaming apps, gaming apps, YouTube, Google Play" },
+      { label: "Connectivity", value: "HDMI, Wi-Fi, Bluetooth" },
+      { label: "Setup", value: "Easy 3-step setup process" },
+      { label: "Features", value: "Personalized recommendations, voice search, no typing required" },
+      { label: "Compatibility", value: "Any TV/monitor/projector with HDMI port" },
+      { label: "Best For", value: "Budget-friendly streaming, travel, portable entertainment" }
     ]
   }
 
