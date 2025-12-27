@@ -285,6 +285,16 @@ import redmiPad2Purple from "@/assets/phones/xiaomi/XIAOMI TABLETS/XIAOMI REDMI 
 import redmiPad2Green from "@/assets/phones/xiaomi/XIAOMI TABLETS/XIAOMI REDMI PAD 2/XIAOMI REDMI PAD 2 green.webp";
 import redmiPad2Grey from "@/assets/phones/xiaomi/XIAOMI TABLETS/XIAOMI REDMI PAD 2/XIAOMI REDMI PAD 2 grey.webp";
 
+// Xiaomi Accessories imports
+import miEarphones35mmBlack from "@/assets/phones/xiaomi/xiaomi accessories/earphones 3.5MM/earphones 3.5MM BLACK.webp";
+import miEarphones35mm from "@/assets/phones/xiaomi/xiaomi accessories/earphones 3.5MM/earphones 3.5MM.webp";
+import miEarphonesTypeC from "@/assets/phones/xiaomi/xiaomi accessories/earphone type C/earphones xiaomi type C.avif";
+import mi37WCarCharger from "@/assets/phones/xiaomi/xiaomi accessories/37w car charger xiaomi/37W car charger xiaomi.webp";
+import miSmartBulb from "@/assets/phones/xiaomi/xiaomi accessories/smart bulb 950IM/smart bulb 950IM.webp";
+import miSmartPlug2 from "@/assets/phones/xiaomi/xiaomi accessories/MI smart plug 2/MI smart plug 2.webp";
+import miToothbrush from "@/assets/phones/xiaomi/xiaomi accessories/MI toothbrusher/MI toothbrusher xiaomi.webp";
+import mi67WCharger from "@/assets/phones/xiaomi/xiaomi accessories/MI 67W Adapter+charger/MI 67W Adapter+charger xiaomi.jpg";
+
 export interface ProductVariant {
   key: string;
   ram: string;
@@ -1350,6 +1360,268 @@ export const phoneAccessories: Product[] = [
       { label: "Charging Standard", value: "USB Power Delivery (PD)" },
       { label: "Design", value: "Woven/Braided exterior with matte white finish" },
       { label: "Packaging", value: "Sleek white retail box with minimalist design and hang tab" }
+    ]
+  },
+  // Mi In-Ear Earphones Basic 3.5mm (ID: 139)
+  {
+    id: 139,
+    name: "Mi In-Ear Earphones Basic",
+    title: "Mi In-Ear Earphones Basic - 3.5mm Jack with Mic - Black",
+    price: 8,
+    image: miEarphones35mmBlack,
+    images: [miEarphones35mmBlack, miEarphones35mm],
+    rating: 4.5,
+    category: "Accessories",
+    brand: "Xiaomi",
+    description: "The Mi In-Ear Earphones Basic deliver impressive audio quality in a premium aluminum alloy design. Featuring a balanced damping system for rich, full sound across all frequency ranges, these wired earphones offer exceptional value with their durable construction and comfortable ergonomic fit. Perfect for music lovers who appreciate quality sound at an affordable price.",
+    features: [
+      "Premium aluminum alloy cavity with natural knife-cut grain surface",
+      "Precision anode oxidation treatment for enhanced durability",
+      "Balanced damping system optimizes highs, mids, and bass frequencies",
+      "Built-in microphone with inline control button",
+      "Play/pause and call management (answer/hang up)",
+      "Ergonomic C-angle drilling technology for comfortable fit",
+      "Anti-slip earbuds design prevents fallout during use",
+      "3.5mm universal audio jack compatible with most devices",
+      "Compatible with Android devices",
+      "Refined metallic finish for premium look and feel"
+    ],
+    specifications: [
+      { label: "Product Line", value: "Mi In-Ear Basic" },
+      { label: "Color", value: "Black" },
+      { label: "Connector", value: "3.5mm audio jack" },
+      { label: "Material", value: "Aluminum alloy sound chamber" },
+      { label: "Acoustic System", value: "Balance damping for three frequency optimization" },
+      { label: "Microphone", value: "Inline mic with control button" },
+      { label: "Compatibility", value: "Android devices (limited iOS support)" },
+      { label: "Design", value: "Lightweight, ergonomic anti-fall earbuds" }
+    ]
+  },
+  // Xiaomi Type-C Earphones (ID: 140)
+  {
+    id: 140,
+    name: "Xiaomi Type-C Earphones",
+    title: "Xiaomi Type-C Earphones - High-Resolution Digital Audio",
+    price: 12,
+    image: miEarphonesTypeC,
+    images: [miEarphonesTypeC],
+    rating: 4.6,
+    category: "Accessories",
+    brand: "Xiaomi",
+    description: "The Xiaomi Type-C Earphones deliver high-quality digital audio through USB Type-C connectivity, offering superior sound clarity and convenience. Powered by high-resolution dynamic drivers, these earphones provide rich, balanced sound with deep bass and crystal-clear vocals. Featuring noise isolation technology and ergonomic design with multiple ear tip sizes, they're perfect for smartphones, tablets, and laptops with Type-C support.",
+    features: [
+      "USB Type-C digital audio connection for stable, clear sound",
+      "High-resolution dynamic drivers for crisp, detailed audio",
+      "Deep bass and clear vocals for immersive listening",
+      "In-line control for volume, calls, and playback",
+      "Built-in microphone for clear voice quality",
+      "Ergonomic in-ear design for comfortable long sessions",
+      "Multiple ear tip sizes included for perfect fit",
+      "Noise isolation technology blocks background sounds",
+      "Lightweight, durable, tangle-resistant cable",
+      "Plug-and-play convenience - no charging required",
+      "Compatible with Type-C smartphones, tablets, and laptops"
+    ],
+    specifications: [
+      { label: "Product Form", value: "In-ear" },
+      { label: "Weight", value: "13.5g" },
+      { label: "Cable Material", value: "TPE" },
+      { label: "Cable Length", value: "1.25m" },
+      { label: "Sensitivity", value: "≥108dB SPL@3mW 1000Hz" },
+      { label: "Impedance", value: "32Ω" },
+      { label: "Connector", value: "USB Type-C" },
+      { label: "Microphone", value: "Built-in with in-line control" },
+      { label: "Features", value: "Noise isolation, plug-and-play" }
+    ]
+  },
+  // Mi 37W Dual-Port Car Charger (ID: 141)
+  {
+    id: 141,
+    name: "Mi 37W Dual-Port Car Charger",
+    title: "Mi Dual Port Car Charger 37W - Fast Charging for Two Devices",
+    price: 15,
+    image: mi37WCarCharger,
+    images: [mi37WCarCharger],
+    rating: 4.7,
+    category: "Charging",
+    brand: "Xiaomi",
+    description: "The Mi 37W Dual-Port Car Charger provides fast and efficient charging for two devices simultaneously while you're on the go. With one USB-A port and one USB-C port supporting multiple fast charging protocols, this compact charger delivers up to 27W on the USB-C port, perfect for charging phones, tablets, and other devices during your commute or road trips.",
+    features: [
+      "Dual ports: USB-A + USB-C for simultaneous charging",
+      "37W total output for fast, efficient charging",
+      "USB-C port: up to 27W (20V/1.35A)",
+      "USB-A port: 10W (5V/2A)",
+      "Supports multiple fast charging protocols",
+      "12V-24V input compatible with most vehicles",
+      "Compact design fits flush in car socket",
+      "Premium build quality with durable materials",
+      "Intelligent circuit protection prevents overcharging",
+      "LED indicator shows charging status",
+      "Perfect for long drives and commutes"
+    ],
+    specifications: [
+      { label: "Product Name", value: "Mi Dual Port Car Charger 37W" },
+      { label: "Product Number", value: "CC06ZM" },
+      { label: "Ports", value: "USB-A" },
+      { label: "Input", value: "12V - 24V = 4A" },
+      { label: "USB-A Output", value: "5V = 2A (10W)" },
+      { label: "USB-C Output", value: "5V = 3A, 9V = 3A, 12V = 2.25A, 20V = 1.35A (up to 27W)" },
+      { label: "Total Output", value: "37W" },
+      { label: "Dimensions", value: "74.7 × 30.8 × 30.8 mm" }
+    ]
+  },
+  // Smart Bulb 950IM (ID: 142)
+  {
+    id: 142,
+    name: "Smart Bulb 950IM",
+    title: "SONOFF B05-BL Wi-Fi Smart LED Bulb - 950lm 9W",
+    price: 18,
+    image: miSmartBulb,
+    images: [miSmartBulb],
+    rating: 4.6,
+    category: "Smart Home",
+    brand: "Xiaomi",
+    description: "The SONOFF B05-BL Wi-Fi Smart LED Bulb brings intelligent lighting to your home with app control, voice control, and customizable scenes. Energy Star and Energy-Related Products certified, this 9W smart bulb provides 806 lumens of brightness equivalent to traditional 60W bulbs while consuming only 9.9kWh per year. With adjustable brightness and color temperature (2700K-6500K), you can create the perfect ambiance for any occasion.",
+    features: [
+      "APP control via smartphone for remote operation",
+      "Voice control with Google Assistant and Amazon Alexa",
+      "Scene mode for preset lighting configurations",
+      "Adjustable brightness and color temperature (2700K-6500K)",
+      "806 lumens brightness rating (9W equivalent to 60W)",
+      "Energy Star and ERP certified for efficiency",
+      "Rated lifetime: 15,000 hours",
+      "Annual consumption: only 9.9kWh",
+      "Schedule function for automated lighting",
+      "E27 base fits any standard socket",
+      "Helps save electricity costs significantly"
+    ],
+    specifications: [
+      { label: "Model", value: "SONOFF B02-BL/B05-BL" },
+      { label: "Power", value: "9W (equivalent to 60W traditional bulb)" },
+      { label: "Brightness", value: "806 lumens" },
+      { label: "Color Temperature", value: "2700K to 6500K (adjustable)" },
+      { label: "Base", value: "E27 standard socket" },
+      { label: "Connectivity", value: "Wi-Fi" },
+      { label: "Compatibility", value: "Google Assistant, Amazon Alexa" },
+      { label: "Rated Lifetime", value: "15,000 hours" },
+      { label: "Annual Consumption", value: "9.9kWh" },
+      { label: "Certifications", value: "Energy Star, Energy-Related Products" }
+    ]
+  },
+  // Xiaomi Smart Plug 2 (ID: 143)
+  {
+    id: 143,
+    name: "Xiaomi Smart Plug 2",
+    title: "Xiaomi Smart Plug 2 - Wi-Fi + Bluetooth 5.0 - 3680W Max",
+    price: 22,
+    image: miSmartPlug2,
+    images: [miSmartPlug2],
+    rating: 4.7,
+    category: "Smart Home",
+    brand: "Xiaomi",
+    description: "The Xiaomi Smart Plug 2 transforms any standard electrical outlet into a smart outlet, giving you remote control and automation capabilities for connected devices. With dual connectivity (Wi-Fi 2.4GHz + Bluetooth 5.0), this compact smart plug supports devices up to 3680W and integrates seamlessly with the Xiaomi smart home ecosystem. Perfect for controlling lamps, fans, coffee makers, and other appliances from anywhere.",
+    features: [
+      "3680W maximum rated power for high-wattage devices",
+      "Dual connectivity: Wi-Fi 2.4GHz + Bluetooth 5.0",
+      "Remote control via Mi Home app",
+      "Voice control with Google Assistant and Amazon Alexa",
+      "Schedule and timer functions for automation",
+      "Energy monitoring tracks consumption",
+      "Compact design (74 x 52 x 76.6mm) doesn't block adjacent outlets",
+      "Lightweight at approximately 110g",
+      "Works with Xiaomi smart home ecosystem",
+      "Operating temperature: 0°C–35°C",
+      "Easy setup and configuration"
+    ],
+    specifications: [
+      { label: "Rated Power", value: "3680W Max" },
+      { label: "Dimensions", value: "74 x 52 x 76.6 mm" },
+      { label: "Weight", value: "Approx. 110g" },
+      { label: "Wireless Connection", value: "Wi-Fi IEEE 802.11 b/g/n 2.4GHz, Bluetooth 5.0" },
+      { label: "Operating Temperature", value: "0°C–35°C" },
+      { label: "Compatibility", value: "Mi Home app, Google Assistant, Amazon Alexa" },
+      { label: "Features", value: "Remote control, scheduling, energy monitoring" }
+    ]
+  },
+  // Xiaomi Electric Toothbrush T302 (ID: 144)
+  {
+    id: 144,
+    name: "Xiaomi Electric Toothbrush T302",
+    title: "Xiaomi Electric Toothbrush T302 - Sonic Cleaning - 2W Power - Fast Type-C Charging - White",
+    price: 25,
+    image: miToothbrush,
+    images: [miToothbrush],
+    rating: 4.8,
+    category: "Lifestyle",
+    brand: "Xiaomi",
+    description: "The Xiaomi Electric Toothbrush T302 (Model: MES608) provides powerful and gentle sonic cleaning for effective daily oral care. Powered by a 2W motor with high-frequency vibrations, it efficiently removes plaque while remaining soft on gums. With Type-C fast charging (full charge in 4 hours), long battery life, and Xiaomi's signature minimalist white design, this toothbrush combines advanced functionality with modern aesthetics for superior oral hygiene.",
+    features: [
+      "Powerful sonic cleaning with high-frequency vibration",
+      "2W motor for consistent, effective performance",
+      "Gentle on gums while removing plaque efficiently",
+      "Type-C fast charging for modern convenience",
+      "Full charge in approximately 4 hours",
+      "Long battery life for extended use",
+      "3.6V stable output ensures reliable operation",
+      "Sleek white minimalist design",
+      "Suitable for everyday oral care",
+      "Travel-friendly and portable",
+      "Premium build quality",
+      "Perfect for home and travel use"
+    ],
+    specifications: [
+      { label: "Model", value: "MES608 (T302)" },
+      { label: "Color", value: "White" },
+      { label: "Power", value: "2W" },
+      { label: "Voltage", value: "3.6V stable output" },
+      { label: "Charging", value: "Type-C, approximately 4 hours to full charge" },
+      { label: "Technology", value: "Sonic cleaning with high-frequency vibration" },
+      { label: "Design", value: "Minimalist white finish" },
+      { label: "Suitable For", value: "Daily oral care, suitable for sensitive gums" }
+    ]
+  },
+  // Mi 67W SonicCharge Fast Charger (ID: 145)
+  {
+    id: 145,
+    name: "Mi 67W SonicCharge Fast Charger",
+    title: "67W SonicCharge Fast Charger Adapter For Xiaomi Mi 11 - Mi 67W Sonic Charge Combo",
+    price: 28,
+    image: mi67WCharger,
+    images: [mi67WCharger],
+    rating: 4.7,
+    category: "Charging",
+    brand: "Xiaomi",
+    description: "The Mi 67W SonicCharge Fast Charger Adapter delivers blazing fast 67W output for ultra-rapid charging of your Xiaomi devices. This combo includes both the wall adapter and USB cable, providing everything you need for lightning-fast charging. Compatible with Xiaomi Mi 11 and a wide range of smartphones and tablets, this charger features short circuit protection, automatic shutoff, and a lightweight travel-friendly design. Charge your devices at maximum speed with complete safety.",
+    features: [
+      "67W blazing fast output for ultra-rapid charging",
+      "Complete combo: 1 wall adapter + 1 USB data cable",
+      "Compatible with Xiaomi Mi 11 and wide range of devices",
+      "Short circuit protection for safe charging",
+      "Automatic shutoff prevents overcharging",
+      "Lightweight design perfect for travel (50g)",
+      "Wall mount type for stable charging",
+      "Fast charging technology reduces charging time significantly",
+      "Universal compatibility with Samsung, Xiaomi, Realme, Vivo, Oppo, and more",
+      "Compact dimensions: 8 x 2 x 4 cm",
+      "Durable materials: FR plastic, PVC, rubber construction",
+      "Single USB port for focused power delivery"
+    ],
+    specifications: [
+      { label: "Brand", value: "K N DIGITAL (for Xiaomi)" },
+      { label: "Model", value: "M-I-67W-KCH-1491" },
+      { label: "Model Year", value: "2023" },
+      { label: "Wattage", value: "67 Watts" },
+      { label: "Output", value: "67W Blazing Fast Output" },
+      { label: "Number of Ports", value: "1 USB port" },
+      { label: "Power Source", value: "Corded Electric" },
+      { label: "Mounting Type", value: "Wall Mount" },
+      { label: "Dimensions", value: "8 x 2 x 4 cm" },
+      { label: "Weight", value: "50g" },
+      { label: "Material", value: "FR Plastic, Polyvinyl Chloride, Rubber" },
+      { label: "Compatible Devices", value: "Xiaomi Mi 11, Samsung, Realme, Vivo, Oppo, Nokia, and all major smartphone brands" },
+      { label: "Special Features", value: "Fast Charging, Short Circuit Protection, Automatic Off, Lightweight" },
+      { label: "Package Contents", value: "1 Adapter, 1 Data USB Cable" },
+      { label: "Country of Origin", value: "India" }
     ]
   }
 
@@ -3270,14 +3542,14 @@ export const tabletProducts: Product[] = [
   {
     id: 411,
     name: "Xiaomi Redmi Pad 2 Pro",
-    title: "Xiaomi Redmi Pad 2 Pro – 8/256GB + Redmi Keyboard - Premium 12.1\" 2.5K Display Tablet",
+    title: "Xiaomi Redmi Pad 2 Pro – 8/256GB + Redmi Keyboard + Pen - Premium 12.1\" 2.5K Display Tablet",
     price: 400,
     image: redmiPad2ProGrey,
     images: [redmiPad2ProGrey, redmiPad2ProWhite, redmiPad2ProPurple],
     rating: 4.8,
     category: "Tablets",
     brand: "Xiaomi",
-    description: "The Xiaomi Redmi Pad 2 Pro delivers flagship-level performance with its premium 12.1\" 2.5K crystal-clear display, powerful Snapdragon 7s Gen 4 processor, and massive 12000mAh battery. Bundled with the Redmi Keyboard for enhanced productivity, this tablet offers exceptional value with 2 Years Warranty + 6 Months Screen Insurance. Perfect for creative professionals, students, and entertainment enthusiasts who demand premium quality at an accessible price.",
+    description: "The Xiaomi Redmi Pad 2 Pro delivers flagship-level performance with its premium 12.1\" 2.5K crystal-clear display, powerful Snapdragon 7s Gen 4 processor, and massive 12000mAh battery. Bundled with the Redmi Keyboard and Stylus Pen for enhanced productivity and creativity, this tablet offers exceptional value with 2 Years Warranty + 6 Months Screen Insurance. Perfect for creative professionals, students, digital artists, and entertainment enthusiasts who demand premium quality at an accessible price.",
     features: [
       "2 Years manufacturer warranty + 6 Months screen insurance included",
       "12.1\" 2.5K crystal-clear display (1600×2560 pixels) with over 1.07 billion colors",
@@ -3287,7 +3559,7 @@ export const tabletProducts: Product[] = [
       "8GB RAM + 256GB storage for excellent multitasking and ample space",
       "Massive 12000mAh battery with 33W fast charging and 27W reverse charging",
       "Quad speakers with Dolby Atmos and Hi-Res Audio certification",
-      "Includes Redmi Keyboard for laptop-like productivity",
+      "Includes Redmi Keyboard and Stylus Pen for laptop-like productivity and creative work",
       "Wet touch technology works even with wet hands",
       "Optional matte glass version with AG nano-texture (97% interference reduction)",
       "13MP rear camera and 8MP front camera with 1080p video",
@@ -3311,7 +3583,7 @@ export const tabletProducts: Product[] = [
       { label: "Build", value: "Unibody metal design" },
       { label: "Certifications", value: "TÜV Rheinland Low Blue Light, Flicker Free, Circadian Friendly" },
       { label: "Warranty", value: "2 Years + 6 Months Screen Insurance" },
-      { label: "In The Box", value: "Tablet, Redmi Keyboard, USB Cable, 33W Adapter, SIM Tool, Guides" }
+      { label: "In The Box", value: "Tablet, Redmi Keyboard, Stylus Pen, USB Cable, 33W Adapter, SIM Tool, Guides" }
     ],
     colors: [
       { name: "Graphite Gray", image: redmiPad2ProGrey, stock: "available" },
