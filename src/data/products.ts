@@ -330,6 +330,22 @@ import smartBand9Pro from "@/assets/phones/xiaomi/xiaomi accessories/XIAOMI Smar
 import smartBand10ceramic1 from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Smart Band 10 Ceramic Edition - Pearl White/Screenshot 2025-12-28 152218.png";
 import smartBand10ceramic2 from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Smart Band 10 Ceramic Edition - Pearl White/Screenshot 2025-12-28 152224.png";
 import smartBand10ceramic3 from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Smart Band 10 Ceramic Edition - Pearl White/Screenshot 2025-12-28 152233.png";
+import redmiBuds6Black from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Redmi Buds 6 Play/Xiaomi Redmi Buds 6 Play black.webp";
+import redmiBuds6Blue from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Redmi Buds 6 Play/Xiaomi Redmi Buds 6 Play blue.webp";
+import redmiBuds6Rose from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Redmi Buds 6 Play/Xiaomi Redmi Buds 6 Play gold rose.webp";
+import redmiBuds6White from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Redmi Buds 6 Play/Xiaomi Redmi Buds 6 Play white.webp";
+import redmiBuds6img1 from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Redmi Buds 6 Play/xiaomi-audio-xiaomi-redmi-buds-6-play-35088425222276_1024x1024.webp";
+import redmiBuds6img2 from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Redmi Buds 6 Play/xiaomi-audio-xiaomi-redmi-buds-6-play-35088425812100_1024x1024.webp";
+import redmiBuds6ActiveBlack from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Redmi Buds 6 Active Wireles Earbuds/Xiaomi Redmi Buds 6 Active Wireles Earbuds black.jpg";
+import redmiBuds6ActiveBlue from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Redmi Buds 6 Active Wireles Earbuds/Xiaomi Redmi Buds 6 Active Wireles Earbuds blue.jpg";
+import redmiBuds6ActiveRose from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Redmi Buds 6 Active Wireles Earbuds/Xiaomi Redmi Buds 6 Active Wireles Earbuds rose gold.jpg";
+import redmiBuds6ActiveWhite from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Redmi Buds 6 Active Wireles Earbuds/Xiaomi Redmi Buds 6 Active Wireles Earbuds white.jpg";
+import redmiBuds6LiteBlack from "@/assets/phones/xiaomi/xiaomi accessories/Redmi Buds 6 Lite in-Ear Headphones/Redmi Buds 6 Lite in-Ear Headphones black.webp";
+import redmiBuds6LiteBlue from "@/assets/phones/xiaomi/xiaomi accessories/Redmi Buds 6 Lite in-Ear Headphones/Redmi Buds 6 Lite in-Ear Headphones blue.jpg";
+import redmiBuds6LiteWhite from "@/assets/phones/xiaomi/xiaomi accessories/Redmi Buds 6 Lite in-Ear Headphones/Redmi Buds 6 Lite in-Ear Headphones white.jpg";
+import redmiBuds5Black from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Redmi Buds 5 Wireless Earphone/Xiaomi Redmi Buds 5 Wireless Earphone black.jpg";
+import redmiBuds5Blue from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Redmi Buds 5 Wireless Earphone/Xiaomi Redmi Buds 5 Wireless Earphone blue.jpg";
+import redmiBuds5White from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Redmi Buds 5 Wireless Earphone/Xiaomi Redmi Buds 5 Wireless Earphone white.jpg";
 
 export interface ProductVariant {
   key: string;
@@ -1888,6 +1904,237 @@ export const phoneAccessories: Product[] = [
       { label: "Features", value: "Personalized recommendations, voice search, no typing required" },
       { label: "Compatibility", value: "Any TV/monitor/projector with HDMI port" },
       { label: "Best For", value: "Budget-friendly streaming, travel, portable entertainment" }
+    ]
+  },
+  // Xiaomi Redmi Buds 6 Play (ID: 151)
+  {
+    id: 151,
+    name: "Xiaomi Redmi Buds 6 Play",
+    title: "Xiaomi Redmi Buds 6 Play - Bluetooth 5.4, 36H Battery, Bean-Shaped Earbuds",
+    price: 18,
+    image: redmiBuds6Black,
+    images: [redmiBuds6Black, redmiBuds6Blue, redmiBuds6Rose, redmiBuds6White, redmiBuds6img1, redmiBuds6img2],
+    rating: 4.5,
+    category: "Accessories",
+    brand: "Xiaomi",
+    description: "The Xiaomi Redmi Buds 6 Play delivers exceptional audio quality and comfort in an ultra-lightweight, bean-shaped design. Featuring the latest Bluetooth 5.4 connectivity for stable, low-latency wireless performance, these earbuds offer an impressive 36 hours of total battery life with the charging case. Each earbud weighs only 3.6g for all-day comfort, while the 20Hz-20KHz frequency response ensures rich, detailed sound. With 7.5 hours of playback on a single charge, TYPE-C fast charging, and multiple ear cap sizes included, these earbuds are perfect for music, calls, and daily use. Available in four stylish colors to match your personal style.",
+    features: [
+      "Bean-shaped ergonomic design for superior comfort",
+      "Ultra-lightweight: only 3.6g per earbud",
+      "Latest Bluetooth 5.4 connectivity",
+      "Low latency and stable connection",
+      "36 hours total battery life with charging case",
+      "7.5 hours playback on single charge",
+      "600mAh charging case capacity",
+      "TYPE-C fast charging support",
+      "20Hz~20KHz frequency response range",
+      "16Ω speaker impedance for balanced sound",
+      "10m communication range (open space)",
+      "Multiple Bluetooth protocols: HFP, A2DP, AVRCP, BLE",
+      "Includes S and L ear caps for perfect fit",
+      "Compact charging case: only 32.8g",
+      "Total weight: just 40g",
+      "Perfect for music, calls, and daily use"
+    ],
+    specifications: [
+      { label: "Brand", value: "XIAOMI" },
+      { label: "Model", value: "M2420E1 (Redmi Buds 6 Play)" },
+      { label: "Product Form", value: "Bean-shaped earbuds" },
+      { label: "Frequency Response", value: "20Hz ~ 20KHz" },
+      { label: "Earbud Weight", value: "3.6g (single)" },
+      { label: "Earbud Dimensions", value: "L20.6 × W14.5 × H22mm" },
+      { label: "Charging Case Weight", value: "32.8g" },
+      { label: "Case Dimensions", value: "L53.9 × W53.9 × H27.4mm" },
+      { label: "Total Weight", value: "40.0g" },
+      { label: "Earbud Battery", value: "57mAh each" },
+      { label: "Case Battery", value: "600mAh" },
+      { label: "Charging Port", value: "TYPE-C" },
+      { label: "Earbud Input", value: "5V 170mA" },
+      { label: "Case Input", value: "5V 800mA" },
+      { label: "Case Output", value: "5V 340mA" },
+      { label: "Single Charge Battery Life", value: "7.5 hours" },
+      { label: "Total Battery Life", value: "36 hours (with case)" },
+      { label: "Bluetooth", value: "5.4" },
+      { label: "Bluetooth Protocols", value: "Bluetooth Low Energy, HFP, A2DP, AVRCP" },
+      { label: "Communication Range", value: "10m (open space)" },
+      { label: "Speaker Impedance", value: "16Ω" },
+      { label: "Rated Power", value: "5mW" },
+      { label: "Maximum Power", value: "10mW" },
+      { label: "Package Contents", value: "Earbuds, Charging case, User manual, S ear cap, L ear cap" }
+    ],
+    colors: [
+      { name: "Black", image: redmiBuds6Black, stock: "available" },
+      { name: "Blue", image: redmiBuds6Blue, stock: "available" },
+      { name: "Rose Gold", image: redmiBuds6Rose, stock: "available" },
+      { name: "White", image: redmiBuds6White, stock: "available" }
+    ]
+  },
+  // Xiaomi Redmi Buds 6 Active (ID: 152)
+  {
+    id: 152,
+    name: "Xiaomi Redmi Buds 6 Active",
+    title: "XIAOMI Redmi Buds 6 Active - 14.2mm Driver, 30H Battery, Dual-Mic ENC",
+    price: 22,
+    image: redmiBuds6ActiveBlack,
+    images: [redmiBuds6ActiveBlack, redmiBuds6ActiveBlue, redmiBuds6ActiveRose, redmiBuds6ActiveWhite],
+    rating: 4.6,
+    category: "Accessories",
+    brand: "Xiaomi",
+    description: "Experience amazing music with the Xiaomi Redmi Buds 6 Active, featuring a powerful 14.2mm dynamic driver for better low-frequency response and deeper bass effects. Tuned by Xiaomi Acoustic Laboratory with 5 different EQ settings, these colorful and fashionable earbuds deliver 30 hours of total battery life and crystal-clear voice calls. The dual-mic beamforming design combined with DNN acoustic ENC algorithm effectively filters environmental noise, while the MIC double perforation design ensures clear calls even in 4m/s wind. Weighing less than 4g per earbud and designed for comfortable long-term wear, these earbuds are the perfect companion for your phone through the Xiaomi Earphone App.",
+    features: [
+      "14.2mm dynamic driver for enhanced bass",
+      "Better low-frequency response and higher sound pressure",
+      "Richer and deeper bass effects",
+      "Xiaomi Acoustic Laboratory professional tuning",
+      "5 different EQ settings for customizable sound",
+      "30 hours total battery life",
+      "6 hours on single charge",
+      "Dual-mic beamforming design",
+      "DNN acoustic ENC algorithm - filters environmental noise",
+      "MIC double perforation design",
+      "Effective 4m/s call wind noise filtering",
+      "Crystal-clear voice calls",
+      "Ultra-lightweight: less than 4g per earbud",
+      "Ergonomic design for long-term comfort",
+      "Compact and portable charging case",
+      "Xiaomi Earphone App support",
+      "Colorful and fashionable design"
+    ],
+    specifications: [
+      { label: "Brand", value: "XIAOMI" },
+      { label: "Model", value: "Redmi Buds 6 Active" },
+      { label: "Driver Size", value: "14.2mm dynamic driver" },
+      { label: "Earbud Weight", value: "Less than 4g (single)" },
+      { label: "Single Charge Battery", value: "6 hours" },
+      { label: "Total Battery Life", value: "30 hours (with charging case)" },
+      { label: "Microphones", value: "Dual-mic beamforming design" },
+      { label: "Noise Cancellation", value: "DNN acoustic ENC algorithm" },
+      { label: "Wind Noise Reduction", value: "Effective at 4m/s with double perforation MIC" },
+      { label: "EQ Settings", value: "5 customizable sound profiles" },
+      { label: "Tuning", value: "Xiaomi Acoustic Laboratory" },
+      { label: "App Support", value: "Xiaomi Earphone App" },
+      { label: "Design", value: "Ergonomic for long-term comfort" },
+      { label: "Portability", value: "Compact and portable case" },
+      { label: "Best For", value: "Music lovers, calls, daily use, fashionable accessory" }
+    ],
+    colors: [
+      { name: "Black", image: redmiBuds6ActiveBlack, stock: "available" },
+      { name: "Blue", image: redmiBuds6ActiveBlue, stock: "available" },
+      { name: "Rose Gold", image: redmiBuds6ActiveRose, stock: "available" },
+      { name: "White", image: redmiBuds6ActiveWhite, stock: "available" }
+    ]
+  },
+  // Xiaomi Redmi Buds 6 Lite (ID: 153)
+  {
+    id: 153,
+    name: "Redmi Buds 6 Lite",
+    title: "Redmi Buds 6 Lite - 40dB ANC, 12.4mm Titanium Driver, 38H Battery",
+    price: 28,
+    image: redmiBuds6LiteBlack,
+    images: [redmiBuds6LiteBlack, redmiBuds6LiteBlue, redmiBuds6LiteWhite],
+    rating: 4.7,
+    category: "Accessories",
+    brand: "Xiaomi",
+    description: "Experience premium audio with the Redmi Buds 6 Lite featuring advanced 40dB Hybrid Active Noise Cancellation that effectively reduces broadband noise at 2000Hz, perfect for low-frequency environments. Equipped with a high-quality 12.4mm titanium-coated diaphragm driver and independent rear chamber structure, these earbuds deliver exceptional sound quality with AAC coding. The AI-enhanced dual-microphone system ensures crystal-clear calls with wind noise reduction up to 6m/s. Enjoy up to 38 hours of total battery life with the charging case and 7 hours on a single charge. With transparency mode, four adjustable sound effects plus one customizable option via the Xiaomi Earbuds app, and fast charging (10 min = 2h playback), these premium in-ear headphones are perfect for audiophiles and everyday use.",
+    features: [
+      "40dB Hybrid Active Noise Cancellation",
+      "Effective noise reduction at 2000Hz broadband",
+      "Ideal for low-frequency environments",
+      "Transparency mode supported",
+      "12.4mm titanium-coated diaphragm driver",
+      "Independent rear chamber structure",
+      "AAC coding for high sound quality",
+      "AI Clear Call Noise Cancellation",
+      "Enhanced dual-microphone technology",
+      "Reduces wind noise up to 6m/s",
+      "Crystal-clear undisturbed communication",
+      "38 hours total battery life with charging case",
+      "7 hours music playback on single charge",
+      "Fast charging: 10 min = 2 hours playback",
+      "Four adjustable sound effects",
+      "One customizable EQ via Xiaomi Earbuds app",
+      "32Ω impedance for balanced sound",
+      "Includes multiple silicone ear tips"
+    ],
+    specifications: [
+      { label: "Brand", value: "XIAOMI" },
+      { label: "Model", value: "Redmi Buds 6 Lite" },
+      { label: "Form Factor", value: "In-Ear" },
+      { label: "Ear Placement", value: "In Ear" },
+      { label: "Driver Size", value: "12.4mm titanium-coated diaphragm" },
+      { label: "Impedance", value: "32 Ohms" },
+      { label: "Audio Coding", value: "AAC for high sound quality" },
+      { label: "Noise Cancellation", value: "40dB Hybrid Active Noise Cancellation" },
+      { label: "ANC Depth", value: "40dB reduction at 2000Hz broadband" },
+      { label: "Transparency Mode", value: "Yes" },
+      { label: "Microphones", value: "Dual-mic with AI noise reduction" },
+      { label: "Wind Noise Reduction", value: "Up to 6m/s" },
+      { label: "Single Charge Battery", value: "7 hours" },
+      { label: "Total Battery Life", value: "38 hours (with charging case)" },
+      { label: "Fast Charging", value: "10 min = 2 hours playback" },
+      { label: "EQ Settings", value: "4 presets + 1 customizable (via app)" },
+      { label: "App Support", value: "Xiaomi Earbuds app" },
+      { label: "Package Contents", value: "Earbuds, Charging case, 2 pairs silicone tips, Instruction manual" },
+      { label: "Best For", value: "Audiophiles, noise-sensitive users, premium audio quality" }
+    ],
+    colors: [
+      { name: "Black", image: redmiBuds6LiteBlack, stock: "available" },
+      { name: "Blue", image: redmiBuds6LiteBlue, stock: "available" },
+      { name: "White", image: redmiBuds6LiteWhite, stock: "available" }
+    ]
+  },
+  // Xiaomi Redmi Buds 5 (ID: 154)
+  {
+    id: 154,
+    name: "Xiaomi Redmi Buds 5",
+    title: "Xiaomi Redmi Buds 5 - 46dB ANC, 40H Battery, Independent Rear Chamber",
+    price: 35,
+    image: redmiBuds5Black,
+    images: [redmiBuds5Black, redmiBuds5Blue, redmiBuds5White],
+    rating: 4.8,
+    category: "Accessories",
+    brand: "Xiaomi",
+    description: "Experience flagship-level audio with the Xiaomi Redmi Buds 5, featuring industry-leading 46dB wideband active noise cancellation that eliminates up to 99.5% of background noise. Covering the 2kHz noise range, these earbuds excel in aircraft, underground, and other low-frequency noise scenarios with advanced comfortable noise reduction. The independent rear chamber structure ensures excellent dynamic frequency range and sound consistency, delivering distinct high, medium, and low frequencies for a three-dimensional, full-bodied sound. Enjoy an incredible 40 hours of total battery life (10h single + 30h case) with powerful fast charging - just 5 minutes of charging gives you 2 hours of playback. The cloud-inspired lightweight design features a unique cloud gap light with five LED beads creating a stunning breathing light effect. Rod design ensures comfortable wear with three pass-through modes available.",
+    features: [
+      "46dB wideband active noise cancellation - flagship level",
+      "Eliminates up to 99.5% background noise",
+      "Covers 2kHz noise range for low-frequency scenarios",
+      "Perfect for aircraft, underground, public transport",
+      "Advanced comfortable noise reduction",
+      "Independent rear chamber structure",
+      "Excellent dynamic frequency range",
+      "Distinct high, medium, low frequency levels",
+      "Three-dimensional and full-bodied sound",
+      "40 hours ultra-long battery life total",
+      "10 hours single earbud battery life",
+      "30 hours additional with charging case",
+      "Fast charging: 5 min = 2 hours playback",
+      "Cloud appearance design - lightweight and portable",
+      "Cloud gap light with 5 LED breathing effect",
+      "Rod design for comfortable wear",
+      "Three pass-through modes available"
+    ],
+    specifications: [
+      { label: "Brand", value: "XIAOMI" },
+      { label: "Model", value: "Redmi Buds 5" },
+      { label: "Noise Cancellation", value: "46dB wideband active noise cancellation" },
+      { label: "Noise Reduction Rate", value: "Up to 99.5% background noise" },
+      { label: "Noise Range Coverage", value: "2kHz (low-frequency scenarios)" },
+      { label: "Audio Structure", value: "Independent rear chamber structure" },
+      { label: "Sound Quality", value: "Three-dimensional, full-bodied with distinct frequency levels" },
+      { label: "Earbud Battery", value: "10 hours" },
+      { label: "Total Battery Life", value: "40 hours (with charging case)" },
+      { label: "Fast Charging", value: "5 min = 2 hours playback" },
+      { label: "Design", value: "Cloud appearance - lightweight and portable" },
+      { label: "Status Light", value: "Cloud gap light with 5 LED breathing effect" },
+      { label: "Wearing Design", value: "Rod design for comfort" },
+      { label: "Pass-through Modes", value: "3 modes available" },
+      { label: "Best For", value: "Travel, commute, premium audio quality, noise-sensitive environments" }
+    ],
+    colors: [
+      { name: "Black", image: redmiBuds5Black, stock: "available" },
+      { name: "Blue", image: redmiBuds5Blue, stock: "available" },
+      { name: "White", image: redmiBuds5White, stock: "available" }
     ]
   }
 
