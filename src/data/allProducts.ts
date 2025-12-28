@@ -35,7 +35,7 @@ export const tabletProducts: Product[] = getProductsByCategory("Tablets")
   }))
   .sort((a, b) => b.price - a.price);
 
-// Audio products (merging mock data with real accessories + Green Lion audio) - sorted by price highest to lowest
+// Audio products (merging mock data with real accessories + Green Lion audio + Xiaomi Redmi Buds) - sorted by price highest to lowest
 export const audioProducts: Product[] = [
   // Real audio accessories
   ...getProductsByCategory("Audio").map(product => ({
@@ -46,6 +46,17 @@ export const audioProducts: Product[] = [
     rating: product.rating,
     category: product.category,
   })),
+  // Xiaomi Redmi Buds (Accessories category but should appear in Audio)
+  ...getProductsByCategory("Accessories")
+    .filter(p => p.id === 151 || p.id === 152 || p.id === 153 || p.id === 154)
+    .map(product => ({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      rating: product.rating,
+      category: product.category,
+    })),
   // Green Lion audio products
   ...getGreenLionProductsByCategory("Audio").map(product => ({
     id: product.id,
