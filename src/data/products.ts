@@ -295,6 +295,7 @@ import miSmartPlug2 from "@/assets/phones/xiaomi/xiaomi accessories/MI smart plu
 import miToothbrush from "@/assets/phones/xiaomi/xiaomi accessories/MI toothbrusher/MI toothbrusher xiaomi.webp";
 import mi67WCharger from "@/assets/phones/xiaomi/xiaomi accessories/MI 67W Adapter+charger/MI 67W Adapter+charger xiaomi.jpg";
 import miKeyboardMouse from "@/assets/phones/xiaomi/xiaomi accessories/keyboard+mouse/keyboard+mouse xiaomi.webp";
+import miKeyboardMouse2 from "@/assets/phones/xiaomi/xiaomi accessories/keyboard+mouse/610301896A_1000x1000_2-800x1091.webp";
 import miSmartDoorbell from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Smart Doorbell 3/Xiaomi Smart Doorbell 3.webp";
 import miSmartDoorbell2 from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Smart Doorbell 3/XiaomiSmartDoorbell31102.webp";
 import miSmartDoorbell3 from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Smart Doorbell 3/XiaomiSmartDoorbell31103.webp";
@@ -305,6 +306,30 @@ import miSphereCamera from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Mi 
 import miSphereCamera2 from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Mi Sphere Camera Kit Black/51KZ-ErTQVL._AC_SX522_.jpg";
 import miSphereCamera3 from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Mi Sphere Camera Kit Black/41ITVP7FgIL._AC_SX522_.jpg";
 import mi4KTVStick from "@/assets/phones/xiaomi/xiaomi accessories/4K TV Stick Portable Streaming Media Player/4K TV Stick Portable Streaming Media Player.webp";
+import redmiWatch5Black from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Redmi Watch 5 Active/Screenshot 2025-12-28 000531.png";
+import redmiWatch5Silver from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Redmi Watch 5 Active/Screenshot 2025-12-28 000602.png";
+import redmiWatch5LiteBlack from "@/assets/phones/xiaomi/xiaomi accessories/Redmi Watch 5 Lite/Redmi Watch 5 Lite black.jpg";
+import redmiWatch5LiteGold from "@/assets/phones/xiaomi/xiaomi accessories/Redmi Watch 5 Lite/Redmi Watch 5 Lite gold.jpg";
+import redmiWatch5LiteBlack2 from "@/assets/phones/xiaomi/xiaomi accessories/Redmi Watch 5 Lite/Redmi-Watch-5-Lite-Black-2-768x768.jpg";
+import redmiWatch5LiteBlack3 from "@/assets/phones/xiaomi/xiaomi accessories/Redmi Watch 5 Lite/Redmi-Watch-5-Lite-Black-3-768x768.jpg";
+import redmiWatch5LiteGold2 from "@/assets/phones/xiaomi/xiaomi accessories/Redmi Watch 5 Lite/Redmi-Watch-5-Lite-Light-Gold-5.jpg";
+import redmiWatch5Flagship from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Redmi Watch 5/redmi watch 5.jpg";
+import smartBand9Active from "@/assets/phones/xiaomi/xiaomi accessories/XIAOMI Smart Band 9 Active/XIAOMI Smart Band 9 Active.jpg";
+import smartBand9Active2 from "@/assets/phones/xiaomi/xiaomi accessories/XIAOMI Smart Band 9 Active/514aqOH7isL._AC_SX466_.jpg";
+import smartBand9Active3 from "@/assets/phones/xiaomi/xiaomi accessories/XIAOMI Smart Band 9 Active/517ZxRCR51L._AC_SX466_.jpg";
+import smartBand9Active4 from "@/assets/phones/xiaomi/xiaomi accessories/XIAOMI Smart Band 9 Active/61zJfnS6toL._AC_SX466_.jpg";
+import smartBand9img1 from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Smart Band 9/Screenshot 2025-12-28 132325.png";
+import smartBand9img2 from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Smart Band 9/Screenshot 2025-12-28 132337.png";
+import smartBand9img3 from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Smart Band 9/Screenshot 2025-12-28 132347.png";
+import smartBand9img4 from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Smart Band 9/Screenshot 2025-12-28 132356.png";
+import smartBand9img5 from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Smart Band 9/Screenshot 2025-12-28 132409.png";
+import smartBand9img6 from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Smart Band 9/Screenshot 2025-12-28 132418.png";
+import smartBand9img7 from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Smart Band 9/Screenshot 2025-12-28 132427.png";
+import smartBand9img8 from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Smart Band 9/Screenshot 2025-12-28 132436.png";
+import smartBand9Pro from "@/assets/phones/xiaomi/xiaomi accessories/XIAOMI Smart Band 9 Pro Smartband Global Version/XIAOMI Smart Band 9 Pro Smartband Global Version.jpg";
+import smartBand10ceramic1 from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Smart Band 10 Ceramic Edition - Pearl White/Screenshot 2025-12-28 152218.png";
+import smartBand10ceramic2 from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Smart Band 10 Ceramic Edition - Pearl White/Screenshot 2025-12-28 152224.png";
+import smartBand10ceramic3 from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Smart Band 10 Ceramic Edition - Pearl White/Screenshot 2025-12-28 152233.png";
 
 export interface ProductVariant {
   key: string;
@@ -1642,7 +1667,7 @@ export const phoneAccessories: Product[] = [
     title: "2.4G Wireless 104 Keys Keyboard & Mouse Set - WXJS02YM",
     price: 35,
     image: miKeyboardMouse,
-    images: [miKeyboardMouse],
+    images: [miKeyboardMouse, miKeyboardMouse2],
     rating: 4.6,
     category: "Accessories",
     brand: "Xiaomi",
@@ -4329,6 +4354,389 @@ export const wearablesProducts: Product[] = [
       { name: "Rose Gold", image: appleWatchS11_42MM_RoseGold, stock: "available" },
       { name: "Silver", image: appleWatchS11_42MM_Silver, stock: "available" },
       { name: "Space Grey", image: appleWatchS11_42MM_SpaceGrey, stock: "available" }
+    ]
+  },
+  // Xiaomi Redmi Watch 5 Active (ID: 209)
+  {
+    id: 209,
+    name: "Xiaomi Redmi Watch 5 Active",
+    title: "Xiaomi Redmi Watch 5 Active - 2\" Display, 18-Day Battery, Bluetooth Calling",
+    price: 55,
+    image: redmiWatch5Black,
+    images: [redmiWatch5Black, redmiWatch5Silver],
+    rating: 4.7,
+    category: "Wearables",
+    brand: "Xiaomi",
+    description: "The Xiaomi Redmi Watch 5 Active combines style, functionality, and advanced health monitoring into a sleek, long-lasting smartwatch. Featuring a large 2-inch LCD display with over 70% screen-to-body ratio, this watch offers vibrant visuals in a minimalistic design. With Bluetooth calling, dual-mic noise reduction, and over 140 workout modes, it's perfect for active lifestyles. The 470mAh battery delivers up to 18 days of use, while comprehensive health tracking including 24-hour heart rate, blood oxygen, and stress monitoring keeps you informed about your well-being. 5ATM water-resistant and compatible with both Android and iOS.",
+    features: [
+      "2-inch LCD display with 320 x 385 resolution (250PPI)",
+      "Over 70% screen-to-body ratio for vivid visuals",
+      "Bluetooth 5.3 calling with dual-mic noise reduction",
+      "80cm directional audio pickup for clear calls",
+      "18-day battery life (typical use) with 470mAh battery",
+      "24-hour heart rate monitoring",
+      "All-day blood oxygen tracking",
+      "Continuous stress monitoring",
+      "Over 140 workout modes for detailed fitness insights",
+      "5ATM water resistance - suitable for daily use",
+      "200+ customizable watch faces",
+      "Matte finish frame in Midnight Black or Matte Silver",
+      "Ultra-lightweight at just 30.6g (without strap)",
+      "Xiaomi HyperOS operating system",
+      "Compatible with Android 8.0+ and iOS 12.0+"
+    ],
+    specifications: [
+      { label: "Brand", value: "Xiaomi" },
+      { label: "Model", value: "Redmi Watch 5 Active" },
+      { label: "Display", value: "2-inch square LCD, 320 x 385 pixels, 250PPI" },
+      { label: "Dimensions", value: "49.1mm x 40.4mm x 11.4mm (without strap)" },
+      { label: "Weight", value: "30.6g (without strap)" },
+      { label: "Frame Material", value: "Plastic with metal spray coating" },
+      { label: "Strap Material", value: "TPU (135mm-205mm adjustable)" },
+      { label: "Battery", value: "470mAh - up to 18 days typical use" },
+      { label: "Bluetooth", value: "Bluetooth 5.3 with calling support" },
+      { label: "Water Resistance", value: "5ATM" },
+      { label: "Health Sensors", value: "Heart rate, blood oxygen, accelerometer" },
+      { label: "Workout Modes", value: "140+ modes" },
+      { label: "Operating System", value: "Xiaomi HyperOS" },
+      { label: "Compatibility", value: "Android 8.0+, iOS 12.0+" },
+      { label: "Watch Faces", value: "200+ customizable options" },
+      { label: "Package Contents", value: "Watch, magnetic charging cable, user manual" }
+    ],
+    colors: [
+      { name: "Midnight Black", image: redmiWatch5Black, stock: "available" },
+      { name: "Matte Silver", image: redmiWatch5Silver, stock: "available" }
+    ]
+  },
+  // Xiaomi Redmi Watch 5 Lite (ID: 210)
+  {
+    id: 210,
+    name: "Redmi Watch 5 Lite",
+    title: "Redmi Watch 5 Lite - 1.96\" AMOLED Display, Bluetooth Calling, 5-System GNSS",
+    price: 49,
+    image: redmiWatch5LiteBlack,
+    images: [redmiWatch5LiteBlack, redmiWatch5LiteGold, redmiWatch5LiteBlack2, redmiWatch5LiteBlack3, redmiWatch5LiteGold2],
+    rating: 4.6,
+    category: "Wearables",
+    brand: "Xiaomi",
+    description: "The Redmi Watch 5 Lite combines premium features with an accessible price point. Featuring a stunning 1.96-inch AMOLED display with 600 nits brightness and classic square screen design, this smartwatch delivers vibrant visuals in any lighting. Equipped with dual-mic noise reduction for crystal-clear Bluetooth calling, built-in 5-system GNSS for accurate location tracking, and 5ATM water resistance, it's ready for any adventure. Track your fitness with 150+ workout modes, monitor your health 24/7, and enjoy up to 18 days of battery life. Powered by HyperOS and weighing just 29.2g, this ultra-light smartwatch is your perfect daily companion.",
+    features: [
+      "1.96-inch AMOLED display with 600 nits brightness",
+      "Classic square screen design (410 x 502 pixels, 331 ppi)",
+      "Bluetooth 5.3 calling with dual-mic noise reduction",
+      "Built-in 5-system GNSS (GPS, GALILEO, GLONASS, BDS, QZSS)",
+      "150+ workout modes for comprehensive fitness tracking",
+      "5ATM water resistance - swim-proof",
+      "Up to 18 days of battery life with 470mAh battery",
+      "24-hour heart rate monitoring",
+      "SpO2 blood oxygen tracking",
+      "Accelerometer and gyro sensors",
+      "Ultra-lightweight at just 29.2g",
+      "Loudspeaker for calls and notifications",
+      "HyperOS operating system",
+      "Released September 2024"
+    ],
+    specifications: [
+      { label: "Brand", value: "Xiaomi" },
+      { label: "Model", value: "M2352W1 (Redmi Watch 5 Lite)" },
+      { label: "Release Date", value: "September 26, 2024" },
+      { label: "Display Type", value: "AMOLED, 600 nits" },
+      { label: "Display Size", value: "1.96 inches" },
+      { label: "Resolution", value: "410 x 502 pixels (~331 ppi)" },
+      { label: "Dimensions", value: "49.1 x 40.4 x 11.4 mm" },
+      { label: "Weight", value: "29.2g" },
+      { label: "Water Resistance", value: "5ATM" },
+      { label: "Operating System", value: "HyperOS" },
+      { label: "Bluetooth", value: "5.3, A2DP, LE" },
+      { label: "GNSS", value: "GPS, GALILEO, GLONASS, BDS, QZSS (5-system)" },
+      { label: "Sensors", value: "Accelerometer, Gyro, Heart Rate, SpO2" },
+      { label: "Battery", value: "470mAh - up to 18 days" },
+      { label: "Loudspeaker", value: "Yes (for calls)" },
+      { label: "Workout Modes", value: "150+" },
+      { label: "Connectivity", value: "Bluetooth calling, no cellular" }
+    ],
+    colors: [
+      { name: "Black", image: redmiWatch5LiteBlack, stock: "available" },
+      { name: "Light Gold", image: redmiWatch5LiteGold, stock: "available" }
+    ]
+  },
+  // Xiaomi Redmi Watch 5 (Flagship) (ID: 211)
+  {
+    id: 211,
+    name: "Xiaomi Redmi Watch 5",
+    title: "Xiaomi Redmi Watch 5 - 2.1\" AMOLED 1500 Nits, Aluminum Frame, 550mAh Battery",
+    price: 93,
+    image: redmiWatch5Flagship,
+    images: [redmiWatch5Flagship],
+    rating: 4.8,
+    category: "Wearables",
+    brand: "Xiaomi",
+    description: "The flagship Xiaomi Redmi Watch 5 sets a new standard for premium smartwatches. Featuring a brilliant 2.1-inch AMOLED display with an incredible 1500 nits peak brightness, this watch delivers unmatched visibility even in direct sunlight. Built with a premium aluminum frame and plastic back, it combines durability with lightweight comfort at just 33.5g. The 550mAh battery provides extended usage, while the 5-system GNSS ensures accurate tracking for all your adventures. With 5ATM waterproofing (50m water resistant), comprehensive health monitoring including heart rate, SpO2, and stress tracking, and HyperOS for smooth performance, this is the ultimate Redmi Watch. Released January 2025.",
+    features: [
+      "2.1-inch AMOLED display with 1500 nits peak brightness",
+      "Premium aluminum frame with plastic back",
+      "432 x 514 pixels resolution (~324 ppi density)",
+      "Largest display in Redmi Watch 5 series",
+      "550mAh battery - longest battery life in the series",
+      "5-system GNSS (GPS, GLONASS, GALILEO, BDS, QZSS)",
+      "5ATM waterproof - 50m water resistant",
+      "Bluetooth 5.3 with A2DP, LE",
+      "Comprehensive health sensors: heart rate, SpO2, gyro, compass",
+      "HyperOS operating system",
+      "Lightweight at 33.5g despite premium build",
+      "Loudspeaker for calls and notifications",
+      "164MB internal storage",
+      "eSIM support (China only)",
+      "NFC support (China only)",
+      "Released January 15, 2025"
+    ],
+    specifications: [
+      { label: "Brand", value: "Xiaomi" },
+      { label: "Model", value: "M2427W1 / M2428W1 (Redmi Watch 5)" },
+      { label: "Announced", value: "November 27, 2024" },
+      { label: "Released", value: "January 15, 2025" },
+      { label: "Display Type", value: "AMOLED, 1500 nits peak" },
+      { label: "Display Size", value: "2.1 inches" },
+      { label: "Resolution", value: "432 x 514 pixels (~324 ppi)" },
+      { label: "Dimensions", value: "47.5 x 41.1 x 11.3 mm" },
+      { label: "Weight", value: "33.5g" },
+      { label: "Build", value: "Aluminum frame, plastic back" },
+      { label: "Water Resistance", value: "5ATM (50m waterproof)" },
+      { label: "Operating System", value: "HyperOS" },
+      { label: "Storage", value: "164MB internal" },
+      { label: "Bluetooth", value: "5.3, A2DP, LE" },
+      { label: "GNSS", value: "GPS, GLONASS, GALILEO, BDS, QZSS" },
+      { label: "Sensors", value: "Accelerometer, Heart Rate, Compass, Gyro, SpO2" },
+      { label: "Battery", value: "550mAh" },
+      { label: "Loudspeaker", value: "Yes" },
+      { label: "eSIM", value: "Yes (China only)" },
+      { label: "NFC", value: "Yes (China only)" }
+    ],
+    colors: [
+      { name: "Black", image: redmiWatch5Flagship, stock: "available" },
+      { name: "Silver", image: redmiWatch5Flagship, stock: "available" },
+      { name: "Beige", image: redmiWatch5Flagship, stock: "available" }
+    ]
+  },
+  // Xiaomi Smart Band 9 Active (ID: 212)
+  {
+    id: 212,
+    name: "Xiaomi Smart Band 9 Active",
+    title: "XIAOMI Smart Band 9 Active - 1.47\" Display, 18-Day Battery, Ultra-Lightweight 16.5g",
+    price: 25,
+    image: smartBand9Active,
+    images: [smartBand9Active, smartBand9Active2, smartBand9Active3, smartBand9Active4],
+    rating: 4.5,
+    category: "Wearables",
+    brand: "Xiaomi",
+    description: "The Xiaomi Smart Band 9 Active delivers exceptional value with its large 1.47-inch display, 60Hz high refresh rate for enhanced viewing, and ultra-lightweight 16.5g design that's almost weightless on your wrist. Track your health and fitness 24/7 with all-day automatic monitoring, including continuous heart rate tracking. The impressive 18-day battery life (300mAh) means less charging and more tracking. With its slim 9.99mm body, square design, and comprehensive health features, this budget-friendly fitness band keeps you healthy day and night. Compatible with Android 8.0+ and iOS 12.0+.",
+    features: [
+      "1.47-inch large display for excellent visibility",
+      "60Hz high refresh rate - smooth and responsive",
+      "Enhanced viewing experience with crisp visuals",
+      "Super-light design: only 16.5g - almost weightless",
+      "Ultra-slim 9.99mm body profile",
+      "All-day automatic health and fitness monitoring",
+      "All-day continuous heart rate monitoring",
+      "18-day long battery life (300mAh)",
+      "Longer companionship with minimal charging",
+      "Bluetooth connectivity for seamless pairing",
+      "Notifications support - stay connected",
+      "Square shape for modern aesthetic",
+      "Compatible with Android 8.0+ and iOS 12.0+",
+      "Perfect entry-level fitness tracker"
+    ],
+    specifications: [
+      { label: "Brand", value: "XIAOMI" },
+      { label: "Model", value: "Smart Band 9 Active" },
+      { label: "Display Size", value: "1.47 inches" },
+      { label: "Refresh Rate", value: "60Hz" },
+      { label: "Shape", value: "Square" },
+      { label: "Weight", value: "16.5g (ultra-lightweight)" },
+      { label: "Thickness", value: "9.99mm (slim body)" },
+      { label: "Battery Capacity", value: "300mAh" },
+      { label: "Battery Life", value: "Up to 18 days" },
+      { label: "Battery Type", value: "Lithium Ion" },
+      { label: "Connectivity", value: "Bluetooth" },
+      { label: "Bluetooth Version", value: "Bluetooth 5.3 compatible" },
+      { label: "GPS", value: "No GPS (connected GPS via phone)" },
+      { label: "Health Monitoring", value: "All-day heart rate, automatic fitness tracking" },
+      { label: "Special Features", value: "Notifications, health monitoring" },
+      { label: "Operating System", value: "Android 8.0+ / iOS 12.0+" },
+      { label: "Best For", value: "Budget fitness tracking, daily health monitoring" }
+    ]
+  },
+  // Xiaomi Smart Band 9 (Flagship) (ID: 213)
+  {
+    id: 213,
+    name: "Xiaomi Smart Band 9",
+    title: "Xiaomi Smart Band 9 - 1.62\" AMOLED 1200 Nits, Aluminum Frame, 21-Day Battery",
+    price: 40,
+    image: smartBand9img1,
+    images: [smartBand9img1, smartBand9img2, smartBand9img3, smartBand9img4, smartBand9img5, smartBand9img6, smartBand9img7, smartBand9img8],
+    rating: 4.8,
+    category: "Wearables",
+    brand: "Xiaomi",
+    description: "The Xiaomi Smart Band 9 combines premium design with advanced features in a sleek, lightweight package. Featuring a vibrant 1.62-inch AMOLED display with an incredible 1200 nits peak brightness and 60Hz refresh rate, this flagship fitness tracker ensures clear visibility even in direct sunlight. Crafted from all-metal aluminum alloy frames in stunning colors (Midnight Black, Glacier Silver, Mystic Rose, Arctic Blue), it weighs only 15.8g for all-day comfort. With 150+ sports modes, advanced sleep monitoring, on-wrist running courses, and an exceptional 21-day battery life, this smart band is your ultimate health and fitness companion. 5ATM water resistance makes it perfect for swimming and all-weather use.",
+    features: [
+      "1.62-inch AMOLED display with 1200 nits peak brightness",
+      "60Hz high refresh rate for smooth interactions",
+      "192 x 490 pixels resolution for crisp visuals",
+      "Premium all-metal aluminum alloy frame",
+      "Automatic brightness adjustment with ambient light sensor",
+      "Reduces accidental touches when wet",
+      "Ultra-lightweight: only 15.8g (without strap)",
+      "Ultra-slim: 10.95mm thickness",
+      "150+ sports modes with advanced tracking algorithms",
+      "10 on-wrist running courses (beginner to advanced)",
+      "High-precision sleep monitoring with detailed analysis",
+      "All-day heart rate and blood oxygen tracking",
+      "21-day battery life (233mAh)",
+      "5ATM water resistance - swim-proof",
+      "Magnetic charging - fully charged in ~1 hour",
+      "Customizable TPU straps in 7 color options",
+      "Compatible with Android 8.0+ and iOS 12.0+"
+    ],
+    specifications: [
+      { label: "Brand", value: "XIAOMI" },
+      { label: "Model", value: "Smart Band 9 (Flagship)" },
+      { label: "Display Type", value: "1.62-inch AMOLED Touch Display" },
+      { label: "Resolution", value: "192 x 490 pixels" },
+      { label: "Peak Brightness", value: "1200 nits (auto-adjustable)" },
+      { label: "Refresh Rate", value: "60Hz" },
+      { label: "Dimensions", value: "46.53 x 21.63 x 10.95 mm (excluding strap)" },
+      { label: "Weight", value: "15.8g (without strap)" },
+      { label: "Frame Material", value: "All-metal aluminum alloy" },
+      { label: "Strap Material", value: "TPU, adjustable 135-210mm" },
+      { label: "Battery", value: "233mAh" },
+      { label: "Battery Life", value: "Up to 21 days (typical usage)" },
+      { label: "Charging", value: "Magnetic charging, ~1 hour full charge" },
+      { label: "Water Resistance", value: "5ATM" },
+      { label: "Sensors", value: "Accelerometer, Gyroscope, Optical Heart Rate, Ambient Light" },
+      { label: "Sports Modes", value: "150+ modes" },
+      { label: "Running Courses", value: "10 on-wrist courses" },
+      { label: "Compatibility", value: "Android 8.0+ / iOS 12.0+" },
+      { label: "Package Contents", value: "Smart Band 9, Magnetic charging cable, User manual" }
+    ],
+    colors: [
+      { name: "Midnight Black", image: smartBand9img1, stock: "available" },
+      { name: "Glacier Silver", image: smartBand9img2, stock: "available" },
+      { name: "Mystic Rose", image: smartBand9img3, stock: "available" },
+      { name: "Arctic Blue", image: smartBand9img4, stock: "available" }
+    ]
+  },
+  // Xiaomi Smart Band 9 Pro (ID: 214)
+  {
+    id: 214,
+    name: "Xiaomi Smart Band 9 Pro",
+    title: "XIAOMI Smart Band 9 Pro - 1.74\" Display, Built-in GNSS, 21-Day Battery, Aluminum Frame",
+    price: 60,
+    image: smartBand9Pro,
+    images: [smartBand9Pro],
+    rating: 4.9,
+    category: "Wearables",
+    brand: "Xiaomi",
+    description: "The Xiaomi Smart Band 9 Pro elevates fitness tracking to the next level with built-in independent GNSS supporting five major satellite systems (GPS, GLONASS, BeiDou, Galileo, QZSS) for 33% more accurate positioning without needing your phone. Featuring a stunning 1.74-inch narrow-edge quadrilateral display with 2.5D cover glass and premium aluminum alloy frame in 3 stylish colors, this pro-level fitness tracker combines elegance with functionality. Track 150+ sports modes with precision, enjoy upgraded all-round sleep monitoring, improved blood oxygen and heart rate tracking, and exceptional 21-day battery life. 5ATM water resistance, built-in compass, and compatibility with both Android and iOS make this the ultimate fitness companion for serious athletes.",
+    features: [
+      "1.74-inch narrow-edge quadrilateral display",
+      "2.5D cover glass for premium feel and durability",
+      "Premium aluminum alloy frame in 3 colors",
+      "Built-in independent GNSS - no phone needed for tracking",
+      "5-satellite positioning: GPS, GLONASS, BeiDou, Galileo, QZSS",
+      "33% increase in positioning accuracy vs standard GPS",
+      "Built-in compass for navigation",
+      "150+ sports modes with advanced tracking",
+      "Upgraded all-round sleep monitoring",
+      "Improved blood oxygen (SpO2) monitoring",
+      "Enhanced heart rate monitoring accuracy",
+      "21-day battery life (350mAh)",
+      "5ATM water resistance - swim-proof",
+      "Bluetooth connectivity",
+      "Compatible with Android 8.0+ and iOS 12.0+",
+      "Perfect for outdoor activities and serious fitness tracking"
+    ],
+    specifications: [
+      { label: "Brand", value: "XIAOMI" },
+      { label: "Model", value: "Smart Band 9 Pro (Global Version)" },
+      { label: "Display Size", value: "1.74 inches (narrow-edge quadrilateral)" },
+      { label: "Display Glass", value: "2.5D cover glass" },
+      { label: "Frame Material", value: "Aluminum alloy (3 color options)" },
+      { label: "Shape", value: "Square" },
+      { label: "Battery Capacity", value: "350mAh" },
+      { label: "Battery Life", value: "Up to 21 days" },
+      { label: "Battery Type", value: "Lithium Ion" },
+      { label: "Water Resistance", value: "5ATM" },
+      { label: "GNSS", value: "Built-in independent GNSS (5 satellite systems)" },
+      { label: "Satellite Systems", value: "GPS, GLONASS, BeiDou, Galileo, QZSS" },
+      { label: "Positioning Accuracy", value: "33% more accurate than standard GPS" },
+      { label: "Built-in Compass", value: "Yes" },
+      { label: "GPS Mode", value: "Independent (no phone required)" },
+      { label: "Sports Modes", value: "150+" },
+      { label: "Health Monitoring", value: "Sleep, Heart Rate, Blood Oxygen (upgraded)" },
+      { label: "Connectivity", value: "Bluetooth" },
+      { label: "Compatibility", value: "Android 8.0+ / iOS 12.0+" },
+      { label: "Best For", value: "Serious athletes, outdoor activities, GPS tracking" }
+    ]
+  },
+  // Xiaomi Smart Band 10 Ceramic Edition (ID: 215)
+  {
+    id: 215,
+    name: "Xiaomi Smart Band 10 Ceramic Edition",
+    title: "Xiaomi Smart Band 10 Ceramic Edition - Pearl White, 1.72\" AMOLED 1500 Nits, Bluetooth 5.4",
+    price: 85,
+    image: smartBand10ceramic1,
+    images: [smartBand10ceramic1, smartBand10ceramic2, smartBand10ceramic3],
+    rating: 5.0,
+    category: "Wearables",
+    brand: "Xiaomi",
+    description: "The Xiaomi Smart Band 10 Ceramic Edition represents the pinnacle of wearable technology, combining premium Pearl White ceramic construction with cutting-edge health tracking. Featuring a stunning 1.72-inch AMOLED display with ultra-thin bezels and an incredible 1500 nits peak brightness, this flagship fitness tracker ensures superior visibility even in direct sunlight. With the latest Bluetooth 5.4 connectivity, advanced sleep analytics, real-time heart rate broadcasting, and over 150 sports modes, every feature is engineered for users who demand the best. The premium fluororubber strap and ceramic frame deliver unmatched comfort and style. Professional-grade health monitoring, enhanced wellness insights, and 21-day battery life make this the ultimate fusion of fashion and functionality.",
+    features: [
+      "1.72-inch AMOLED touch display with ultra-thin bezels",
+      "212 × 520 px resolution for crystal-clear visuals",
+      "1500 nits peak brightness (HBM) with auto-brightness",
+      "Premium ceramic frame in Pearl White",
+      "Fluororubber strap for superior comfort and durability",
+      "Latest Bluetooth 5.4 connectivity",
+      "Linear haptic motor for precise feedback",
+      "150+ sports modes with professional tracking",
+      "Enhanced sleep analytics and monitoring",
+      "Real-time heart rate broadcasting",
+      "Advanced pulse oximeter (SpO2)",
+      "Electronic compass for navigation",
+      "Gyroscope and accelerometer sensors",
+      "Ambient light sensor for auto-brightness",
+      "21-day battery life (233mAh Li-Po)",
+      "Magnetic charging - fully charged in ~1 hour",
+      "5 ATM water resistance (up to 50m)",
+      "TÜV SÜD certified (ISO 22810:2010)",
+      "Suitable for swimming and shallow-water activities",
+      "Weight: only 23.05g (without strap)",
+      "Compatible with Android 8.0+ / iOS 14.0+"
+    ],
+    specifications: [
+      { label: "Brand", value: "XIAOMI" },
+      { label: "Model", value: "Smart Band 10 Ceramic Edition" },
+      { label: "Color", value: "Pearl White" },
+      { label: "Display Type", value: "1.72-inch AMOLED touch display" },
+      { label: "Resolution", value: "212 × 520 pixels" },
+      { label: "Peak Brightness", value: "1500 nits (HBM) with auto-brightness" },
+      { label: "Dimensions", value: "47.74 × 23.94 × 10.95 mm (excluding sensor)" },
+      { label: "Weight", value: "23.05g (without strap)" },
+      { label: "Frame Material", value: "Premium ceramic" },
+      { label: "Strap Material", value: "Fluororubber (135-210mm)" },
+      { label: "Sensors", value: "Accelerometer, Gyroscope, E-compass, Optical HR, SpO2, Ambient light" },
+      { label: "Water Resistance", value: "5 ATM (up to 50m) - TÜV SÜD certified" },
+      { label: "Bluetooth", value: "5.4" },
+      { label: "Haptic Motor", value: "Linear haptic motor" },
+      { label: "Battery", value: "233mAh Li-Po" },
+      { label: "Battery Life", value: "Up to 21 days" },
+      { label: "Charging", value: "Magnetic, ~1 hour" },
+      { label: "Sports Modes", value: "150+" },
+      { label: "Health Features", value: "Enhanced sleep analytics, real-time HR broadcast, SpO2" },
+      { label: "Compatibility", value: "Android 8.0+ / iOS 14.0+" },
+      { label: "App", value: "Mi Fitness" },
+      { label: "Package Contents", value: "Main unit, Strap, Charging cable, User manual" },
+      { label: "Certification", value: "ISO 22810:2010 by TÜV SÜD" }
     ]
   }
 ];
