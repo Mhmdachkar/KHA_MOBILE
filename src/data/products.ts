@@ -374,6 +374,7 @@ export interface Product {
   colors?: Array<{ name: string; image?: string; stock?: string }>;
   connectivityOptions?: string[];
   isPreorder?: boolean;
+  secondaryCategories?: string[]; // For cross-categorization (e.g., Audio products also appearing in their specific subcategory)
 }
 
 export const phoneAccessories: Product[] = [
@@ -1425,6 +1426,7 @@ export const phoneAccessories: Product[] = [
     rating: 4.5,
     category: "Accessories",
     brand: "Xiaomi",
+    secondaryCategories: ["Audio"],
     description: "The Mi In-Ear Earphones Basic deliver impressive audio quality in a premium aluminum alloy design. Featuring a balanced damping system for rich, full sound across all frequency ranges, these wired earphones offer exceptional value with their durable construction and comfortable ergonomic fit. Perfect for music lovers who appreciate quality sound at an affordable price.",
     features: [
       "Premium aluminum alloy cavity with natural knife-cut grain surface",
@@ -1460,6 +1462,7 @@ export const phoneAccessories: Product[] = [
     rating: 4.6,
     category: "Accessories",
     brand: "Xiaomi",
+    secondaryCategories: ["Audio"],
     description: "The Xiaomi Type-C Earphones deliver high-quality digital audio through USB Type-C connectivity, offering superior sound clarity and convenience. Powered by high-resolution dynamic drivers, these earphones provide rich, balanced sound with deep bass and crystal-clear vocals. Featuring noise isolation technology and ergonomic design with multiple ear tip sizes, they're perfect for smartphones, tablets, and laptops with Type-C support.",
     features: [
       "USB Type-C digital audio connection for stable, clear sound",
@@ -1495,8 +1498,9 @@ export const phoneAccessories: Product[] = [
     image: mi37WCarCharger,
     images: [mi37WCarCharger],
     rating: 4.7,
-    category: "Charging",
+    category: "Accessories",
     brand: "Xiaomi",
+    secondaryCategories: ["Charging", "Automotive"],
     description: "The Mi 37W Dual-Port Car Charger provides fast and efficient charging for two devices simultaneously while you're on the go. With one USB-A port and one USB-C port supporting multiple fast charging protocols, this compact charger delivers up to 27W on the USB-C port, perfect for charging phones, tablets, and other devices during your commute or road trips.",
     features: [
       "Dual ports: USB-A + USB-C for simultaneous charging",
@@ -1606,6 +1610,7 @@ export const phoneAccessories: Product[] = [
     rating: 4.8,
     category: "Lifestyle",
     brand: "Xiaomi",
+    secondaryCategories: ["Health & Wellness", "Personal Care"],
     description: "The Xiaomi Electric Toothbrush T302 (Model: MES608) provides powerful and gentle sonic cleaning for effective daily oral care. Powered by a 2W motor with high-frequency vibrations, it efficiently removes plaque while remaining soft on gums. With Type-C fast charging (full charge in 4 hours), long battery life, and Xiaomi's signature minimalist white design, this toothbrush combines advanced functionality with modern aesthetics for superior oral hygiene.",
     features: [
       "Powerful sonic cleaning with high-frequency vibration",
@@ -1643,6 +1648,7 @@ export const phoneAccessories: Product[] = [
     rating: 4.7,
     category: "Charging",
     brand: "Xiaomi",
+    secondaryCategories: ["Charging"],
     description: "The Mi 67W SonicCharge Fast Charger Adapter delivers blazing fast 67W output for ultra-rapid charging of your Xiaomi devices. This combo includes both the wall adapter and USB cable, providing everything you need for lightning-fast charging. Compatible with Xiaomi Mi 11 and a wide range of smartphones and tablets, this charger features short circuit protection, automatic shutoff, and a lightweight travel-friendly design. Charge your devices at maximum speed with complete safety.",
     features: [
       "67W blazing fast output for ultra-rapid charging",
@@ -1687,6 +1693,7 @@ export const phoneAccessories: Product[] = [
     rating: 4.6,
     category: "Accessories",
     brand: "Xiaomi",
+    secondaryCategories: ["Computing", "Office"],
     description: "The Xiaomi 2.4G Wireless Keyboard & Mouse Set offers a complete wireless desktop solution with stable 2.4GHz transmission. Featuring a 104-key layout with multimedia shortcuts, light chocolate mute keycaps, and a lightweight 45g mouse with TTC micro switches. One receiver connects both devices for a clean, wire-free workspace. Compatible with Windows 10 and above, this combo includes pre-installed batteries for immediate use.",
     features: [
       "Single 2.4GHz wireless receiver for both keyboard and mouse",
@@ -1733,6 +1740,7 @@ export const phoneAccessories: Product[] = [
     rating: 4.8,
     category: "Accessories",
     brand: "Xiaomi",
+    secondaryCategories: ["Smart Home", "Security"],
     description: "The Xiaomi Smart Doorbell 3 delivers ultra-clear 2K resolution monitoring with advanced AI human recognition for your home security. Featuring 180° diagonal ultra-wide view, 24-hour smart motion detection, and automatic video recording, this smart doorbell keeps watch over your door day and night. With two-way audio communication, doorstep motion notifications, and free 72-hour rolling cloud storage, you'll never miss a visitor. Includes a high-volume 72dB wireless chime and boasts an impressive 4.8-month battery life.",
     features: [
       "Ultra-clear 2K resolution for crystal-clear video",
@@ -1779,6 +1787,7 @@ export const phoneAccessories: Product[] = [
     rating: 4.7,
     category: "Accessories",
     brand: "Xiaomi",
+    secondaryCategories: ["Photography", "Camera"],
     description: "The Xiaomi Mi Sphere Camera Kit delivers flawless 360-degree shooting with dual Sony IMX206 sensors and Ambarella image processing. Capture stunning panoramic videos and photos with incredible 3200 x 1800 resolution and 16MP capabilities. Perfect for travel, action sports, and business meetings, this camera features 6-axis electronic stabilization for incredibly stable videos even during extreme activities like skiing or bungee jumping. With long exposure mode for capturing star trails and up to 75 minutes of HD recording, this is the ultimate 360° photography solution.",
     features: [
       "Dual Sony IMX206 1/2.3-inch sensors for flawless image quality",
@@ -1826,6 +1835,7 @@ export const phoneAccessories: Product[] = [
     rating: 4.7,
     category: "Accessories",
     brand: "Xiaomi",
+    secondaryCategories: ["Streaming", "Entertainment"],
     description: "Transform any TV into a smart entertainment hub with the Xiaomi 4K TV Stick. Powered by Android TV 11, this compact streaming device delivers stunning 4K Ultra HD output at 60Hz with support for Dolby Vision HDR and immersive Dolby Atmos surround sound. Access thousands of apps via Google Play, use built-in Google Assistant for voice control, and enjoy seamless streaming from all your favorite services. The lightweight, portable design makes it perfect for home, travel, or turning any display into a smart screen.",
     features: [
       "4K Ultra HD output support (up to 4K@60Hz)",
@@ -1871,6 +1881,7 @@ export const phoneAccessories: Product[] = [
     rating: 4.6,
     category: "Accessories",
     brand: "Xiaomi",
+    secondaryCategories: ["Streaming", "Entertainment"],
     description: "Transform any screen into a smart TV with the ultra-portable Mi TV Stick FHD. Weighing less than 30g (lighter than a cherry tomato!), this pocket-sized streaming device is powered by Android TV 9.0 and delivers limitless entertainment. Just plug it into any HDMI port and enjoy your favorite streaming apps, games, TV shows, and more. The included Bluetooth remote features voice search powered by Google Assistant, making it easy to find content without typing. Set up in three simple steps and start streaming instantly!",
     features: [
       "Ultra-light and portable - weighs less than 30g",
@@ -1917,6 +1928,7 @@ export const phoneAccessories: Product[] = [
     rating: 4.5,
     category: "Accessories",
     brand: "Xiaomi",
+    secondaryCategories: ["Audio"],
     description: "The Xiaomi Redmi Buds 6 Play delivers exceptional audio quality and comfort in an ultra-lightweight, bean-shaped design. Featuring the latest Bluetooth 5.4 connectivity for stable, low-latency wireless performance, these earbuds offer an impressive 36 hours of total battery life with the charging case. Each earbud weighs only 3.6g for all-day comfort, while the 20Hz-20KHz frequency response ensures rich, detailed sound. With 7.5 hours of playback on a single charge, TYPE-C fast charging, and multiple ear cap sizes included, these earbuds are perfect for music, calls, and daily use. Available in four stylish colors to match your personal style.",
     features: [
       "Bean-shaped ergonomic design for superior comfort",
@@ -1980,6 +1992,7 @@ export const phoneAccessories: Product[] = [
     rating: 4.6,
     category: "Accessories",
     brand: "Xiaomi",
+    secondaryCategories: ["Audio"],
     description: "Experience amazing music with the Xiaomi Redmi Buds 6 Active, featuring a powerful 14.2mm dynamic driver for better low-frequency response and deeper bass effects. Tuned by Xiaomi Acoustic Laboratory with 5 different EQ settings, these colorful and fashionable earbuds deliver 30 hours of total battery life and crystal-clear voice calls. The dual-mic beamforming design combined with DNN acoustic ENC algorithm effectively filters environmental noise, while the MIC double perforation design ensures clear calls even in 4m/s wind. Weighing less than 4g per earbud and designed for comfortable long-term wear, these earbuds are the perfect companion for your phone through the Xiaomi Earphone App.",
     features: [
       "14.2mm dynamic driver for enhanced bass",
@@ -2035,6 +2048,7 @@ export const phoneAccessories: Product[] = [
     rating: 4.7,
     category: "Accessories",
     brand: "Xiaomi",
+    secondaryCategories: ["Audio"],
     description: "Experience premium audio with the Redmi Buds 6 Lite featuring advanced 40dB Hybrid Active Noise Cancellation that effectively reduces broadband noise at 2000Hz, perfect for low-frequency environments. Equipped with a high-quality 12.4mm titanium-coated diaphragm driver and independent rear chamber structure, these earbuds deliver exceptional sound quality with AAC coding. The AI-enhanced dual-microphone system ensures crystal-clear calls with wind noise reduction up to 6m/s. Enjoy up to 38 hours of total battery life with the charging case and 7 hours on a single charge. With transparency mode, four adjustable sound effects plus one customizable option via the Xiaomi Earbuds app, and fast charging (10 min = 2h playback), these premium in-ear headphones are perfect for audiophiles and everyday use.",
     features: [
       "40dB Hybrid Active Noise Cancellation",
@@ -2094,6 +2108,7 @@ export const phoneAccessories: Product[] = [
     rating: 4.8,
     category: "Accessories",
     brand: "Xiaomi",
+    secondaryCategories: ["Audio"],
     description: "Experience flagship-level audio with the Xiaomi Redmi Buds 5, featuring industry-leading 46dB wideband active noise cancellation that eliminates up to 99.5% of background noise. Covering the 2kHz noise range, these earbuds excel in aircraft, underground, and other low-frequency noise scenarios with advanced comfortable noise reduction. The independent rear chamber structure ensures excellent dynamic frequency range and sound consistency, delivering distinct high, medium, and low frequencies for a three-dimensional, full-bodied sound. Enjoy an incredible 40 hours of total battery life (10h single + 30h case) with powerful fast charging - just 5 minutes of charging gives you 2 hours of playback. The cloud-inspired lightweight design features a unique cloud gap light with five LED beads creating a stunning breathing light effect. Rod design ensures comfortable wear with three pass-through modes available.",
     features: [
       "46dB wideband active noise cancellation - flagship level",
@@ -4614,6 +4629,7 @@ export const wearablesProducts: Product[] = [
     rating: 4.7,
     category: "Wearables",
     brand: "Xiaomi",
+    secondaryCategories: ["Smartwatches", "Fitness"],
     description: "The Xiaomi Redmi Watch 5 Active combines style, functionality, and advanced health monitoring into a sleek, long-lasting smartwatch. Featuring a large 2-inch LCD display with over 70% screen-to-body ratio, this watch offers vibrant visuals in a minimalistic design. With Bluetooth calling, dual-mic noise reduction, and over 140 workout modes, it's perfect for active lifestyles. The 470mAh battery delivers up to 18 days of use, while comprehensive health tracking including 24-hour heart rate, blood oxygen, and stress monitoring keeps you informed about your well-being. 5ATM water-resistant and compatible with both Android and iOS.",
     features: [
       "2-inch LCD display with 320 x 385 resolution (250PPI)",
@@ -4666,6 +4682,7 @@ export const wearablesProducts: Product[] = [
     rating: 4.6,
     category: "Wearables",
     brand: "Xiaomi",
+    secondaryCategories: ["Smartwatches", "Fitness"],
     description: "The Redmi Watch 5 Lite combines premium features with an accessible price point. Featuring a stunning 1.96-inch AMOLED display with 600 nits brightness and classic square screen design, this smartwatch delivers vibrant visuals in any lighting. Equipped with dual-mic noise reduction for crystal-clear Bluetooth calling, built-in 5-system GNSS for accurate location tracking, and 5ATM water resistance, it's ready for any adventure. Track your fitness with 150+ workout modes, monitor your health 24/7, and enjoy up to 18 days of battery life. Powered by HyperOS and weighing just 29.2g, this ultra-light smartwatch is your perfect daily companion.",
     features: [
       "1.96-inch AMOLED display with 600 nits brightness",
@@ -4718,6 +4735,7 @@ export const wearablesProducts: Product[] = [
     rating: 4.8,
     category: "Wearables",
     brand: "Xiaomi",
+    secondaryCategories: ["Smartwatches", "Fitness"],
     description: "The flagship Xiaomi Redmi Watch 5 sets a new standard for premium smartwatches. Featuring a brilliant 2.1-inch AMOLED display with an incredible 1500 nits peak brightness, this watch delivers unmatched visibility even in direct sunlight. Built with a premium aluminum frame and plastic back, it combines durability with lightweight comfort at just 33.5g. The 550mAh battery provides extended usage, while the 5-system GNSS ensures accurate tracking for all your adventures. With 5ATM waterproofing (50m water resistant), comprehensive health monitoring including heart rate, SpO2, and stress tracking, and HyperOS for smooth performance, this is the ultimate Redmi Watch. Released January 2025.",
     features: [
       "2.1-inch AMOLED display with 1500 nits peak brightness",
@@ -4776,6 +4794,7 @@ export const wearablesProducts: Product[] = [
     rating: 4.5,
     category: "Wearables",
     brand: "Xiaomi",
+    secondaryCategories: ["Smartwatches", "Fitness"],
     description: "The Xiaomi Smart Band 9 Active delivers exceptional value with its large 1.47-inch display, 60Hz high refresh rate for enhanced viewing, and ultra-lightweight 16.5g design that's almost weightless on your wrist. Track your health and fitness 24/7 with all-day automatic monitoring, including continuous heart rate tracking. The impressive 18-day battery life (300mAh) means less charging and more tracking. With its slim 9.99mm body, square design, and comprehensive health features, this budget-friendly fitness band keeps you healthy day and night. Compatible with Android 8.0+ and iOS 12.0+.",
     features: [
       "1.47-inch large display for excellent visibility",
@@ -4824,6 +4843,7 @@ export const wearablesProducts: Product[] = [
     rating: 4.8,
     category: "Wearables",
     brand: "Xiaomi",
+    secondaryCategories: ["Fitness Trackers", "Health"],
     description: "The Xiaomi Smart Band 9 combines premium design with advanced features in a sleek, lightweight package. Featuring a vibrant 1.62-inch AMOLED display with an incredible 1200 nits peak brightness and 60Hz refresh rate, this flagship fitness tracker ensures clear visibility even in direct sunlight. Crafted from all-metal aluminum alloy frames in stunning colors (Midnight Black, Glacier Silver, Mystic Rose, Arctic Blue), it weighs only 15.8g for all-day comfort. With 150+ sports modes, advanced sleep monitoring, on-wrist running courses, and an exceptional 21-day battery life, this smart band is your ultimate health and fitness companion. 5ATM water resistance makes it perfect for swimming and all-weather use.",
     features: [
       "1.62-inch AMOLED display with 1200 nits peak brightness",
@@ -4883,6 +4903,7 @@ export const wearablesProducts: Product[] = [
     rating: 4.9,
     category: "Wearables",
     brand: "Xiaomi",
+    secondaryCategories: ["Fitness Trackers", "Health", "Premium"],
     description: "The Xiaomi Smart Band 9 Pro elevates fitness tracking to the next level with built-in independent GNSS supporting five major satellite systems (GPS, GLONASS, BeiDou, Galileo, QZSS) for 33% more accurate positioning without needing your phone. Featuring a stunning 1.74-inch narrow-edge quadrilateral display with 2.5D cover glass and premium aluminum alloy frame in 3 stylish colors, this pro-level fitness tracker combines elegance with functionality. Track 150+ sports modes with precision, enjoy upgraded all-round sleep monitoring, improved blood oxygen and heart rate tracking, and exceptional 21-day battery life. 5ATM water resistance, built-in compass, and compatibility with both Android and iOS make this the ultimate fitness companion for serious athletes.",
     features: [
       "1.74-inch narrow-edge quadrilateral display",
@@ -5213,9 +5234,12 @@ export const getProductById = (id: number): Product | undefined => {
   return allProducts.find(product => product.id === id);
 };
 
-// Helper function to get products by category
+// Helper function to get products by category (checks both primary and secondary categories)
 export const getProductsByCategory = (category: string): Product[] => {
   const allProducts = [...phoneAccessories, ...wearablesProducts, ...smartphoneProducts, ...tabletProducts, ...iphoneCases, ...gamingConsoles];
-  return allProducts.filter(product => product.category === category);
+  return allProducts.filter(product =>
+    product.category === category ||
+    product.secondaryCategories?.includes(category)
+  );
 };
 

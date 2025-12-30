@@ -205,8 +205,12 @@ const Products = () => {
         if (!allWordsMatch && !exactPhraseMatch) return false;
       }
 
-      // Category filter
-      const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(product.category);
+      // Category filter - check both product.category and secondaryCategories
+      const categoryMatch = selectedCategories.length === 0 ||
+        selectedCategories.some(selectedCat =>
+          product.category === selectedCat ||
+          product.secondaryCategories?.includes(selectedCat)
+        );
 
       // Brand filter - check both product.brand field and extracted brand from name
       const productBrand = product.brand || extractBrand(product.name);
