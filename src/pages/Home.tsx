@@ -49,7 +49,7 @@ const FlagshipiPhone16Showcase = () => {
   const currentColor = colors.find(c => c.name === selectedColor) || colors[0];
 
   return (
-    <section 
+    <section
       ref={sectionRef}
       className="relative py-12 sm:py-16 md:py-20 lg:py-24 xl:py-32 overflow-hidden"
       style={{ scrollMarginTop: '0' }}
@@ -58,19 +58,19 @@ const FlagshipiPhone16Showcase = () => {
       <motion.div
         className="absolute inset-0 -z-10"
         animate={{
-          background: selectedColor === "white" 
+          background: selectedColor === "white"
             ? `linear-gradient(135deg, #f5f5f7 0%, #ffffff 50%, #f5f5f7 100%)`
             : selectedColor === "black"
-            ? `linear-gradient(135deg, #1d1d1f 0%, #2d2d2f 50%, #1d1d1f 100%)`
-            : selectedColor === "pink"
-            ? `linear-gradient(135deg, #f7c3d3 0%, #ffffff 30%, #f7c3d3 100%)`
-            : selectedColor === "teal"
-            ? `linear-gradient(135deg, #4a7c7e 0%, #ffffff 30%, #4a7c7e 100%)`
-            : `linear-gradient(135deg, #003d82 0%, #ffffff 30%, #003d82 100%)`
+              ? `linear-gradient(135deg, #1d1d1f 0%, #2d2d2f 50%, #1d1d1f 100%)`
+              : selectedColor === "pink"
+                ? `linear-gradient(135deg, #f7c3d3 0%, #ffffff 30%, #f7c3d3 100%)`
+                : selectedColor === "teal"
+                  ? `linear-gradient(135deg, #4a7c7e 0%, #ffffff 30%, #4a7c7e 100%)`
+                  : `linear-gradient(135deg, #003d82 0%, #ffffff 30%, #003d82 100%)`
         }}
         transition={{ duration: 0.8, ease: "easeInOut" }}
       />
-      
+
       {/* Additional subtle gradient overlay for depth */}
       <motion.div
         className="absolute inset-0 -z-10"
@@ -111,7 +111,7 @@ const FlagshipiPhone16Showcase = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-              className="space-y-4 sm:space-y-6 md:space-y-8 text-center lg:text-left order-2 lg:order-1 w-full max-w-full"
+            className="space-y-4 sm:space-y-6 md:space-y-8 text-center lg:text-left order-2 lg:order-1 w-full max-w-full"
           >
             {/* Badge */}
             <motion.div
@@ -210,7 +210,7 @@ const FlagshipiPhone16Showcase = () => {
                       ? "border-primary shadow-lg scale-110"
                       : "border-border/30 hover:border-primary/50"
                       }`}
-                    style={{ 
+                    style={{
                       backgroundColor: color.hex,
                       touchAction: 'manipulation',
                       WebkitTapHighlightColor: 'transparent',
@@ -245,7 +245,7 @@ const FlagshipiPhone16Showcase = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.9, duration: 0.8 }}
-                className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start pt-2 sm:pt-4 w-full"
+              className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start pt-2 sm:pt-4 w-full"
             >
               <Link to="/product/500" className="w-full sm:w-auto">
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto">
@@ -294,7 +294,7 @@ const FlagshipiPhone16Showcase = () => {
             <motion.div
               className="absolute inset-0 border-2 rounded-full"
               style={{ borderColor: currentColor.hex }}
-              animate={{ 
+              animate={{
                 rotate: 360,
                 opacity: selectedColor === "white" || selectedColor === "pink" ? 0.05 : 0.1
               }}
@@ -309,7 +309,7 @@ const FlagshipiPhone16Showcase = () => {
               exit={{ opacity: 0, scale: 0.9, rotateY: -90 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
               className="relative z-10 flex items-center justify-center"
-              style={{ 
+              style={{
                 minHeight: '300px',
                 padding: '1rem 0.5rem',
                 display: 'flex',

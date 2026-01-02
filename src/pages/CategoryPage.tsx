@@ -33,6 +33,7 @@ import samsungLogo from "@/assets/logo's/samsung logo.avif";
 import smartLogo from "@/assets/smart logo.jpg";
 import tecnoLogo from "@/assets/techno logo.jpg";
 import xiaomiLogo from "@/assets/logo's/xiaomi logo.png";
+import redmagicLogo from "@/assets/logo's/redmagic logo.jpg";
 
 const brandLogoMap: Record<string, string> = {
   "Apple": appleLogo,
@@ -43,6 +44,7 @@ const brandLogoMap: Record<string, string> = {
   "Smart": smartLogo,
   "Tecno": tecnoLogo,
   "Xiaomi": xiaomiLogo,
+  "REDMAGIC": redmagicLogo,
 };
 
 // Quote map for each category

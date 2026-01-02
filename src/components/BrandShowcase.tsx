@@ -10,6 +10,7 @@ import fonengLogo from "@/assets/logo's/foneng logo.jpg";
 import greenLionLogo from "@/assets/logo's/green lion logo.jpg";
 import hocoLogo from "@/assets/logo's/hoco logo.webp";
 import samsungLogo from "@/assets/logo's/samsung logo.avif";
+import redmagicLogo from "@/assets/logo's/redmagic logo.jpg";
 
 interface Brand {
   name: string;
@@ -24,7 +25,7 @@ const BrandShowcase = () => {
   // Helper function to extract brand from product name
   const extractBrand = (productName: string, productCategory?: string): string | null => {
     const nameLower = productName.toLowerCase();
-    
+
     // Check for brand patterns
     const brandPatterns = [
       { pattern: /^Green Lion\s+/i, name: "Green Lion" },
@@ -40,22 +41,25 @@ const BrandShowcase = () => {
       { pattern: /^JBL\s+/i, name: "JBL" },
       { pattern: /^Kakusiga\s+/i, name: "Kakusiga" },
       { pattern: /^YESIDO\s+/i, name: "YESIDO" },
+      { pattern: /^REDMAGIC\s+/i, name: "REDMAGIC" },
+      { pattern: /^Red Magic\s+/i, name: "REDMAGIC" },
     ];
-    
+
     for (const { pattern, name } of brandPatterns) {
       if (pattern.test(productName)) {
         return name;
       }
     }
-    
+
     // Additional checks for common brand indicators in product names
+    if (nameLower.includes("redmagic") || nameLower.includes("red magic")) return "REDMAGIC";
     if (nameLower.includes("airpods") || nameLower.includes("airpod")) return "Apple";
     if (nameLower.includes("galaxy") && !nameLower.includes("green lion")) return "Samsung";
     if (nameLower.includes("apple watch")) return "Apple";
     if (nameLower.includes("iphone")) return "Apple";
     if (nameLower.includes("ipad")) return "Apple";
     if (nameLower.includes("playstation") || nameLower.includes("ps4") || nameLower.includes("ps5")) return "Sony";
-    
+
     return null;
   };
 
@@ -105,6 +109,7 @@ const BrandShowcase = () => {
     "Samsung": samsungLogo,
     "Hoco": hocoLogo,
     "Foneng": fonengLogo,
+    "REDMAGIC": redmagicLogo,
   };
 
   // Brands to exclude (those with 1-2 products and no logo)
@@ -146,6 +151,7 @@ const BrandShowcase = () => {
       "BOROFONE": "from-pink-500 to-rose-600",
       "JBL": "from-red-500 to-orange-600",
       "Kakusiga": "from-yellow-500 to-amber-600",
+      "REDMAGIC": "from-red-600 to-red-900",
     };
     return colors[brandName] || "from-primary to-accent";
   };
@@ -160,7 +166,7 @@ const BrandShowcase = () => {
           viewport={{ once: true }}
           className="absolute inset-0 bg-grid-pattern opacity-[0.02]"
         />
-        
+
         <div className="container mx-auto px-4 sm:px-6 relative z-10 overflow-visible" style={{ overflowX: 'hidden', overflowY: 'visible' }}>
           {/* Header */}
           <motion.div
@@ -206,7 +212,7 @@ const BrandShowcase = () => {
               >
                 {/* Gradient Background */}
                 <div className={`absolute inset-0 bg-gradient-to-br ${getBrandColor(brand.name)} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
-                
+
                 {/* Brand Logo */}
                 <div className="relative z-10 flex flex-col items-center justify-center gap-2 sm:gap-3 md:gap-4 w-full">
                   {brand.logo ? (
@@ -233,7 +239,7 @@ const BrandShowcase = () => {
                       {brand.name}
                     </h3>
                   )}
-                  
+
                   {/* Product Count */}
                   <div className="flex items-center justify-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs md:text-sm text-muted-foreground">
                     <TrendingUp className="h-2.5 w-2.5 sm:h-3 sm:w-3 md:h-4 md:w-4" />

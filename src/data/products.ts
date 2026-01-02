@@ -97,6 +97,92 @@ import a075Purple from "@/assets/phones/A075 samsunng galaxy/A075 Mediatek Helio
 import a075Grey from "@/assets/phones/A075 samsunng galaxy/A075 Mediatek Helio G99 (6 nm) grey.webp";
 import a075Silver from "@/assets/phones/A075 samsunng galaxy/A075 Mediatek Helio G99 (6 nm) 64GB.webp";
 import a16Black from "@/assets/phones/A16/A16 .png";
+import iphone16ProTitanium from "@/assets/phones/apple/iphone-16-pro-max-desert-titanium.png";
+import iphone16ProNatural from "@/assets/phones/apple/iphone-16-pro-max-natural-titanium.png";
+import iphone16ProWhite from "@/assets/phones/apple/iphone-16-pro-max-white-titanium.png";
+import iphone16ProBlack from "@/assets/phones/apple/iphone-16-pro-max-black-titanium.png";
+
+// REDMAGIC 10 Pro
+import redmagic10Pro1 from "@/assets/phones/red magic/REDMAGIC 10 Pro/Screenshot 2025-12-31 012005.png";
+import redmagic10Pro2 from "@/assets/phones/red magic/REDMAGIC 10 Pro/Screenshot 2025-12-31 012013.png";
+import redmagic10Pro3 from "@/assets/phones/red magic/REDMAGIC 10 Pro/Screenshot 2025-12-31 012021.png";
+import redmagic10Pro4 from "@/assets/phones/red magic/REDMAGIC 10 Pro/Screenshot 2025-12-31 012037.png";
+import redmagic10Pro5 from "@/assets/phones/red magic/REDMAGIC 10 Pro/Screenshot 2025-12-31 012206.png";
+import redmagic10Pro6 from "@/assets/phones/red magic/REDMAGIC 10 Pro/Screenshot 2025-12-31 012214.png";
+import redmagic10Pro7 from "@/assets/phones/red magic/REDMAGIC 10 Pro/Screenshot 2025-12-31 012315.png";
+import redmagic10Pro8 from "@/assets/phones/red magic/REDMAGIC 10 Pro/Screenshot 2025-12-31 012323.png";
+import redmagic10Pro9 from "@/assets/phones/red magic/REDMAGIC 10 Pro/Screenshot 2025-12-31 012330.png";
+import redmagic10Pro10 from "@/assets/phones/red magic/REDMAGIC 10 Pro/Screenshot 2025-12-31 012352.png";
+import redmagic10Pro11 from "@/assets/phones/red magic/REDMAGIC 10 Pro/Screenshot 2025-12-31 012358.png";
+import redmagic10Pro12 from "@/assets/phones/red magic/REDMAGIC 10 Pro/Screenshot 2025-12-31 012405.png";
+
+// REDMAGIC 10 Air
+import redmagic10Air1 from "@/assets/phones/red magic/redmagic 10 air/REDMAGIC 10 Air 120Hz Gaming Phone.jpg";
+import redmagic10Air2 from "@/assets/phones/red magic/redmagic 10 air/51OV2+9j50L._AC_SX522_.jpg";
+import redmagic10Air3 from "@/assets/phones/red magic/redmagic 10 air/41vspSoX7zL._AC_SX522_.jpg";
+import redmagic10Air4 from "@/assets/phones/red magic/redmagic 10 air/41LgH5fTK0L._AC_SL1500_.jpg";
+
+// REDMAGIC VC COOLER 5 Pro
+import redmagicCooler1 from "@/assets/phones/red magic/REDMAGIC VC COOLER 5 Pro Magnetic Edition/REDMAGIC VC COOLER 5 Pro Magnetic Edition.webp";
+import redmagicCooler2 from "@/assets/phones/red magic/REDMAGIC VC COOLER 5 Pro Magnetic Edition/red-magic-computers-nubia-redmagic-vc-cooler-5-pro-magnetic-edition-41474712535172_1024x1024.webp";
+import redmagicCooler3 from "@/assets/phones/red magic/REDMAGIC VC COOLER 5 Pro Magnetic Edition/red-magic-computers-nubia-redmagic-vc-cooler-5-pro-magnetic-edition-41474712600708_1024x1024.webp";
+
+// TECNO SPARK GO 1
+import tecnoSparkGo1Black from "@/assets/phones/TECNO/TECNO SPARK GO 1 3 RAM/TECNO SPARK GO 1 3 RAM BLACK.jpeg";
+import tecnoSparkGo1Gold from "@/assets/phones/TECNO/TECNO SPARK GO 1 3 RAM/TECNO SPARK GO 1 3 RAM GOLD.jpeg";
+import tecnoSparkGo1Green from "@/assets/phones/TECNO/TECNO SPARK GO 1 3 RAM/TECNO SPARK GO 1 3 RAM GREEN.jpeg";
+import tecnoSparkGo1White from "@/assets/phones/TECNO/TECNO SPARK GO 1 3 RAM/TECNO SPARK GO 1 3 RAM WHITE.jpeg";
+
+// TECNO SPARK GO 2
+import tecnoSparkGo2Black from "@/assets/phones/TECNO/TECNO SPARK GO 2/Tecno Spark Go 2 BLACK.webp";
+import tecnoSparkGo2Blue from "@/assets/phones/TECNO/TECNO SPARK GO 2/Tecno Spark Go 2 BLUE.webp";
+import tecnoSparkGo2Grey from "@/assets/phones/TECNO/TECNO SPARK GO 2/Tecno Spark Go 2 GREY.webp";
+import tecnoSparkGo2White from "@/assets/phones/TECNO/TECNO SPARK GO 2/Tecno Spark Go 2 WHITE.webp";
+
+// Tecno Spark 40 C (KM4K)
+import tecnoSpark40CTitaniumGrey from "@/assets/phones/techno spark 40 C(KM4K)/Titanium grey.png";
+import tecnoSpark40CRippleBlue from "@/assets/phones/techno spark 40 C(KM4K)/techno spark 40 C(KM4K) Ripple blue.png";
+import tecnoSpark40CWhite from "@/assets/phones/techno spark 40 C(KM4K)/techno spark 40 C(KM4K) WHITE.png";
+import tecnoSpark40CInkBlack from "@/assets/phones/techno spark 40 C(KM4K)/techno spark 40 C(KM4K) black.png";
+
+// Tecno Spark 30C
+import tecnoSpark30CBlack from "@/assets/phones/TECNO/Tecno Spark 30C/Tecno Spark 30C black.jpg";
+import tecnoSpark30CGreen from "@/assets/phones/TECNO/Tecno Spark 30C/Tecno Spark 30C green.jpg";
+import tecnoSpark30CWhite from "@/assets/phones/TECNO/Tecno Spark 30C/Tecno Spark 30C white.jpg";
+
+// Tecno Spark 30 Pro
+import tecnoSpark30ProBlack from "@/assets/phones/TECNO/tecno spark 30 pro/tecno spark 30 pro black.jpg";
+import tecnoSpark30ProGreen from "@/assets/phones/TECNO/tecno spark 30 pro/Tecno Spark 30 Pro green.jpg";
+import tecnoSpark30ProWhite from "@/assets/phones/TECNO/tecno spark 30 pro/Tecno Spark 30 Pro white.jpg";
+
+// Tecno Spark 10 5G
+import tecnoSpark105G from "@/assets/phones/TECNO/tecno spark 10 5g/tecno spark 10 5G.jpg";
+
+// Tecno Spark Slim (KM7K)
+import tecnoSparkSlimBlack from "@/assets/phones/TECNO/tecno spark 30 pro/Tecno Spark Slim/tecno spark SUM (KM7K) BLACK.webp";
+import tecnoSparkSlimBlue from "@/assets/phones/TECNO/tecno spark 30 pro/Tecno Spark Slim/tecno spark SUM (KM7K) BLUE.webp";
+import tecnoSparkSlimWhite from "@/assets/phones/TECNO/tecno spark 30 pro/Tecno Spark Slim/tecno spark SUM (KM7K) WHITE.webp";
+
+// Tecno Spark 20 Pro
+import tecnoSpark20ProBlack from "@/assets/phones/TECNO/Tecno Spark 20 Pro 12GB 256GB/Tecno Spark 20 Pro 12GB 256GB black.jpg";
+import tecnoSpark20ProIvory from "@/assets/phones/TECNO/Tecno Spark 20 Pro 12GB 256GB/Tecno Spark 20 Pro 12GB 256GB frosty ivoryy color.jpg";
+import tecnoSpark20ProGreen from "@/assets/phones/TECNO/Tecno Spark 20 Pro 12GB 256GB/Tecno Spark 20 Pro 12GB 256GB green.jpg";
+import tecnoSpark20ProSunset from "@/assets/phones/TECNO/Tecno Spark 20 Pro 12GB 256GB/Tecno Spark 20 Pro 12GB 256GB sunset bluch.jpg";
+
+// Tecno Pova 6 Pro
+import tecnoPova6ProBlack from "@/assets/phones/TECNO/Tecno Pova 6 Pro – 12GB – 256GB/Tecno Pova 6 Pro – 12GB – 256GB black.webp";
+import tecnoPova6ProGreen from "@/assets/phones/TECNO/Tecno Pova 6 Pro – 12GB – 256GB/Tecno Pova 6 Pro – 12GB – 256GB green.webp";
+
+// Tecno Pova 7
+import tecnoPova7Black from "@/assets/phones/TECNO/Tecno Pova 7/Tecno Pova 7 black.jpg";
+import tecnoPova7Bronze from "@/assets/phones/TECNO/Tecno Pova 7/Tecno Pova 7 bronze.jpg";
+import tecnoPova7Green from "@/assets/phones/TECNO/Tecno Pova 7/Tecno Pova 7 green.jpg";
+import tecnoPova7White from "@/assets/phones/TECNO/Tecno Pova 7/Tecno Pova 7 white.jpg";
+
+// Tecno Camon 30 5G
+import tecnoCamon30Black from "@/assets/phones/tecno camon 30 5g (CL7)/tecno camon 30 5g (CL7) black placeholder.webp";
+import tecnoCamon30White from "@/assets/phones/tecno camon 30 5g (CL7)/tecno camon 30 5g (CL7) white.jpg";
+
 import a16Silver from "@/assets/phones/A16/A16 light grey.png";
 import a16Display from "@/assets/phones/A16/Screenshot 2025-11-24 153248.png";
 import a16Lifestyle from "@/assets/phones/A16/Screenshot 2025-11-24 153315.png";
@@ -170,9 +256,13 @@ import camon30White from "@/assets/phones/tecno camon 30 5g (CL7)/tecno camon 30
 import camon40ProPlaceholder from "@/assets/phones/tecno camon 40 pro 4g/tecno camon 40 pro 4g placeholder.png";
 import camon40ProBlack from "@/assets/phones/tecno camon 40 pro 4g/tecno camon 40 pro 4g black.jpg";
 import camon40ProGreen from "@/assets/phones/tecno camon 40 pro 4g/tecno camon 40 pro 4g green.jpg";
+import camon40ProWhite from "@/assets/phones/tecno camon 40 pro 4g/tecno camon 40 pro 4g placeholder.png";
 import camon40Pro5gPlaceholder from "@/assets/phones/tecno camon 40 pro 5g (CM5)/tecno camon 40 pro 5g (CM5) BLACK placeholder.png";
+import camon40Pro5gBlack from "@/assets/phones/tecno camon 40 pro 5g (CM5)/tecno camon 40 pro 5g (CM5) BLACK placeholder.png";
 import camon40Pro5gWhite from "@/assets/phones/tecno camon 40 pro 5g (CM5)/tecno camon 40 pro 5g (CM5) glacier white.png";
 import camon40Pro5gGreen from "@/assets/phones/tecno camon 40 pro 5g (CM5)/tecno camon 40 pro 5g (CM5) lake green.png";
+// Tecno MegaPad 10 256GB
+import tecnoMegaPad10 from "@/assets/phones/TECNO/Tecno MegaPad 10 256GB/Tecno MegaPad 10 256GB.jpg";
 import galaxyTabA9BlackPlaceholder from "@/assets/Tablets/Samsung Galaxy Tab A9/Samsung Galaxy Tab A9 Black placeholder.webp";
 import galaxyTabA9Blue from "@/assets/Tablets/Samsung Galaxy Tab A9/Samsung Galaxy Tab A9 BLUE.webp";
 import galaxyTabA9White from "@/assets/Tablets/Samsung Galaxy Tab A9/Samsung Galaxy Tab A9 WHITE.webp";
@@ -346,6 +436,21 @@ import redmiBuds6LiteWhite from "@/assets/phones/xiaomi/xiaomi accessories/Redmi
 import redmiBuds5Black from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Redmi Buds 5 Wireless Earphone/Xiaomi Redmi Buds 5 Wireless Earphone black.jpg";
 import redmiBuds5Blue from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Redmi Buds 5 Wireless Earphone/Xiaomi Redmi Buds 5 Wireless Earphone blue.jpg";
 import redmiBuds5White from "@/assets/phones/xiaomi/xiaomi accessories/Xiaomi Redmi Buds 5 Wireless Earphone/Xiaomi Redmi Buds 5 Wireless Earphone white.jpg";
+
+// Xiaomi Electric Scooter 4 Lite
+import electricScooter1 from "@/assets/phones/xiaomi/xiaomi electronics/electric scooter 5/Screenshot 2025-12-31 004635.png";
+import electricScooter2 from "@/assets/phones/xiaomi/xiaomi electronics/electric scooter 5/Screenshot 2025-12-31 004643.png";
+import electricScooter3 from "@/assets/phones/xiaomi/xiaomi electronics/electric scooter 5/Screenshot 2025-12-31 004650.png";
+import electricScooter4 from "@/assets/phones/xiaomi/xiaomi electronics/electric scooter 5/Screenshot 2025-12-31 004657.png";
+import electricScooter5 from "@/assets/phones/xiaomi/xiaomi electronics/electric scooter 5/Screenshot 2025-12-31 004706.png";
+import electricScooter6 from "@/assets/phones/xiaomi/xiaomi electronics/electric scooter 5/Screenshot 2025-12-31 004714.png";
+
+// Xiaomi Electric Scooter 5
+import scooter5img1 from "@/assets/phones/xiaomi/xiaomi electronics/Xiaomi Electric Scooter 4 Lite/Xiaomi Electric Scooter 5.webp";
+import scooter5img2 from "@/assets/phones/xiaomi/xiaomi electronics/Xiaomi Electric Scooter 4 Lite/2-277-768x768.webp";
+import scooter5img3 from "@/assets/phones/xiaomi/xiaomi electronics/Xiaomi Electric Scooter 4 Lite/3-255-768x768.webp";
+import scooter5img4 from "@/assets/phones/xiaomi/xiaomi electronics/Xiaomi Electric Scooter 4 Lite/4-235-768x768.webp";
+import scooter5img5 from "@/assets/phones/xiaomi/xiaomi electronics/Xiaomi Electric Scooter 4 Lite/5-208-768x768.webp";
 
 export interface ProductVariant {
   key: string;
@@ -2151,6 +2256,47 @@ export const phoneAccessories: Product[] = [
       { name: "Blue", image: redmiBuds5Blue, stock: "available" },
       { name: "White", image: redmiBuds5White, stock: "available" }
     ]
+  },
+  // REDMAGIC VC COOLER 5 Pro Magnetic Edition (ID: 220)
+  {
+    id: 220,
+    name: "REDMAGIC VC COOLER 5 Pro Magnetic Edition",
+    title: "REDMAGIC VC COOLER 5 Pro Magnetic Edition - 36W Super Cooling, Liquid Cooled",
+    price: 59,
+    image: redmagicCooler1,
+    images: [redmagicCooler1, redmagicCooler2, redmagicCooler3],
+    rating: 4.8,
+    category: "Accessories",
+    brand: "REDMAGIC",
+    secondaryCategories: ["Gaming", "Cooling", "Mobile Accessories"],
+    description: "The REDMAGIC VC COOLER 5 Pro Magnetic Edition features a patented VC Liquid Cooling system that delivers 36W super cooling power, capable of dropping temperatures to -12°C. Designed for peak performance, it utilizes a 36*36mm TEC and a liquid-cooled aluminum alloy radiator to dissipate heat rapidly. The 7-blade high-speed fan ensures efficient airflow with low noise, while the transparent design adds a futuristic touch. This magnetic edition attaches significantly to compatible phones; for non-magnetic phones, a separate clip (2-in-1 version) is required (this item is the Magnetic Edition). Requires a 12V/3A charger for peak 36W performance.",
+    features: [
+      "Patented VC Liquid Cooling Technology",
+      "36W Peak Power / 25W RMS Power",
+      "Drops temperature to -12°C for icy cool gaming",
+      "Magnetic attachment for seamless compatibility",
+      "36*36mm TEC cooling component",
+      "Liquid-cooled aluminum alloy radiator",
+      "7-blade high-speed low-noise fan",
+      "Transparent cyberpunk design",
+      "Requires 12V/3A input for maximum performance",
+      "Includes 5A data cable and magnetic sheet"
+    ],
+    specifications: [
+      { label: "Model", value: "VC COOLER 5 Pro Magnetic Edition" },
+      { label: "Cooling Type", value: "VC Liquid Cooling + TEC" },
+      { label: "Peak Power", value: "36W" },
+      { label: "RMS Power", value: "25W" },
+      { label: "Min Temp", value: "Drops to -12°C" },
+      { label: "Fan", value: "7-blade high-speed low-noise" },
+      { label: "Radiator", value: "Aluminum alloy" },
+      { label: "TEC Size", value: "36*36mm" },
+      { label: "Dimensions", value: "66mm x 59mm x 28mm" },
+      { label: "Color", value: "Transparent" },
+      { label: "Compatibility", value: "Magnetic phones (or use magnetic sheet)" },
+      { label: "Power Input", value: "Requires 9V/3A (12V/3A for peak)" },
+      { label: "In Box", value: "Cooler, 5A cable, Magnetic sheet" }
+    ]
   }
 
 ];
@@ -2158,6 +2304,938 @@ export const phoneAccessories: Product[] = [
 // Smartphone products
 export const smartphoneProducts: Product[] = [
   // ==================== SMARTPHONES ====================
+  // REDMAGIC 10 Pro (ID: 218)
+  {
+    id: 218,
+    name: "REDMAGIC 10 Pro",
+    title: "REDMAGIC 10 Pro - Snapdragon 8 Elite, 144Hz AMOLED, 7050mAh Battery, Gaming Beast",
+    price: 799,
+    image: redmagic10Pro1,
+    images: [redmagic10Pro1, redmagic10Pro2, redmagic10Pro3, redmagic10Pro4, redmagic10Pro5, redmagic10Pro6, redmagic10Pro7, redmagic10Pro8, redmagic10Pro9, redmagic10Pro10, redmagic10Pro11, redmagic10Pro12],
+    rating: 4.9,
+    category: "Smartphones",
+    brand: "REDMAGIC",
+    secondaryCategories: ["Gaming", "Flagship", "5G"],
+    description: "The REDMAGIC 10 Pro redefines mobile gaming with cutting-edge technology and an immersive design. Featuring the powerful Snapdragon 8 Elite processor, this gaming powerhouse ensures smooth performance with its Kryo™ CPU, clocked up to 4.32GHz, and Adreno™ GPU for exceptional graphics rendering. A high-performance LPDDR5X Ultra RAM and UFS4.1 Pro storage combination guarantees lightning-fast data access, while the stunning 6.853-inch BOE Q9+ AMOLED display with a 144Hz refresh rate delivers seamless visuals with 100% DCI-P3 color accuracy. The inclusion of a 2nd-generation under-display 16MP front camera ensures an uninterrupted screen experience, making it the ideal device for gamers and multimedia enthusiasts alike. Built with an advanced ICE-X Magic Cooling System, the REDMAGIC 10 Pro incorporates a 23,000 RPM high-speed turbofan, graphene layers, and liquid metal thermal conductivity to keep temperatures low during intense gaming sessions. A dual-cell 7050mAh battery with 100W fast charging allows extended playtime with rapid power replenishment. Enhanced connectivity, including dual nano-SIM 5G support, Wi-Fi 6E, Bluetooth 5.4, and NFC, ensures a seamless online experience. With an ultra-responsive 520Hz shoulder trigger system and fully customizable RGB lighting, the REDMAGIC 10 Pro is engineered to deliver a next-level gaming experience.",
+    features: [
+      "Snapdragon 8 Elite chipset with overclocked Kryo™ CPU at 4.32GHz and Adreno™ GPU",
+      "6.853-inch BOE Q9+ AMOLED display with FHD+ resolution (2688x1216 pixels)",
+      "144Hz refresh rate with 2500Hz touch sampling rate for ultra-smooth gaming",
+      "100% DCI-P3 color gamut with △E＜1 color accuracy",
+      "2000 nits max brightness with Corning® Gorilla® Glass protection",
+      "ICE-X Magic Cooling System with 23,000 RPM high-speed turbofan",
+      "Graphene layers and liquid metal thermal conductivity for heat dissipation",
+      "Alloy shark fin centrifugal fan with 58 ultra-thin blades (0.1mm thickness)",
+      "520Hz shoulder trigger buttons for ultra-responsive gaming controls",
+      "Massive 7050mAh dual-cell battery with 100W fast charging",
+      "16MP 2nd-generation under-display front camera for uninterrupted screen",
+      "50MP+50MP+2MP rear camera system with OIS and 7P lens",
+      "LPDDR5X Ultra RAM + UFS4.1 Pro storage for lightning-fast performance",
+      "Dual nano-SIM 5G (SA+NSA), Wi-Fi 6E, Bluetooth 5.4, NFC",
+      "Customizable RGB lighting effects for personalized gaming aesthetics",
+      "Dedicated Game Space switch for instant gaming mode activation",
+      "Dual 1115K speakers for immersive audio experience",
+      "USB 3.2 Type-C port and 3.5mm audio jack for versatile connectivity"
+    ],
+    specifications: [
+      { label: "Display", value: "6.853\" BOE Q9+ FHD+ AMOLED, 144Hz, 2688x1216 pixels" },
+      { label: "Processor", value: "Snapdragon 8 Elite with Kryo™ CPU (4.32GHz)" },
+      { label: "GPU", value: "Adreno™ GPU + Red Core 3 Pro" },
+      { label: "RAM", value: "Up to 24GB LPDDR5X Ultra" },
+      { label: "Storage", value: "Up to 1TB UFS4.1 Pro" },
+      { label: "Display Features", value: "2500Hz touch sampling, 2000 nits brightness, 100% DCI-P3" },
+      { label: "Refresh Rate", value: "144Hz" },
+      { label: "Rear Camera", value: "50MP (OIS) + 50MP + 2MP, OmniVision OV50E, 7P lens" },
+      { label: "Front Camera", value: "16MP under-display, f/2.0 aperture" },
+      { label: "Battery", value: "7050mAh dual-cell" },
+      { label: "Charging", value: "100W fast charging" },
+      { label: "Cooling System", value: "ICE-X Magic with 23,000 RPM turbofan, graphene, liquid metal" },
+      { label: "5G", value: "Dual nano-SIM, SA+NSA 5G" },
+      { label: "Wi-Fi", value: "Wi-Fi 6E" },
+      { label: "Bluetooth", value: "5.4" },
+      { label: "NFC", value: "Yes" },
+      { label: "GPS", value: "Dual GPS (L1+L5)" },
+      { label: "Audio", value: "Dual 1115K speakers, 3.5mm jack" },
+      { label: "USB", value: "USB 3.2 Type-C" },
+      { label: "Gaming Features", value: "520Hz shoulder triggers, Game Space switch, RGB lighting" },
+      { label: "Dimensions", value: "163.42mm (H) x 76.14mm (W) x 8.9mm (D)" },
+      { label: "Weight", value: "229g" },
+      { label: "Build", value: "Metal middle frame + glass rear cover" },
+      { label: "Colors", value: "Shadow, Dusk, Moonlight, Lightspeed" },
+      { label: "OS", value: "Red Magic OS (Android-based)" }
+    ]
+  },
+  // REDMAGIC 10 Air (ID: 219)
+  {
+    id: 219,
+    name: "REDMAGIC 10 Air",
+    title: "REDMAGIC 10 Air - Snapdragon 8 Gen 3, 144Hz AMOLED, Under-Display Camera",
+    price: 649,
+    image: redmagic10Air1,
+    images: [redmagic10Air1, redmagic10Air2, redmagic10Air3, redmagic10Air4],
+    rating: 4.8,
+    category: "Smartphones",
+    brand: "REDMAGIC",
+    secondaryCategories: ["Gaming", "5G"],
+    description: "The REDMAGIC 10 Air delivers a premium gaming experience in a sleek design. Powered by the latest Qualcomm Snapdragon 8 Gen 3 chipset with a 3.3GHz CPU and powerful GPU, it handles AAA games with ease. The 6.8-inch FHD+ AMOLED screen offers a stunning 144Hz refresh rate and 960Hz touch sampling for a competitive edge. It features a multi-dimensional cooling system with liquid metal heat dissipation to keep performance stable. Capture every detail with the 50MP ultra-HD AI quad-camera system and enjoy an uninterrupted full-screen experience thanks to the 16MP under-display front camera. With WiFi 7, 5G connectivity, and 80W fast charging, the REDMAGIC 10 Air is ready for intense mobile gaming.",
+    features: [
+      "Snapdragon 8 Gen 3 processor for top-tier gaming performance",
+      "6.8-inch FHD+ AMOLED full screen (2480 x 1116 resolution)",
+      "144Hz refresh rate and 960Hz touch sampling rate",
+      "Liquid metal cooling system for sustained performance",
+      "12GB RAM + 256GB ROM for multitasking and game storage",
+      "50MP + 50MP + 2MP AI Triple Rear Camera system",
+      "16MP Under-Display Camera (UDC) for a true full-screen capability",
+      "80W Fast Charging support",
+      "WiFi 7 and 5G SA+NSA dual mode connectivity",
+      "Under-display fingerprint sensor"
+    ],
+    specifications: [
+      { label: "Processor", value: "Qualcomm Snapdragon 8 Gen 3 (3.3GHz)" },
+      { label: "Display", value: "6.8\" FHD+ AMOLED (2480 x 1116)" },
+      { label: "Refresh Rate", value: "Up to 144Hz" },
+      { label: "Touch Sampling", value: "960Hz" },
+      { label: "RAM", value: "12GB LPDDR5X" },
+      { label: "Storage", value: "256GB UFS 4.0" },
+      { label: "Rear Camera", value: "50MP (Wide) + 50MP (Ultrawide) + 2MP (Macro)" },
+      { label: "Front Camera", value: "16MP Under-Display Camera" },
+      { label: "Cooling", value: "Multi-Dimensional Liquid Metal Cooling" },
+      { label: "Charging", value: "80W Fast Charging" },
+      { label: "Connectivity", value: "5G SA+NSA, WiFi 7 (up to 3.5Gbps)" },
+      { label: "Fingerprint", value: "Under-display sensor" }
+    ]
+  },
+  // TECNO SPARK GO 1 (ID: 221)
+  {
+    id: 221,
+    name: "TECNO SPARK GO 1",
+    title: "TECNO SPARK GO 1 - 120Hz 6.67\" Hole Screen, 5000mAh, IP54",
+    price: 99,
+    image: tecnoSparkGo1Black,
+    images: [tecnoSparkGo1Black, tecnoSparkGo1Gold, tecnoSparkGo1Green, tecnoSparkGo1White],
+    rating: 4.5,
+    category: "Smartphones",
+    brand: "Tecno",
+    secondaryCategories: ["Budget", "Android"],
+    description: "The TECNO SPARK GO 1 is a feature-packed smartphone offering a smooth visual experience with its 6.67\" 120Hz Hole Screen and 720x1600 resolution. Powered by a T615 processor and running Android 14 Go, it ensures efficient performance for daily tasks. It features a durable design with an IP54 rating for water resistance and 'Wet & Oily Touch Control'. Capture clear photos with the 13MP rear camera and 8MP front camera, both equipped with dual flash. The device supports 4.5G (LTE Advanced), has dual speakers with DTS sound, and includes infrared remote control. A 5000mAh battery with 15W fast charging keeps you going all day. Detailed memory options include 64GB+6GB (3+3) and 128GB+8GB (4+4).",
+    features: [
+      "6.67\" 120Hz Hole Screen for smooth scrolling",
+      "IP54 Water Resistance & Wet/Oily Touch Control",
+      "5000mAh Battery + 15W Fast Charging (Type-C)",
+      "Dual Speakers with DTS Sound",
+      "13MP Rear + 8MP Front Camera with Dual Flash",
+      "Side Fingerprint Sensor & Infrared Remote Control",
+      "Android 14 Go Edition",
+      "Dynamic Port feature",
+      "Supports 4.5G (LTE Advanced)"
+    ],
+    specifications: [
+      { label: "Processor", value: "T615" },
+      { label: "OS", value: "Android 14 Go" },
+      { label: "Display", value: "6.67\" 120Hz Hole Screen (720*1600)" },
+      { label: "Front Camera", value: "8MP, Dual Flash" },
+      { label: "Rear Camera", value: "13MP, Dual Flash" },
+      { label: "Battery", value: "5000mAh, 15W Fast Charge" },
+      { label: "Water Resistance", value: "IP54 Rating" },
+      { label: "Network", value: "4.5G (LTE Advanced)" },
+      { label: "Sensors", value: "Side Fingerprint, Infrared Remote" },
+      { label: "Audio", value: "Dual Speakers, DTS Sound" },
+      { label: "Dimensions", value: "165.62 x 77.01 x 8.35 mm" }
+    ],
+    variants: [
+      {
+        key: "64gb-3gb",
+        label: "64GB + 3GB RAM",
+        ram: "3GB",
+        storage: "64GB",
+        price: 99
+      },
+      {
+        key: "128gb-4gb",
+        label: "128GB + 4GB RAM",
+        ram: "4GB",
+        storage: "128GB",
+        price: 119
+      }
+    ],
+    colors: [
+      { name: "Startrail Black", image: tecnoSparkGo1Black, stock: "available" },
+      { name: "Titanium Gold", image: tecnoSparkGo1Gold, stock: "available" },
+      { name: "Magic Skin Green", image: tecnoSparkGo1Green, stock: "available" },
+      { name: "Glittery White", image: tecnoSparkGo1White, stock: "available" }
+    ]
+  },
+  // Tecno Spark Go 2 (ID: 222)
+  {
+    id: 222,
+    name: "Tecno Spark Go 2",
+    title: "Tecno Spark Go 2 - 120Hz 6.67\" Display, Android 15, IP64 Durable",
+    price: 109,
+    image: tecnoSparkGo2Black,
+    images: [tecnoSparkGo2Black, tecnoSparkGo2Blue, tecnoSparkGo2Grey, tecnoSparkGo2White],
+    rating: 4.6,
+    category: "Smartphones",
+    brand: "Tecno",
+    secondaryCategories: ["Budget", "Android", "Durable"],
+    description: "The Tecno Spark Go 2 offers exceptional value and durability with its 1.5m drop protection and IP64 splash/dust resistance. It features a 6.67-inch IPS LCD display with a 120Hz refresh rate for smooth visuals. Powered by the Unisoc T7250 processor (1.8GHz) and running the latest Android 15 (HIOS 15), it ensures a modern and efficient user experience. It comes with 64GB storage and 3GB RAM (+3GB Extended). Capture moments with the 13MP main camera and 8MP selfie camera. The 5000mAh battery supports 15W charging for all-day usage.",
+    features: [
+      "6.67\" IPS LCD Display (120Hz)",
+      "Android 15 (HIOS 15) Operating System",
+      "Unisoc T7250 Processor (1.8GHz max)",
+      "1.5m Drop Protection & IP64 Splash/Dust Resistant",
+      "5000mAh Battery + 15W Charging",
+      "13MP Main Camera + 8MP Selfie Camera",
+      "Dual-SIM (Nano-SIM + Nano-SIM)",
+      "3GB RAM + 3GB Extended Memory",
+      "64GB Internal Storage"
+    ],
+    specifications: [
+      { label: "Processor", value: "Unisoc T7250 (1.8GHz)" },
+      { label: "OS", value: "Android 15, HIOS 15" },
+      { label: "Display", value: "6.67\" IPS LCD, 120Hz" },
+      { label: "RAM", value: "3GB (+3GB Extended)" },
+      { label: "Storage", value: "64GB" },
+      { label: "Rear Camera", value: "13MP (1080p video)" },
+      { label: "Front Camera", value: "8MP" },
+      { label: "Battery", value: "5000mAh, 15W charging" },
+      { label: "Durability", value: "IP64, 1.5m Drop Protection" },
+      { label: "SIM", value: "Dual Nano-SIM" }
+    ],
+    variants: [
+      {
+        key: "64gb-3gb",
+        label: "64GB + 3GB RAM",
+        ram: "3GB",
+        storage: "64GB",
+        price: 109
+      },
+      {
+        key: "128gb-4gb",
+        label: "128GB + 4GB RAM",
+        ram: "4GB",
+        storage: "128GB",
+        price: 129
+      },
+      {
+        key: "256gb-4gb",
+        label: "256GB + 4GB RAM",
+        ram: "4GB",
+        storage: "256GB",
+        price: 149
+      }
+    ],
+    colors: [
+      { name: "Black", image: tecnoSparkGo2Black, stock: "available" },
+      { name: "Blue", image: tecnoSparkGo2Blue, stock: "available" },
+      { name: "Grey", image: tecnoSparkGo2Grey, stock: "available" },
+      { name: "White", image: tecnoSparkGo2White, stock: "available" }
+    ]
+  },
+  // Tecno Spark 40 C (KM4K) (ID: 223)
+  {
+    id: 223,
+    name: "Tecno Spark 40 C (KM4K)",
+    title: "Tecno Spark 40 C - 120Hz 6.67\" Display, 6000mAh, IP64 Durable",
+    price: 99,
+    image: tecnoSpark40CInkBlack,
+    images: [tecnoSpark40CInkBlack, tecnoSpark40CRippleBlue, tecnoSpark40CTitaniumGrey, tecnoSpark40CWhite],
+    rating: 4.7,
+    category: "Smartphones",
+    brand: "Tecno",
+    secondaryCategories: ["Budget", "Android", "Durable", "Long Battery Life"],
+    description: "The Tecno Spark 40 C (model KM4K) combines durability with performance. Featuring a massive 6000mAh battery for extended usage and IP64 splash/dust resistance with 1.5m drop durability. The 6.67-inch IPS LCD display offers a smooth 120Hz refresh rate. Powered by the Mediatek Helio G81 chipset and running Android 15 (HIOS 15.1), it delivers a modern experience. Includes a 13MP main camera, 8MP selfie camera, and dual speakers.",
+    features: [
+      "6.67\" IPS LCD 120Hz Display",
+      "Mediatek Helio G81 Chipset",
+      "Massive 6000mAh Battery + 18W Charging",
+      "IP64 Dust/Water Resistant",
+      "1.5m Drop Resistant",
+      "Android 15, HIOS 15.1",
+      "13MP Main Camera + 8MP Selfie",
+      "Dual Speakers",
+      "Side-mounted Fingerprint Sensor",
+      "Infrared Port & FM Radio"
+    ],
+    specifications: [
+      { label: "Processor", value: "Mediatek Helio G81 (12nm)" },
+      { label: "OS", value: "Android 15, HIOS 15.1" },
+      { label: "Display", value: "6.67\" 120Hz IPS LCD (720x1600)" },
+      { label: "Storage/RAM", value: "Up to 256GB / 8GB" },
+      { label: "Rear Camera", value: "13MP (f/1.8)" },
+      { label: "Front Camera", value: "8MP" },
+      { label: "Battery", value: "6000mAh, 18W wired" },
+      { label: "Durability", value: "IP64, 1.5m Drop resistant" },
+      { label: "Audio", value: "Dual Speakers, 3.5mm jack" },
+      { label: "Sensors", value: "Fingerprint (side), Infrared" }
+    ],
+    variants: [
+      {
+        key: "128gb-4gb",
+        label: "128GB + 4GB RAM",
+        ram: "4GB",
+        storage: "128GB",
+        price: 99
+      },
+      {
+        key: "128gb-8gb",
+        label: "128GB + 8GB RAM",
+        ram: "8GB",
+        storage: "128GB",
+        price: 119
+      },
+      {
+        key: "256gb-8gb",
+        label: "256GB + 8GB RAM",
+        ram: "8GB",
+        storage: "256GB",
+        price: 139
+      }
+    ],
+    colors: [
+      { name: "Ink Black", image: tecnoSpark40CInkBlack, stock: "available" },
+      { name: "Ripple Blue", image: tecnoSpark40CRippleBlue, stock: "available" },
+      { name: "Titanium Grey", image: tecnoSpark40CTitaniumGrey, stock: "available" },
+      { name: "Veil White", image: tecnoSpark40CWhite, stock: "available" }
+    ]
+  },
+  // Tecno Spark 30C (ID: 224)
+  {
+    id: 224,
+    name: "Tecno Spark 30C",
+    title: "Tecno Spark 30C - 120Hz Display, 50MP Camera, Stereo Speakers",
+    price: 109,
+    image: tecnoSpark30CBlack,
+    images: [tecnoSpark30CBlack, tecnoSpark30CGreen, tecnoSpark30CWhite],
+    rating: 4.7,
+    category: "Smartphones",
+    brand: "Tecno",
+    secondaryCategories: ["Budget", "Android", "Camera"],
+    description: "The Tecno Spark 30C delivers an impressive visual and audio experience with its 6.67-inch 120Hz IPS LCD display and stereo speakers. Powered by the Mediatek Helio G81 chipset and Android 14, it offers smooth performance for daily tasks. The 50MP main camera captures stunning details, while the 5000mAh battery with 18W charging keeps you going. Features IP54 resistance, infrared port, and side-mounted fingerprint sensor.",
+    features: [
+      "6.67\" 120Hz IPS LCD Display",
+      "50MP Main Camera + 8MP Selfie",
+      "Stereo Speakers",
+      "MediaTek Helio G81 Processor",
+      "5000mAh Battery + 18W Charging",
+      "IP54 Dust/Splash Resistant",
+      "Android 14",
+      "Infrared Port & Side Fingerprint",
+      "Dual SIM (Nano-SIM)"
+    ],
+    specifications: [
+      { label: "Processor", value: "MediaTek Helio G81" },
+      { label: "OS", value: "Android 14" },
+      { label: "Display", value: "6.67\" 120Hz IPS LCD (720x1600)" },
+      { label: "Main Camera", value: "50MP (wide), PDAF" },
+      { label: "Selfie Camera", value: "8MP" },
+      { label: "Battery", value: "5000mAh, 18W wired" },
+      { label: "Audio", value: "Stereo Speakers, 3.5mm jack" },
+      { label: "Sensors", value: "Side Fingerprint, Infrared" },
+      { label: "Durability", value: "IP54 Dust/Splash Resistant" },
+      { label: "Connectivity", value: "USB-C OTG, Bluetooth, GPS" }
+    ],
+    variants: [
+      {
+        key: "128gb-4gb",
+        label: "128GB + 4GB RAM",
+        ram: "4GB",
+        storage: "128GB",
+        price: 109
+      },
+      {
+        key: "128gb-6gb",
+        label: "128GB + 6GB RAM",
+        ram: "6GB",
+        storage: "128GB",
+        price: 119
+      },
+      {
+        key: "256gb-4gb",
+        label: "256GB + 4GB RAM",
+        ram: "4GB",
+        storage: "256GB",
+        price: 129
+      },
+      {
+        key: "256gb-8gb",
+        label: "256GB + 8GB RAM",
+        ram: "8GB",
+        storage: "256GB",
+        price: 149
+      }
+    ],
+    colors: [
+      { name: "Black", image: tecnoSpark30CBlack, stock: "available" },
+      { name: "Green", image: tecnoSpark30CGreen, stock: "available" },
+      { name: "White", image: tecnoSpark30CWhite, stock: "available" }
+    ]
+  },
+  // Tecno Spark 30 Pro (ID: 225)
+  {
+    id: 225,
+    name: "Tecno Spark 30 Pro",
+    title: "Tecno Spark 30 Pro - 120Hz AMOLED, 108MP Camera, Helio G100",
+    price: 159,
+    image: tecnoSpark30ProBlack,
+    images: [tecnoSpark30ProBlack, tecnoSpark30ProGreen, tecnoSpark30ProWhite],
+    rating: 4.8,
+    category: "Smartphones",
+    brand: "Tecno",
+    secondaryCategories: ["Mid-Range", "Android", "Camera", "Gaming"],
+    description: "The Tecno Spark 30 Pro brings flagship-level features to the mid-range segment. It boasts a stunning 6.78-inch AMOLED display with 120Hz refresh rate and 1700 nits peak brightness. Powered by the MediaTek Helio G100 chipset and 8GB of RAM, it delivers powerful performance for gaming and multitasking. The standout 108MP main camera ensures incredibly detailed photos, while the 33W fast charging keeps the 5000mAh battery topped up. Includes dual stereo speakers with Hi-Res Audio, IP54 resistance, and advanced connectivity including NFC.",
+    features: [
+      "6.78\" AMOLED 120Hz Display (1700 nits)",
+      "108MP Main Camera + 13MP Selfie",
+      "MediaTek Helio G100 Processor",
+      "33W Fast Charging + 5000mAh Battery",
+      "Dual Stereo Speakers (Hi-Res Audio)",
+      "IP54 Dust/Water Resistant",
+      "Under-display Fingerprint Sensor",
+      "NFC & Infrared Port",
+      "Android 14, HIOS 14"
+    ],
+    specifications: [
+      { label: "Processor", value: "MediaTek Helio G100 (6nm)" },
+      { label: "OS", value: "Android 14, HIOS 14" },
+      { label: "Display", value: "6.78\" AMOLED, 120Hz, 1700 nits" },
+      { label: "Main Camera", value: "108MP (wide), PDAF" },
+      { label: "Selfie Camera", value: "13MP, Dual-LED Flash" },
+      { label: "Battery", value: "5000mAh, 33W wired" },
+      { label: "Audio", value: "Stereo Speakers, 24-bit/192kHz Hi-Res" },
+      { label: "Sensors", value: "Under-display Fingerprint, Gym, NFC" },
+      { label: "Durability", value: "IP54 Dust/Water Resistant" },
+      { label: "Connectivity", value: "NFC, Infrared, FM Radio, USB-C" }
+    ],
+    variants: [
+      {
+        key: "128gb-8gb",
+        label: "128GB + 8GB RAM",
+        ram: "8GB",
+        storage: "128GB",
+        price: 159
+      },
+      {
+        key: "256gb-8gb",
+        label: "256GB + 8GB RAM",
+        ram: "8GB",
+        storage: "256GB",
+        price: 179
+      }
+    ],
+    colors: [
+      { name: "Black", image: tecnoSpark30ProBlack, stock: "available" },
+      { name: "Green", image: tecnoSpark30ProGreen, stock: "available" },
+      { name: "White", image: tecnoSpark30ProWhite, stock: "available" }
+    ]
+  },
+  // Tecno Spark 10 5G (ID: 226)
+  {
+    id: 226,
+    name: "Tecno Spark 10 5G",
+    title: "Tecno Spark 10 5G - 90Hz Display, Dimensity 6020, 50MP Camera",
+    price: 199,
+    image: tecnoSpark105G,
+    images: [tecnoSpark105G],
+    rating: 4.6,
+    category: "Smartphones",
+    brand: "Tecno",
+    secondaryCategories: ["Mid-Range", "Android", "5G"],
+    description: "The Tecno Spark 10 5G offers high-speed 5G connectivity and smooth performance. It features a 6.6-inch 90Hz IPS LCD display and is powered by the MediaTek Dimensity 6020 chipset. With a 50MP main camera and 8MP selfie camera, it captures clear photos. The device includes a 5000mAh battery with 18W charging and runs on Android 13 (HIOS 12.6).",
+    features: [
+      "5G Connectivity",
+      "6.6\" 90Hz IPS LCD Display",
+      "MediaTek Dimensity 6020 Processor",
+      "50MP Main Camera + 8MP Selfie",
+      "5000mAh Battery + 18W Charging",
+      "Side-mounted Fingerprint Sensor",
+      "Android 13, HIOS 12.6",
+      "NFC (market dependent) & FM Radio"
+    ],
+    specifications: [
+      { label: "Processor", value: "Dimensity 6020 (7nm)" },
+      { label: "OS", value: "Android 13, HIOS 12.6" },
+      { label: "Display", value: "6.6\" IPS LCD, 90Hz" },
+      { label: "Main Camera", value: "50MP (f/1.6)" },
+      { label: "Selfie Camera", value: "8MP (f/2.0)" },
+      { label: "Battery", value: "5000mAh, 18W wired" },
+      { label: "Connectivity", value: "5G, Wi-Fi, Bluetooth, GPS" },
+      { label: "Sensors", value: "Fingerprint (side), NFC (optional)" }
+    ],
+    variants: [
+      {
+        key: "64gb-4gb",
+        label: "64GB + 4GB RAM",
+        ram: "4GB",
+        storage: "64GB",
+        price: 199
+      },
+      {
+        key: "128gb-8gb",
+        label: "128GB + 8GB RAM",
+        ram: "8GB",
+        storage: "128GB",
+        price: 229
+      },
+      {
+        key: "256gb-8gb",
+        label: "256GB + 8GB RAM",
+        ram: "8GB",
+        storage: "256GB",
+        price: 249
+      }
+    ],
+    colors: [
+      { name: "Black", image: tecnoSpark105G, stock: "available" },
+      { name: "Blue", image: tecnoSpark105G, stock: "available" },
+      { name: "White", image: tecnoSpark105G, stock: "available" }
+    ]
+  },
+  // Tecno Spark Slim (KM7K) (ID: 227)
+  {
+    id: 227,
+    name: "Tecno Spark Slim (KM7K)",
+    title: "Tecno Spark Slim - 5.9mm Ultra-Thin, 144Hz AMOLED, 45W Charging",
+    price: 219,
+    image: tecnoSparkSlimBlack,
+    images: [tecnoSparkSlimBlack, tecnoSparkSlimBlue, tecnoSparkSlimWhite],
+    rating: 4.9,
+    category: "Smartphones",
+    brand: "Tecno",
+    secondaryCategories: ["Mid-Range", "Android", "Slim Design", "AMOLED"],
+    description: "The Tecno Spark Slim (KM7K) is an engineering marvel with an ultra-thin 5.9mm body. It features a stunning 6.78-inch AMOLED display with a 144Hz refresh rate and peak brightness of 4500 nits. Powered by the Mediatek Helio G200 chipset and 8GB RAM,/256GB storage, it delivers top-tier performance. The 50MP main camera and 13MP selfie camera ensure great photos. Despite its slim profile, it packs a 5160mAh battery with 45W fast charging (100% in 57 min). It also supports 10W reverse wired charging and bypass charging. Durable with IP64 rating and Gorilla Glass 7i.",
+    features: [
+      "Ultra-thin 5.9mm Body",
+      "6.78\" 144Hz AMOLED Display (4500 nits peak)",
+      "Mediatek Helio G200 Processor",
+      "5160mAh Battery + 45W Wired Charging",
+      "10W Reverse Wired Charging",
+      "IP64 Dust/Water Resistant",
+      "Gorilla Glass 7i Protection",
+      "50MP Main Camera + 13MP Selfie",
+      "Dual Speakers with Dolby Atmos",
+      "Android 15, HIOS 15"
+    ],
+    specifications: [
+      { label: "Processor", value: "Mediatek Helio G200 (6nm)" },
+      { label: "OS", value: "Android 15, HIOS 15" },
+      { label: "Display", value: "6.78\" AMOLED, 144Hz, 1600 nits (HBM)" },
+      { label: "Storage/RAM", value: "256GB / 8GB" },
+      { label: "Rear Camera", value: "50MP (wide), PDAF" },
+      { label: "Front Camera", value: "13MP" },
+      { label: "Battery", value: "5160mAh, 45W wired" },
+      { label: "Durability", value: "IP64, Gorilla Glass 7i" },
+      { label: "Audio", value: "Dual Speakers, Dolby Atmos" },
+      { label: "Dimensions", value: "5.9mm Thickness" }
+    ],
+    variants: [
+      {
+        key: "256gb-8gb",
+        label: "256GB + 8GB RAM",
+        ram: "8GB",
+        storage: "256GB",
+        price: 219
+      }
+    ],
+    colors: [
+      { name: "Cool Black", image: tecnoSparkSlimBlack, stock: "available" },
+      { name: "Blue", image: tecnoSparkSlimBlue, stock: "available" },
+      { name: "Slim White", image: tecnoSparkSlimWhite, stock: "available" }
+    ]
+  },
+  // Tecno Spark 20 Pro (ID: 228)
+  {
+    id: 228,
+    name: "Tecno Spark 20 Pro",
+    title: "Tecno Spark 20 Pro - 108MP, 21GB RAM (12+9), 120Hz Display",
+    price: 179,
+    image: tecnoSpark20ProBlack,
+    images: [tecnoSpark20ProBlack, tecnoSpark20ProIvory, tecnoSpark20ProGreen, tecnoSpark20ProSunset],
+    rating: 4.8,
+    category: "Smartphones",
+    brand: "Tecno",
+    secondaryCategories: ["Mid-Range", "Android", "Camera", "High RAM"],
+    description: "The Tecno Spark 20 Pro delivers exceptional value with flagship-level features. It features a vibrant 6.78-inch 120Hz IPS LCD display and is powered by the MediaTek Helio G99 processor. The revolutionary memory system combines 12GB physical RAM with 9GB virtual expansion for a total of 21GB available memory. The groundbreaking 108MP main camera captures extraordinary detail, while the 32MP front camera ensures sharp selfies. Powering it is a 5000mAh battery with 33W fast charging. Includes a 100-day screen warranty.",
+    features: [
+      "108MP Ultra-Sensing Main Camera",
+      "21GB Total RAM (12GB + 9GB Virtual)",
+      "MediaTek Helio G99 Processor",
+      "6.78\" 120Hz IPS LCD Display",
+      "32MP Glowing Selfie Camera",
+      "5000mAh Battery + 33W Fast Charging",
+      "Dual Stereo Speakers (DTS)",
+      "IP53 Dust/Splash Resistant",
+      "Android 13"
+    ],
+    specifications: [
+      { label: "Processor", value: "MediaTek Helio G99 (6nm)" },
+      { label: "OS", value: "Android 13" },
+      { label: "Display", value: "6.78\" IPS LCD, 120Hz (1080x2460)" },
+      { label: "RAM", value: "12GB (+9GB Virtual)" },
+      { label: "Storage", value: "256GB" },
+      { label: "Main Camera", value: "108MP (f/1.8)" },
+      { label: "Selfie Camera", value: "32MP (f/2.2)" },
+      { label: "Battery", value: "5000mAh, 33W wired" },
+      { label: "Audio", value: "Stereo Speakers, 3.5mm jack" },
+      { label: "Durability", value: "IP53, 100-Day Screen Warranty" }
+    ],
+    variants: [
+      {
+        key: "256gb-12gb",
+        label: "256GB + 12GB RAM",
+        ram: "12GB",
+        storage: "256GB",
+        price: 179
+      }
+    ],
+    colors: [
+      { name: "Black", image: tecnoSpark20ProBlack, stock: "available" },
+      { name: "Frosty Ivory", image: tecnoSpark20ProIvory, stock: "available" },
+      { name: "Green", image: tecnoSpark20ProGreen, stock: "available" },
+      { name: "Sunset Blush", image: tecnoSpark20ProSunset, stock: "available" }
+    ]
+  },
+  // Tecno Pova 6 Pro – 12GB – 256GB (ID: 229)
+  {
+    id: 229,
+    name: "Tecno Pova 6 Pro",
+    title: "Tecno Pova 6 Pro - 6000mAh, 70W Charging, 108MP, 5G",
+    price: 249,
+    image: tecnoPova6ProBlack,
+    images: [tecnoPova6ProBlack, tecnoPova6ProGreen],
+    rating: 4.9,
+    category: "Smartphones",
+    brand: "Tecno",
+    secondaryCategories: ["Gaming", "Android", "5G", "Big Battery"],
+    description: "The Tecno Pova 6 Pro is a power endurance beast designed for gamers and heavy users. It packs a massive 6000mAh battery with ultra-fast 70W charging (50% in 20 min). The 6.78-inch AMOLED display dazzles with 120Hz refresh rate and 1300 nits peak brightness. Powered by the MediaTek Dimensity 6080 5G chipset, matched with 12GB RAM and 256GB storage, it handles intensive tasks with ease. The 108MP main camera ensures crisp photos, while the 32MP selfie camera with dual-tone flash is perfect for content creators. Features a futuristic mecha design with dynamic light effects.",
+    features: [
+      "Massive 6000mAh Battery + 70W Ultra Charge",
+      "6.78\" AMOLED 120Hz Display (1300 nits)",
+      "MediaTek Dimensity 6080 5G Processor",
+      "108MP Ultra Vivid Main Camera",
+      "32MP Selfie Camera with Dual-tone Flash",
+      "12GB RAM + 256GB Storage",
+      "Dynamic Light Effect Design",
+      "Dolby Atmos Stereo Speakers",
+      "IP53 Dust/Splash Resistant",
+      "Android 14, HIOS 14"
+    ],
+    specifications: [
+      { label: "Processor", value: "Dimensity 6080 (6nm)" },
+      { label: "OS", value: "Android 14, HIOS 14" },
+      { label: "Display", value: "6.78\" AMOLED, 120Hz, 1300 nits" },
+      { label: "RAM", value: "12GB" },
+      { label: "Storage", value: "256GB" },
+      { label: "Main Camera", value: "108MP (wide)" },
+      { label: "Selfie Camera", value: "32MP (wide)" },
+      { label: "Battery", value: "6000mAh, 70W wired" },
+      { label: "Audio", value: "Stereo Speakers, Dolby Atmos" },
+      { label: "Connectivity", value: "5G, NFC, Infrared" }
+    ],
+    variants: [
+      {
+        key: "256gb-12gb",
+        label: "256GB + 12GB RAM",
+        ram: "12GB",
+        storage: "256GB",
+        price: 249
+      }
+    ],
+    colors: [
+      { name: "Meteorite Grey", image: tecnoPova6ProBlack, stock: "available" },
+      { name: "Comet Green", image: tecnoPova6ProGreen, stock: "available" }
+    ]
+  },
+  // Tecno Pova 7 (ID: 230)
+  {
+    id: 230,
+    name: "Tecno Pova 7",
+    title: "Tecno Pova 7 - 6000mAh, Dimensity 7300, 144Hz Display",
+    price: 279,
+    image: tecnoPova7Green,
+    images: [tecnoPova7Green, tecnoPova7Black, tecnoPova7Bronze, tecnoPova7White],
+    rating: 4.8,
+    category: "Smartphones",
+    brand: "Tecno",
+    secondaryCategories: ["Gaming", "Android", "5G", "Big Battery"],
+    description: "The Tecno Pova 7 is the ultimate gaming endurance smartphone. Released in July 2025, it features a powerful MediaTek Dimensity 7300 Ultimate chipset and a massive 6000mAh battery with 45W fast charging. The 6.78-inch 144Hz IPS LCD display ensures ultra-smooth gameplay. It comes with 8GB RAM (expandable) and up to 256GB storage. The device supports 30W wireless magnetic charging and 10W reverse wired charging, making it a versatile power hub. Includes a 50MP main camera and IP64 splash resistance.",
+    features: [
+      "MediaTek Dimensity 7300 Ultimate (4nm)",
+      "6.78\" IPS LCD 144Hz Display",
+      "6000mAh Battery + 45W Wired / 30W Wireless Charging",
+      "50MP Main Camera + 13MP Selfie",
+      "IP64 Dust/Water Resistant",
+      "Stereo Speakers (Hi-Res Audio)",
+      "10W Reverse Wired Charging",
+      "Android 15, HIOS 15",
+      "NFC & Infrared Port"
+    ],
+    specifications: [
+      { label: "Processor", value: "Dimensity 7300 Ultimate (4nm)" },
+      { label: "OS", value: "Android 15, HIOS 15" },
+      { label: "Display", value: "6.78\" IPS LCD, 144Hz" },
+      { label: "RAM", value: "8GB (Extended options)" },
+      { label: "Storage", value: "128GB / 256GB" },
+      { label: "Main Camera", value: "50MP (wide), 4K video" },
+      { label: "Selfie Camera", value: "13MP" },
+      { label: "Battery", value: "6000mAh, 45W wired, 30W wireless" },
+      { label: "Audio", value: "Stereo Speakers, Hi-Res Wireless" },
+      { label: "Durability", value: "IP64, Splash Resistant" }
+    ],
+    variants: [
+      {
+        key: "128gb-8gb",
+        label: "128GB + 8GB RAM (4G)",
+        ram: "8GB",
+        storage: "128GB",
+        price: 259
+      },
+      {
+        key: "256gb-8gb",
+        label: "256GB + 8GB RAM (4G)",
+        ram: "8GB",
+        storage: "256GB",
+        price: 279
+      },
+      {
+        key: "256gb-8gb-5g",
+        label: "256GB + 8GB RAM (5G)",
+        ram: "8GB",
+        storage: "256GB",
+        price: 309
+      }
+    ],
+    colors: [
+      { name: "Oasis Green", image: tecnoPova7Green, stock: "available" },
+      { name: "Geek Black", image: tecnoPova7Black, stock: "available" },
+      { name: "Titanium Bronze", image: tecnoPova7Bronze, stock: "available" },
+      { name: "Magic Silver", image: tecnoPova7White, stock: "available" }
+    ]
+  },
+  // Tecno Camon 30 5G (CL7) (ID: 231)
+  {
+    id: 231,
+    name: "Tecno Camon 30 5G",
+    title: "Tecno Camon 30 5G - 50MP OIS, AMOLED 120Hz, 70W Charge",
+    price: 299,
+    image: tecnoCamon30Black,
+    images: [tecnoCamon30Black, tecnoCamon30White],
+    rating: 4.8,
+    category: "Smartphones",
+    brand: "Tecno",
+    secondaryCategories: ["Camera Phone", "Android", "5G", "Premium"],
+    description: "The Tecno Camon 30 5G elevates your mobile photography and style. Announced in early 2024, it features a classic side-axis camera design inspired by rangefinders. The centerpiece is the 50MP OIS Steady Night Portrait main camera with a large sensor for stunning low-light shots, paired with a 50MP Eye-tracking Autofocus selfie camera. The 6.78-inch AMOLED 120Hz display offers cinematic visuals, powered by the MediaTek Dimensity 7020 5G chipset. With up to 512GB storage and 12GB RAM, performace is top-tier. A 5000mAh battery with 70W Ultra Charge brings you to 100% in just 45 minutes.",
+    features: [
+      "50MP OIS Steady Night Portrait Camera",
+      "50MP Eye-tracking Autofocus Selfie",
+      "MediaTek Dimensity 7020 5G Processor",
+      "6.78\" FHD+ AMOLED 120Hz Display",
+      "70W Ultra Charge (0-100% in 45 mins)",
+      "Classic Side-axis Camera Design",
+      "Dual Stereo Speakers with Dolby Atmos",
+      "Smart Breathing Light Indicator",
+      "Wet Hand Touch Support",
+      "Android 14"
+    ],
+    specifications: [
+      { label: "Processor", value: "Dimensity 7020 5G (6nm)" },
+      { label: "OS", value: "Android 14, HIOS 14" },
+      { label: "Display", value: "6.78\" AMOLED, 120Hz" },
+      { label: "RAM", value: "Up to 12GB" },
+      { label: "Storage", value: "256GB / 512GB" },
+      { label: "Main Camera", value: "50MP (OIS) + 2MP Depth" },
+      { label: "Selfie Camera", value: "50MP AF, Dual Flash" },
+      { label: "Battery", value: "5000mAh, 70W wired" },
+      { label: "Audio", value: "Stereo Speakers, Dolby Atmos" },
+      { label: "Connectivity", value: "5G, NFC, Infrared" }
+    ],
+    variants: [
+      {
+        key: "256gb-8gb",
+        label: "256GB + 8GB RAM",
+        ram: "8GB",
+        storage: "256GB",
+        price: 299
+      },
+      {
+        key: "512gb-8gb",
+        label: "512GB + 8GB RAM",
+        ram: "8GB",
+        storage: "512GB",
+        price: 329
+      },
+      {
+        key: "512gb-12gb",
+        label: "512GB + 12GB RAM",
+        ram: "12GB",
+        storage: "512GB",
+        price: 359
+      }
+    ],
+    colors: [
+      { name: "Iceland Basaltic Dark", image: tecnoCamon30Black, stock: "available" },
+      { name: "Uyuni Salt White", image: tecnoCamon30White, stock: "available" }
+    ]
+  },
+  // Tecno Camon 40 Pro 4G (CM6) (ID: 232)
+  {
+    id: 232,
+    name: "Tecno Camon 40 Pro 4G",
+    title: "Tecno Camon 40 Pro 4G - 50MP OIS, AMOLED 120Hz, IP68/IP69, 45W Fast Charge",
+    price: 249,
+    image: camon40ProBlack,
+    images: [camon40ProBlack, camon40ProGreen, camon40ProWhite],
+    rating: 4.7,
+    category: "Smartphones",
+    brand: "Tecno",
+    secondaryCategories: ["Camera Phone", "Android", "Premium", "4G"],
+    description: "The Tecno Camon 40 Pro 4G combines premium photography with rugged durability. Announced in March 2025, this device features a stunning 6.78-inch AMOLED 120Hz display protected by Corning Gorilla Glass 7i. The 50MP OIS main camera with large 1/1.56\" sensor captures exceptional photos, while the 50MP front camera ensures perfect selfies. Powered by the MediaTek Helio G100 Ultra chipset with 8GB RAM and 256GB storage, it delivers smooth performance. The 5200mAh battery supports 45W fast charging, reaching 100% in just 43 minutes. With IP68 and IP69 resistance certifications, it withstands high-pressure water jets and submersion up to 2m for 30 minutes. Running Android 15 with HIOS 15, it promises up to 3 major Android upgrades.",
+    features: [
+      "50MP OIS Main Camera with 1/1.56\" Large Sensor",
+      "50MP Front Camera with PDAF",
+      "6.78\" AMOLED 120Hz Display",
+      "Corning Gorilla Glass 7i Protection",
+      "MediaTek Helio G100 Ultra (6nm) Processor",
+      "8GB RAM + 256GB Storage",
+      "5200mAh Battery with 45W Fast Charging",
+      "IP68 & IP69 Water/Dust Resistance",
+      "Android 15 with HIOS 15",
+      "Up to 3 Major Android Upgrades",
+      "Ultrasonic Under-Display Fingerprint",
+      "NFC Support",
+      "Stereo Speakers with 24-bit/192kHz Hi-Res Audio",
+      "4K Video Recording @ 30/60fps"
+    ],
+    specifications: [
+      { label: "Model", value: "Tecno Camon 40 Pro 4G (CM6)" },
+      { label: "Announced", value: "March 3, 2025" },
+      { label: "Released", value: "May 1, 2025" },
+      { label: "Dimensions", value: "164.4 × 74.3 × 7.3 mm" },
+      { label: "Weight", value: "178g" },
+      { label: "Colors", value: "Black, Green, White" },
+      { label: "Resistance", value: "IP68, IP69 (submersible up to 2m for 30 min)" },
+      { label: "Display", value: "6.78\" AMOLED, 1080×2436, 120Hz, 393 ppi" },
+      { label: "Screen Protection", value: "Corning Gorilla Glass 7i" },
+      { label: "Processor", value: "MediaTek Helio G100 Ultra (6nm)" },
+      { label: "CPU", value: "Octa-core (2×2.2 GHz Cortex-A76 + 6×2.0 GHz Cortex-A55)" },
+      { label: "GPU", value: "ARM Mali-G57 MC2" },
+      { label: "RAM", value: "8GB LPDDR4X" },
+      { label: "Storage", value: "256GB" },
+      { label: "OS", value: "Android 15 (Vanilla Ice Cream)" },
+      { label: "UI", value: "HIOS 15" },
+      { label: "Main Camera", value: "50MP (f/1.9, 23mm wide), OIS, PDAF, 1/1.56\" sensor" },
+      { label: "Ultra-wide Camera", value: "8MP" },
+      { label: "Front Camera", value: "50MP (f/2.5, 24mm wide), PDAF, 1/2.8\" sensor" },
+      { label: "Video Recording", value: "4K@30/60fps, 1080p@30fps" },
+      { label: "Battery", value: "5200mAh" },
+      { label: "Charging", value: "45W wired (0-100% in 43 min, 0-50% in 23 min)" },
+      { label: "Network", value: "4G LTE, Dual SIM (Nano-SIM)" },
+      { label: "Connectivity", value: "Wi-Fi, Bluetooth, USB Type-C 2.0, NFC, GPS" },
+      { label: "Audio", value: "Stereo Speakers, 24-bit/192kHz Hi-Res Audio, FM Radio" },
+      { label: "Sensors", value: "Ultrasonic Fingerprint, Accelerometer, Gyroscope, Proximity, Compass" }
+    ],
+    variants: [
+      {
+        key: "256gb-8gb",
+        label: "256GB + 8GB RAM",
+        ram: "8GB",
+        storage: "256GB",
+        price: 249
+      }
+    ],
+    colors: [
+      { name: "Black", image: camon40ProBlack, stock: "available" },
+      { name: "Green", image: camon40ProGreen, stock: "available" },
+      { name: "White", image: camon40ProWhite, stock: "available" }
+    ]
+  },
+  // Tecno Camon 40 Pro 5G (CM7) (ID: 233)
+  {
+    id: 233,
+    name: "Tecno Camon 40 Pro 5G",
+    title: "Tecno Camon 40 Pro 5G - 144Hz AMOLED, Dimensity 7300, 50MP OIS, IP68/IP69",
+    price: 299,
+    image: camon40Pro5gBlack,
+    images: [camon40Pro5gBlack, camon40Pro5gGreen, camon40Pro5gWhite],
+    rating: 4.8,
+    category: "Smartphones",
+    brand: "Tecno",
+    secondaryCategories: ["Camera Phone", "Android", "5G", "Premium", "Gaming"],
+    description: "The Tecno Camon 40 Pro 5G delivers flagship performance with cutting-edge technology. Announced in March 2025, this device features a stunning 6.78-inch AMOLED display with an ultra-smooth 144Hz refresh rate, protected by Corning Gorilla Glass 7i. Powered by the MediaTek Dimensity 7300 (4nm) chipset, it offers exceptional performance with AnTuTu scores over 700,000. The 50MP OIS main camera with large 1/1.56\" sensor captures professional-grade photos, while the 50MP front camera ensures perfect selfies. With 8GB or 12GB RAM options and 256GB storage, it handles multitasking effortlessly. The 5200mAh battery supports 45W fast charging, reaching 50% in just 23 minutes. With IP68 and IP69 resistance certifications, it withstands high-pressure water jets and submersion up to 2m for 30 minutes. Running Android 15 with HIOS 15, it promises up to 3 major Android upgrades.",
+    features: [
+      "50MP OIS Main Camera with 1/1.56\" Large Sensor",
+      "8MP Ultra-wide Camera with AF",
+      "50MP Front Camera with PDAF",
+      "6.78\" AMOLED 144Hz Display (1045 nits max brightness)",
+      "Corning Gorilla Glass 7i Protection",
+      "MediaTek Dimensity 7300 (4nm) Processor",
+      "AnTuTu: 700,909 | GeekBench: 3,218 | 3DMark: 873",
+      "8GB or 12GB RAM + 256GB UFS 2.x Storage",
+      "5200mAh Battery with 45W Fast Charging",
+      "IP68 & IP69 Water/Dust Resistance",
+      "Android 15 with HIOS 15",
+      "Up to 3 Major Android Upgrades",
+      "Under-Display Optical Fingerprint",
+      "5G Connectivity with Dual SIM",
+      "NFC & Infrared Port",
+      "Stereo Speakers with 24-bit/192kHz Hi-Res Audio",
+      "4K HDR Video Recording @ 30/60fps",
+      "Active Use Score: 13:51h"
+    ],
+    specifications: [
+      { label: "Model", value: "Tecno Camon 40 Pro 5G (CM7)" },
+      { label: "Announced", value: "March 3, 2025" },
+      { label: "Released", value: "May 2025" },
+      { label: "Dimensions", value: "164.3 × 74.6 × 7.3 mm" },
+      { label: "Weight", value: "179g" },
+      { label: "Build", value: "Glass front (Gorilla Glass 7i), plastic back, plastic frame" },
+      { label: "Colors", value: "Emerald Lake Green, Galaxy Black, Glacier White" },
+      { label: "Resistance", value: "IP68, IP69 (submersible up to 2m for 30 min)" },
+      { label: "Display", value: "6.78\" AMOLED, 1080×2436, 144Hz, 393 ppi, 89.7% screen-to-body" },
+      { label: "Max Brightness", value: "1045 nits (measured)" },
+      { label: "Screen Protection", value: "Corning Gorilla Glass 7i" },
+      { label: "Processor", value: "MediaTek Dimensity 7300 (4nm)" },
+      { label: "CPU", value: "Octa-core (4×2.5 GHz Cortex-A78 + 4×2.0 GHz Cortex-A55)" },
+      { label: "GPU", value: "Mali-G615 MC2" },
+      { label: "RAM Options", value: "8GB or 12GB" },
+      { label: "Storage", value: "256GB UFS 2.x (No card slot)" },
+      { label: "OS", value: "Android 15" },
+      { label: "UI", value: "HIOS 15" },
+      { label: "Upgrades", value: "Up to 3 major Android upgrades" },
+      { label: "Main Camera", value: "50MP (f/1.9, 23mm wide), OIS, PDAF, 1/1.56\" sensor, 1.0µm" },
+      { label: "Ultra-wide Camera", value: "8MP (f/ultrawide), AF, 1/4.0\" sensor, 1.12µm" },
+      { label: "Front Camera", value: "50MP (f/2.5, 24mm wide), PDAF, 1/2.8\" sensor, 0.64µm" },
+      { label: "Video Recording", value: "4K@30/60fps (HDR), 1080p@30fps (rear), 4K@30fps, 1080p@30/60fps (front)" },
+      { label: "Battery", value: "5200mAh" },
+      { label: "Charging", value: "45W wired (0-50% in 23 min, 0-100% in 43 min)" },
+      { label: "Network", value: "5G, 4G LTE, HSPA, GSM, Dual SIM (Nano-SIM)" },
+      { label: "Connectivity", value: "Wi-Fi, Bluetooth, USB Type-C 2.0, OTG, NFC, GPS, Infrared" },
+      { label: "Audio", value: "Stereo Speakers, 24-bit/192kHz Hi-Res Audio, FM Radio, -28.7 LUFS (Average)" },
+      { label: "Sensors", value: "Under-display Optical Fingerprint, Accelerometer, Gyroscope, Proximity, Compass" },
+      { label: "Performance", value: "AnTuTu: 700,909 (v10) | GeekBench: 3,218 (v6) | 3DMark: 873 (Wild Life Extreme)" },
+      { label: "Battery Life", value: "Active use score: 13:51h" }
+    ],
+    variants: [
+      {
+        key: "256gb-8gb",
+        label: "256GB + 8GB RAM",
+        ram: "8GB",
+        storage: "256GB",
+        price: 299
+      },
+      {
+        key: "256gb-12gb",
+        label: "256GB + 12GB RAM",
+        ram: "12GB",
+        storage: "256GB",
+        price: 329
+      }
+    ],
+    colors: [
+      { name: "Galaxy Black", image: camon40Pro5gBlack, stock: "available" },
+      { name: "Emerald Lake Green", image: camon40Pro5gGreen, stock: "available" },
+      { name: "Glacier White", image: camon40Pro5gWhite, stock: "available" }
+    ]
+  },
   // Samsung Galaxy A55 256GB/8RAM (ID: 301)
   {
     id: 301,
@@ -2673,10 +3751,6 @@ export const smartphoneProducts: Product[] = [
         price: 450,
         description: "Extra storage for 8K footage and Pro RAW projects."
       }
-    ],
-    colors: [
-      { name: "Glacier White", image: camon40Pro5gWhite },
-      { name: "Lake Green", image: camon40Pro5gGreen }
     ]
   },
   // Xiaomi Poco X7 Pro - 12/512GB (ID: 316)
@@ -4289,6 +5363,59 @@ export const tabletProducts: Product[] = [
       { name: "Forest Green", image: redmiPadSEGreen, stock: "available" }
     ],
     connectivityOptions: ["Wi-Fi only", "Wi-Fi + 4G Cellular"]
+  },
+  // Tecno MegaPad 10 256GB (ID: 415)
+  {
+    id: 415,
+    name: "Tecno MegaPad 10 256GB",
+    title: "Tecno MegaPad 10 256GB - 10.1\" HD+ Display, 7000mAh Battery, 4G & Wi-Fi",
+    price: 120,
+    image: tecnoMegaPad10,
+    images: [tecnoMegaPad10],
+    rating: 4.6,
+    category: "Tablets",
+    brand: "Tecno",
+    secondaryCategories: ["Budget", "Android", "4G"],
+    description: "The Tecno MegaPad 10 256GB is a feature-packed tablet that combines a large 10.1-inch HD+ display with powerful performance. Featuring a sleek metal slim design, this tablet is powered by the MediaTek G80 processor with 4GB RAM and generous 256GB storage. The 13MP main camera and 5MP selfie camera capture your moments, while dual speakers deliver immersive audio. With a massive 7000mAh battery and 18W fast charging, you can enjoy extended usage. The tablet supports both 4G LTE and Wi-Fi connectivity, making it perfect for on-the-go productivity and entertainment. A free protective case is included with your purchase.",
+    features: [
+      "10.1\" HD+ Display for vibrant visuals and crisp content",
+      "MediaTek G80 Processor for smooth performance",
+      "Metal Slim Design for premium look and feel",
+      "4GB RAM + 256GB Storage for ample space",
+      "13MP Main Camera for quality photos",
+      "5MP Selfie Camera for video calls and selfies",
+      "Dual Speakers for immersive audio experience",
+      "7000mAh Battery for all-day usage",
+      "18W Fast Charging for quick power-ups",
+      "4G LTE & Wi-Fi connectivity options",
+      "Android 14 for latest features and security",
+      "Free Protective Case Included"
+    ],
+    specifications: [
+      { label: "Display", value: "10.1\" HD+ Display" },
+      { label: "Processor", value: "MediaTek G80" },
+      { label: "Operating System", value: "Android 14" },
+      { label: "RAM", value: "4GB" },
+      { label: "Storage", value: "256GB" },
+      { label: "Design", value: "Metal Slim Design" },
+      { label: "Rear Camera", value: "13MP Main Camera" },
+      { label: "Front Camera", value: "5MP Selfie Camera" },
+      { label: "Audio", value: "Dual Speakers" },
+      { label: "Battery", value: "7000mAh" },
+      { label: "Charging", value: "18W Fast Charging" },
+      { label: "Connectivity", value: "4G LTE, Wi-Fi" },
+      { label: "Included Accessories", value: "Free Protective Case" }
+    ],
+    variants: [
+      {
+        key: "megapad10-4-256",
+        label: "256GB + 4GB RAM",
+        ram: "4GB",
+        storage: "256GB",
+        price: 120
+      }
+    ],
+    connectivityOptions: ["Wi-Fi only", "Wi-Fi + 4G Cellular"]
   }
 ];
 
@@ -4944,6 +6071,116 @@ export const wearablesProducts: Product[] = [
       { label: "Connectivity", value: "Bluetooth" },
       { label: "Compatibility", value: "Android 8.0+ / iOS 12.0+" },
       { label: "Best For", value: "Serious athletes, outdoor activities, GPS tracking" }
+    ]
+  },
+  // Xiaomi Electric Scooter 4 Lite (ID: 216)
+  {
+    id: 216,
+    name: "Xiaomi Electric Scooter 4 Lite",
+    title: "Xiaomi Electric Scooter 4 Lite - 300W Motor, 25km/h Max Speed, 20km Range, Smart App Control",
+    price: 350,
+    image: electricScooter1,
+    images: [electricScooter1, electricScooter2, electricScooter3, electricScooter4, electricScooter5, electricScooter6],
+    rating: 4.7,
+    category: "Accessories",
+    brand: "Xiaomi",
+    secondaryCategories: ["Transportation", "Electric Scooters", "Urban Mobility"],
+    description: "The Xiaomi Electric Scooter 4 Lite is designed for urban commuting, offering a perfect blend of power, comfort, and convenience. Featuring a sleek T-shaped forehead design, this scooter minimizes visual clutter while maximizing display area for an enhanced riding experience. The widened deck provides improved stability and comfort, ensuring a steady stance for both daily commutes and leisurely rides. With a robust 300W brushless motor, the scooter reaches speeds of up to 25km/h and handles inclines of up to 14% effortlessly. The large 187Wh lithium-ion battery offers a maximum range of 20km on a full charge, making it ideal for short-distance travel. Riders can select from three adjustable speed modes—walking (6km/h), standard (20km/h), and sport (25km/h)—to match their riding conditions. An intelligent Battery Management System (BMS) ensures the battery's safety and longevity, while the upgraded Xiaomi Home/Mi Home app provides real-time updates and remote control features.",
+    features: [
+      "Sleek T-shaped forehead design reduces visual clutter and enhances display area",
+      "5mm wider deck increases stability and comfort for a more secure ride",
+      "300W brushless motor with 600W max power for powerful performance",
+      "Reaches speeds up to 25km/h with ability to handle 14% inclines",
+      "Three adjustable speed modes: walking (6km/h), standard (20km/h), sport (25km/h)",
+      "187Wh lithium-ion battery provides up to 20km range on full charge",
+      "Intelligent Battery Management System (BMS) ensures safety and longevity",
+      "Upgraded Xiaomi Home/Mi Home app with real-time updates and remote control",
+      "Intuitive digital dashboard displays key information and tire maintenance reminders",
+      "Dual brake system: Front E-ABS + Rear drum brake for enhanced safety",
+      "8.5-inch pneumatic tires for smooth rides",
+      "Non-slip silicone grip for comfortable handling",
+      "IP54 water and dust resistance rating",
+      "Front folding buckle for easy portability",
+      "Lightweight at 15.6kg yet supports up to 100kg max load",
+      "Approximately 4.5 hours charging time with 53W adapter"
+    ],
+    specifications: [
+      { label: "Product Name", value: "Xiaomi Electric Scooter 4 Lite" },
+      { label: "Max Speed", value: "25km/h (Walking: 6km/h, Standard: 20km/h, Sport: 25km/h)" },
+      { label: "Travel Range", value: "Approx. 20km" },
+      { label: "Product Weight", value: "15.6kg" },
+      { label: "Max Incline", value: "Approx. 14%" },
+      { label: "Braking System", value: "Front E-ABS + Rear Drum Brake" },
+      { label: "Rated Motor Power", value: "300W" },
+      { label: "Max Motor Power", value: "600W" },
+      { label: "Tires", value: "8.5\" Pneumatic Tires" },
+      { label: "Max Load", value: "100kg" },
+      { label: "Rider Height", value: "120cm-200cm" },
+      { label: "Rider Age", value: "16-50 years" },
+      { label: "Operating Temperature", value: "-10°C ~ 40°C" },
+      { label: "Storage Temperature", value: "-20°C ~ 45°C" },
+      { label: "IP Rating", value: "IP54 (Water and Dust Resistance)" },
+      { label: "Charging Time", value: "Approx. 4.5 hours" },
+      { label: "Battery", value: "Lithium-Ion, Model P2185-BA2A, 5200mAh/187Wh" },
+      { label: "Charging Temperature Range", value: "0°C ~ 40°C" },
+      { label: "Adapter Output", value: "53W, 42VDC Max, 1.3A Rated" },
+      { label: "Adapter Input", value: "100-240VAC, 2A Max" },
+      { label: "Deck Width", value: "5mm wider than previous model" },
+      { label: "Smart Features", value: "Xiaomi Home/Mi Home app integration, remote locking, firmware updates" }
+    ]
+  },
+  // Xiaomi Electric Scooter 5 (ID: 217)
+  {
+    id: 217,
+    name: "Xiaomi Electric Scooter 5",
+    title: "Xiaomi Electric Scooter 5 - 350W Motor, 60km Range, 10\" Tubeless Tires, IPX5 Water Resistance",
+    price: 450,
+    image: scooter5img1,
+    images: [scooter5img1, scooter5img2, scooter5img3, scooter5img4, scooter5img5],
+    rating: 4.8,
+    category: "Accessories",
+    brand: "Xiaomi",
+    secondaryCategories: ["Transportation", "Electric Scooters", "Urban Mobility", "Premium"],
+    description: "The Xiaomi Electric Scooter 5 represents the pinnacle of urban electric mobility, offering exceptional range, power, and safety features for the modern commuter. Featuring a powerful 350W brushless motor with 700W maximum output, this premium scooter reaches speeds up to 25km/h while effortlessly conquering inclines up to 18%. The massive 60km range on a single charge makes it ideal for extended commutes and all-day adventures. Equipped with 10-inch tubeless tires for superior comfort and puncture resistance, a dual braking system combining drum brakes and E-ABS, and integrated direction indicators for enhanced visibility and safety. The IPX5 water resistance rating ensures reliable performance in various weather conditions. With three customizable speed modes, a robust build supporting up to 120kg, and smart app integration via Xiaomi Home, the Electric Scooter 5 delivers unmatched performance and convenience for urban riders.",
+    features: [
+      "Powerful 350W motor with 700W maximum power output",
+      "Exceptional 60km travel range on full charge - perfect for long commutes",
+      "10-inch tubeless tires for superior comfort and puncture resistance",
+      "Handles steep inclines up to 18% with ease",
+      "Three speed modes: Walking (6km/h), Standard (20km/h), Sport (25km/h)",
+      "Dual braking system: Drum brakes + E-ABS for excellent stopping power",
+      "Integrated direction indicators for enhanced safety and visibility",
+      "IPX5 water resistance - ride confidently in various weather conditions",
+      "Supports maximum load of 120kg - highest in class",
+      "Smart Xiaomi Home/Mi Home app integration",
+      "Durable construction weighing 20.1kg for stability",
+      "Digital dashboard displays speed, battery, mode, and more",
+      "Ergonomic design suitable for riders 120-200cm tall",
+      "Wide, stable deck for comfortable riding stance",
+      "Foldable design for easy storage and portability",
+      "Approximately 9 hours full charging time"
+    ],
+    specifications: [
+      { label: "Product Name", value: "Xiaomi Electric Scooter 5" },
+      { label: "Model", value: "FS395" },
+      { label: "Max Speed", value: "25 km/h (Walking: 6 km/h, Standard: 20 km/h, Sport: 25 km/h)" },
+      { label: "Travel Range", value: "Approx. 60 km" },
+      { label: "Product Weight", value: "20.1 kg" },
+      { label: "Max Incline", value: "Approx. 18%" },
+      { label: "Braking System", value: "Drum brakes + E-ABS" },
+      { label: "Rated Motor Power", value: "350W" },
+      { label: "Max Motor Power", value: "700W" },
+      { label: "Tires", value: "10\" tubeless tires" },
+      { label: "Max Load", value: "120 kg" },
+      { label: "Recommended Rider Height", value: "120–200 cm" },
+      { label: "Recommended Rider Age", value: "16–50 years old" },
+      { label: "Working Temperature", value: "-10℃ to 40℃" },
+      { label: "Storage Temperature", value: "-20℃ to 45℃" },
+      { label: "Water Resistance", value: "IPX5" },
+      { label: "Charging Time", value: "Approx. 9 hours" },
+      { label: "Direction Indicators", value: "Included" },
+      { label: "Speed Modes", value: "3 adjustable modes (Walking/Standard/Sport)" },
+      { label: "Smart Features", value: "Xiaomi Home app, remote diagnostics, firmware updates" }
     ]
   },
   // Xiaomi Smart Band 10 Ceramic Edition (ID: 215)
