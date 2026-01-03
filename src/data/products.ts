@@ -263,6 +263,36 @@ import camon40Pro5gWhite from "@/assets/phones/tecno camon 40 pro 5g (CM5)/tecno
 import camon40Pro5gGreen from "@/assets/phones/tecno camon 40 pro 5g (CM5)/tecno camon 40 pro 5g (CM5) lake green.png";
 // Tecno MegaPad 10 256GB
 import tecnoMegaPad10 from "@/assets/phones/TECNO/Tecno MegaPad 10 256GB/Tecno MegaPad 10 256GB.jpg";
+// Oscal Pad 60 Kids imports
+import oscalPad60Kids from "@/assets/Tablets/Oscal Pad 60 Kids/Oscal Pad 60 Kids.webp";
+import oscalPad60KidsBlue from "@/assets/Tablets/Oscal Pad 60 Kids/PAD-60-Kids-BLUE-2.jpg.webp";
+// Oscal Pad 70 imports
+import oscalPad70Blue1 from "@/assets/Tablets/Oscal Pad 70- 4GB- 128GB Storage/Oscal Pad 70- 4GB- 128GB Storage blue.webp";
+import oscalPad70Blue2 from "@/assets/Tablets/Oscal Pad 70- 4GB- 128GB Storage/TAB-OSCAL_PAD_70_BLUE_1.webp";
+import oscalPad70Blue3 from "@/assets/Tablets/Oscal Pad 70- 4GB- 128GB Storage/TAB-OSCAL_PAD_70_BLUE_2.webp";
+// Oscal Pad 7 imports
+import oscalPad7Main from "@/assets/Tablets/Oscal Pad 7/oscal pad 7.webp";
+import oscalPad7Alt from "@/assets/Tablets/Oscal Pad 7/Pad-7-2.jpg.webp";
+// Oscal Pad 90 imports
+import oscalPad90Main from "@/assets/Tablets/Oscal Pad 90/Oscal Pad 90.webp";
+import oscalPad90Alt from "@/assets/Tablets/Oscal Pad 90/Pad-90-1.jpg-1-768x768.webp";
+// Oscal Pad 80 imports
+import oscalPad80Main from "@/assets/Tablets/Oscal Pad 80/Oscal Pad 80.webp";
+import oscalPad80Alt from "@/assets/Tablets/Oscal Pad 80/Pad-80-WiFi-1-768x768.webp";
+// Oscal Pad 13 imports
+import oscalPad13Main from "@/assets/Tablets/Oscal Pad 13/Oscal Pad 13.webp";
+import oscalPad13Alt from "@/assets/Tablets/Oscal Pad 13/Pad-13-1.jpg-1-768x768.webp";
+// Oscal Pad 15 imports
+import oscalPad15Main from "@/assets/Tablets/Oscal Pad 15- Up to 16GB- 256GB Storage/Oscal Pad 15- Up to 16GB- 256GB Storage grey.webp";
+import oscalPad15Alt from "@/assets/Tablets/Oscal Pad 15- Up to 16GB- 256GB Storage/TAB-OSCAL_PAD_15_GREY_2.webp";
+import oscalPad15Alt2 from "@/assets/Tablets/Oscal Pad 15- Up to 16GB- 256GB Storage/TAB-OSCAL_PAD_15_GREY_3.webp";
+// Oscal Pad 100 imports
+import oscalPad100Grey from "@/assets/Tablets/oscal pad 100/oscal pad 100 grey.jpg";
+import oscalPad100Blue from "@/assets/Tablets/oscal pad 100/oscal pad 100 blue.jpg";
+// Oscal Elite 1 imports
+import oscalElite1Blue from "@/assets/Tablets/Oscal Elite 1/Oscal Elite 1 blue.jpg";
+import oscalElite1Grey from "@/assets/Tablets/Oscal Elite 1/Oscal Elite 1 grey.jpg";
+import oscalElite1White from "@/assets/Tablets/Oscal Elite 1/Oscal Elite 1 white.jpg";
 import galaxyTabA9BlackPlaceholder from "@/assets/Tablets/Samsung Galaxy Tab A9/Samsung Galaxy Tab A9 Black placeholder.webp";
 import galaxyTabA9Blue from "@/assets/Tablets/Samsung Galaxy Tab A9/Samsung Galaxy Tab A9 BLUE.webp";
 import galaxyTabA9White from "@/assets/Tablets/Samsung Galaxy Tab A9/Samsung Galaxy Tab A9 WHITE.webp";
@@ -6664,6 +6694,528 @@ export const tabletProducts: Product[] = [
       }
     ],
     connectivityOptions: ["Wi-Fi only", "Wi-Fi + 4G Cellular"]
+  },
+  // Oscal Pad 60 Kids (ID: 416)
+  {
+    id: 416,
+    name: "Oscal Pad 60 Kids",
+    title: "Oscal Pad 60 Kids - 10.1\" HD+ Display, 12GB RAM, 128GB Storage, Kids Tablet",
+    price: 99,
+    image: oscalPad60Kids,
+    images: [oscalPad60Kids, oscalPad60KidsBlue],
+    rating: 4.5,
+    category: "Tablets",
+    brand: "Oscal",
+    secondaryCategories: ["Budget", "Android", "Kids", "Education"],
+    description: "The Oscal Pad 60 Kids is a feature-packed tablet designed specifically for children, offering a large 10.1-inch HD+ display with 79% screen-to-body ratio for an immersive viewing experience. Powered by the Allwinner A523 octa-core processor running at 1.8GHz with Android 14, it delivers smooth performance for educational apps, games, and entertainment. With 12GB RAM (4GB physical + 8GB extended) and 128GB storage, there's plenty of space for apps, photos, and content. The tablet features an 8MP main camera and 5MP front camera for video calls and photos. A 5100mAh battery ensures long-lasting usage, while the included flip cover and screen protector provide added protection. The tablet comes with a 180-day screen warranty, making it a reliable choice for families.",
+    features: [
+      "10.1\" HD+ Display with 79% Screen-to-Body Ratio",
+      "Allwinner A523 Octa-Core Processor (1.8GHz)",
+      "Android 14 Operating System",
+      "12GB RAM (4GB Physical + 8GB Extended)",
+      "128GB Internal Storage",
+      "8MP Main Camera for photos and videos",
+      "5MP Front Camera for video calls",
+      "5100mAh Battery for extended usage",
+      "Flip Cover Included for protection",
+      "Screen Protector Included",
+      "180-Day Screen Warranty",
+      "Kids-Friendly Design",
+      "Perfect for Education and Entertainment"
+    ],
+    specifications: [
+      { label: "Display", value: "10.1\" HD+ Display" },
+      { label: "Screen-to-Body Ratio", value: "79%" },
+      { label: "Processor", value: "Allwinner A523, Octa-Core A55 1.8GHz" },
+      { label: "Operating System", value: "Android 14" },
+      { label: "RAM", value: "12GB (4GB Physical + 8GB Extended)" },
+      { label: "Storage", value: "128GB ROM" },
+      { label: "Main Camera", value: "8MP" },
+      { label: "Front Camera", value: "5MP" },
+      { label: "Battery", value: "5100mAh" },
+      { label: "Dimensions", value: "24.65 × 16.3 × 0.99 cm" },
+      { label: "Weight", value: "0.537 kg" },
+      { label: "Included Accessories", value: "Flip Cover + Screen Protector" },
+      { label: "Warranty", value: "180 Day Screen Warranty" }
+    ],
+    variants: [
+      {
+        key: "128gb-12gb",
+        label: "128GB + 12GB RAM",
+        ram: "12GB",
+        storage: "128GB",
+        price: 99
+      }
+    ],
+    connectivityOptions: ["Wi-Fi only"]
+  },
+  // Oscal Pad 70 - 4GB RAM - 128GB Storage (ID: 417)
+  {
+    id: 417,
+    name: "Oscal Pad 70",
+    title: "Oscal Pad 70 - 10.1\" HD+ IPS, 7GB RAM, 128GB Storage, 6580mAh Battery",
+    price: 109,
+    image: oscalPad70Blue1,
+    images: [oscalPad70Blue1, oscalPad70Blue2, oscalPad70Blue3],
+    rating: 4.6,
+    category: "Tablets",
+    brand: "Oscal",
+    secondaryCategories: ["Budget", "Android"],
+    description: "The Oscal Pad 70 is a feature-rich tablet offering excellent value with a large 10.1-inch HD+ IPS display and powerful performance. Powered by the RK3566 quad-core processor, it delivers smooth operation for daily tasks, entertainment, and productivity. With 7GB RAM (4GB physical + extended RAM) and 128GB storage (expandable up to 1TB via microSD), there's ample space for apps, media, and files. The tablet features a 13MP camera for capturing photos and videos, and a massive 6580mAh battery ensures extended usage. With Wi-Fi 6 support, Bluetooth 5.0, and USB Type-C connectivity, it offers modern connectivity options. The tablet comes in Blue color and includes a 1-year warranty for peace of mind.",
+    features: [
+      "10.1\" HD+ IPS Display",
+      "800 × 1280 Pixel Resolution",
+      "RK3566 Quad-Core Processor",
+      "7GB RAM (4GB Physical + Extended RAM)",
+      "128GB Internal Storage",
+      "Expandable Storage up to 1TB (MicroSD/TF Card)",
+      "13MP Camera for photos and videos",
+      "1080p@30fps Video Recording",
+      "6580mAh Li-Ion Battery (Non-Removable)",
+      "USB Type-C 2.0 Charging with OTG Support",
+      "Wi-Fi 6 (802.11 a/b/g/n/ac/6) for fast connectivity",
+      "Bluetooth 5.0 with A2DP and LE",
+      "Android Operating System",
+      "Lightweight Design (520.5g)",
+      "Compact Dimensions (246.5 × 163 × 9.9 mm)",
+      "1 Year Warranty",
+      "Available in Blue Color"
+    ],
+    specifications: [
+      { label: "Display", value: "10.1\" HD+ IPS" },
+      { label: "Resolution", value: "800 × 1280 pixels" },
+      { label: "Processor", value: "RK3566 Quad-Core" },
+      { label: "RAM", value: "7GB (4GB Physical + Extended RAM)" },
+      { label: "Storage", value: "128GB ROM" },
+      { label: "Memory Slot", value: "MicroSD/TF Card (Max 1TB)" },
+      { label: "Camera", value: "13MP" },
+      { label: "Video Recording", value: "1080p@30fps" },
+      { label: "Battery", value: "6580mAh Li-Ion (Non-Removable)" },
+      { label: "Charging", value: "USB Type-C 2.0, OTG Support" },
+      { label: "Wi-Fi", value: "802.11 a/b/g/n/ac/6 (Wi-Fi 6)" },
+      { label: "Bluetooth", value: "5.0, A2DP, LE" },
+      { label: "Operating System", value: "Android" },
+      { label: "Technology", value: "No cellular connectivity (Wi-Fi only)" },
+      { label: "SIM Card Slots", value: "No" },
+      { label: "Dimensions", value: "246.5 × 163 × 9.9 mm" },
+      { label: "Weight", value: "520.5 g" },
+      { label: "Color", value: "Blue" },
+      { label: "Warranty", value: "1 Year" }
+    ],
+    variants: [
+      {
+        key: "128gb-4gb",
+        label: "128GB + 4GB RAM",
+        ram: "4GB",
+        storage: "128GB",
+        price: 109
+      }
+    ],
+    colors: [
+      { name: "Blue", image: oscalPad70Blue1, stock: "available" }
+    ],
+    connectivityOptions: ["Wi-Fi only"]
+  },
+  // Oscal Pad 7 (ID: 418)
+  {
+    id: 418,
+    name: "Oscal Pad 7",
+    title: "Oscal Pad 7 - 10.1\" HD+, Unisoc T606, 8GB RAM, 128GB Storage, 6600mAh",
+    price: 89,
+    image: oscalPad7Main,
+    images: [oscalPad7Main, oscalPad7Alt],
+    rating: 4.5,
+    category: "Tablets",
+    brand: "Oscal",
+    secondaryCategories: ["Budget", "Android"],
+    description: "The Oscal Pad 7 is a versatile and affordable tablet featuring a large 10.1-inch HD+ display, perfect for entertainment, education, and daily tasks. Powered by the Unisoc T606 octa-core processor running Android 14, it delivers smooth performance for apps, games, and multimedia. With 8GB RAM (4GB physical + 4GB extended) and 128GB storage, there's plenty of space for your apps, photos, and content. The tablet features a 13MP main camera and 8MP front camera for capturing photos and video calls. A massive 6600mAh battery ensures extended usage throughout the day. The tablet comes with a flip cover and screen protector included, along with a 180-day screen warranty, making it a reliable and protected choice for everyday use.",
+    features: [
+      "10.1\" HD+ Display for vibrant visuals",
+      "Unisoc T606 Octa-Core Processor",
+      "Android 14 Operating System",
+      "8GB RAM (4GB Physical + 4GB Extended)",
+      "128GB Internal Storage",
+      "13MP Main Camera for quality photos",
+      "8MP Front Camera for video calls",
+      "6600mAh Battery for extended usage",
+      "Flip Cover Included for protection",
+      "Screen Protector Included",
+      "180-Day Screen Warranty",
+      "Lightweight Design (0.45kg)",
+      "Compact Dimensions (24.15 × 15.98 × 0.1 cm)"
+    ],
+    specifications: [
+      { label: "Display", value: "10.1\" HD+ Display" },
+      { label: "Processor", value: "Unisoc T606, Octa-Core" },
+      { label: "Operating System", value: "Android 14" },
+      { label: "RAM", value: "8GB (4GB Physical + 4GB Extended)" },
+      { label: "Storage", value: "128GB ROM" },
+      { label: "Main Camera", value: "13MP" },
+      { label: "Front Camera", value: "8MP" },
+      { label: "Battery", value: "6600mAh" },
+      { label: "Dimensions", value: "24.15 × 15.98 × 0.1 cm" },
+      { label: "Weight", value: "0.45 kg" },
+      { label: "Included Accessories", value: "Flip Cover + Screen Protector" },
+      { label: "Warranty", value: "180 Day Screen Warranty" }
+    ],
+    variants: [
+      {
+        key: "128gb-8gb",
+        label: "128GB + 8GB RAM",
+        ram: "8GB",
+        storage: "128GB",
+        price: 89
+      }
+    ],
+    connectivityOptions: ["Wi-Fi only"]
+  },
+  // Oscal Pad 90 (ID: 419)
+  {
+    id: 419,
+    name: "Oscal Pad 90",
+    title: "Oscal Pad 90 - 10.92\" HD, Unisoc T606, 24GB RAM, 128GB Storage, 7700mAh",
+    price: 119,
+    image: oscalPad90Main,
+    images: [oscalPad90Main, oscalPad90Alt],
+    rating: 4.6,
+    category: "Tablets",
+    brand: "Oscal",
+    secondaryCategories: ["Budget", "Android"],
+    description: "The Oscal Pad 90 is a powerful and feature-rich tablet featuring a large 10.92-inch HD display, perfect for entertainment, productivity, and multimedia consumption. Powered by the Unisoc T606 octa-core processor running Android 14, it delivers smooth performance for apps, games, and multitasking. With an impressive 24GB RAM (8GB physical + 16GB extended) and 128GB storage, there's abundant space for your apps, media, and files. The tablet features a 13MP main camera and 8MP front camera for capturing photos and video calls. A massive 7700mAh battery ensures extended usage throughout the day. The tablet comes with a flip cover and screen protector included, along with a 180-day screen warranty, making it a reliable and protected choice for everyday use.",
+    features: [
+      "10.92\" HD Display for vibrant visuals",
+      "Unisoc T606 Octa-Core Processor",
+      "Android 14 Operating System",
+      "24GB RAM (8GB Physical + 16GB Extended)",
+      "128GB Internal Storage",
+      "13MP Main Camera for quality photos",
+      "8MP Front Camera for video calls",
+      "7700mAh Battery for extended usage",
+      "Flip Cover Included for protection",
+      "Screen Protector Included",
+      "180-Day Screen Warranty",
+      "Lightweight Design (0.534kg)",
+      "Compact Dimensions (25.81 × 16.96 × 0.8 cm)"
+    ],
+    specifications: [
+      { label: "Display", value: "10.92\" HD Display" },
+      { label: "Processor", value: "Unisoc T606, Octa-Core" },
+      { label: "Operating System", value: "Android 14" },
+      { label: "RAM", value: "24GB (8GB Physical + 16GB Extended)" },
+      { label: "Storage", value: "128GB ROM" },
+      { label: "Main Camera", value: "13MP" },
+      { label: "Front Camera", value: "8MP" },
+      { label: "Battery", value: "7700mAh" },
+      { label: "Dimensions", value: "25.81 × 16.96 × 0.8 cm" },
+      { label: "Weight", value: "0.534 kg" },
+      { label: "Included Accessories", value: "Flip Cover + Screen Protector" },
+      { label: "Warranty", value: "180 Day Screen Warranty" }
+    ],
+    variants: [
+      {
+        key: "128gb-8gb",
+        label: "128GB + 8GB RAM (24GB Virtual)",
+        ram: "8GB",
+        storage: "128GB",
+        price: 119
+      }
+    ],
+    connectivityOptions: ["Wi-Fi only"]
+  },
+  // Oscal Pad 80 (ID: 420)
+  {
+    id: 420,
+    name: "Oscal Pad 80",
+    title: "Oscal Pad 80 - 10.51\" FHD+, Unisoc T606, 18GB RAM, 256GB Storage, 8200mAh",
+    price: 139,
+    image: oscalPad80Main,
+    images: [oscalPad80Main, oscalPad80Alt],
+    rating: 4.7,
+    category: "Tablets",
+    brand: "Oscal",
+    secondaryCategories: ["Budget", "Android"],
+    description: "The Oscal Pad 80 is a premium tablet featuring a large 10.51-inch FHD+ display, perfect for entertainment, productivity, and multimedia consumption. Powered by the Unisoc T606 octa-core processor running Android 14, it delivers smooth performance for apps, games, and multitasking. With an impressive 18GB RAM (6GB physical + 12GB extended) and 256GB storage, there's abundant space for your apps, media, and files. The tablet features a 13MP main camera and 8MP front camera for capturing photos and video calls. A massive 8200mAh battery ensures extended usage throughout the day. The tablet comes with a flip cover and screen protector included, along with a 180-day screen warranty, making it a reliable and protected choice for everyday use. Available in Grey color.",
+    features: [
+      "10.51\" FHD+ Display for vibrant, crisp visuals",
+      "Unisoc T606 Octa-Core Processor",
+      "Android 14 Operating System",
+      "18GB RAM (6GB Physical + 12GB Extended)",
+      "256GB Internal Storage",
+      "13MP Main Camera for quality photos",
+      "8MP Front Camera for video calls",
+      "8200mAh Battery for extended usage",
+      "Flip Cover Included for protection",
+      "Screen Protector Included",
+      "180-Day Screen Warranty",
+      "Lightweight Design (0.495kg)",
+      "Compact Dimensions (24.68 × 16.19 × 0.91 cm)",
+      "Available in Grey Color"
+    ],
+    specifications: [
+      { label: "Model", value: "OSCL-PAD80" },
+      { label: "Display", value: "10.51\" FHD+ Display" },
+      { label: "Processor", value: "Unisoc T606, Octa-Core" },
+      { label: "Operating System", value: "Android 14" },
+      { label: "RAM", value: "18GB (6GB Physical + 12GB Extended)" },
+      { label: "Storage", value: "256GB ROM" },
+      { label: "Main Camera", value: "13MP" },
+      { label: "Front Camera", value: "8MP" },
+      { label: "Battery", value: "8200mAh" },
+      { label: "Dimensions", value: "24.68 × 16.19 × 0.91 cm" },
+      { label: "Weight", value: "0.495 kg" },
+      { label: "Color", value: "Grey" },
+      { label: "Included Accessories", value: "Flip Cover + Screen Protector" },
+      { label: "Warranty", value: "180 Day Screen Warranty" }
+    ],
+    variants: [
+      {
+        key: "256gb-6gb",
+        label: "256GB + 6GB RAM (18GB Virtual)",
+        ram: "6GB",
+        storage: "256GB",
+        price: 139
+      }
+    ],
+    colors: [
+      { name: "Grey", image: oscalPad80Main, stock: "available" }
+    ],
+    connectivityOptions: ["Wi-Fi only"]
+  },
+  // Oscal Pad 13 (ID: 421)
+  {
+    id: 421,
+    name: "Oscal Pad 13",
+    title: "Oscal Pad 13 - 10.1\" FHD+, Unisoc T606, 14GB RAM, 256GB Storage, 7680mAh, Stylus Pen",
+    price: 129,
+    image: oscalPad13Main,
+    images: [oscalPad13Main, oscalPad13Alt],
+    rating: 4.6,
+    category: "Tablets",
+    brand: "Oscal",
+    secondaryCategories: ["Budget", "Android"],
+    description: "The Oscal Pad 13 is a feature-rich tablet featuring a 10.1-inch FHD+ display, perfect for entertainment, productivity, and creative tasks. Powered by the Unisoc T606 octa-core processor running Android 12, it delivers smooth performance for apps, games, and multitasking. With an impressive 14GB RAM (8GB physical + 6GB extended) and 256GB storage, there's abundant space for your apps, media, and files. The tablet features a 13MP main camera and 8MP front camera for capturing photos and video calls. A large 7680mAh battery ensures extended usage throughout the day. The tablet comes with a flip cover, screen protector, and a stylus pen included, along with a 180-day screen warranty, making it a complete and protected choice for everyday use. Available in Blue color.",
+    features: [
+      "10.1\" FHD+ Display for vibrant, crisp visuals",
+      "Unisoc T606 Octa-Core Processor",
+      "Android 12 Operating System",
+      "14GB RAM (8GB Physical + 6GB Extended)",
+      "256GB Internal Storage",
+      "13MP Main Camera for quality photos",
+      "8MP Front Camera for video calls",
+      "7680mAh Battery for extended usage",
+      "Stylus Pen Included for precision input",
+      "Flip Cover Included for protection",
+      "Screen Protector Included",
+      "180-Day Screen Warranty",
+      "Lightweight Design (0.435kg)",
+      "Ultra-thin Profile (0.76cm thickness)",
+      "Compact Dimensions (23.92 × 15.795 × 0.76 cm)",
+      "Available in Blue Color"
+    ],
+    specifications: [
+      { label: "Model", value: "OSCL-PAD13" },
+      { label: "Display", value: "10.1\" FHD+ Display" },
+      { label: "Processor", value: "Unisoc T606, Octa-Core" },
+      { label: "Operating System", value: "Android 12" },
+      { label: "RAM", value: "14GB (8GB Physical + 6GB Extended)" },
+      { label: "Storage", value: "256GB ROM" },
+      { label: "Main Camera", value: "13MP" },
+      { label: "Front Camera", value: "8MP" },
+      { label: "Battery", value: "7680mAh" },
+      { label: "Dimensions", value: "23.92 × 15.795 × 0.76 cm" },
+      { label: "Weight", value: "0.435 kg" },
+      { label: "Color", value: "Blue" },
+      { label: "Included Accessories", value: "Flip Cover + Screen Protector + Stylus Pen" },
+      { label: "Warranty", value: "180 Day Screen Warranty" }
+    ],
+    variants: [
+      {
+        key: "256gb-8gb",
+        label: "256GB + 8GB RAM (14GB Virtual)",
+        ram: "8GB",
+        storage: "256GB",
+        price: 129
+      }
+    ],
+    colors: [
+      { name: "Blue", image: oscalPad13Main, stock: "available" }
+    ],
+    connectivityOptions: ["Wi-Fi only"]
+  },
+  // Oscal Pad 15 (ID: 422)
+  {
+    id: 422,
+    name: "Oscal Pad 15",
+    title: "Oscal Pad 15 - 10.36\" Display, Unisoc T606, Up to 16GB RAM, 256GB Storage, 16MP Selfie",
+    price: 149,
+    image: oscalPad15Main,
+    images: [oscalPad15Main, oscalPad15Alt, oscalPad15Alt2],
+    rating: 4.7,
+    category: "Tablets",
+    brand: "Oscal",
+    secondaryCategories: ["Budget", "Android"],
+    description: "The Oscal Pad 15 is a powerful tablet featuring a 10.36-inch display with a 79.3% screen-to-body ratio, perfect for entertainment, productivity, and multimedia consumption. Powered by the Unisoc T606 octa-core processor (2x1.6 GHz Cortex-A75 & 6x1.6 GHz Cortex-A55) running Android 13 with DokeOS_P 3.0, it delivers smooth performance for apps, games, and multitasking. With up to 16GB RAM and 256GB storage, there's abundant space for your apps, media, and files. The tablet features a 13MP main camera and an impressive 16MP front camera for high-quality selfies and video calls. The lightweight design at just 449g makes it highly portable, while dual-band Wi-Fi 802.11 a/b/g/n/ac ensures fast connectivity. Backed by a 1-year warranty, this tablet offers excellent value for users seeking performance and reliability.",
+    features: [
+      "10.36\" Display with 79.3% screen-to-body ratio",
+      "Unisoc T606 Octa-Core Processor (12nm)",
+      "Android 13 with DokeOS_P 3.0",
+      "Up to 16GB RAM for smooth multitasking",
+      "256GB Internal Storage",
+      "13MP Main Camera for quality photos",
+      "16MP Front Camera for high-quality selfies",
+      "Dual-Band Wi-Fi 802.11 a/b/g/n/ac",
+      "Lightweight Design (449g)",
+      "1 Year Warranty",
+      "High-performance CPU architecture",
+      "Optimized for productivity and entertainment"
+    ],
+    specifications: [
+      { label: "Display", value: "10.36 inches, 305.5 cm² (~79.3% screen-to-body ratio)" },
+      { label: "Processor", value: "Unisoc T606 (12 nm)" },
+      { label: "CPU", value: "Octa-Core (2x1.6 GHz Cortex-A75 & 6x1.6 GHz Cortex-A55)" },
+      { label: "RAM", value: "Up to 16GB" },
+      { label: "Storage", value: "256GB" },
+      { label: "Main Camera", value: "13MP" },
+      { label: "Front Camera", value: "16MP" },
+      { label: "Operating System", value: "Android 13, DokeOS_P 3.0" },
+      { label: "Wi-Fi", value: "Wi-Fi 802.11 a/b/g/n/ac, Dual-Band" },
+      { label: "Weight", value: "449g" },
+      { label: "Warranty", value: "1 Year Warranty" }
+    ],
+    variants: [
+      {
+        key: "256gb-16gb",
+        label: "256GB + 16GB RAM",
+        ram: "16GB",
+        storage: "256GB",
+        price: 149
+      }
+    ],
+    connectivityOptions: ["Wi-Fi only"]
+  },
+  // Oscal Pad 100 (ID: 423)
+  {
+    id: 423,
+    name: "Oscal Pad 100",
+    title: "Oscal Pad 100 - 12\" IPS Display, Unisoc T615, Up to 36GB RAM, 256GB Storage, 9000mAh, Stylus Pen",
+    price: 199,
+    image: oscalPad100Grey,
+    images: [oscalPad100Grey, oscalPad100Blue],
+    rating: 4.8,
+    category: "Tablets",
+    brand: "Oscal",
+    secondaryCategories: ["Budget", "Android"],
+    description: "The Oscal Pad 100 is a premium large-screen tablet featuring a stunning 12-inch IPS display with 1200×2000 resolution, perfect for entertainment, productivity, and creative tasks. Powered by the Unisoc T615 octa-core processor (12nm) running Android 15, it delivers smooth performance for apps, games, and multitasking. With an impressive up to 36GB RAM (12GB physical + 24GB extended) and 256GB storage, there's abundant space for your apps, media, and files. The tablet features a 16MP main camera and 8MP front camera for capturing photos and video calls. A massive 9000mAh battery with 18W fast charging ensures extended usage throughout the day. The tablet comes with a stylus pen included, making it perfect for note-taking, drawing, and creative work. With dual SIM support (1xSIM + 1TF or 2xSIM) and cellular connectivity, you can stay connected anywhere. Backed by a 1-year warranty, this tablet offers excellent value for users seeking a large-screen, high-performance device.",
+    features: [
+      "12\" IPS Display with 1200×2000 Resolution",
+      "Unisoc T615 Octa-Core Processor (12nm)",
+      "Android 15 Operating System",
+      "Up to 36GB RAM (12GB Physical + 24GB Extended)",
+      "256GB Internal Storage",
+      "16MP Main Camera for quality photos",
+      "8MP Front Camera for video calls",
+      "9000mAh Battery for extended usage",
+      "18W Fast Charging support",
+      "Stylus Pen Included for precision input",
+      "Dual SIM Support (1xSIM + 1TF / 2xSIM)",
+      "Cellular Connectivity",
+      "1 Year Warranty",
+      "Large screen for immersive viewing",
+      "Perfect for productivity and creativity"
+    ],
+    specifications: [
+      { label: "Display", value: "12\" IPS Display, 1200×2000 Resolution" },
+      { label: "Processor", value: "Unisoc T615, Octa-Core (12nm)" },
+      { label: "Operating System", value: "Android 15" },
+      { label: "RAM", value: "Up to 36GB (12GB Physical + 24GB Extended)" },
+      { label: "Storage", value: "256GB" },
+      { label: "Main Camera", value: "16MP" },
+      { label: "Front Camera", value: "8MP" },
+      { label: "Battery", value: "9000mAh" },
+      { label: "Charging", value: "18W Fast Charging" },
+      { label: "Included Accessories", value: "Stylus Pen" },
+      { label: "SIM Support", value: "Dual SIM (1xSIM + 1TF / 2xSIM)" },
+      { label: "Connectivity", value: "Cellular + Wi-Fi" },
+      { label: "Warranty", value: "1 Year Warranty" }
+    ],
+    variants: [
+      {
+        key: "256gb-12gb",
+        label: "256GB + 12GB RAM (36GB Virtual)",
+        ram: "12GB",
+        storage: "256GB",
+        price: 199
+      }
+    ],
+    colors: [
+      { name: "Grey", image: oscalPad100Grey, stock: "available" },
+      { name: "Blue", image: oscalPad100Blue, stock: "available" }
+    ],
+    connectivityOptions: ["Wi-Fi", "Cellular"]
+  },
+  // Oscal Elite 1 (ID: 424)
+  {
+    id: 424,
+    name: "Oscal Elite 1",
+    title: "Oscal Elite 1 - 12.1\" IPS LCD 120Hz, Helio G99, Up to 16GB RAM, 256GB Storage, 8800mAh, Stylus Pen",
+    price: 229,
+    image: oscalElite1Grey,
+    images: [oscalElite1Grey, oscalElite1Blue, oscalElite1White],
+    rating: 4.8,
+    category: "Tablets",
+    brand: "Oscal",
+    secondaryCategories: ["Budget", "Android"],
+    description: "The Oscal Elite 1 is a premium tablet featuring a stunning 12.1-inch IPS LCD display with 120Hz refresh rate and 600 nits brightness, delivering smooth visuals and excellent readability. Powered by the MediaTek Helio G99 processor (6nm) running Android 14 with DokeOS_P 4.0, it delivers smooth performance for apps, games, and multitasking. With up to 16GB RAM (8GB physical + 8GB extended) and 256GB storage, there's abundant space for your apps, media, and files. The tablet features a 12MP main camera and 13MP front camera for capturing photos and video calls. A massive 8800mAh battery with 33W wired charging ensures extended usage and fast recharging. The tablet comes with a stylus pen included, making it perfect for note-taking, drawing, and creative work. With hybrid dual SIM support and cellular connectivity, you can stay connected anywhere. Available in Blue, Grey, and Silver White colors, backed by a 1-year warranty, this tablet offers excellent value for users seeking a large-screen, high-performance device.",
+    features: [
+      "12.1\" IPS LCD Display with 120Hz Refresh Rate",
+      "600 Nits Brightness for excellent visibility",
+      "MediaTek Helio G99 Processor (6nm)",
+      "Android 14 with DokeOS_P 4.0",
+      "Up to 16GB RAM (8GB Physical + 8GB Extended)",
+      "256GB Internal Storage",
+      "12MP Main Camera for quality photos",
+      "13MP Front Camera for video calls",
+      "8800mAh Battery for extended usage",
+      "33W Wired Fast Charging",
+      "Stylus Pen Included for precision input",
+      "Hybrid Dual SIM Support",
+      "Cellular Connectivity",
+      "1 Year Warranty",
+      "Available in Blue, Grey, and Silver White",
+      "Large screen for immersive viewing",
+      "Perfect for productivity and creativity"
+    ],
+    specifications: [
+      { label: "Display", value: "12.1\" IPS LCD, 120Hz, 600 nits" },
+      { label: "Processor", value: "MediaTek Helio G99 (6nm)" },
+      { label: "Operating System", value: "Android 14, DokeOS_P 4.0" },
+      { label: "RAM", value: "Up to 16GB (8GB Physical + 8GB Extended)" },
+      { label: "Storage", value: "256GB" },
+      { label: "Main Camera", value: "12MP" },
+      { label: "Front Camera", value: "13MP" },
+      { label: "Battery", value: "8800mAh" },
+      { label: "Charging", value: "33W Wired Charging" },
+      { label: "Included Accessories", value: "Stylus Pen" },
+      { label: "SIM Support", value: "Hybrid Dual SIM" },
+      { label: "Connectivity", value: "Cellular + Wi-Fi" },
+      { label: "Colors", value: "Blue, Grey, Silver White" },
+      { label: "Warranty", value: "1 Year Warranty" }
+    ],
+    variants: [
+      {
+        key: "256gb-8gb",
+        label: "256GB + 8GB RAM (16GB Virtual)",
+        ram: "8GB",
+        storage: "256GB",
+        price: 229
+      }
+    ],
+    colors: [
+      { name: "Blue", image: oscalElite1Blue, stock: "available" },
+      { name: "Grey", image: oscalElite1Grey, stock: "available" },
+      { name: "Silver White", image: oscalElite1White, stock: "available" }
+    ],
+    connectivityOptions: ["Wi-Fi", "Cellular"]
   }
 ];
 
