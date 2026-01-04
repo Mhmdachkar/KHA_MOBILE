@@ -11,6 +11,8 @@ import greenLionLogo from "@/assets/logo's/green lion logo.jpg";
 import hocoLogo from "@/assets/logo's/hoco logo.webp";
 import samsungLogo from "@/assets/logo's/samsung logo.avif";
 import redmagicLogo from "@/assets/logo's/redmagic logo.jpg";
+import oscalLogo from "@/assets/logo's/oscal logo.png";
+import infinixLogo from "@/assets/logo's/infinix logo.jpg";
 
 interface Brand {
   name: string;
@@ -43,6 +45,8 @@ const BrandShowcase = () => {
       { pattern: /^YESIDO\s+/i, name: "YESIDO" },
       { pattern: /^REDMAGIC\s+/i, name: "REDMAGIC" },
       { pattern: /^Red Magic\s+/i, name: "REDMAGIC" },
+      { pattern: /^Oscal\s+/i, name: "Oscal" },
+      { pattern: /^Infinix\s+/i, name: "Infinix" },
     ];
 
     for (const { pattern, name } of brandPatterns) {
@@ -110,6 +114,8 @@ const BrandShowcase = () => {
     "Hoco": hocoLogo,
     "Foneng": fonengLogo,
     "REDMAGIC": redmagicLogo,
+    "Oscal": oscalLogo,
+    "Infinix": infinixLogo,
   };
 
   // Brands to exclude (those with 1-2 products and no logo)
@@ -152,6 +158,8 @@ const BrandShowcase = () => {
       "JBL": "from-red-500 to-orange-600",
       "Kakusiga": "from-yellow-500 to-amber-600",
       "REDMAGIC": "from-red-600 to-red-900",
+      "Oscal": "from-blue-500 to-indigo-600",
+      "Infinix": "from-purple-500 to-pink-600",
     };
     return colors[brandName] || "from-primary to-accent";
   };
