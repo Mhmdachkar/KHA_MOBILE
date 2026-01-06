@@ -435,6 +435,9 @@ import redmiNote14ProPlusBlack from "@/assets/phones/xiaomi/xiaomi mobile/Xiaomi
 import redmiNote14ProPlusLavender from "@/assets/phones/xiaomi/xiaomi mobile/Xiaomi Redmi Note 14 Pro+ 5G - 12GB RAM - 512GB Storage/lavender.png";
 import redmiNote14ProPlusScreenshot1 from "@/assets/phones/xiaomi/xiaomi mobile/Xiaomi Redmi Note 14 Pro+ 5G - 12GB RAM - 512GB Storage/Screenshot 2025-12-25 124611.png";
 import redmiNote14ProPlusScreenshot2 from "@/assets/phones/xiaomi/xiaomi mobile/Xiaomi Redmi Note 14 Pro+ 5G - 12GB RAM - 512GB Storage/Screenshot 2025-12-25 124627.png";
+// Xiaomi Mi 15T Pro imports
+import mi15TProMain from "@/assets/phones/xiaomi/xiaomi mobile/MI 15T PRO 512 12GB +WATCH/MI 15T PRO 512 12GB +WATCH.avif";
+import mi15TProGold from "@/assets/phones/xiaomi/xiaomi mobile/MI 15T PRO 512 12GB +WATCH/Xiaomi-15T-Pro-Mocha-Gold-9.jpg";
 
 // Xiaomi Redmi Pad 2 Pro imports
 import redmiPad2ProWhite from "@/assets/phones/xiaomi/XIAOMI TABLETS/Xiaomi Redmi Pad 2 Pro – 8/Xiaomi Redmi Pad 2 Pro – 8 256GB + Redmi Keyboard WHITE.webp";
@@ -2388,7 +2391,7 @@ export const smartphoneProducts: Product[] = [
     id: 218,
     name: "REDMAGIC 10 Pro",
     title: "REDMAGIC 10 Pro - Snapdragon 8 Elite, 144Hz AMOLED, 7050mAh Battery, Gaming Beast",
-    price: 799,
+    price: 980,
     image: redmagic10Pro1,
     images: [redmagic10Pro1, redmagic10Pro2, redmagic10Pro3, redmagic10Pro4, redmagic10Pro5, redmagic10Pro6, redmagic10Pro7, redmagic10Pro8, redmagic10Pro9, redmagic10Pro10, redmagic10Pro11, redmagic10Pro12],
     rating: 4.9,
@@ -2449,7 +2452,7 @@ export const smartphoneProducts: Product[] = [
     id: 219,
     name: "REDMAGIC 10 Air",
     title: "REDMAGIC 10 Air - Snapdragon 8 Gen 3, 144Hz AMOLED, Under-Display Camera",
-    price: 649,
+    price: 815,
     image: redmagic10Air1,
     images: [redmagic10Air1, redmagic10Air2, redmagic10Air3, redmagic10Air4],
     rating: 4.8,
@@ -2489,7 +2492,7 @@ export const smartphoneProducts: Product[] = [
     id: 221,
     name: "TECNO SPARK GO 1",
     title: "TECNO SPARK GO 1 - 120Hz 6.67\" Hole Screen, 5000mAh, IP54",
-    price: 99,
+    price: 94.99,
     image: tecnoSparkGo1Black,
     images: [tecnoSparkGo1Black, tecnoSparkGo1Gold, tecnoSparkGo1Green, tecnoSparkGo1White],
     rating: 4.5,
@@ -2527,14 +2530,14 @@ export const smartphoneProducts: Product[] = [
         label: "64GB + 3GB RAM",
         ram: "3GB",
         storage: "64GB",
-        price: 99
+        price: 94.99
       },
       {
         key: "128gb-4gb",
         label: "128GB + 4GB RAM",
         ram: "4GB",
         storage: "128GB",
-        price: 119
+        price: 99.99
       }
     ],
     colors: [
@@ -2549,7 +2552,7 @@ export const smartphoneProducts: Product[] = [
     id: 222,
     name: "Tecno Spark Go 2",
     title: "Tecno Spark Go 2 - 120Hz 6.67\" Display, Android 15, IP64 Durable",
-    price: 109,
+    price: 94.99,
     image: tecnoSparkGo2Black,
     images: [tecnoSparkGo2Black, tecnoSparkGo2Blue, tecnoSparkGo2Grey, tecnoSparkGo2White],
     rating: 4.6,
@@ -2586,21 +2589,21 @@ export const smartphoneProducts: Product[] = [
         label: "64GB + 3GB RAM",
         ram: "3GB",
         storage: "64GB",
-        price: 109
+        price: 94.99
       },
       {
         key: "128gb-4gb",
         label: "128GB + 4GB RAM",
         ram: "4GB",
         storage: "128GB",
-        price: 129
+        price: 99.99
       },
       {
         key: "256gb-4gb",
         label: "256GB + 4GB RAM",
         ram: "4GB",
         storage: "256GB",
-        price: 149
+        price: 119.99
       }
     ],
     colors: [
@@ -2615,9 +2618,9 @@ export const smartphoneProducts: Product[] = [
     id: 223,
     name: "Tecno Spark 40 C (KM4K)",
     title: "Tecno Spark 40 C - 120Hz 6.67\" Display, 6000mAh, IP64 Durable",
-    price: 99,
+    price: 126.99,
     image: tecnoSpark40CInkBlack,
-    images: [tecnoSpark40CInkBlack, tecnoSpark40CRippleBlue, tecnoSpark40CTitaniumGrey, tecnoSpark40CWhite],
+    images: [tecnoSpark40CInkBlack, tecnoSpark40CRippleBlue, tecnoSpark40CWhite, tecnoSpark40CTitaniumGrey],
     rating: 4.7,
     category: "Smartphones",
     brand: "Tecno",
@@ -2649,32 +2652,18 @@ export const smartphoneProducts: Product[] = [
     ],
     variants: [
       {
-        key: "128gb-4gb",
-        label: "128GB + 4GB RAM",
-        ram: "4GB",
-        storage: "128GB",
-        price: 99
-      },
-      {
-        key: "128gb-8gb",
-        label: "128GB + 8GB RAM",
-        ram: "8GB",
-        storage: "128GB",
-        price: 119
-      },
-      {
         key: "256gb-8gb",
         label: "256GB + 8GB RAM",
         ram: "8GB",
         storage: "256GB",
-        price: 139
+        price: 126.99
       }
     ],
     colors: [
       { name: "Ink Black", image: tecnoSpark40CInkBlack, stock: "available" },
       { name: "Ripple Blue", image: tecnoSpark40CRippleBlue, stock: "available" },
-      { name: "Titanium Grey", image: tecnoSpark40CTitaniumGrey, stock: "available" },
-      { name: "Veil White", image: tecnoSpark40CWhite, stock: "available" }
+      { name: "Veil White", image: tecnoSpark40CWhite, stock: "available" },
+      { name: "Titanium Grey", image: tecnoSpark40CTitaniumGrey, stock: "available" }
     ]
   },
   // Tecno Spark 30C (ID: 224)
@@ -2682,7 +2671,7 @@ export const smartphoneProducts: Product[] = [
     id: 224,
     name: "Tecno Spark 30C",
     title: "Tecno Spark 30C - 120Hz Display, 50MP Camera, Stereo Speakers",
-    price: 109,
+    price: 124.99,
     image: tecnoSpark30CBlack,
     images: [tecnoSpark30CBlack, tecnoSpark30CGreen, tecnoSpark30CWhite],
     rating: 4.7,
@@ -2715,32 +2704,11 @@ export const smartphoneProducts: Product[] = [
     ],
     variants: [
       {
-        key: "128gb-4gb",
-        label: "128GB + 4GB RAM",
-        ram: "4GB",
-        storage: "128GB",
-        price: 109
-      },
-      {
-        key: "128gb-6gb",
-        label: "128GB + 6GB RAM",
-        ram: "6GB",
-        storage: "128GB",
-        price: 119
-      },
-      {
-        key: "256gb-4gb",
-        label: "256GB + 4GB RAM",
-        ram: "4GB",
-        storage: "256GB",
-        price: 129
-      },
-      {
         key: "256gb-8gb",
         label: "256GB + 8GB RAM",
         ram: "8GB",
         storage: "256GB",
-        price: 149
+        price: 124.99
       }
     ],
     colors: [
@@ -2754,7 +2722,7 @@ export const smartphoneProducts: Product[] = [
     id: 225,
     name: "Tecno Spark 30 Pro",
     title: "Tecno Spark 30 Pro - 120Hz AMOLED, 108MP Camera, Helio G100",
-    price: 159,
+    price: 169.99,
     image: tecnoSpark30ProBlack,
     images: [tecnoSpark30ProBlack, tecnoSpark30ProGreen, tecnoSpark30ProWhite],
     rating: 4.8,
@@ -2791,14 +2759,7 @@ export const smartphoneProducts: Product[] = [
         label: "128GB + 8GB RAM",
         ram: "8GB",
         storage: "128GB",
-        price: 159
-      },
-      {
-        key: "256gb-8gb",
-        label: "256GB + 8GB RAM",
-        ram: "8GB",
-        storage: "256GB",
-        price: 179
+        price: 169.99
       }
     ],
     colors: [
@@ -2812,7 +2773,7 @@ export const smartphoneProducts: Product[] = [
     id: 226,
     name: "Tecno Spark 10 5G",
     title: "Tecno Spark 10 5G - 90Hz Display, Dimensity 6020, 50MP Camera",
-    price: 199,
+    price: 164.99,
     image: tecnoSpark105G,
     images: [tecnoSpark105G],
     rating: 4.6,
@@ -2842,25 +2803,11 @@ export const smartphoneProducts: Product[] = [
     ],
     variants: [
       {
-        key: "64gb-4gb",
-        label: "64GB + 4GB RAM",
-        ram: "4GB",
-        storage: "64GB",
-        price: 199
-      },
-      {
-        key: "128gb-8gb",
-        label: "128GB + 8GB RAM",
-        ram: "8GB",
-        storage: "128GB",
-        price: 229
-      },
-      {
         key: "256gb-8gb",
         label: "256GB + 8GB RAM",
         ram: "8GB",
         storage: "256GB",
-        price: 249
+        price: 164.99
       }
     ],
     colors: [
@@ -2874,7 +2821,7 @@ export const smartphoneProducts: Product[] = [
     id: 227,
     name: "Tecno Spark Slim (KM7K)",
     title: "Tecno Spark Slim - 5.9mm Ultra-Thin, 144Hz AMOLED, 45W Charging",
-    price: 219,
+    price: 104.99,
     image: tecnoSparkSlimBlack,
     images: [tecnoSparkSlimBlack, tecnoSparkSlimBlue, tecnoSparkSlimWhite],
     rating: 4.9,
@@ -2912,7 +2859,7 @@ export const smartphoneProducts: Product[] = [
         label: "256GB + 8GB RAM",
         ram: "8GB",
         storage: "256GB",
-        price: 219
+        price: 104.99
       }
     ],
     colors: [
@@ -2926,7 +2873,7 @@ export const smartphoneProducts: Product[] = [
     id: 228,
     name: "Tecno Spark 20 Pro",
     title: "Tecno Spark 20 Pro - 108MP, 21GB RAM (12+9), 120Hz Display",
-    price: 179,
+    price: 219.99,
     image: tecnoSpark20ProBlack,
     images: [tecnoSpark20ProBlack, tecnoSpark20ProIvory, tecnoSpark20ProGreen, tecnoSpark20ProSunset],
     rating: 4.8,
@@ -2963,7 +2910,7 @@ export const smartphoneProducts: Product[] = [
         label: "256GB + 12GB RAM",
         ram: "12GB",
         storage: "256GB",
-        price: 179
+        price: 219.99
       }
     ],
     colors: [
@@ -2978,7 +2925,7 @@ export const smartphoneProducts: Product[] = [
     id: 229,
     name: "Tecno Pova 6 Pro",
     title: "Tecno Pova 6 Pro - 6000mAh, 70W Charging, 108MP, 5G",
-    price: 249,
+    price: 254.99,
     image: tecnoPova6ProBlack,
     images: [tecnoPova6ProBlack, tecnoPova6ProGreen],
     rating: 4.9,
@@ -3016,7 +2963,7 @@ export const smartphoneProducts: Product[] = [
         label: "256GB + 12GB RAM",
         ram: "12GB",
         storage: "256GB",
-        price: 249
+        price: 254.99
       }
     ],
     colors: [
@@ -3029,7 +2976,7 @@ export const smartphoneProducts: Product[] = [
     id: 230,
     name: "Tecno Pova 7",
     title: "Tecno Pova 7 - 6000mAh, Dimensity 7300, 144Hz Display",
-    price: 279,
+    price: 180,
     image: tecnoPova7Green,
     images: [tecnoPova7Green, tecnoPova7Black, tecnoPova7Bronze, tecnoPova7White],
     rating: 4.8,
@@ -3062,25 +3009,18 @@ export const smartphoneProducts: Product[] = [
     ],
     variants: [
       {
-        key: "128gb-8gb",
-        label: "128GB + 8GB RAM (4G)",
-        ram: "8GB",
-        storage: "128GB",
-        price: 259
-      },
-      {
         key: "256gb-8gb",
         label: "256GB + 8GB RAM (4G)",
         ram: "8GB",
         storage: "256GB",
-        price: 279
+        price: 180
       },
       {
         key: "256gb-8gb-5g",
         label: "256GB + 8GB RAM (5G)",
         ram: "8GB",
         storage: "256GB",
-        price: 309
+        price: 235
       }
     ],
     colors: [
@@ -3095,7 +3035,7 @@ export const smartphoneProducts: Product[] = [
     id: 231,
     name: "Tecno Camon 30 5G",
     title: "Tecno Camon 30 5G - 50MP OIS, AMOLED 120Hz, 70W Charge",
-    price: 299,
+    price: 364.99,
     image: tecnoCamon30Black,
     images: [tecnoCamon30Black, tecnoCamon30White],
     rating: 4.8,
@@ -3129,25 +3069,11 @@ export const smartphoneProducts: Product[] = [
     ],
     variants: [
       {
-        key: "256gb-8gb",
-        label: "256GB + 8GB RAM",
-        ram: "8GB",
-        storage: "256GB",
-        price: 299
-      },
-      {
-        key: "512gb-8gb",
-        label: "512GB + 8GB RAM",
-        ram: "8GB",
-        storage: "512GB",
-        price: 329
-      },
-      {
         key: "512gb-12gb",
         label: "512GB + 12GB RAM",
         ram: "12GB",
         storage: "512GB",
-        price: 359
+        price: 364.99
       }
     ],
     colors: [
@@ -3160,7 +3086,7 @@ export const smartphoneProducts: Product[] = [
     id: 232,
     name: "Tecno Camon 40 Pro 4G",
     title: "Tecno Camon 40 Pro 4G - 50MP OIS, AMOLED 120Hz, IP68/IP69, 45W Fast Charge",
-    price: 249,
+    price: 249.99,
     image: camon40ProBlack,
     images: [camon40ProBlack, camon40ProGreen, camon40ProWhite],
     rating: 4.7,
@@ -3218,7 +3144,7 @@ export const smartphoneProducts: Product[] = [
         label: "256GB + 8GB RAM",
         ram: "8GB",
         storage: "256GB",
-        price: 249
+        price: 249.99
       }
     ],
     colors: [
@@ -3232,7 +3158,7 @@ export const smartphoneProducts: Product[] = [
     id: 233,
     name: "Tecno Camon 40 Pro 5G",
     title: "Tecno Camon 40 Pro 5G - 144Hz AMOLED, Dimensity 7300, 50MP OIS, IP68/IP69",
-    price: 299,
+    price: 311,
     image: camon40Pro5gBlack,
     images: [camon40Pro5gBlack, camon40Pro5gGreen, camon40Pro5gWhite],
     rating: 4.8,
@@ -3295,18 +3221,11 @@ export const smartphoneProducts: Product[] = [
     ],
     variants: [
       {
-        key: "256gb-8gb",
-        label: "256GB + 8GB RAM",
-        ram: "8GB",
-        storage: "256GB",
-        price: 299
-      },
-      {
         key: "256gb-12gb",
         label: "256GB + 12GB RAM",
         ram: "12GB",
         storage: "256GB",
-        price: 329
+        price: 311
       }
     ],
     colors: [
@@ -3320,7 +3239,7 @@ export const smartphoneProducts: Product[] = [
     id: 234,
     name: "Infinix Smart 10",
     title: "Infinix Smart 10 - 6.67\" HD+ 120Hz, 5000mAh, IP64, Extended RAM",
-    price: 89,
+    price: 92,
     image: infinixSmart10Black,
     images: [infinixSmart10Black, infinixSmart10Silver, infinixSmart10Blue, infinixSmart10Gold],
     rating: 4.5,
@@ -3387,14 +3306,14 @@ export const smartphoneProducts: Product[] = [
         label: "64GB + 3GB RAM",
         ram: "3GB",
         storage: "64GB",
-        price: 89
+        price: 92
       },
       {
         key: "128gb-4gb",
         label: "128GB + 4GB RAM",
         ram: "4GB",
         storage: "128GB",
-        price: 99
+        price: 100
       }
     ],
     colors: [
@@ -3409,7 +3328,7 @@ export const smartphoneProducts: Product[] = [
     id: 235,
     name: "Infinix Smart 10 Plus",
     title: "Infinix Smart 10 Plus - 6.67\" HD+ 120Hz, 6000mAh, 50MP Camera, Dual Speakers",
-    price: 109,
+    price: 107,
     image: smart10PlusBlack,
     images: [smart10PlusBlack, smart10PlusSilver, smart10PlusBlue, smart10PlusPink],
     rating: 4.6,
@@ -3463,7 +3382,7 @@ export const smartphoneProducts: Product[] = [
         label: "128GB + 4GB RAM",
         ram: "4GB",
         storage: "128GB",
-        price: 109
+        price: 107
       }
     ],
     colors: [
@@ -3478,7 +3397,7 @@ export const smartphoneProducts: Product[] = [
     id: 236,
     name: "Infinix Hot 50i",
     title: "Infinix Hot 50i - 6.7\" 120Hz, 48MP Camera, 5000mAh, 4GB RAM + 256GB",
-    price: 129,
+    price: 130,
     image: infinixHot50i1,
     images: [infinixHot50i1, infinixHot50i2],
     rating: 4.6,
@@ -3551,7 +3470,7 @@ export const smartphoneProducts: Product[] = [
         label: "256GB + 4GB RAM",
         ram: "4GB",
         storage: "256GB",
-        price: 129
+        price: 130
       }
     ],
     colors: [
@@ -3563,7 +3482,7 @@ export const smartphoneProducts: Product[] = [
     id: 237,
     name: "Infinix HOT 50 Pro+",
     title: "Infinix HOT 50 Pro+ - 6.78\" AMOLED 120Hz, 50MP AI Camera, 33W Fast Charge, Ultra-Slim Design",
-    price: 179,
+    price: 210,
     image: infinixHot50ProPlus1,
     images: [infinixHot50ProPlus1, infinixHot50ProPlus2, infinixHot50ProPlus3],
     rating: 4.7,
@@ -3575,69 +3494,39 @@ export const smartphoneProducts: Product[] = [
       "Ultra-Slim 3D-Curved SlimEdge Design (6.8mm thin, 162g)",
       "6.78\" FHD+ AMOLED Display with 120Hz Refresh Rate",
       "1300 Nits Peak Brightness for excellent outdoor visibility",
-      "100% DCI-P3 Color Gamut for vibrant colors",
-      "93.8% Screen-to-Body Ratio with minimal bezels",
-      "TÜV-Certified Eye Protection",
-      "Always-On Display for convenience",
-      "Corning® Gorilla® Glass Protection",
-      "MediaTek Helio G100 Chipset (6nm process)",
-      "Octa-core CPU (2×2.2 GHz Cortex-A76 + 6×2.0 GHz Cortex-A55)",
-      "Mali-G57 GPU for smooth graphics",
-      "8GB LPDDR4X RAM + 8GB Extended RAM (16GB Virtual)",
-      "256GB UFS 2.2 Storage",
-      "MicroSD Support up to 1TB",
-      "50MP AI Dual Rear Camera System (Hi-5022Q, 6P lens, F1.6, AF)",
-      "2MP Depth Sensor for portrait photography",
-      "13MP Front Camera (5P lens, F2.2)",
-      "Super Night Mode, Dual Video, Film Mode, AR Shot",
-      "2K 30FPS Video Recording",
-      "5000mAh Battery for extended usage",
-      "33W Advanced FastCharge",
-      "Reverse Charging up to 10W",
-      "Dual Speakers Tuned by JBL",
-      "Hi-Res Audio Certified",
-      "DTS Support for immersive sound",
-      "Widevine L1+ for HD streaming",
+      "93.4% Screen-to-Body Ratio",
+      "50MP Main Camera with AIRAW Engine",
+      "13MP Selfie Camera",
+      "Always-On Display (AOD)",
+      "MediaTek Helio G100 (6nm) Processor",
+      "8GB RAM + 8GB Extended RAM (16GB Virtual)",
+      "256GB UFS 2.2 Internal Storage (Up to 1TB microSD)",
+      "IP54 Splash and Dust Resistance",
+      "Dual Stereo Speakers with JBL Tuning",
+      "5000mAh High-Performance Battery",
+      "33W Fast Charging & Bypass Charging",
+      "7.4-Year Battery Fluency (TÜV Certified)",
       "In-Display Fingerprint Sensor",
-      "IP54 Water and Dust Resistance",
       "NFC Support",
-      "Dual SIM + MicroSD Support",
-      "USB Type-C Connectivity",
       "Android 14 with XOS 14.5",
-      "Available in Sleek Black, Titanium Gray, Dreamy Purple"
+      "Dual SIM Support (Nano-SIM)"
     ],
     specifications: [
-      { label: "Model", value: "Infinix HOT 50 Pro+ (X6880)" },
-      { label: "Dimensions", value: "164.10 × 74.43 × 6.8 mm" },
+      { label: "Model", value: "Infinix HOT 50 Pro+ 4G (X6855)" },
+      { label: "Dimensions", value: "164.1 × 74.4 × 6.8 mm" },
       { label: "Weight", value: "162g" },
-      { label: "Colors", value: "Sleek Black, Titanium Gray, Dreamy Purple" },
-      { label: "Display", value: "6.78\" FHD+ AMOLED, 120Hz" },
-      { label: "Peak Brightness", value: "1300 nits" },
-      { label: "Color Gamut", value: "100% DCI-P3" },
-      { label: "Screen-to-Body Ratio", value: "93.8%" },
-      { label: "Protection", value: "Corning® Gorilla® Glass, TÜV Eye Protection" },
-      { label: "Chipset", value: "MediaTek Helio G100" },
-      { label: "Process", value: "6nm" },
-      { label: "CPU", value: "Octa-core (2×2.2 GHz Cortex-A76 + 6×2.0 GHz Cortex-A55)" },
-      { label: "GPU", value: "Mali-G57" },
-      { label: "RAM", value: "8GB LPDDR4X + 8GB Extended RAM" },
-      { label: "Storage", value: "256GB UFS 2.2" },
-      { label: "Expandable Storage", value: "Up to 1TB (MicroSD)" },
-      { label: "OS", value: "Android 14" },
-      { label: "UI", value: "XOS 14.5" },
-      { label: "Main Camera", value: "50MP (Hi-5022Q, 6P lens, F1.6, AF)" },
-      { label: "Depth Sensor", value: "2MP" },
-      { label: "Front Camera", value: "13MP (5P lens, F2.2)" },
-      { label: "Scene Modes", value: "Short Video, Super Night, Dual Video, AR Shot" },
-      { label: "Video Recording", value: "Up to 2K 30FPS" },
+      { label: "Display", value: "6.78\" FHD+ AMOLED, 120Hz, 1300 nits" },
+      { label: "Processor", value: "MediaTek Helio G100 (6nm)" },
+      { label: "RAM", value: "8GB + 8GB Extended" },
+      { label: "Storage", value: "256GB UFS 2.2 (Up to 1TB microSD)" },
+      { label: "OS", value: "Android 14, XOS 14.5" },
+      { label: "Main Camera", value: "50MP AI Lens" },
+      { label: "Front Camera", value: "13MP Selfie" },
       { label: "Battery", value: "5000mAh" },
-      { label: "Charging", value: "33W Advanced FastCharge, Reverse Charging (10W)" },
-      { label: "Audio", value: "Dual Speakers (JBL Tuned), Hi-Res Audio, DTS, Widevine L1+" },
-      { label: "SIM Slots", value: "Dual Nano SIM + MicroSD" },
-      { label: "Network", value: "2G/3G/4G" },
-      { label: "Connectivity", value: "Wi-Fi ac, Bluetooth, USB Type-C, NFC, GPS" },
-      { label: "Sensors", value: "In-Display Fingerprint, G-Sensor, E-Compass, Gyroscope, Light Sensor, Proximity" },
-      { label: "Protection", value: "IP54 (Splash, Water, and Dust Resistant)" }
+      { label: "Charging", value: "33W Wired, Bypass Charging" },
+      { label: "Audio", value: "Dual Speakers, JBL-Tuned, 3.5mm jack" },
+      { label: "Security", value: "In-Display Fingerprint" },
+      { label: "Resistance", value: "IP54 Rating" }
     ],
     variants: [
       {
@@ -3645,7 +3534,7 @@ export const smartphoneProducts: Product[] = [
         label: "256GB + 8GB RAM",
         ram: "8GB",
         storage: "256GB",
-        price: 179
+        price: 210
       }
     ],
     colors: [
@@ -3746,14 +3635,14 @@ export const smartphoneProducts: Product[] = [
         label: "256GB + 4GB RAM",
         ram: "4GB",
         storage: "256GB",
-        price: 139
+        price: 140
       },
       {
         key: "256gb-6gb",
         label: "256GB + 6GB RAM",
         ram: "6GB",
         storage: "256GB",
-        price: 149
+        price: 155
       }
     ],
     colors: [
@@ -3770,7 +3659,7 @@ export const smartphoneProducts: Product[] = [
     id: 239,
     name: "Infinix HOT 60 Pro",
     title: "Infinix HOT 60 Pro - 6.78\" 1.5K AMOLED 144Hz, 50MP Camera, 5160mAh, Ultra-Slim 6.6mm",
-    price: 199,
+    price: 185,
     image: infinixHot60Pro1,
     images: [infinixHot60Pro1, infinixHot60Pro2, infinixHot60Pro3, infinixHot60Pro4, infinixHot60Pro5, infinixHot60Pro6],
     rating: 4.8,
@@ -3857,7 +3746,7 @@ export const smartphoneProducts: Product[] = [
         label: "256GB + 8GB RAM",
         ram: "8GB",
         storage: "256GB",
-        price: 199
+        price: 185
       }
     ],
     colors: [
@@ -3874,7 +3763,7 @@ export const smartphoneProducts: Product[] = [
     id: 240,
     name: "Infinix HOT 60 Pro Plus",
     title: "Infinix HOT 60 Pro Plus - World's Slimmest 3D-Curved (5.95mm), 1.5K AMOLED 144Hz, 50MP SONY IMX882",
-    price: 229,
+    price: 215,
     image: infinixHot60ProPlus1,
     images: [infinixHot60ProPlus1, infinixHot60ProPlus2, infinixHot60ProPlus3, infinixHot60ProPlus4, infinixHot60ProPlus5, infinixHot60ProPlus6],
     rating: 4.9,
@@ -3974,7 +3863,7 @@ export const smartphoneProducts: Product[] = [
         label: "256GB + 8GB RAM",
         ram: "8GB",
         storage: "256GB",
-        price: 229
+        price: 215
       }
     ],
     colors: [
@@ -3991,7 +3880,7 @@ export const smartphoneProducts: Product[] = [
     id: 241,
     name: "Infinix Note 50 Pro",
     title: "Infinix Note 50 Pro - 6.78\" AMOLED 144Hz, 50MP OIS, 12GB RAM, 90W Fast Charge",
-    price: 249,
+    price: 285,
     image: infinixNote50Pro1,
     images: [infinixNote50Pro1, infinixNote50Pro2],
     rating: 4.8,
@@ -4089,7 +3978,7 @@ export const smartphoneProducts: Product[] = [
         label: "256GB + 12GB RAM",
         ram: "12GB",
         storage: "256GB",
-        price: 249
+        price: 285
       }
     ],
     colors: [
@@ -4104,7 +3993,7 @@ export const smartphoneProducts: Product[] = [
     id: 242,
     name: "Infinix Note 50",
     title: "Infinix Note 50 - 6.78\" AMOLED 144Hz, 50MP OIS, 8GB RAM, 45W Fast Charge",
-    price: 199,
+    price: 230,
     image: infinixNote501,
     images: [infinixNote501, infinixNote502],
     rating: 4.7,
@@ -4200,7 +4089,7 @@ export const smartphoneProducts: Product[] = [
         label: "256GB + 8GB RAM",
         ram: "8GB",
         storage: "256GB",
-        price: 199
+        price: 230
       }
     ],
     colors: [
@@ -4215,7 +4104,7 @@ export const smartphoneProducts: Product[] = [
     id: 243,
     name: "Infinix Note 50 Pro Plus 5G",
     title: "Infinix Note 50 Pro Plus 5G - 6.78\" AMOLED 144Hz, 50MP Dual OIS, 12GB+12GB RAM, 100W Charge, 5G",
-    price: 299,
+    price: 405,
     image: infinixNote50ProPlus5G1,
     images: [infinixNote50ProPlus5G1, infinixNote50ProPlus5G2, infinixNote50ProPlus5G3],
     rating: 4.9,
@@ -4317,7 +4206,7 @@ export const smartphoneProducts: Product[] = [
         label: "256GB + 12GB RAM (24GB Virtual)",
         ram: "12GB",
         storage: "256GB",
-        price: 299
+        price: 405
       }
     ],
     colors: [
@@ -4455,7 +4344,7 @@ export const smartphoneProducts: Product[] = [
     id: 245,
     name: "Infinix GT 30 Pro Gaming Kit",
     title: "Infinix GT 30 Pro Gaming Kit - Complete Gaming Bundle with Cooling Fan & Case",
-    price: 379,
+    price: 400,
     image: infinixGT30ProGamingKit,
     images: [infinixGT30ProGamingKit],
     rating: 4.9,
@@ -4506,13 +4395,20 @@ export const smartphoneProducts: Product[] = [
     ],
     variants: [
       {
+        key: "standard-gaming-kit",
+        label: "Standard Gaming Kit",
+        ram: "12GB",
+        storage: "256GB",
+        price: 400
+      },
+      {
         key: "gaming-kit-bundle",
         label: "Complete Gaming Kit Bundle",
         ram: "12GB",
         storage: "256GB",
-        price: 379
+        price: 440
       }
-    ]
+    ],
   },
   // Samsung Galaxy A55 256GB/8RAM (ID: 301)
   {
@@ -5036,7 +4932,7 @@ export const smartphoneProducts: Product[] = [
     id: 316,
     name: "Xiaomi Poco X7 Pro",
     title: "Xiaomi Poco X7 Pro – 12/512GB - Flagship Power Meets Premium Design",
-    price: 380,
+    price: 430,
     image: pocoX7ProBlack,
     images: [pocoX7ProBlack, pocoX7ProGreen, pocoX7ProYellow],
     rating: 4.9,
@@ -5100,6 +4996,15 @@ export const smartphoneProducts: Product[] = [
       { label: "SIM", value: "Nano-SIM + Nano-SIM" },
       { label: "Water Resistance", value: "IP68 dust/water resistant (up to 1.5m for 30 min) – Global" }
     ],
+    variants: [
+      {
+        key: "512gb-12gb",
+        label: "512GB + 12GB RAM",
+        ram: "12GB",
+        storage: "512GB",
+        price: 430
+      }
+    ],
     colors: [
       { name: "Black/Yellow", image: pocoX7ProYellow, stock: "available" },
       { name: "Black", image: pocoX7ProBlack, stock: "available" },
@@ -5111,7 +5016,7 @@ export const smartphoneProducts: Product[] = [
     id: 317,
     name: "Xiaomi POCO F7",
     title: "Xiaomi POCO F7 – 12/512GB - Flagship Snapdragon 8s Gen4 Power",
-    price: 430,
+    price: 500,
     image: pocoF7Black,
     images: [pocoF7Black, pocoF7Main, pocoF7Placeholder, pocoF7Boxing, pocoF7Detail1, pocoF7Detail2],
     rating: 4.9,
@@ -5162,6 +5067,15 @@ export const smartphoneProducts: Product[] = [
       { label: "Multitasking", value: "Exceptional with 12GB RAM and flagship chipset" },
       { label: "Color", value: "Black" }
     ],
+    variants: [
+      {
+        key: "512gb-12gb",
+        label: "512GB + 12GB RAM",
+        ram: "12GB",
+        storage: "512GB",
+        price: 500
+      }
+    ],
     colors: [
       { name: "Black", image: pocoF7Black, stock: "available" }
     ]
@@ -5171,7 +5085,7 @@ export const smartphoneProducts: Product[] = [
     id: 318,
     name: "Xiaomi Redmi A5",
     title: "Xiaomi Redmi A5 – Multiple Options Available - Affordable Android Go Smartphone",
-    price: 110,
+    price: 90,
     image: redmiA5Black,
     images: [redmiA5Black, redmiA5Main],
     rating: 4.5,
@@ -5217,7 +5131,7 @@ export const smartphoneProducts: Product[] = [
         ram: "3GB RAM",
         storage: "64GB Storage",
         label: "64GB + 3GB",
-        price: 110,
+        price: 90,
         description: "Perfect entry-level option for everyday smartphone tasks, social media, and light usage."
       },
       {
@@ -5225,7 +5139,7 @@ export const smartphoneProducts: Product[] = [
         ram: "4GB RAM",
         storage: "128GB Storage",
         label: "128GB + 4GB",
-        price: 130,
+        price: 100,
         description: "Enhanced storage and memory for power users who need extra space and better multitasking performance."
       }
     ],
@@ -5238,7 +5152,7 @@ export const smartphoneProducts: Product[] = [
     id: 319,
     name: "Xiaomi Redmi 14C",
     title: "Xiaomi Redmi 14C – 8GB/256GB - 120Hz Display & 50MP AI Camera",
-    price: 180,
+    price: 130,
     image: redmi14CBlack,
     images: [redmi14CBlack, redmi14CBlue, redmi14CGreen],
     rating: 4.7,
@@ -5315,6 +5229,15 @@ export const smartphoneProducts: Product[] = [
       { label: "Box Contents", value: "Redmi 14C, USB Type-C Cable, SIM Eject Tool, Quick Start Guide, Warranty Card, Safety Information" },
       { label: "Warranty", value: "6 months manufacturer warranty" }
     ],
+    variants: [
+      {
+        key: "256gb-8gb",
+        label: "256GB + 8GB RAM",
+        ram: "8GB",
+        storage: "256GB",
+        price: 130
+      }
+    ],
     colors: [
       { name: "Midnight Black", image: redmi14CBlack, stock: "available" },
       { name: "Starry Blue", image: redmi14CBlue, stock: "available" },
@@ -5326,7 +5249,7 @@ export const smartphoneProducts: Product[] = [
     id: 320,
     name: "Xiaomi Redmi 15C",
     title: "Xiaomi Redmi 15C – Multiple Options - 6000mAh Battery & 120Hz Display",
-    price: 190,
+    price: 123,
     image: redmi15CBlack,
     images: [redmi15CBlack, redmi15CPink, redmi15CSandy],
     rating: 4.8,
@@ -5413,7 +5336,7 @@ export const smartphoneProducts: Product[] = [
         ram: "4GB RAM",
         storage: "128GB Storage",
         label: "128GB + 4GB",
-        price: 190,
+        price: 123,
         description: "Perfect for everyday users who need reliable performance and ample storage for apps, photos, and videos."
       },
       {
@@ -5421,7 +5344,7 @@ export const smartphoneProducts: Product[] = [
         ram: "8GB RAM",
         storage: "256GB Storage",
         label: "256GB + 8GB",
-        price: 220,
+        price: 150,
         description: "Enhanced performance and massive storage for power users, content creators, and heavy multitaskers who demand more."
       }
     ],
@@ -5436,7 +5359,7 @@ export const smartphoneProducts: Product[] = [
     id: 321,
     name: "Xiaomi Redmi 15",
     title: "Xiaomi Redmi 15 – 8/256GB - 7000mAh Battery & 144Hz Display",
-    price: 250,
+    price: 180,
     image: redmi15Black,
     images: [redmi15Black, redmi15Pink, redmi15Sandy],
     rating: 4.9,
@@ -5500,6 +5423,15 @@ export const smartphoneProducts: Product[] = [
       { label: "Warranty", value: "2 Years manufacturer warranty + 6 Months screen insurance" },
       { label: "Screen Insurance", value: "6 months included" }
     ],
+    variants: [
+      {
+        key: "redmi-15-256-8",
+        label: "256GB + 8GB RAM",
+        ram: "8GB",
+        storage: "256GB",
+        price: 180
+      }
+    ],
     colors: [
       { name: "Midnight Black", image: redmi15Black, stock: "available" },
       { name: "Rose Pink", image: redmi15Pink, stock: "available" },
@@ -5511,7 +5443,7 @@ export const smartphoneProducts: Product[] = [
     id: 322,
     name: "Xiaomi Redmi Note 14",
     title: "Xiaomi Redmi Note 14 – 8GB/256GB - 108MP Camera & AMOLED 120Hz Display",
-    price: 280,
+    price: 200,
     image: redmiNote14Black,
     images: [redmiNote14Black, redmiNote14Screenshot],
     rating: 4.9,
@@ -5587,6 +5519,15 @@ export const smartphoneProducts: Product[] = [
       { label: "Color", value: "Midnight Black" },
       { label: "Warranty", value: "6 months manufacturer warranty" }
     ],
+    variants: [
+      {
+        key: "redmi-note-14-256-8",
+        label: "256GB + 8GB RAM",
+        ram: "8GB",
+        storage: "256GB",
+        price: 200
+      }
+    ],
     colors: [
       { name: "Midnight Black", image: redmiNote14Black, stock: "available" }
     ]
@@ -5596,7 +5537,7 @@ export const smartphoneProducts: Product[] = [
     id: 323,
     name: "Xiaomi Redmi Note 14 Pro",
     title: "Xiaomi Redmi Note 14 Pro – 8GB/256GB - 200MP OIS Camera & Premium Display",
-    price: 320,
+    price: 280,
     image: redmiNote14ProBlack,
     images: [redmiNote14ProBlack, redmiNote14ProScreenshot],
     rating: 4.9,
@@ -5675,6 +5616,15 @@ export const smartphoneProducts: Product[] = [
       { label: "Color", value: "Midnight Black" },
       { label: "Warranty", value: "6 months manufacturer warranty" }
     ],
+    variants: [
+      {
+        key: "redmi-note-14-pro-256-8",
+        label: "256GB + 8GB RAM",
+        ram: "8GB",
+        storage: "256GB",
+        price: 280
+      }
+    ],
     colors: [
       { name: "Midnight Black", image: redmiNote14ProBlack, stock: "available" }
     ]
@@ -5684,7 +5634,7 @@ export const smartphoneProducts: Product[] = [
     id: 324,
     name: "Xiaomi Redmi Note 14 Pro 5G",
     title: "Xiaomi Redmi Note 14 Pro 5G – 12GB/512GB - Flagship 5G & 1.5K Display",
-    price: 450,
+    price: 410,
     image: redmiNote14Pro5GBlack,
     images: [redmiNote14Pro5GBlack, redmiNote14Pro5GScreenshot],
     rating: 5.0,
@@ -5763,6 +5713,15 @@ export const smartphoneProducts: Product[] = [
       { label: "Color", value: "Midnight Black" },
       { label: "Warranty", value: "6 months manufacturer warranty" }
     ],
+    variants: [
+      {
+        key: "redmi-note-14-pro-5g-512-12",
+        label: "512GB + 12GB RAM",
+        ram: "12GB",
+        storage: "512GB",
+        price: 410
+      }
+    ],
     colors: [
       { name: "Midnight Black", image: redmiNote14Pro5GBlack, stock: "available" }
     ]
@@ -5772,7 +5731,7 @@ export const smartphoneProducts: Product[] = [
     id: 325,
     name: "Xiaomi Redmi Note 14 Pro+ 5G",
     title: "Xiaomi Redmi Note 14 Pro+ 5G – 12GB/512GB - Ultimate Flagship with 120W Charging",
-    price: 500,
+    price: 460,
     image: redmiNote14ProPlusBlack,
     images: [redmiNote14ProPlusBlack, redmiNote14ProPlusLavender, redmiNote14ProPlusScreenshot1, redmiNote14ProPlusScreenshot2],
     rating: 5.0,
@@ -5845,9 +5804,108 @@ export const smartphoneProducts: Product[] = [
       { label: "Package Contents", value: "Phone, 120W Adapter, USB Type-C Cable, SIM Tool, Protective Case, Quick Start Guide, Warranty Card" },
       { label: "Warranty", value: "6 months manufacturer warranty" }
     ],
+    variants: [
+      {
+        key: "redmi-note-14-pro-plus-5g-512-12",
+        label: "512GB + 12GB RAM",
+        ram: "12GB",
+        storage: "512GB",
+        price: 460
+      }
+    ],
     colors: [
       { name: "Midnight Black", image: redmiNote14ProPlusBlack, stock: "available" },
       { name: "Lavender", image: redmiNote14ProPlusLavender, stock: "available" }
+    ]
+  },
+  // Xiaomi Mi 15T Pro with Bundled Watch - 12GB/512GB (ID: 326)
+  {
+    id: 326,
+    name: "Xiaomi Mi 15T Pro + Watch Bundle",
+    title: "Xiaomi Mi 15T Pro – 12GB/512GB + Smart Watch Bundle - Flagship 5G with Leica Camera",
+    price: 800,
+    image: mi15TProMain,
+    images: [mi15TProMain, mi15TProGold],
+    rating: 5.0,
+    category: "Smartphones",
+    brand: "Xiaomi",
+    description: "The Xiaomi 15T Pro is a high-performance 5G smartphone with a powerful MediaTek Dimensity 9400+ processor, a pro-grade Leica 50MP triple-camera system, and a large 5500mAh battery. This exclusive bundle includes a premium smart wearable device, typically either the Xiaomi Watch S4 or Xiaomi Smart Band 10 Glimmer Edition, depending on the specific promotion or region. Experience flagship-level performance with the cutting-edge 3nm MediaTek Dimensity 9400+ processor, delivering exceptional speed and efficiency for intensive multitasking, advanced gaming, and seamless 5G connectivity. The stunning 6.83-inch 1.5K AMOLED display with 144Hz refresh rate and extraordinary 3200 nits peak brightness ensures perfect visibility in any lighting condition. Capture professional-quality photos with the revolutionary Leica Summilux optical lens system, featuring a 50MP main camera with OIS, a 50MP 5x pro telephoto camera with OIS, and a 12MP ultra-wide camera for unlimited creative possibilities. The substantial 5500mAh battery supports ultra-fast 90W wired charging and 50W wireless charging for all-day power. With premium IP68 water and dust resistance, Corning® Gorilla® Glass 7i protection, and Xiaomi HyperOS with integrated AI features like AI Writing and Circle to Search with Google Gemini, the Mi 15T Pro represents the pinnacle of smartphone innovation.",
+    features: [
+      "**🎁 EXCLUSIVE BUNDLE**: Includes premium Xiaomi smart watch (Watch S4, Smart Band 10 Glimmer Edition, or Watch 2 Pro depending on region/promotion) for comprehensive health and fitness tracking.",
+      "**🛡️ 6-MONTH WARRANTY INCLUDED**: Comprehensive 6-month manufacturer warranty provides protection and peace of mind for worry-free ownership.",
+      "**Flagship MediaTek Dimensity 9400+**: Cutting-edge 3nm process flagship processor delivers exceptional performance, superior efficiency, and blazing-fast 5G connectivity.",
+      "**Revolutionary Leica Triple Camera System**: Professional-grade Leica Summilux optical lens system with 50MP main (OIS) + 50MP 5x telephoto (OIS) + 12MP ultra-wide for stunning photography.",
+      "**Exceptional 1.5K AMOLED Display**: Stunning 6.83-inch display with 1.5K resolution, ultra-smooth 144Hz refresh rate, and industry-leading 3200 nits peak brightness.",
+      "**Professional Photography**: Dual OIS system on main and telephoto cameras ensures sharp, stable photos and videos in any condition, plus 5x optical zoom for detailed distant shots.",
+      "**32MP Premium Front Camera**: High-resolution in-display selfie camera captures stunning portraits and enables crystal-clear video calls.",
+      "**Massive 5500mAh Battery**: Substantial battery capacity ensures extended usage for heavy gaming, streaming, photography, and productivity.",
+      "**Ultra-Fast Charging**: 90W wired fast charging and 50W wireless charging support for rapid power-ups (charger/pad sold separately).",
+      "**Premium IP68 Protection**: Flagship-level splash, water, and dust resistance withstands submersion up to 1.5m for 30 minutes.",
+      "**Corning® Gorilla® Glass 7i**: Latest premium glass protection offers superior resistance to drops and scratches for long-lasting durability.",
+      "**Massive 12GB RAM**: Premium high-speed RAM ensures exceptional multitasking and smooth performance across all demanding applications.",
+      "**Huge 512GB Storage**: Massive storage capacity for thousands of high-resolution photos, hours of 4K video, and countless apps.",
+      "**Xiaomi HyperOS with AI**: Latest operating system with integrated AI features including AI Writing and Circle to Search with Google Gemini.",
+      "**Eye-Care Display**: Advanced eye-care technology with TÜV Rheinland certifications ensures comfortable extended viewing with reduced eye strain.",
+      "**Bundled Watch Features**: Comprehensive health monitoring (heart rate, SpO₂, sleep, stress), 150+ sports modes, dual-frequency GNSS, and extended battery life.",
+      "**Watch Connectivity**: Bluetooth calling, NFC for payments (regional availability varies), gesture controls, and seamless smartphone integration.",
+      "**Professional Video Recording**: Capture stunning 4K video with advanced stabilization and professional-grade imaging capabilities.",
+      "**Premium Build Quality**: Elegant flagship design with precision construction and premium materials for a sophisticated look and feel.",
+      "**Advanced 5G Connectivity**: Comprehensive 5G band support ensures ultra-fast speeds and compatibility across global networks.",
+      "**Wi-Fi 6E Support**: Latest Wi-Fi 6E technology delivers fastest wireless speeds, ultra-low latency, and superior efficiency.",
+      "**Bluetooth 5.4**: Latest Bluetooth standard ensures superior wireless connectivity for audio devices and wearables.",
+      "**NFC Payments**: Convenient contactless payments and digital wallet support for modern transactions.",
+      "**Complete Ecosystem**: Seamless integration with bundled smartwatch for unified health tracking, notifications, and smart features."
+    ],
+    specifications: [
+      { label: "Brand", value: "Xiaomi" },
+      { label: "Model", value: "Mi 15T Pro" },
+      { label: "Bundle Includes", value: "Smartphone + Smart Watch (Watch S4 / Smart Band 10 Glimmer / Watch 2 Pro)" },
+      { label: "Processor", value: "MediaTek Dimensity 9400+" },
+      { label: "Process Technology", value: "3nm" },
+      { label: "5G Support", value: "Yes, integrated 5G modem" },
+      { label: "RAM", value: "12GB" },
+      { label: "Internal Storage", value: "512GB" },
+      { label: "Operating System", value: "Xiaomi HyperOS" },
+      { label: "AI Features", value: "AI Writing, Circle to Search with Google Gemini" },
+      { label: "Display Type", value: "AMOLED Eye-Care Display" },
+      { label: "Display Size", value: "6.83 inches" },
+      { label: "Display Resolution", value: "1.5K resolution" },
+      { label: "Refresh Rate", value: "144Hz" },
+      { label: "Peak Brightness", value: "3200 nits" },
+      { label: "Display Protection", value: "Corning® Gorilla® Glass 7i" },
+      { label: "Rear Camera (Main)", value: "50MP with OIS, Leica Summilux optical lens" },
+      { label: "Rear Camera (Telephoto)", value: "50MP 5x pro telephoto with OIS" },
+      { label: "Rear Camera (Ultra-wide)", value: "12MP ultra-wide" },
+      { label: "Camera System", value: "Leica triple-camera system with dual OIS" },
+      { label: "Front Camera", value: "32MP in-display" },
+      { label: "Battery Capacity", value: "5500mAh (typical)" },
+      { label: "Wired Charging", value: "90W fast charging" },
+      { label: "Wireless Charging", value: "50W wireless charging support" },
+      { label: "Charger Included", value: "No (sold separately)" },
+      { label: "Water Resistance", value: "IP68 splash, water, and dust resistance" },
+      { label: "SIM", value: "Dual SIM" },
+      { label: "5G Bands", value: "Comprehensive 5G band support" },
+      { label: "Wi-Fi", value: "Wi-Fi 6E" },
+      { label: "Bluetooth", value: "5.4" },
+      { label: "NFC", value: "Yes" },
+      { label: "GPS", value: "Yes" },
+      { label: "Watch Display", value: "1.43-inch AMOLED (Watch S4/2 Pro)" },
+      { label: "Watch Battery", value: "Up to 15 days typical usage (Watch S4)" },
+      { label: "Watch Features", value: "150+ sports modes, health monitoring, Bluetooth calling, NFC" },
+      { label: "Watch OS", value: "Xiaomi HyperOS (S4) / Wear OS (2 Pro)" },
+      { label: "Warranty", value: "6 months manufacturer warranty" }
+    ],
+    variants: [
+      {
+        key: "mi-15t-pro-512-12",
+        label: "512GB + 12GB RAM",
+        ram: "12GB",
+        storage: "512GB",
+        price: 800
+      }
+    ],
+    colors: [
+      { name: "Bundle Package", image: mi15TProMain, stock: "available" }
     ]
   }
 ];
@@ -6423,7 +6481,7 @@ export const tabletProducts: Product[] = [
     id: 411,
     name: "Xiaomi Redmi Pad 2 Pro",
     title: "Xiaomi Redmi Pad 2 Pro – 8/256GB + Redmi Keyboard + Pen - Premium 12.1\" 2.5K Display Tablet",
-    price: 400,
+    price: 380,
     image: redmiPad2ProGrey,
     images: [redmiPad2ProGrey, redmiPad2ProWhite, redmiPad2ProPurple],
     rating: 4.8,
@@ -6431,6 +6489,7 @@ export const tabletProducts: Product[] = [
     brand: "Xiaomi",
     description: "The Xiaomi Redmi Pad 2 Pro delivers flagship-level performance with its premium 12.1\" 2.5K crystal-clear display, powerful Snapdragon 7s Gen 4 processor, and massive 12000mAh battery. Bundled with the Redmi Keyboard and Stylus Pen for enhanced productivity and creativity, this tablet offers exceptional value with 2 Years Warranty + 6 Months Screen Insurance. Perfect for creative professionals, students, digital artists, and entertainment enthusiasts who demand premium quality at an accessible price.",
     features: [
+      "**🎁 INCLUDES REDMI KEYBOARD + STYLUS PEN**: This bundle comes with both the Redmi Keyboard and Stylus Pen included in the box for laptop-like productivity and creative work.",
       "2 Years manufacturer warranty + 6 Months screen insurance included",
       "12.1\" 2.5K crystal-clear display (1600×2560 pixels) with over 1.07 billion colors",
       "Up to 120Hz adaptive refresh rate for smooth scrolling and gaming",
@@ -6465,6 +6524,16 @@ export const tabletProducts: Product[] = [
       { label: "Warranty", value: "2 Years + 6 Months Screen Insurance" },
       { label: "In The Box", value: "Tablet, Redmi Keyboard, Stylus Pen, USB Cable, 33W Adapter, SIM Tool, Guides" }
     ],
+    variants: [
+      {
+        key: "redmipad2pro-8-256-keyboard-pen",
+        ram: "8GB RAM",
+        storage: "256GB Storage",
+        label: "256GB + 8GB + Keyboard + Pen",
+        price: 380,
+        description: "Premium 12.1\" 2.5K tablet with included Redmi Keyboard and Stylus Pen for enhanced productivity and creativity."
+      }
+    ],
     colors: [
       { name: "Graphite Gray", image: redmiPad2ProGrey, stock: "available" },
       { name: "Silver", image: redmiPad2ProWhite, stock: "available" },
@@ -6477,7 +6546,7 @@ export const tabletProducts: Product[] = [
     id: 412,
     name: "Xiaomi Redmi Pad SE",
     title: "Xiaomi Redmi Pad SE – 8GB RAM/256GB Storage - Powerful Budget Tablet",
-    price: 180,
+    price: 175,
     image: redmiPadSE8GB,
     images: [redmiPadSE8GB],
     rating: 4.6,
@@ -6514,7 +6583,7 @@ export const tabletProducts: Product[] = [
     id: 413,
     name: "Xiaomi Redmi Pad 2",
     title: "Xiaomi Redmi Pad 2 – WiFi with Cover Purple - 11\" Quad Speaker Tablet",
-    price: 250,
+    price: 180,
     image: redmiPad2Purple,
     images: [redmiPad2Purple, redmiPad2Grey, redmiPad2Green],
     rating: 4.7,
@@ -6563,20 +6632,20 @@ export const tabletProducts: Product[] = [
     ],
     variants: [
       {
-        key: "redmipad2-4-128",
+        key: "redmipad2-4-128-cover",
         ram: "4GB RAM",
         storage: "128GB Storage",
-        label: "4GB + 128GB",
-        price: 220,
-        description: "Perfect for everyday use and media consumption."
+        label: "128GB + 4GB + Cover",
+        price: 180,
+        description: "Perfect for everyday use and media consumption with included protective cover."
       },
       {
-        key: "redmipad2-8-256",
+        key: "redmipad2-8-256-cover",
         ram: "8GB RAM",
         storage: "256GB Storage",
-        label: "8GB + 256GB",
-        price: 250,
-        description: "Enhanced multitasking with extra storage for power users."
+        label: "256GB + 8GB + Cover",
+        price: 200,
+        description: "Enhanced multitasking with extra storage for power users, includes protective cover."
       }
     ],
     colors: [
@@ -6591,7 +6660,7 @@ export const tabletProducts: Product[] = [
     id: 414,
     name: "Xiaomi Redmi Pad SE 8.7\"",
     title: "Xiaomi Redmi Pad SE 8.7\" – 128GB/6GB 4G Cellular - Compact Entertainment Tablet",
-    price: 140,
+    price: 170,
     image: redmiPadSEGrey,
     images: [redmiPadSEGrey, redmiPadSEBlue, redmiPadSEGreen],
     rating: 4.5,

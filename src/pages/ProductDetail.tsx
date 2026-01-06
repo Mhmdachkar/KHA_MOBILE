@@ -131,7 +131,7 @@ const ProductDetail = () => {
   }, [colorImage]);
 
   const displayPrice = selectedVariant?.price ?? product.price;
-  
+
   // Helper function to format price (handles both number and string)
   const formatPrice = (price: number | string, isPreorder?: boolean): string => {
     // Show "Pre-order" for preorder items with price 0 or "0.00"
@@ -147,7 +147,7 @@ const ProductDetail = () => {
     productImages[0] ||
     regularProduct?.image ||
     (greenLionProduct ? greenLionProduct.images[0] : "/placeholder.svg");
-  
+
   const favorite = isFavorite(product.id);
 
   // Show-more toggles to reduce scrolling on mobile
@@ -472,7 +472,7 @@ const ProductDetail = () => {
     );
 
     // Only check protection if it's NOT an audio product
-    const matchesProtection = !matchesAudio && 
+    const matchesProtection = !matchesAudio &&
       ["case", "cover", "protector", "screen", "holder", "stand", "mount", "armour", "sleeve"].some((keyword) =>
         name.includes(keyword)
       );
@@ -575,7 +575,7 @@ const ProductDetail = () => {
               />
               {productImages.length > 1 && (
                 <>
-                  <button 
+                  <button
                     onClick={handlePreviousImage}
                     style={{ touchAction: 'manipulation', minHeight: '44px', minWidth: '44px' }}
                     className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 h-11 w-11 sm:h-12 sm:w-12 bg-background/90 backdrop-blur-md rounded-full flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-background shadow-lg border border-border/50 z-10"
@@ -583,7 +583,7 @@ const ProductDetail = () => {
                   >
                     <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6" />
                   </button>
-                  <button 
+                  <button
                     onClick={handleNextImage}
                     style={{ touchAction: 'manipulation', minHeight: '44px', minWidth: '44px' }}
                     className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 h-11 w-11 sm:h-12 sm:w-12 bg-background/90 backdrop-blur-md rounded-full flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-background shadow-lg border border-border/50 z-10"
@@ -625,7 +625,7 @@ const ProductDetail = () => {
                     className={`aspect-square bg-white rounded-sm overflow-hidden border-2 transition-all cursor-pointer min-h-[70px] sm:min-h-[80px] md:min-h-[90px] flex items-center justify-center p-1.5 sm:p-2 ${selectedImage === index
                       ? "border-primary ring-2 ring-primary/30 shadow-md"
                       : "border-border hover:border-primary/50"
-                    }`}
+                      }`}
                     aria-label={`View image ${index + 1}`}
                   >
                     <img
@@ -686,7 +686,7 @@ const ProductDetail = () => {
                 >
                   <ShoppingCart className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                   Add to Cart
-              </Button>
+                </Button>
                 <Button
                   size="lg"
                   variant="outline"
@@ -695,7 +695,7 @@ const ProductDetail = () => {
                   style={{ touchAction: 'manipulation' }}
                 >
                   Buy Now
-              </Button>
+                </Button>
               </div>
 
               {/* Wishlist Button - Well structured below Buy Now */}
@@ -743,7 +743,7 @@ const ProductDetail = () => {
 
             <h1 className="text-elegant text-xl sm:text-2xl md:text-3xl mb-2 relative z-10 leading-tight sm:leading-normal" style={{ userSelect: 'text', WebkitUserSelect: 'text', touchAction: 'pan-y' }}>{product.title}</h1>
             <p className="text-muted-foreground text-xs sm:text-sm mb-3 sm:mb-4" style={{ userSelect: 'text', WebkitUserSelect: 'text', touchAction: 'pan-y' }}>{product.category}</p>
-            
+
             <div className="flex items-center gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 flex-wrap w-full">
               <div className="flex items-center gap-1">
                 {Array.from({ length: 5 }).map((_, i) => (
@@ -752,7 +752,7 @@ const ProductDetail = () => {
                     className={`h-3 w-3 sm:h-4 sm:w-4 ${i < Math.floor(product.rating)
                       ? "fill-primary text-primary"
                       : "text-border fill-border/30"
-                    }`}
+                      }`}
                   />
                 ))}
               </div>
@@ -772,8 +772,13 @@ const ProductDetail = () => {
                   </span>
                 )}
               </div>
-              <span className="text-xs sm:text-sm text-green-600 bg-green-50 px-2 sm:px-3 py-1 rounded-full">
+              <span className="text-xs sm:text-sm text-green-600 bg-green-50 px-2 sm:px-3 py-1 rounded-full flex items-center gap-1">
                 In Stock
+                {(selectedVariant?.stockNote || product.stockNote) && (
+                  <span className="text-muted-foreground font-normal ml-1 italic opacity-80">
+                    ({selectedVariant?.stockNote || product.stockNote})
+                  </span>
+                )}
               </span>
             </div>
 
@@ -910,7 +915,7 @@ const ProductDetail = () => {
                   {showFullDescription ? "Show less" : "Show more"}
                 </Button>
               )}
-              
+
               {/* Key Features */}
               {displayedFeatures && displayedFeatures.length > 0 && (
                 <div className="mt-6">
@@ -942,8 +947,8 @@ const ProductDetail = () => {
 
             {/* Actions - Hidden on mobile (buttons shown in image gallery), visible on desktop */}
             <div className="hidden md:flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6">
-              <Button 
-                size="lg" 
+              <Button
+                size="lg"
                 className="flex-1 text-elegant text-sm sm:text-base py-4 sm:py-5 md:py-6"
                 onClick={() => handleAddToCart()}
                 style={{ touchAction: 'manipulation' }}
@@ -963,14 +968,14 @@ const ProductDetail = () => {
             </div>
 
             {/* Wishlist Button - Desktop only (mobile version is in image gallery) */}
-            <motion.button 
+            <motion.button
               whileHover={window.matchMedia('(hover: hover)').matches ? { scale: 1.05 } : undefined}
               onClick={() => toggleFavorite(product)}
               style={{ touchAction: 'manipulation' }}
               className={`hidden md:flex items-center gap-2 text-sm transition-colors mb-12 ${favorite
-                  ? "text-accent" 
-                  : "hover:text-accent"
-              }`}
+                ? "text-accent"
+                : "hover:text-accent"
+                }`}
             >
               <Heart className={`h-4 w-4 ${favorite ? "fill-accent" : ""}`} />
               <span className="text-elegant">
@@ -1172,16 +1177,16 @@ const ProductDetail = () => {
           const getFrequentlyBoughtTogether = () => {
             const productCategory = product.category?.toLowerCase() || '';
             const productName = product.name.toLowerCase();
-            
+
             // Get all audio products (regular + Green Lion)
             // Get all products from all arrays with Audio category
             const allRegularProducts = [...phoneAccessories, ...wearablesProducts, ...smartphoneProducts, ...tabletProducts];
             const regularAudio = allRegularProducts.filter(p => p.category === "Audio");
             const greenLionAudio = getGreenLionProductsByCategory("Audio");
-            
+
             // Combine and remove duplicates by ID
             const audioProductsMap = new Map();
-            
+
             // Add regular audio products
             regularAudio.forEach(p => {
               audioProductsMap.set(p.id, {
@@ -1190,7 +1195,7 @@ const ProductDetail = () => {
                 images: p.images || [p.image],
               });
             });
-            
+
             // Add Green Lion audio products
             greenLionAudio.forEach(p => {
               if (!audioProductsMap.has(p.id)) {
@@ -1201,10 +1206,10 @@ const ProductDetail = () => {
                 });
               }
             });
-            
+
             // Convert map to array
             const audioProducts = Array.from(audioProductsMap.values());
-            
+
             // Get all charging products (regular + Green Lion)
             const chargingProducts = [
               ...getProductsByCategory("Charging").map(p => ({
@@ -1218,7 +1223,7 @@ const ProductDetail = () => {
                 images: p.images,
               })),
             ];
-            
+
             const allProducts = [
               ...phoneAccessories,
               ...wearablesProducts,
@@ -1239,10 +1244,10 @@ const ProductDetail = () => {
             if (productCategory === 'audio' || productName.includes('headphone') || productName.includes('earbud') || productName.includes('speaker') || productName.includes('airpods') || productName.includes('buds') || productName.includes('neckband')) {
               // Get ALL audio products and exclude the current product
               // Remove duplicates by ID
-              const uniqueAudioProducts = audioProducts.filter((p, index, self) => 
+              const uniqueAudioProducts = audioProducts.filter((p, index, self) =>
                 index === self.findIndex((t) => t.id === p.id)
               );
-              
+
               bundleItems = uniqueAudioProducts
                 .filter(p => p.id !== product.id)
                 .map(p => ({
@@ -1262,12 +1267,12 @@ const ProductDetail = () => {
                   if (p.id === product.id) return false;
                   const name = p.name?.toLowerCase() || '';
                   const category = p.category?.toLowerCase() || '';
-                  return category === 'charging' || 
-                         name.includes('charger') || 
-                         name.includes('cable') || 
-                         name.includes('power bank') || 
-                         name.includes('adapter') ||
-                         name.includes('charging');
+                  return category === 'charging' ||
+                    name.includes('charger') ||
+                    name.includes('cable') ||
+                    name.includes('power bank') ||
+                    name.includes('adapter') ||
+                    name.includes('charging');
                 })
                 .map(p => ({
                   id: p.id,
@@ -1313,9 +1318,9 @@ const ProductDetail = () => {
                 .filter(p => {
                   if (p.id === product.id) return false;
                   const category = p.category?.toLowerCase() || '';
-                  return category === 'accessories' || 
-                         category === 'charging' ||
-                         category === 'protection';
+                  return category === 'accessories' ||
+                    category === 'charging' ||
+                    category === 'protection';
                 })
                 .slice(0, 3)
                 .map(p => ({
@@ -1406,60 +1411,60 @@ const ProductDetail = () => {
 
                       {/* Bundle Items */}
                       {bundleItems.map((item, index) => (
-                      <div key={item.id} className="flex-shrink-0 sm:flex-shrink w-[280px] sm:w-auto">
-                        {index === 0 && (
-                          <div className="lg:hidden flex items-center justify-center mb-4">
-                            <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
-                              <span className="text-xl font-bold text-primary">+</span>
+                        <div key={item.id} className="flex-shrink-0 sm:flex-shrink w-[280px] sm:w-auto">
+                          {index === 0 && (
+                            <div className="lg:hidden flex items-center justify-center mb-4">
+                              <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
+                                <span className="text-xl font-bold text-primary">+</span>
+                              </div>
                             </div>
-                          </div>
-                        )}
-                        {index > 0 && index % 3 === 0 && (
-                          <div className="hidden lg:flex items-center justify-center my-4">
-                            <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center">
-                              <span className="text-2xl font-bold text-primary">+</span>
+                          )}
+                          {index > 0 && index % 3 === 0 && (
+                            <div className="hidden lg:flex items-center justify-center my-4">
+                              <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center">
+                                <span className="text-2xl font-bold text-primary">+</span>
+                              </div>
                             </div>
-                          </div>
-                        )}
-                        <Link to={`/product/${item.id}`}>
-                          <div className="bg-white border-2 border-border hover:border-primary/50 rounded-lg p-4 sm:p-5 transition-all duration-300 cursor-pointer group">
-                            <div className="aspect-square mb-3 bg-white rounded-md overflow-hidden">
-                              <img
-                                src={item.image}
-                                alt={item.name}
-                                className="w-full h-full object-contain p-2 group-hover:scale-110 transition-transform duration-300"
-                                loading="lazy"
-                              />
-                            </div>
-                            <h3 className="text-sm font-semibold text-elegant mb-1 line-clamp-2 min-h-[2.5rem] group-hover:text-primary transition-colors">
-                              {item.name}
-                            </h3>
-                            <div className="flex items-center gap-1 mb-2">
-                              {Array.from({ length: 5 }).map((_, i) => (
-                                <Star
-                                  key={i}
-                                  className={`w-3 h-3 ${i < Math.floor(item.rating) ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`}
+                          )}
+                          <Link to={`/product/${item.id}`}>
+                            <div className="bg-white border-2 border-border hover:border-primary/50 rounded-lg p-4 sm:p-5 transition-all duration-300 cursor-pointer group">
+                              <div className="aspect-square mb-3 bg-white rounded-md overflow-hidden">
+                                <img
+                                  src={item.image}
+                                  alt={item.name}
+                                  className="w-full h-full object-contain p-2 group-hover:scale-110 transition-transform duration-300"
+                                  loading="lazy"
                                 />
-                              ))}
+                              </div>
+                              <h3 className="text-sm font-semibold text-elegant mb-1 line-clamp-2 min-h-[2.5rem] group-hover:text-primary transition-colors">
+                                {item.name}
+                              </h3>
+                              <div className="flex items-center gap-1 mb-2">
+                                {Array.from({ length: 5 }).map((_, i) => (
+                                  <Star
+                                    key={i}
+                                    className={`w-3 h-3 ${i < Math.floor(item.rating) ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`}
+                                  />
+                                ))}
+                              </div>
+                              <p className="text-lg font-bold text-elegant">
+                                {item.isPreorder && (item.price === 0 || item.price === "0.00" || (typeof item.price === 'string' && parseFloat(item.price) === 0)) ? (
+                                  <span className="text-primary">Pre-order</span>
+                                ) : (
+                                  `$${formatPrice(item.price, item.isPreorder)}`
+                                )}
+                              </p>
                             </div>
-                            <p className="text-lg font-bold text-elegant">
-                              {item.isPreorder && (item.price === 0 || item.price === "0.00" || (typeof item.price === 'string' && parseFloat(item.price) === 0)) ? (
-                                <span className="text-primary">Pre-order</span>
-                              ) : (
-                                `$${formatPrice(item.price, item.isPreorder)}`
-                              )}
-                            </p>
-                          </div>
-                        </Link>
-                        {index < bundleItems.length - 1 && (
-                          <div className="lg:hidden flex items-center justify-center my-4">
-                            <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
-                              <span className="text-xl font-bold text-primary">+</span>
+                          </Link>
+                          {index < bundleItems.length - 1 && (
+                            <div className="lg:hidden flex items-center justify-center my-4">
+                              <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
+                                <span className="text-xl font-bold text-primary">+</span>
+                              </div>
                             </div>
-                          </div>
-                        )}
-                      </div>
-                    ))}
+                          )}
+                        </div>
+                      ))}
                     </div>
                   </div>
 

@@ -9,7 +9,7 @@ export const iPhone16Product = {
     id: 500,
     name: "iPhone 16",
     title: "iPhone 16 - Built for Apple Intelligence",
-    price: 820,
+    price: 780,
     image: iPhone16Ultramarine,
     images: [iPhone16Ultramarine, iPhone16Teal, iPhone16Pink, iPhone16White, iPhone16Black],
     rating: 5.0,
@@ -44,7 +44,7 @@ export const iPhone16Product = {
         { label: "Model", value: "iPhone 16" },
         { label: "Colors", value: "Black, White, Pink, Teal, Ultramarine" },
         { label: "Finish", value: "Aluminum design with color-infused glass back and Ceramic Shield front" },
-        { label: "Capacity", value: "128GB" },
+        { label: "Capacity", value: "128GB / 256GB" },
         { label: "Dimensions", value: "147.6mm × 71.6mm × 7.80mm (5.81\" × 2.82\" × 0.31\")" },
         { label: "Weight", value: "170 grams (6.00 ounces)" },
         { label: "Display Type", value: "Super Retina XDR display, 6.1‑inch all‑screen OLED" },
@@ -81,8 +81,18 @@ export const iPhone16Product = {
             ram: "",
             storage: "128GB",
             label: "128GB",
-            price: 820,
+            price: 780,
+            stockNote: "active",
             description: "Brand new iPhone 16 with 128GB storage - perfect for everyday use with ample storage for apps, photos, and videos."
+        },
+        {
+            key: "iphone16-256gb",
+            ram: "",
+            storage: "256GB",
+            label: "256GB",
+            price: 920,
+            stockNote: "brand new",
+            description: "Brand new iPhone 16 with 256GB storage - extra capacity for your high-quality photos, spatial videos, and intensive apps."
         }
     ],
     colors: [
