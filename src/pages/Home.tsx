@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Smartphone, Headphones, Gamepad2, CreditCard, Gift, Tv, Watch, Zap, ArrowRight, Star, Sparkles, ShoppingCart, Tablet } from "lucide-react";
+import { Smartphone, Headphones, Gamepad2, CreditCard, Gift, Tv, Watch, Zap, ArrowRight, Star, Sparkles, ShoppingCart, Tablet, Cpu } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import rechargeLogo from "@/assets/recharges/logo.png";
@@ -308,7 +308,7 @@ const FlagshipiPhone16Showcase = () => {
               animate={{ opacity: 1, scale: 1, rotateY: 0 }}
               exit={{ opacity: 0, scale: 0.9, rotateY: -90 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
-              className="relative z-10 flex items-center justify-center"
+              className="relative z-10 flex items-center justify-center w-full max-w-full"
               style={{
                 minHeight: '300px',
                 padding: '1rem 0.5rem',
@@ -316,7 +316,6 @@ const FlagshipiPhone16Showcase = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
-              className="w-full max-w-full"
             >
               <motion.img
                 src={currentColor.image}
@@ -391,6 +390,7 @@ const Home = () => {
     { image: rechargeLogo, name: "Recharges", linkTo: "/recharges" },
     { icon: Gift, name: "Gift Cards", linkTo: "/gift-cards" },
     { icon: Zap, name: "Accessories", linkTo: "/accessories" },
+    { icon: Cpu, name: "Electronics", linkTo: "/electronics" },
     { image: silicon17ProMaxOrange, name: "iPhone Cases", linkTo: "/category/iPhone Cases" },
   ];
 

@@ -22,7 +22,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { phoneAccessories, wearablesProducts, smartphoneProducts, tabletProducts, iphoneCases, gamingConsoles } from "@/data/products";
+import { phoneAccessories, wearablesProducts, smartphoneProducts, tabletProducts, iphoneCases, gamingConsoles, electronicsProducts } from "@/data/products";
 import { greenLionProducts } from "@/data/greenLionProducts";
 
 const Products = () => {
@@ -90,6 +90,11 @@ const Products = () => {
       images: p.images && p.images.length > 0 ? p.images : [p.image],
       price: getDisplayPrice(p)
     })),
+    ...electronicsProducts.map(p => ({
+      ...p,
+      images: p.images && p.images.length > 0 ? p.images : [p.image],
+      price: getDisplayPrice(p)
+    })),
     ...greenLionProducts.map(p => ({
       id: p.id,
       name: p.name,
@@ -101,9 +106,11 @@ const Products = () => {
       brand: p.brand,
       description: p.description,
       title: p.title,
-      isPreorder: p.isPreorder
+      isPreorder: p.isPreorder,
+      colors: p.colors,
+      secondaryCategories: p.secondaryCategories
     }))
-  ];
+  ] as any[];
 
   // Get unique categories from real products
   const categories = useMemo(() => {
@@ -249,7 +256,9 @@ const Products = () => {
           if (aIsGreenLion && !bIsGreenLion) return -1;
           if (!aIsGreenLion && bIsGreenLion) return 1;
 
-          return a.price - b.price;
+          const aPrice = typeof a.price === 'string' ? parseFloat(a.price) : a.price;
+          const bPrice = typeof b.price === 'string' ? parseFloat(b.price) : b.price;
+          return aPrice - bPrice;
         });
         break;
       case "price-high":
@@ -261,7 +270,9 @@ const Products = () => {
           if (aIsGreenLion && !bIsGreenLion) return -1;
           if (!aIsGreenLion && bIsGreenLion) return 1;
 
-          return b.price - a.price;
+          const aPrice = typeof a.price === 'string' ? parseFloat(a.price) : a.price;
+          const bPrice = typeof b.price === 'string' ? parseFloat(b.price) : b.price;
+          return bPrice - aPrice;
         });
         break;
       case "rating":
@@ -312,7 +323,9 @@ const Products = () => {
           if (!aIsGreenLion && bIsGreenLion) return 1;
 
           // Then by price (highest to lowest)
-          return b.price - a.price;
+          const aPrice = typeof a.price === 'string' ? parseFloat(a.price) : a.price;
+          const bPrice = typeof b.price === 'string' ? parseFloat(b.price) : b.price;
+          return bPrice - aPrice;
         });
         break;
     }

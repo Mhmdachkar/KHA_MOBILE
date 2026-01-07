@@ -5,12 +5,14 @@ import ProductCard from "./ProductCard";
 interface Product {
   id: number;
   name: string;
-  price: number;
+  price: number | string;
   image: string;
   images?: string[];
   rating?: number;
   category?: string;
   colors?: Array<{ name: string; image?: string; stock?: string }>;
+  title?: string;
+  isPreorder?: boolean;
 }
 
 interface ProductCarouselProps {
@@ -47,7 +49,7 @@ const ProductCarousel = ({ title, products }: ProductCarouselProps) => {
           setShowLeftArrow(scrollRef.current.scrollLeft > 0);
           setShowRightArrow(
             scrollRef.current.scrollLeft <
-              scrollRef.current.scrollWidth - scrollRef.current.clientWidth
+            scrollRef.current.scrollWidth - scrollRef.current.clientWidth
           );
         }
       }, 350);
@@ -73,7 +75,7 @@ const ProductCarousel = ({ title, products }: ProductCarouselProps) => {
     };
 
     container.addEventListener("scroll", handleScroll, { passive: true });
-    
+
     // Initial check
     handleScroll();
 
@@ -86,7 +88,7 @@ const ProductCarousel = ({ title, products }: ProductCarouselProps) => {
   return (
     <div className="relative group w-full overflow-hidden">
       <h2 className="text-elegant text-xl sm:text-2xl mb-4 sm:mb-6 md:mb-8 px-4 sm:px-0 break-words">{title}</h2>
-      
+
       {/* Left Arrow - Hidden on mobile, visible on hover for desktop */}
       {showLeftArrow && (
         <button
@@ -115,9 +117,9 @@ const ProductCarousel = ({ title, products }: ProductCarouselProps) => {
       <div
         ref={scrollRef}
         className="flex gap-2 sm:gap-3 md:gap-4 lg:gap-6 overflow-x-auto scrollbar-hide scroll-smooth px-4 sm:px-0 snap-x snap-mandatory w-full"
-        style={{ 
-          scrollbarWidth: "none", 
-          msOverflowStyle: "none", 
+        style={{
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
           WebkitOverflowScrolling: "touch",
           willChange: "scroll-position",
           transform: "translateZ(0)"
@@ -125,7 +127,7 @@ const ProductCarousel = ({ title, products }: ProductCarouselProps) => {
       >
         {products.map((product) => (
           <div key={product.id} className="flex-none w-[180px] xs:w-[200px] sm:w-[220px] md:w-[240px] lg:w-64 snap-start flex-shrink-0">
-            <ProductCard 
+            <ProductCard
               id={product.id}
               name={product.name}
               title={product.title}

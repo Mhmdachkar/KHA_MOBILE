@@ -350,6 +350,11 @@ import s25FeWhite from "@/assets/phones/Samsung Galaxy S25 FE - 8GB256GB/Samsung
 import pocoX7ProBlack from "@/assets/phones/xiaomi/xiaomi mobile/Poco X7 PRO/poco x7 pro 512GB 12RAM black.jpg";
 import pocoX7ProGreen from "@/assets/phones/xiaomi/xiaomi mobile/Poco X7 PRO/poco x7 pro 512GB 12RAM green.jpg";
 import pocoX7ProYellow from "@/assets/phones/xiaomi/xiaomi mobile/Poco X7 PRO/poco x7 pro 512GB 12RAM yellow.jpg";
+
+// Coolpad C16 imports
+import coolpadC16Black from "@/assets/phones/Coolpad C16 128GB/Coolpad C16 128GB black.png";
+import coolpadC16Blue from "@/assets/phones/Coolpad C16 128GB/Coolpad C16 128GB blue.png";
+import coolpadC16Green from "@/assets/phones/Coolpad C16 128GB/Coolpad C16 128GB green.png";
 // Infinix Smart 10 imports
 import infinixSmart10Black from "@/assets/phones/infinix/smart 10/Infinix Smart 10.webp";
 import infinixSmart10Silver from "@/assets/phones/infinix/smart 10/Infinix Smart 10 silver.webp";
@@ -458,6 +463,9 @@ import redmiPad2Green from "@/assets/phones/xiaomi/XIAOMI TABLETS/XIAOMI REDMI P
 import redmiPad2Grey from "@/assets/phones/xiaomi/XIAOMI TABLETS/XIAOMI REDMI PAD 2/XIAOMI REDMI PAD 2 grey.webp";
 
 // Xiaomi Accessories imports
+import pocoPadCover from "@/assets/phones/xiaomi/XIAOMI TABLETS/poco pad cover/poco pad cover.webp";
+import pocoPadProtection from "@/assets/phones/xiaomi/XIAOMI TABLETS/poco pad protection/poco pad protection.jpg";
+
 import miEarphones35mmBlack from "@/assets/phones/xiaomi/xiaomi accessories/earphones 3.5MM/earphones 3.5MM BLACK.webp";
 import miEarphones35mm from "@/assets/phones/xiaomi/xiaomi accessories/earphones 3.5MM/earphones 3.5MM.webp";
 import miEarphonesTypeC from "@/assets/phones/xiaomi/xiaomi accessories/earphone type C/earphones xiaomi type C.avif";
@@ -1607,7 +1615,7 @@ export const phoneAccessories: Product[] = [
     id: 139,
     name: "Mi In-Ear Earphones Basic",
     title: "Mi In-Ear Earphones Basic - 3.5mm Jack with Mic - Black",
-    price: 8,
+    price: 15,
     image: miEarphones35mmBlack,
     images: [miEarphones35mmBlack, miEarphones35mm],
     rating: 4.5,
@@ -1643,7 +1651,7 @@ export const phoneAccessories: Product[] = [
     id: 140,
     name: "Xiaomi Type-C Earphones",
     title: "Xiaomi Type-C Earphones - High-Resolution Digital Audio",
-    price: 12,
+    price: 15,
     image: miEarphonesTypeC,
     images: [miEarphonesTypeC],
     rating: 4.6,
@@ -1681,7 +1689,7 @@ export const phoneAccessories: Product[] = [
     id: 141,
     name: "Mi 37W Dual-Port Car Charger",
     title: "Mi Dual Port Car Charger 37W - Fast Charging for Two Devices",
-    price: 15,
+    price: 18,
     image: mi37WCarCharger,
     images: [mi37WCarCharger],
     rating: 4.7,
@@ -1718,7 +1726,7 @@ export const phoneAccessories: Product[] = [
     id: 142,
     name: "Smart Bulb 950IM",
     title: "SONOFF B05-BL Wi-Fi Smart LED Bulb - 950lm 9W",
-    price: 18,
+    price: 20,
     image: miSmartBulb,
     images: [miSmartBulb],
     rating: 4.6,
@@ -1791,7 +1799,7 @@ export const phoneAccessories: Product[] = [
     id: 144,
     name: "Xiaomi Electric Toothbrush T302",
     title: "Xiaomi Electric Toothbrush T302 - Sonic Cleaning - 2W Power - Fast Type-C Charging - White",
-    price: 25,
+    price: 27,
     image: miToothbrush,
     images: [miToothbrush],
     rating: 4.8,
@@ -1829,7 +1837,7 @@ export const phoneAccessories: Product[] = [
     id: 145,
     name: "Mi 67W SonicCharge Fast Charger",
     title: "67W SonicCharge Fast Charger Adapter For Xiaomi Mi 11 - Mi 67W Sonic Charge Combo",
-    price: 28,
+    price: 45,
     image: mi67WCharger,
     images: [mi67WCharger],
     rating: 4.7,
@@ -1874,7 +1882,7 @@ export const phoneAccessories: Product[] = [
     id: 146,
     name: "Xiaomi Wireless Keyboard & Mouse Combo",
     title: "2.4G Wireless 104 Keys Keyboard & Mouse Set - WXJS02YM",
-    price: 35,
+    price: 50,
     image: miKeyboardMouse,
     images: [miKeyboardMouse, miKeyboardMouse2],
     rating: 4.6,
@@ -1921,7 +1929,7 @@ export const phoneAccessories: Product[] = [
     id: 147,
     name: "Xiaomi Smart Doorbell 3",
     title: "Xiaomi Smart Doorbell 3 - 2K Resolution with AI Human Recognition",
-    price: 65,
+    price: 100,
     image: miSmartDoorbell,
     images: [miSmartDoorbell, miSmartDoorbell2, miSmartDoorbell3, miSmartDoorbell4, miSmartDoorbell5, miSmartDoorbell6],
     rating: 4.8,
@@ -1968,7 +1976,7 @@ export const phoneAccessories: Product[] = [
     id: 148,
     name: "Xiaomi Mi Sphere Camera Kit",
     title: "Xiaomi Mi Sphere Camera Kit Black - 360° Panoramic Action Camera",
-    price: 180,
+    price: 150,
     image: miSphereCamera,
     images: [miSphereCamera, miSphereCamera2, miSphereCamera3],
     rating: 4.7,
@@ -2016,7 +2024,7 @@ export const phoneAccessories: Product[] = [
     id: 149,
     name: "Xiaomi 4K TV Stick",
     title: "4K TV Stick Portable Streaming Media Player – Android 11, Google Assistant, Smart Cast",
-    price: 45,
+    price: 67,
     image: mi4KTVStick,
     images: [mi4KTVStick],
     rating: 4.7,
@@ -2062,7 +2070,7 @@ export const phoneAccessories: Product[] = [
     id: 150,
     name: "Mi TV Stick FHD",
     title: "MI TV STICK FHD XIAOMI - Portable Streaming Media Player with Bluetooth Remote",
-    price: 30,
+    price: 50,
     image: mi4KTVStick,
     images: [mi4KTVStick],
     rating: 4.6,
@@ -2109,7 +2117,7 @@ export const phoneAccessories: Product[] = [
     id: 151,
     name: "Xiaomi Redmi Buds 6 Play",
     title: "Xiaomi Redmi Buds 6 Play - Bluetooth 5.4, 36H Battery, Bean-Shaped Earbuds",
-    price: 18,
+    price: 20,
     image: redmiBuds6Black,
     images: [redmiBuds6Black, redmiBuds6Blue, redmiBuds6Rose, redmiBuds6White, redmiBuds6img1, redmiBuds6img2],
     rating: 4.5,
@@ -2173,7 +2181,7 @@ export const phoneAccessories: Product[] = [
     id: 152,
     name: "Xiaomi Redmi Buds 6 Active",
     title: "XIAOMI Redmi Buds 6 Active - 14.2mm Driver, 30H Battery, Dual-Mic ENC",
-    price: 22,
+    price: 25,
     image: redmiBuds6ActiveBlack,
     images: [redmiBuds6ActiveBlack, redmiBuds6ActiveBlue, redmiBuds6ActiveRose, redmiBuds6ActiveWhite],
     rating: 4.6,
@@ -2229,7 +2237,7 @@ export const phoneAccessories: Product[] = [
     id: 153,
     name: "Redmi Buds 6 Lite",
     title: "Redmi Buds 6 Lite - 40dB ANC, 12.4mm Titanium Driver, 38H Battery",
-    price: 28,
+    price: 30,
     image: redmiBuds6LiteBlack,
     images: [redmiBuds6LiteBlack, redmiBuds6LiteBlue, redmiBuds6LiteWhite],
     rating: 4.7,
@@ -2289,7 +2297,7 @@ export const phoneAccessories: Product[] = [
     id: 154,
     name: "Xiaomi Redmi Buds 5",
     title: "Xiaomi Redmi Buds 5 - 46dB ANC, 40H Battery, Independent Rear Chamber",
-    price: 35,
+    price: 95,
     image: redmiBuds5Black,
     images: [redmiBuds5Black, redmiBuds5Blue, redmiBuds5White],
     rating: 4.8,
@@ -2379,8 +2387,7 @@ export const phoneAccessories: Product[] = [
       { label: "Power Input", value: "Requires 9V/3A (12V/3A for peak)" },
       { label: "In Box", value: "Cooler, 5A cable, Magnetic sheet" }
     ]
-  }
-
+  },
 ];
 
 // Smartphone products
@@ -5907,6 +5914,59 @@ export const smartphoneProducts: Product[] = [
     colors: [
       { name: "Bundle Package", image: mi15TProMain, stock: "available" }
     ]
+  },
+  // Coolpad C16 - 4GB/128GB (ID: 329)
+  {
+    id: 329,
+    name: "Coolpad C16",
+    title: "Coolpad C16 – 4GB/128GB - 6.75\" 90Hz Display & 50MP Camera",
+    price: 100,
+    image: coolpadC16Black,
+    images: [coolpadC16Black, coolpadC16Blue, coolpadC16Green],
+    rating: 4.5,
+    category: "Smartphones",
+    brand: "CoolPad",
+    description: "The Coolpad C16 is a budget-friendly smartphone that doesn't compromise on features. It boasts a large 6.75-inch IPS LCD display with a smooth 90Hz refresh rate and 400 nits brightness, offering a visually pleasing experience for media and browsing. Powered by a Unisoc T606 octa-core processor and running on the latest Android 14, it delivers reliable performance for daily tasks. With up to 12GB of RAM (4GB physical + 8GB virtual) and 128GB of internal storage, you have ample space and speed for your apps and files. The dual rear camera system features a 50MP wide lens and a 2MP macro lens, allowing you to capture detailed photos, while the 8MP front camera handles selfies and video calls. A long-lasting 5000mAh battery keeps you connected all day, and the phone supports 10W wired charging. Available in stylish Midnight Black, Gulf Blue, and Woodland Green.",
+    features: [
+      "**Large 90Hz Display**: 6.75-inch IPS LCD screen with 90Hz refresh rate and 400 nits brightness for smooth visuals.",
+      "**50MP Dual Camera**: High-resolution 50MP main camera paired with a 2MP macro lens for versatile photography.",
+      "**Android 14**: Runs on the latest Android operating system for enhanced security and features.",
+      "**Ample Storage**: 128GB internal storage to store all your photos, videos, and apps.",
+      "**Extended RAM**: Up to 12GB RAM (4GB physical + 8GB virtual) for better multitasking performance.",
+      "**Long-Lasting Battery**: 5000mAh battery provides all-day power for your daily activities.",
+      "**Octa-Core Processor**: Powered by Unisoc T606 (12 nm) for efficient performance.",
+      "**Dual SIM**: Supports two Nano-SIM cards for flexibility."
+    ],
+    specifications: [
+      { label: "Brand", value: "CoolPad" },
+      { label: "Model", value: "C16" },
+      { label: "Display", value: "6.75″ IPS LCD, 90Hz, 400 nits, 720 x 1600 pixels" },
+      { label: "OS", value: "Android 14" },
+      { label: "Chipset", value: "Unisoc T606 (12 nm)" },
+      { label: "CPU", value: "Octa-core (2×1.6 GHz Cortex-A75 & 6×1.6 GHz Cortex-A55)" },
+      { label: "RAM", value: "4GB (Up to 12GB with 8GB virtual)" },
+      { label: "Storage", value: "128GB" },
+      { label: "Main Camera", value: "50MP (wide) + 2MP (macro), LED flash" },
+      { label: "Front Camera", value: "8MP" },
+      { label: "Battery", value: "5000mAh, 10W wired charging" },
+      { label: "SIM", value: "Dual SIM (Nano-SIM)" },
+      { label: "Warranty", value: "1 Year Warranty" },
+      { label: "Colors", value: "Midnight Black, Gulf Blue, Woodland Green" }
+    ],
+    variants: [
+      {
+        key: "coolpad-c16-128-4",
+        label: "128GB + 4GB RAM",
+        ram: "4GB",
+        storage: "128GB",
+        price: 100
+      }
+    ],
+    colors: [
+      { name: "Midnight Black", image: coolpadC16Black, stock: "available" },
+      { name: "Gulf Blue", image: coolpadC16Blue, stock: "available" },
+      { name: "Woodland Green", image: coolpadC16Green, stock: "available" }
+    ]
   }
 ];
 
@@ -6306,7 +6366,7 @@ export const tabletProducts: Product[] = [
   {
     id: 408,
     name: "Apple iPad Air 6th Generation 13-inch (M2 Chip)",
-    title: "Apple iPad Air 6th Generation 13-inch (M2 Chip) - Powerful Performance with Largest Display",
+    title: "ipad air M2 13\"",
     price: 800,
     image: iPadAirM2_13_Blue,
     images: [iPadAirM2_13_Blue, iPadAirM2_13_SpaceGrey, iPadAirM2_13_Purple, iPadAirM2_13_Starlight],
@@ -6711,6 +6771,67 @@ export const tabletProducts: Product[] = [
     ],
     connectivityOptions: ["Wi-Fi only", "Wi-Fi + 4G Cellular"]
   },
+  // Xiaomi Poco Pad Cover (ID: 155)
+  {
+    id: 155,
+    name: "Poco Pad Cover",
+    title: "Official Poco Pad X1 Cover - Slim Protection & Smart Wake/Sleep",
+    price: 25,
+    image: pocoPadCover,
+    rating: 4.8,
+    category: "Tablets",
+    brand: "Xiaomi",
+    secondaryCategories: ["Accessories", "Protection"],
+    description: "The official POCO Pad X1 Cover is meticulously designed to provide sleek protection and enhanced functionality for your tablet. Made from high-quality, skin-friendly PU material, this cover features a creative folding design that serves as a stable stand in both horizontal and vertical orientations. The smart magnetic sensing automatically wakes your Poco Pad when opened and puts it to sleep when closed, preserving battery life. Its slim profile ensures minimal bulk while providing comprehensive protection against scratches and minor impacts.",
+    features: [
+      "Creative Folding Design: Provides stable support for both horizontal and vertical viewing",
+      "Smart Wake/Sleep: Automatically wakes the tablet when opened and sleeps when closed",
+      "Skin-Friendly PU Material: Premium feel with durable protection against scratches",
+      "Sleek and Portable: Lightweight design (approx. 316g) that adds minimal bulk",
+      "Precise Cutouts: Full access to all ports, buttons, and speakers",
+      "Magnetic Locking: Ensures the cover stays securely closed when not in use",
+      "Dual-Orientation Stand: Perfect for media consumption or document review"
+    ],
+    specifications: [
+      { label: "Brand", value: "Poco" },
+      { label: "Material", value: "Skin-friendly PU" },
+      { label: "Weight", value: "316±5g" },
+      { label: "Dimensions", value: "414 x 252.62 x 3.54mm (unfolded)" },
+      { label: "Smart Function", value: "Auto Wake/Sleep support" },
+      { label: "Design", value: "Triangular folding stand" },
+      { label: "Color", value: "Black/Grey" }
+    ]
+  },
+  // Xiaomi Poco Pad Protection (ID: 156)
+  {
+    id: 156,
+    name: "Poco Pad Protection",
+    title: "Poco Pad Tempered Glass Screen Protector - High Clarity & Durability",
+    price: 10,
+    image: pocoPadProtection,
+    rating: 4.7,
+    category: "Tablets",
+    brand: "Xiaomi",
+    secondaryCategories: ["Accessories", "Protection"],
+    description: "Keep your Poco Pad's 12.1-inch display pristine with this high-quality Tempered Glass Screen Protector. Engineered for maximum clarity and touch sensitivity, it provide superior protection against scratches, impacts, and daily wear and tear. Featuring a precision-cut design and oleophobic coating, it resists fingerprints and smudges while maintaining the original visual experience of your tablet.",
+    features: [
+      "9H Hardness: Superior scratch resistance against sharp objects and keys",
+      "High Clarity: Maintains 99.9% transparency for an optimal viewing experience",
+      "Oleophobic Coating: Resists oily fingerprints and smudges for a cleaner screen",
+      "Touch Sensitive: Seamless touch response for navigation and creative work",
+      "Easy Installation: Bubble-free adhesive for a smooth and perfect apply",
+      "Precision Cut: Specifically designed for the Poco Pad 12.1\" display",
+      "Shatter-Proof: Provides an extra layer of safety in case of drops"
+    ],
+    specifications: [
+      { label: "Material", value: "Premium Tempered Glass" },
+      { label: "Hardness", value: "9H" },
+      { label: "Compatibility", value: "Poco Pad / Redmi Pad Pro 12.1\"" },
+      { label: "Thickness", value: "0.33mm ultra-thin" },
+      { label: "Surface", value: "Oleophobic & Anti-fingerprint" }
+    ]
+  },
+
   // Tecno MegaPad 10 256GB (ID: 415)
   {
     id: 415,
@@ -6769,7 +6890,7 @@ export const tabletProducts: Product[] = [
     id: 416,
     name: "Oscal Pad 60 Kids",
     title: "Oscal Pad 60 Kids - 10.1\" HD+ Display, 12GB RAM, 128GB Storage, Kids Tablet",
-    price: 99,
+    price: 120,
     image: oscalPad60Kids,
     images: [oscalPad60Kids, oscalPad60KidsBlue],
     rating: 4.5,
@@ -6813,7 +6934,7 @@ export const tabletProducts: Product[] = [
         label: "128GB + 12GB RAM",
         ram: "12GB",
         storage: "128GB",
-        price: 99
+        price: 120
       }
     ],
     connectivityOptions: ["Wi-Fi only"]
@@ -6823,7 +6944,7 @@ export const tabletProducts: Product[] = [
     id: 417,
     name: "Oscal Pad 70",
     title: "Oscal Pad 70 - 10.1\" HD+ IPS, 7GB RAM, 128GB Storage, 6580mAh Battery",
-    price: 109,
+    price: 120,
     image: oscalPad70Blue1,
     images: [oscalPad70Blue1, oscalPad70Blue2, oscalPad70Blue3],
     rating: 4.6,
@@ -6877,7 +6998,7 @@ export const tabletProducts: Product[] = [
         label: "128GB + 4GB RAM",
         ram: "4GB",
         storage: "128GB",
-        price: 109
+        price: 120
       }
     ],
     colors: [
@@ -6890,7 +7011,7 @@ export const tabletProducts: Product[] = [
     id: 418,
     name: "Oscal Pad 7",
     title: "Oscal Pad 7 - 10.1\" HD+, Unisoc T606, 8GB RAM, 128GB Storage, 6600mAh",
-    price: 89,
+    price: 150,
     image: oscalPad7Main,
     images: [oscalPad7Main, oscalPad7Alt],
     rating: 4.5,
@@ -6933,7 +7054,7 @@ export const tabletProducts: Product[] = [
         label: "128GB + 8GB RAM",
         ram: "8GB",
         storage: "128GB",
-        price: 89
+        price: 150
       }
     ],
     connectivityOptions: ["Wi-Fi only"]
@@ -6943,7 +7064,7 @@ export const tabletProducts: Product[] = [
     id: 419,
     name: "Oscal Pad 90",
     title: "Oscal Pad 90 - 10.92\" HD, Unisoc T606, 24GB RAM, 128GB Storage, 7700mAh",
-    price: 119,
+    price: 165,
     image: oscalPad90Main,
     images: [oscalPad90Main, oscalPad90Alt],
     rating: 4.6,
@@ -6986,7 +7107,7 @@ export const tabletProducts: Product[] = [
         label: "128GB + 8GB RAM (24GB Virtual)",
         ram: "8GB",
         storage: "128GB",
-        price: 119
+        price: 165
       }
     ],
     connectivityOptions: ["Wi-Fi only"]
@@ -6996,7 +7117,7 @@ export const tabletProducts: Product[] = [
     id: 420,
     name: "Oscal Pad 80",
     title: "Oscal Pad 80 - 10.51\" FHD+, Unisoc T606, 18GB RAM, 256GB Storage, 8200mAh",
-    price: 139,
+    price: 170,
     image: oscalPad80Main,
     images: [oscalPad80Main, oscalPad80Alt],
     rating: 4.7,
@@ -7042,7 +7163,7 @@ export const tabletProducts: Product[] = [
         label: "256GB + 6GB RAM (18GB Virtual)",
         ram: "6GB",
         storage: "256GB",
-        price: 139
+        price: 170
       }
     ],
     colors: [
@@ -7055,7 +7176,7 @@ export const tabletProducts: Product[] = [
     id: 421,
     name: "Oscal Pad 13",
     title: "Oscal Pad 13 - 10.1\" FHD+, Unisoc T606, 14GB RAM, 256GB Storage, 7680mAh, Stylus Pen",
-    price: 129,
+    price: 180,
     image: oscalPad13Main,
     images: [oscalPad13Main, oscalPad13Alt],
     rating: 4.6,
@@ -7103,7 +7224,7 @@ export const tabletProducts: Product[] = [
         label: "256GB + 8GB RAM (14GB Virtual)",
         ram: "8GB",
         storage: "256GB",
-        price: 129
+        price: 180
       }
     ],
     colors: [
@@ -7116,7 +7237,7 @@ export const tabletProducts: Product[] = [
     id: 422,
     name: "Oscal Pad 15",
     title: "Oscal Pad 15 - 10.36\" Display, Unisoc T606, Up to 16GB RAM, 256GB Storage, 16MP Selfie",
-    price: 149,
+    price: 210,
     image: oscalPad15Main,
     images: [oscalPad15Main, oscalPad15Alt, oscalPad15Alt2],
     rating: 4.7,
@@ -7157,7 +7278,7 @@ export const tabletProducts: Product[] = [
         label: "256GB + 16GB RAM",
         ram: "16GB",
         storage: "256GB",
-        price: 149
+        price: 210
       }
     ],
     connectivityOptions: ["Wi-Fi only"]
@@ -7167,7 +7288,7 @@ export const tabletProducts: Product[] = [
     id: 423,
     name: "Oscal Pad 100",
     title: "Oscal Pad 100 - 12\" IPS Display, Unisoc T615, Up to 36GB RAM, 256GB Storage, 9000mAh, Stylus Pen",
-    price: 199,
+    price: 300,
     image: oscalPad100Grey,
     images: [oscalPad100Grey, oscalPad100Blue],
     rating: 4.8,
@@ -7213,7 +7334,7 @@ export const tabletProducts: Product[] = [
         label: "256GB + 12GB RAM (36GB Virtual)",
         ram: "12GB",
         storage: "256GB",
-        price: 199
+        price: 300
       }
     ],
     colors: [
@@ -7227,7 +7348,7 @@ export const tabletProducts: Product[] = [
     id: 424,
     name: "Oscal Elite 1",
     title: "Oscal Elite 1 - 12.1\" IPS LCD 120Hz, Helio G99, Up to 16GB RAM, 256GB Storage, 8800mAh, Stylus Pen",
-    price: 229,
+    price: 310,
     image: oscalElite1Grey,
     images: [oscalElite1Grey, oscalElite1Blue, oscalElite1White],
     rating: 4.8,
@@ -7276,7 +7397,7 @@ export const tabletProducts: Product[] = [
         label: "256GB + 8GB RAM (16GB Virtual)",
         ram: "8GB",
         storage: "256GB",
-        price: 229
+        price: 310
       }
     ],
     colors: [
@@ -8334,15 +8455,91 @@ export const gamingConsoles: Product[] = [
   }
 ];
 
+export const electronicsProducts: Product[] = [
+  {
+    id: 327,
+    name: "Xiaomi Electric Scooter 4 Lite (2nd Gen)",
+    title: "Xiaomi Electric Scooter 4 Lite (2nd Gen) – 25km Range, 25km/h Max Speed, 10-inch Tires",
+    price: 320,
+    image: electricScooter1,
+    images: [electricScooter1, electricScooter2, electricScooter3, electricScooter4, electricScooter5, electricScooter6],
+    rating: 4.7,
+    category: "Electronics",
+    brand: "Xiaomi",
+    description: "The Xiaomi Electric Scooter 4 Lite 2nd Gen is an upgraded folding electric scooter designed for urban commuting, featuring a streamlined 'horseback' design and a high-strength carbon steel frame. It offers several improvements over its predecessor, including a longer range due to a higher-capacity battery and 10-inch pneumatic tires for a more comfortable ride.",
+    features: [
+      "Max Speed: 25 km/h with three speed modes (Pedestrian, Standard, Sport)",
+      "Up to 25 km travel range on a single charge",
+      "300W rated motor handles inclines up to 15%",
+      "Dual braking system: Front drum brake and rear E-ABS",
+      "10-inch pneumatic tires for improved shock absorption",
+      "High-strength carbon steel frame with 3-step folding mechanism",
+      "Built-in high-brightness headlight and eye-catching taillight",
+      "Mi Home/Xiaomi Home app connectivity for real-time stats"
+    ],
+    specifications: [
+      { label: "Brand", value: "Xiaomi" },
+      { label: "Model", value: "Electric Scooter 4 Lite (2nd Gen)" },
+      { label: "Max Speed", value: "25 km/h" },
+      { label: "Range", value: "Up to 25 km" },
+      { label: "Rated Power", value: "300W" },
+      { label: "Max Power", value: "390W" },
+      { label: "Battery", value: "9600mAh (225Wh)" },
+      { label: "Tires", value: "10-inch Pneumatic" },
+      { label: "Braking", value: "Front drum + Rear E-ABS" },
+      { label: "Weight", value: "16.2 kg" },
+      { label: "Max Load", value: "100 kg" },
+      { label: "IP Rating", value: "IPX4" }
+    ]
+  },
+  {
+    id: 328,
+    name: "Xiaomi Electric Scooter 5",
+    title: "Xiaomi Electric Scooter 5 – 60km Range, 700W Peak Power, Dual-Spring Suspension",
+    price: 440,
+    image: scooter5img1,
+    images: [scooter5img1, scooter5img2, scooter5img3, scooter5img4, scooter5img5],
+    rating: 4.9,
+    category: "Electronics",
+    brand: "Xiaomi",
+    description: "The Xiaomi Electric Scooter 5 is a new generation e-scooter designed for urban commuting and leisure riding, emphasizing comfort, safety, and efficiency. It features front dual-spring shock absorbers to effectively absorb impacts and provide a comfortable ride on uneven terrain, along with a powerful 700W peak power motor.",
+    features: [
+      "Powerful 350W motor with 700W peak output",
+      "Impressive range up to 60 km on a single charge",
+      "Top speed of 25 km/h with high-efficiency output",
+      "Front dual-spring shock absorbers for superior comfort",
+      "10-inch tubeless pneumatic tires (60mm wide) for better grip",
+      "Intelligent Battery Management System (BMS) with multi-layered protection",
+      "High-strength 1.5mm thickened carbon steel frame",
+      "Foldable design for easy storage and transportation"
+    ],
+    specifications: [
+      { label: "Brand", value: "Xiaomi" },
+      { label: "Model", value: "Electric Scooter 5" },
+      { label: "Max Speed", value: "25 km/h" },
+      { label: "Range", value: "Up to 60 km" },
+      { label: "Rated Power", value: "350W" },
+      { label: "Max Power", value: "700W" },
+      { label: "Battery", value: "477Wh (10.2Ah)" },
+      { label: "Tires", value: "10-inch Tubeless Pneumatic" },
+      { label: "Suspension", value: "Front dual-spring shock absorbers" },
+      { label: "Braking", value: "Front drum + Rear E-ABS" },
+      { label: "Weight", value: "20.1 kg" },
+      { label: "Max Load", value: "120 kg" },
+      { label: "IP Rating", value: "IPX5" }
+    ]
+  }
+];
+
 // Helper function to get product by ID
 export const getProductById = (id: number): Product | undefined => {
-  const allProducts = [...phoneAccessories, ...wearablesProducts, ...smartphoneProducts, ...tabletProducts, ...iphoneCases, ...gamingConsoles];
+  const allProducts = [...phoneAccessories, ...wearablesProducts, ...smartphoneProducts, ...tabletProducts, ...iphoneCases, ...gamingConsoles, ...electronicsProducts];
   return allProducts.find(product => product.id === id);
 };
 
 // Helper function to get products by category (checks both primary and secondary categories)
 export const getProductsByCategory = (category: string): Product[] => {
-  const allProducts = [...phoneAccessories, ...wearablesProducts, ...smartphoneProducts, ...tabletProducts, ...iphoneCases, ...gamingConsoles];
+  const allProducts = [...phoneAccessories, ...wearablesProducts, ...smartphoneProducts, ...tabletProducts, ...iphoneCases, ...gamingConsoles, ...electronicsProducts];
   return allProducts.filter(product =>
     product.category === category ||
     product.secondaryCategories?.includes(category)

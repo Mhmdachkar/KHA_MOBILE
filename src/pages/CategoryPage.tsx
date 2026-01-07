@@ -84,6 +84,10 @@ const categoryQuotes: Record<string, { title: string; subtitle: string }> = {
   "iPhone Cases": {
     title: "\"Protection meets perfection.\"",
     subtitle: "Style and security for your device."
+  },
+  "Electronics": {
+    title: "\"The future is electric.\"",
+    subtitle: "Modern solutions for a smarter lifestyle."
   }
 };
 
@@ -137,6 +141,7 @@ const categoryMap: Record<string, string> = {
   "/iphone cases": "iPhone Cases",
   "/iphone%20cases": "iPhone Cases",
   "/iphonecases": "iPhone Cases",
+  "/electronics": "Electronics",
 };
 
 const CategoryPage = () => {
@@ -457,6 +462,21 @@ const CategoryPage = () => {
           // Sort by price (highest to lowest), but keep price 0 items visible
           return b.price - a.price;
         });
+      } else {
+        // Default loading for other categories (like Electronics)
+        const otherProducts = getProductsByCategory(categoryDisplayName);
+        if (Array.isArray(otherProducts) && otherProducts.length > 0) {
+          products = [
+            ...products,
+            ...otherProducts.map(p => ({
+              ...p,
+              images: p.images && p.images.length > 0 ? p.images : [p.image],
+              price: getDisplayPrice(p)
+            }))
+          ];
+        }
+        // General sort by price
+        products.sort((a, b) => b.price - a.price);
       }
     } catch (error) {
       console.error("Error fetching products for category:", categoryDisplayName, error);
