@@ -482,6 +482,25 @@ All colors MUST be HSL.
     -webkit-overflow-scrolling: touch;
   }
 
+  /* CRITICAL: Enable vertical scrolling on mobile - fixes scroll freeze issue */
+  @media (max-width: 768px) {
+    html, body, #root {
+      touch-action: pan-y !important;
+      -webkit-overflow-scrolling: touch !important;
+      overscroll-behavior: auto !important;
+    }
+    
+    /* Ensure main content areas allow vertical scrolling */
+    main, section, article, .page-content {
+      touch-action: pan-y !important;
+    }
+    
+    /* Allow horizontal scrolling only on carousels */
+    .carousel, [data-embla], .embla {
+      touch-action: pan-x pan-y !important;
+    }
+  }
+
   /* Prevent scroll interruption when clicking */
   .prevent-scroll-interrupt {
     pointer-events: auto;
