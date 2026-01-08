@@ -369,6 +369,28 @@ import mibroA2_3 from "@/assets/wearables/MIBRO/Mibro A2 Smart Watch/xiaomi-jewe
 
 // Mibro Lite 3 Imports
 import mibroLite3 from "@/assets/wearables/MIBRO/Mibro Watch Lite 3/Mibro Watch Lite 3.jpg";
+
+// Mibro A3 Imports
+import mibroA3Black from "@/assets/wearables/MIBRO/Mibro watch A3/Mibro watch A3 Black.jpg";
+import mibroA3_1 from "@/assets/wearables/MIBRO/Mibro watch A3/71cyUujuT-L._AC_SX466_.jpg";
+import mibroA3_2 from "@/assets/wearables/MIBRO/Mibro watch A3/71fbyYI3N2L._AC_SX466_.jpg";
+import mibroA3_3 from "@/assets/wearables/MIBRO/Mibro watch A3/819TPZTwkEL._AC_SX466_.jpg";
+
+// Mibro T2 Imports
+import mibroT2Blue from "@/assets/wearables/MIBRO/Mibro watch T2/Mibro watch T2 blue.jpg";
+import mibroT2Pink from "@/assets/wearables/MIBRO/Mibro watch T2/Mibro watch T2 pink.png";
+
+// Mibro P5 Imports
+import mibroP5Pink from "@/assets/wearables/MIBRO/Xiaomi Mibro P5 Waterproof Kids Smartwatch/Xiaomi Mibro P5 Waterproof Kids Smartwatch  pink.webp";
+import mibroP5Blue from "@/assets/wearables/MIBRO/Xiaomi Mibro P5 Waterproof Kids Smartwatch/Xiaomi Mibro P5 Waterproof Kids Smartwatch blue.webp";
+import mibroP5_1 from "@/assets/wearables/MIBRO/Xiaomi Mibro P5 Waterproof Kids Smartwatch/xiaomi-jewelry-xiaomi-mibro-p5-waterproof-kids-smartwatch-35074559410308_1024x1024.webp";
+import mibroP5_2 from "@/assets/wearables/MIBRO/Xiaomi Mibro P5 Waterproof Kids Smartwatch/xiaomi-jewelry-xiaomi-mibro-p5-waterproof-kids-smartwatch-35074559737988_1024x1024.webp";
+
+// Mibro GS Explorer Imports
+import mibroGSExpBlack from "@/assets/wearables/MIBRO/WATCH GS EXPLORER/WATCH GS EXPLORER black.jpg";
+import mibroGSExpWhite from "@/assets/wearables/MIBRO/WATCH GS EXPLORER/WATCH GS EXPLORER white.jpg";
+import mibroGSExp_1 from "@/assets/wearables/MIBRO/WATCH GS EXPLORER/Mibro-Smart_Watch-GS-Explorer-detail_PC_A_01_2800x.webp";
+import mibroGSExp_2 from "@/assets/wearables/MIBRO/WATCH GS EXPLORER/Mibro-Smart_Watch-GS-Explorer-detail_PC_A_02_2800x.webp";
 // Infinix Smart 10 imports
 import infinixSmart10Black from "@/assets/phones/infinix/smart 10/Infinix Smart 10.webp";
 import infinixSmart10Silver from "@/assets/phones/infinix/smart 10/Infinix Smart 10 silver.webp";
@@ -8373,6 +8395,179 @@ export const wearablesProducts: Product[] = [
     ],
     colors: [
       { name: "Black", image: mibroLite3, stock: "available" }
+    ]
+  },
+  // Mibro Watch A3 (ID: 221)
+  {
+    id: 221,
+    name: "Mibro Watch A3",
+    title: "Mibro Watch A3 - 1.39\" HD Display, Bluetooth Calling, 100+ Sports Modes",
+    price: 65,
+    image: mibroA3Black,
+    images: [mibroA3Black, mibroA3_1, mibroA3_2, mibroA3_3],
+    rating: 4.8,
+    category: "Wearables",
+    brand: "Mibro",
+    secondaryCategories: ["Smartwatches", "Fitness", "Premium"],
+    description: "The Mibro Watch A3 is a stylish and versatile smartwatch featuring a vivid 1.39” HD screen with 391 PPI for sharp visuals. It offers comprehensive health monitoring including 24/7 heart rate, SpO2, sleep, stress tracking, and breathing training. With Bluetooth 5.3 and a 2-in-1 integrated chip, it delivers smooth performance and hands-free calling. The watch supports over 100 specialized sports modes and is 2ATM waterproof. Its ultra-long battery life lasts up to 8 days in daily mode and 45 days in basic mode.",
+    features: [
+      "1.39\" HD Screen (360x360, 391 PPI)",
+      "Bluetooth 5.3 Calling",
+      "Comprehensive Health Monitoring (Heart Rate, SpO2, Sleep, Stress)",
+      "100+ Specialized Sports Modes",
+      "2ATM Waterproof Rating",
+      "Up to 8 Days Battery Life (Daily), 45 Days (Basic)",
+      "2-in-1 Dual-Core Chip for smoother operation",
+      "Smart Life Assistant (Weather, Alarms, Music Control, Find Phone)",
+      "Supports GPS/Beidou/GLONASS/Galileo/QZSS Satellite Positioning (via phone)",
+      "Works with Mibro Fit App"
+    ],
+    specifications: [
+      { label: "Brand", value: "Mibro" },
+      { label: "Model", value: "Watch A3" },
+      { label: "Display", value: "1.39\" IPS, 360x360" },
+      { label: "Bluetooth", value: "V5.3" },
+      { label: "Battery Life", value: "8 Days (Daily), 45 Days (Standby)" },
+      { label: "Water Resistance", value: "2ATM" },
+      { label: "Sensors", value: "PPG Heart Rate, Blood Oxygen, Acc" },
+      { label: "Sports Modes", value: "100+ Modes" },
+      { label: "Material", value: "Aluminum Alloy + PC + 20%GF" },
+      { label: "Strap", value: "22mm, Unfolded length 265mm" },
+      { label: "Weight", value: "29g (without strap), 45g (with strap)" },
+      { label: "App", value: "Mibro Fit" },
+      { label: "System", value: "Android 5.0+, iOS 10.0+" }
+    ],
+    colors: [
+      { name: "Black", image: mibroA3Black, stock: "available" }
+    ]
+  },
+  // Mibro Watch T2 (ID: 222)
+  {
+    id: 222,
+    name: "Mibro Watch T2",
+    title: "Mibro Watch T2 - 1.75\" HD AMOLED, GPS, Bluetooth Calling",
+    price: 70,
+    image: mibroT2Blue,
+    images: [mibroT2Blue, mibroT2Pink],
+    rating: 4.9,
+    category: "Wearables",
+    brand: "Mibro",
+    secondaryCategories: ["Smartwatches", "Fitness", "Premium"],
+    description: "The Mibro Watch T2 is a premium lifestyle companion featuring a stunning 1.75-inch HD AMOLED display with 340 PPI for delicate, vivid visuals. It offers upgraded 24/7 4PD heart rate monitoring, SpO2 measurement, and comprehensive health tracking including sleep and women's health. With support for 5 satellite positioning systems (GPS, Beidou, GLONASS, Galileo, QZSS), altitude and pressure sensors, and 105 sports modes, it's perfect for mountaineering and outdoor adventures. The watch includes a smart life assistant with Bluetooth calling, NFC, and notification support, all powered by an ultra-long battery life of up to 10 days in daily mode.",
+    features: [
+      "1.75-inch HD AMOLED Display (340 PPI)",
+      "5-System Satellite Positioning (GPS, Beidou, GLONASS, Galileo, QZSS)",
+      "Precision Altitude & Barometric Pressure Sensors",
+      "105 Sports Modes (Professional Motion Algorithms)",
+      "Health Protection: 4PD Heart Rate, SpO2, Sleep, Stress, Breath Training",
+      "Bluetooth Calling & Smart Notifications",
+      "2ATM Waterproof Rating",
+      "Ultra-Long Battery: 10 Days (Daily), 45 Days (Basic)",
+      "6-Axis Motion Sensors for Activity Tracking",
+      "Smart Tools: NFC Access Control, Phone Finder, Weather"
+    ],
+    specifications: [
+      { label: "Brand", value: "Mibro" },
+      { label: "Model", value: "Watch T2" },
+      { label: "Display", value: "1.75\" HD AMOLED, 340 PPI" },
+      { label: "GPS", value: "GPS, Beidou, GLONASS, Galileo, QZSS" },
+      { label: "Sensors", value: "4PD Heart Rate, SpO2, 6-Axis Motion, Barometer, Altimeter" },
+      { label: "Battery Life", value: "10 Days (Daily), 45 Days (Basic), 10h (GPS)" },
+      { label: "Water Resistance", value: "2ATM" },
+      { label: "Sports Modes", value: "105 Modes" },
+      { label: "Calling", value: "Bluetooth Calling" },
+      { label: "NFC", value: "Supported (Access Control)" },
+      { label: "Connectivity", value: "Bluetooth V5.3" }
+    ],
+    colors: [
+      { name: "Blue", image: mibroT2Blue, stock: "available" },
+      { name: "Pink", image: mibroT2Pink, stock: "available" }
+    ]
+  },
+  // Xiaomi Mibro P5 Waterproof Kids Smartwatch (ID: 223)
+  {
+    id: 223,
+    name: "Xiaomi Mibro P5 Kids Smartwatch",
+    title: "Xiaomi Mibro P5 Kids Smartwatch Phone - 4G, GPS, Waterproof, Camera",
+    price: 75,
+    image: mibroP5Blue,
+    images: [mibroP5Blue, mibroP5Pink, mibroP5_1, mibroP5_2],
+    rating: 4.8,
+    category: "Wearables",
+    brand: "Mibro",
+    secondaryCategories: ["Smartwatches", "Kids", "Safety"],
+    description: "The Xiaomi Mibro Watch Phone P5 is an excellent smart gadget designed to keep your kids safe and connected. With its IPX8 waterproof rating, kids can wear it while swimming or showering. By inserting a 4G nano SIM, it becomes a wristphone enabling HD video calls, voice chat, and SOS signaling. Parents can track their child's location via GPS/WiFi/LBS, set up safety zones, and manage class mode to prevent distractions at school. It also features a built-in camera for photos, sports modes for activity tracking, and a long-lasting battery.",
+    features: [
+      "4G LTE Wristphone: Insert nano SIM for calls and data",
+      "HD Video Calls & Voice Chat with friends and family",
+      "Precise Positioning: GPS, WiFi, Beidou, Base Station, G-sensor",
+      "Safety Features: SOS button, Safety Zones, Remote Location Tracking",
+      "Class Mode: Ensures no disturbances during school hours",
+      "IPX8 Waterproof: Suitable for swimming and showering",
+      "Built-in 2MP Camera: Take photos with filters and stickers",
+      "Activity Tracking: Steps, calories, heart rate, and goals",
+      "900mAh Battery: Up to 7 days working time, 12 days standby",
+      "Additional Tools: Flashlight, Alarm, Weather, Watch Find"
+    ],
+    specifications: [
+      { label: "Brand", value: "Xiaomi Mibro" },
+      { label: "Model", value: "P5 Kids Watch Phone" },
+      { label: "Display", value: "1.3\" IPS Color Screen" },
+      { label: "Connectivity", value: "4G LTE, WiFi, GPS" },
+      { label: "SIM / Card", value: "Nano SIM" },
+      { label: "Camera", value: "2MP" },
+      { label: "Battery", value: "900mAh (Magnetic Charging)" },
+      { label: "Battery Life", value: "Up to 7 Days (Working), 12 Days (Standby)" },
+      { label: "Water Resistance", value: "IPX8 (Swimming supported)" },
+      { label: "Safety", value: "SOS, Safe Zones, Class Mode" },
+      { label: "App", value: "Mibro Fit" },
+      { label: "Included", value: "Watch, Cable, Manual" }
+    ],
+    colors: [
+      { name: "Blue", image: mibroP5Blue, stock: "available" },
+      { name: "Pink", image: mibroP5Pink, stock: "available" }
+    ]
+  },
+  // Mibro Watch GS Explorer (ID: 224)
+  {
+    id: 224,
+    name: "Mibro Watch GS Explorer",
+    title: "Mibro Watch GS Explorer - GPS Outdoor Watch, 10ATM Waterproof, 10-Day Battery",
+    price: 90,
+    image: mibroGSExpBlack,
+    images: [mibroGSExpBlack, mibroGSExpWhite, mibroGSExp_1, mibroGSExp_2],
+    rating: 4.9,
+    category: "Wearables",
+    brand: "Mibro",
+    secondaryCategories: ["Smartwatches", "Fitness", "Premium", "Outdoor"],
+    description: "The Mibro Watch GS Explorer is built for rugged outdoor adventures with military-grade durability (MIL-STD-810H) and 10ATM waterproofing. It features a bright 1.32-inch AMOLED display (1500 nits) visible in sunlight. Dual-frequency GPS with 5 satellites ensures precise positioning. With 150+ sports modes, comprehensive health monitoring, and a battery life of up to 20 days in daily mode, it's the ultimate companion for exploration.",
+    features: [
+      "Military-grade Durability: 316L Stainless Steel, Reinforced Nylon",
+      "10ATM Waterproof: Supports diving up to 30m, swimming, snorkeling",
+      "1.32\" AMOLED High-Brightness Display (1500 nits, 466x466)",
+      "Dual-frequency GPS (L1+L5) with 5 Satellite Systems",
+      "150+ Sports Modes with Professional Metrics",
+      "Comprehensive Health: Heart Rate, SpO2, Sleep, Stress",
+      "Long Battery Life: 20 Days (Daily), 60 Days (Standby)",
+      "Compass, Altimeter, Barometer for Outdoor Navigation",
+      "Bluetooth 5.3 & Mibro Fit App Support"
+    ],
+    specifications: [
+      { label: "Brand", value: "Mibro" },
+      { label: "Model", value: "GS Explorer" },
+      { label: "Display", value: "1.32\" AMOLED, 1500 nits, 466x466" },
+      { label: "GPS", value: "Dual-Band L1+L5, 5 Systems" },
+      { label: "Water Resistance", value: "10ATM" },
+      { label: "Battery Life", value: "20 Days (Daily), 60 Days (Standby)" },
+      { label: "Materials", value: "316L Stainless, Reinforced Nylon" },
+      { label: "Sports Modes", value: "150+ Modes" },
+      { label: "Sensors", value: "HR, SpO2, Acc, Gyro, Mag, Barometer" },
+      { label: "App", value: "Mibro Fit" },
+      { label: "System", value: "Android 5.0+, iOS 10.0+" }
+    ],
+    colors: [
+      { name: "Black", image: mibroGSExpBlack, stock: "available" },
+      { name: "White", image: mibroGSExpWhite, stock: "available" }
     ]
   }
 ];

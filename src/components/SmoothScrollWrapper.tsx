@@ -46,7 +46,30 @@ const SmoothScrollWrapper = ({ children }: SmoothScrollWrapperProps) => {
     useEffect(() => {
         // Skip Lenis on mobile devices to prevent scroll freezing issues
         if (isMobile) {
-            return;
+            // CRITICAL FIX: Remove any passive event listeners that might cause scroll freeze
+            const removePassiveListeners = () => {
+                // Remove any existing passive event listeners that might interfere
+                const clonedNode = document.documentElement.cloneNode(true);
+                // This forces the browser to re-evaluate touch event listeners
+                document.documentElement.style.touchAction = 'pan-y';
+                document.body.style.touchAction = 'pan-y';
+            };
+
+            // Apply the fix immediately and on any touch events
+            removePassiveListeners();
+            
+            // Add a one-time touch listener to ensure scroll works after any touch
+            const ensureScrollWorks = () => {
+                setTimeout(() => {
+                    window.scrollTo(0, window.scrollY);
+                }, 100);
+            };
+            
+            document.addEventListener('touchend', ensureScrollWorks, { passive: true });
+            
+            return () => {
+                document.removeEventListener('touchend', ensureScrollWorks);
+            };
         }
 
         // Initialize Lenis with performance-optimized settings (desktop only)

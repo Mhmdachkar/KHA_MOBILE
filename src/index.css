@@ -488,16 +488,43 @@ All colors MUST be HSL.
       touch-action: pan-y !important;
       -webkit-overflow-scrolling: touch !important;
       overscroll-behavior: auto !important;
+      -webkit-touch-callout: none !important;
+      -webkit-user-select: none !important;
+      user-select: none !important;
+    }
+    
+    /* Allow text selection on specific elements */
+    h1, h2, h3, h4, h5, h6, p, span, div[class*="description"], div[class*="text"] {
+      -webkit-user-select: text !important;
+      user-select: text !important;
     }
     
     /* Ensure main content areas allow vertical scrolling */
     main, section, article, .page-content {
       touch-action: pan-y !important;
+      -webkit-overflow-scrolling: touch !important;
     }
     
     /* Allow horizontal scrolling only on carousels */
     .carousel, [data-embla], .embla {
       touch-action: pan-x pan-y !important;
+    }
+    
+    /* Fix scroll freezing on all interactive elements */
+    button, a, input, select, textarea {
+      touch-action: manipulation !important;
+      -webkit-tap-highlight-color: transparent !important;
+    }
+    
+    /* Ensure images don't block scroll */
+    img {
+      touch-action: pan-y !important;
+      pointer-events: auto !important;
+    }
+    
+    /* Prevent scroll interruption on motion components */
+    [data-framer-component], .motion-div {
+      touch-action: pan-y !important;
     }
   }
 
