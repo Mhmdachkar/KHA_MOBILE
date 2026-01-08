@@ -355,6 +355,20 @@ import pocoX7ProYellow from "@/assets/phones/xiaomi/xiaomi mobile/Poco X7 PRO/po
 import coolpadC16Black from "@/assets/phones/Coolpad C16 128GB/Coolpad C16 128GB black.png";
 import coolpadC16Blue from "@/assets/phones/Coolpad C16 128GB/Coolpad C16 128GB blue.png";
 import coolpadC16Green from "@/assets/phones/Coolpad C16 128GB/Coolpad C16 128GB green.png";
+
+// Mibro Wearables
+import mibroT1_1 from "@/assets/wearables/MIBRO/Mibro Smart Watch T1/watch T1.jpg";
+import mibroT1_2 from "@/assets/wearables/MIBRO/Mibro Smart Watch T1/t1-2__54372.jpg";
+import mibroT1_3 from "@/assets/wearables/MIBRO/Mibro Smart Watch T1/t1-3__52949.jpg";
+
+// Mibro A2 Imports
+import mibroA2Black from "@/assets/wearables/MIBRO/Mibro A2 Smart Watch/Mibro A2 Smart Watch - Black.webp";
+import mibroA2_1 from "@/assets/wearables/MIBRO/Mibro A2 Smart Watch/xiaomi-jewelry-xiaomi-mibro-a2-smart-watch-34691425501316_1024x1024.webp";
+import mibroA2_2 from "@/assets/wearables/MIBRO/Mibro A2 Smart Watch/xiaomi-jewelry-xiaomi-mibro-a2-smart-watch-34691425730692_1024x1024.webp";
+import mibroA2_3 from "@/assets/wearables/MIBRO/Mibro A2 Smart Watch/xiaomi-jewelry-xiaomi-mibro-a2-smart-watch-34691426123908_1024x1024.webp";
+
+// Mibro Lite 3 Imports
+import mibroLite3 from "@/assets/wearables/MIBRO/Mibro Watch Lite 3/Mibro Watch Lite 3.jpg";
 // Infinix Smart 10 imports
 import infinixSmart10Black from "@/assets/phones/infinix/smart 10/Infinix Smart 10.webp";
 import infinixSmart10Silver from "@/assets/phones/infinix/smart 10/Infinix Smart 10 silver.webp";
@@ -8232,6 +8246,133 @@ export const wearablesProducts: Product[] = [
       { label: "App", value: "Mi Fitness" },
       { label: "Package Contents", value: "Main unit, Strap, Charging cable, User manual" },
       { label: "Certification", value: "ISO 22810:2010 by TÜV SÜD" }
+    ]
+  },
+  // Mibro Smart Watch T1 (ID: 218)
+  {
+    id: 218,
+    name: "Mibro Smart Watch T1",
+    title: "Mibro Smart Watch T1 - 1.6\" AMOLED HD Display, Bluetooth Calling, 7-Day Battery",
+    price: 40,
+    image: mibroT1_1,
+    images: [mibroT1_1, mibroT1_2, mibroT1_3],
+    rating: 4.6,
+    category: "Wearables",
+    brand: "Mibro",
+    secondaryCategories: ["Smartwatches", "Fitness", "Budget"],
+    description: "The Mibro T1 is a budget-friendly square-shaped smartwatch featuring a 1.6-inch AMOLED HD display (320x360 resolution) with Bluetooth calling capability (v5.0). It includes 20 sports modes, heart rate and SpO2 monitoring, and a 350mAh battery providing up to 7 days of typical use. It is 2ATM waterproof and supports custom watch faces. With its metal alloy case and comfortable silicone strap, it combines style and durability for everyday wear.",
+    features: [
+      "1.6-inch AMOLED HD display (320x360, 301 ppi)",
+      "Bluetooth calling with built-in microphone and speaker",
+      "24-hour heart rate and blood oxygen (SpO2) monitoring",
+      "20 specialized workout modes for fitness tracking",
+      "7-day battery life (daily mode) with 350mAh battery",
+      "2ATM waterproof rating for light splashes",
+      "Smart notifications for SMS, social media, and weather",
+      "Music control and camera shutter function",
+      "Premium metal alloy case with 20mm silicone strap",
+      "Customizable watch faces via Mibro Fit app"
+    ],
+    specifications: [
+      { label: "Brand", value: "Mibro" },
+      { label: "Model", value: "T1" },
+      { label: "Display", value: "1.6\" AMOLED HD, 320x360, 301 ppi" },
+      { label: "Calling", value: "Bluetooth v5.0 (Mic & Speaker)" },
+      { label: "Battery", value: "350mAh (Up to 7 days typical use)" },
+      { label: "Water Resistance", value: "2ATM" },
+      { label: "Sensors", value: "Heart Rate, SpO2, Accelerometer" },
+      { label: "Sports Modes", value: "20 Modes" },
+      { label: "Body Material", value: "Metal Alloy" },
+      { label: "Strap", value: "20mm Silicone" },
+      { label: "App", value: "Mibro Fit (Android/iOS)" },
+      { label: "Weight", value: "53.5g (incl. strap)" }
+    ],
+    colors: [
+      { name: "Black", image: mibroT1_1, stock: "available" }
+    ]
+  },
+  // Mibro A2 Smart Watch (ID: 219)
+  {
+    id: 219,
+    name: "Mibro A2 Smart Watch",
+    title: "Mibro A2 Smart Watch - 1.39\" HD Display, Bluetooth Calling, 70 Sports Modes",
+    price: 50,
+    image: mibroA2Black,
+    images: [mibroA2Black, mibroA2_1, mibroA2_2, mibroA2_3],
+    rating: 4.7,
+    category: "Wearables",
+    brand: "Mibro",
+    secondaryCategories: ["Smartwatches", "Fitness", "Budget"],
+    description: "The Mibro A2 Smart Watch is a versatile daily companion featuring a vivid 1.39\" HD screen with 391 PPI for sharp visuals. It offers comprehensive 24/7 health monitoring including 4PD heart rate, SpO2, sleep, stress tracking, and breathing training. With Bluetooth calling support, you can handle calls directly from your wrist. The watch supports 70 specialized sports modes and pairs with your phone's GPS for visualized workouts. Its ultra-long battery life provides up to 10 days of daily use or 50 days in basic mode. Water-resistant up to 2ATM, it is built for an active lifestyle.",
+    features: [
+      "Vivid 1.39\" HD display (391 PPI) for rich colors and visuals",
+      "Bluetooth calling support (answer/reject calls on wrist)",
+      "Comprehensive 24/7 health monitoring (Heart Rate, SpO2, Sleep, Stress)",
+      "70 Specialized Sports Modes (Running, Cycling, Swimming, Dance, Ball Games, etc.)",
+      "Ultra-long battery life: Up to 10 days daily mode, 50 days basic mode",
+      "2ATM waterproof rating for protection against splashes",
+      "Smart Life Assistant: SMS, Weather, Alarms, Music Control, Find Phone",
+      "Works with Mibro Fit App",
+      "Supports multiple languages including English, Arabic, French, Spanish"
+    ],
+    specifications: [
+      { label: "Brand", value: "Mibro" },
+      { label: "Model", value: "A2" },
+      { label: "Display", value: "1.39\" HD Screen, 391 PPI" },
+      { label: "Calling", value: "Bluetooth Calling" },
+      { label: "Battery Life", value: "10 days (Daily), 50 days (Basic), 5.5h Music, 5h Calling" },
+      { label: "Water Resistance", value: "2ATM" },
+      { label: "Sensors", value: "4PD Heart Rate, SpO2, Motion Sensors" },
+      { label: "Sports Modes", value: "70 Modes" },
+      { label: "App", value: "Mibro Fit" },
+      { label: "System", value: "Android 5.0+, iOS 10.0+" },
+      { label: "Languages", value: "Multi-language support (20+ languages)" }
+    ],
+    colors: [
+      { name: "Black", image: mibroA2Black, stock: "available" }
+    ]
+  },
+  // Mibro Watch Lite 3 (ID: 220)
+  {
+    id: 220,
+    name: "Mibro Watch Lite 3",
+    title: "Mibro Watch Lite 3 - 1.3\" AMOLED Vivid Display, Bluetooth Calling, 12-Day Battery",
+    price: 58,
+    image: mibroLite3,
+    images: [mibroLite3],
+    rating: 4.8,
+    category: "Wearables",
+    brand: "Mibro",
+    secondaryCategories: ["Smartwatches", "Fitness", "Premium"],
+    description: "The Mibro Watch Lite 3 offers comprehensive health protection and a stylish design. Featuring a vivid 1.3-inch AMOLED display with 360x360 resolution and 60fps refresh rate, it delivers smooth visuals and AOD (Always-On Display) support. The 2-in-1 main control chip ensures smoother operation and faster performance. It supports hands-free Bluetooth calling, 100+ sports modes, and 24/7 monitoring of heart rate, SpO2, stress, and sleep. With up to 12 days of battery life in daily use and 2ATM waterproofing for swimming, it is designed for both fashion and function.",
+    features: [
+      "1.3-inch AMOLED Vivid Display (360x360, 60fps, AOD support)",
+      "2-in-1 Dual-Core Chip for smoother performance (240MHz)",
+      "Bluetooth Calling & Stylish Design",
+      "Comprehensive Health Protection (Heart Rate, SpO2, Sleep, Stress)",
+      "100+ Sports Modes & Professional Motion Algorithms",
+      "Supported Swimming Mode with 2ATM Waterproofing",
+      "Up to 12 Days Battery Life (Daily usage), 50 Days (Basic)",
+      "Women's Health Tracking & Breathing Training",
+      "Smart Life Assistant (Weather, Alarms, Music Control, Find Phone)",
+      "Mibro Fit App Support"
+    ],
+    specifications: [
+      { label: "Brand", value: "Mibro" },
+      { label: "Model", value: "Watch Lite 3" },
+      { label: "Display", value: "1.3\" AMOLED, 360x360, 60fps, AOD" },
+      { label: "Processor", value: "240MHz 2-in-1 Dual Core" },
+      { label: "Battery Life", value: "12 Days (Daily), 30 Days (Basic)" },
+      { label: "Calling", value: "Bluetooth Hands-free Calling" },
+      { label: "Water Resistance", value: "2ATM (supports swimming)" },
+      { label: "Sports Modes", value: "100+ Modes" },
+      { label: "Sensors", value: "Heart Rate, SpO2, Motion sensors" },
+      { label: "App", value: "Mibro Fit" },
+      { label: "System", value: "Android 5.0+, iOS 10.0+" },
+      { label: "Languages", value: "35+ Languages" }
+    ],
+    colors: [
+      { name: "Black", image: mibroLite3, stock: "available" }
     ]
   }
 ];
