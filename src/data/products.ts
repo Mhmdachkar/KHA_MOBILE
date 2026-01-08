@@ -5,12 +5,36 @@ import dobePS5 from "@/assets/phone_accessories/Dobe Charging Dock for PS5 Contr
 import hocoJ132A from "@/assets/phone_accessories/Hoco J132A IntelligentBalance 20000mAh Power Bank.png";
 import kakusigaStand from "@/assets/phone_accessories/Kakusiga Folding Rotatable Desktop Stand.png";
 import usbCAdapter from "@/assets/phone_accessories/25W USB-C Power Adapter with USB-C to Lightning Cable.png";
+import samsungAdapter65W from "@/assets/accessories/Original Samsung Adapter 65W.gif";
+import appleAdapter20W from "@/assets/accessories/Apple Original Adapter 20W.gif";
 // Audio product imports
 import airpods3rd from "@/assets/audio/Apple AirPods (3rd Generation).png";
 import galaxyBuds6White from "@/assets/audio/Galaxy Buds6 Pro (White).png";
 import galaxyBuds6Black from "@/assets/audio/Galaxy Buds6 Pro (Black).png";
 import jblTune903BT from "@/assets/audio/wireless headphone JBL Tune903BT V5.3.png";
 import airpodsPro2 from "@/assets/audio/airpods pro generation 2.png";
+
+// JBL Products
+import jblTune110_1 from "@/assets/audio/JBL/EARPHONES TUNE110/EARPHONES TUNE110 BLACK.jpg";
+import jblTune110_2 from "@/assets/audio/JBL/EARPHONES TUNE110/EARPHONES TUNE110 BLUE.jpg";
+import jblTune110_3 from "@/assets/audio/JBL/EARPHONES TUNE110/EARPHONES TUNE110 WHITE.jpg";
+import jbl520BT_1 from "@/assets/audio/JBL/HEADSET 520BT/HEADSET 520BT black.jpg";
+import jbl520BT_2 from "@/assets/audio/JBL/HEADSET 520BT/02__49274.jpg";
+import jbl520BT_3 from "@/assets/audio/JBL/HEADSET 520BT/08__13927.jpg";
+import jbl520BT_4 from "@/assets/audio/JBL/HEADSET 520BT/JBL_TUNE_520BT_FOLD_REGULAR_BLACK_41014_x1__97086.jpg";
+import jbl720BT_1 from "@/assets/audio/JBL/JBL Tune 720BT/JBL Tune 720BT black.webp";
+import jbl720BT_2 from "@/assets/audio/JBL/JBL Tune 720BT/JBL Tune 720BT blue.webp";
+import jbl720BT_3 from "@/assets/audio/JBL/JBL Tune 720BT/JBL Tune 720BT white.webp";
+import jbl720BT_4 from "@/assets/audio/JBL/JBL Tune 720BT/02 (1).webp";
+import jbl720BT_5 from "@/assets/audio/JBL/JBL Tune 720BT/05 (1).webp";
+import jblGo4Black from "@/assets/audio/JBL/SPEAKER GO 4/SPEAKER GO 4 black.webp";
+import jblGo4Blue from "@/assets/audio/JBL/SPEAKER GO 4/SPEAKER GO 4 blue.webp";
+import jblGo4Red from "@/assets/audio/JBL/SPEAKER GO 4/SPEAKER GO 4 red.webp";
+import jblGo4White from "@/assets/audio/JBL/SPEAKER GO 4/SPEAKER GO 4 white.webp";
+import jblGo4BackBlack from "@/assets/audio/JBL/SPEAKER GO 4/JBL_GO_4_BACK_BLACK_48201_x1.webp";
+import jblPartyBox120Black from "@/assets/audio/JBL/PARTYBOX 120/JBL PartyBox Club 120 black.webp";
+import jblPartyBox120White from "@/assets/audio/JBL/PARTYBOX 120/JBL PartyBox Club 120 white.webp";
+import jblPartyBox120TopWhite from "@/assets/audio/JBL/PARTYBOX 120/JBL_PARTYBOX_CLUB_120_SENSATION_WHITE_TOP_068_x3.webp";
 import waterproofSpeakerBlack from "@/assets/audio/3INCH SPAKER WATER PROOF black.png";
 import waterproofSpeakerBlue from "@/assets/audio/3INCH SPAKER WATER PROOF blue.png";
 import waterproofSpeakerGrey from "@/assets/audio/3INCH SPAKER WATER PROOF grey.png";
@@ -82,6 +106,7 @@ import appleWatchS10_46MM_3 from "@/assets/wearables/Apple watch S10 46MM/Screen
 // Gaming Consoles imports
 import ps4Slim from "@/assets/gaming/ps4.webp";
 import ps5Slim from "@/assets/gaming/Screenshot 2025-12-09 013133.png";
+import codBlackOps6 from "@/assets/gaming/ps4 CD/Screenshot 2026-01-08 162214.png";
 // MagSafe Charger imports
 import magsafeCharger from "@/assets/recharges/magsafe charger/magsafe charger.gif";
 import magsafeCharger2 from "@/assets/recharges/magsafe charger/magsafe chargerr.gif";
@@ -357,9 +382,9 @@ import coolpadC16Blue from "@/assets/phones/Coolpad C16 128GB/Coolpad C16 128GB 
 import coolpadC16Green from "@/assets/phones/Coolpad C16 128GB/Coolpad C16 128GB green.png";
 
 // Mibro Wearables
-import mibroT1_1 from "@/assets/wearables/MIBRO/Mibro Smart Watch T1/watch T1.jpg";
-import mibroT1_2 from "@/assets/wearables/MIBRO/Mibro Smart Watch T1/t1-2__54372.jpg";
-import mibroT1_3 from "@/assets/wearables/MIBRO/Mibro Smart Watch T1/t1-3__52949.jpg";
+import mibroT1_1 from "@/assets/wearables/MIBRO/Mibro Smart Watch  T1/watch T1.jpg";
+import mibroT1_2 from "@/assets/wearables/MIBRO/Mibro Smart Watch  T1/t1-2__54372.jpg";
+import mibroT1_3 from "@/assets/wearables/MIBRO/Mibro Smart Watch  T1/t1-3__52949.jpg";
 
 // Mibro A2 Imports
 import mibroA2Black from "@/assets/wearables/MIBRO/Mibro A2 Smart Watch/Mibro A2 Smart Watch - Black.webp";
@@ -376,6 +401,36 @@ import mibroA3_1 from "@/assets/wearables/MIBRO/Mibro watch A3/71cyUujuT-L._AC_S
 import mibroA3_2 from "@/assets/wearables/MIBRO/Mibro watch A3/71fbyYI3N2L._AC_SX466_.jpg";
 import mibroA3_3 from "@/assets/wearables/MIBRO/Mibro watch A3/819TPZTwkEL._AC_SX466_.jpg";
 
+// Kieslect KS Pro Imports
+import kieslectKSPro1 from "@/assets/wearables/KIESLECT/KS PRO/KS PRO 65$.webp";
+import kieslectKSPro2 from "@/assets/wearables/KIESLECT/KS PRO/9323d4526f477b47dfbac3ecafd10e3a.jpeg";
+import kieslectKSPro3 from "@/assets/wearables/KIESLECT/KS PRO/8aa6ec80e80efbc72a5bc633a5c869f3.webp";
+import kieslectKSPro4 from "@/assets/wearables/KIESLECT/KS PRO/80b99478204630027276ca5ceb0c8445.webp";
+
+// Kieslect Ks2 Imports
+import kieslectKs2Main from "@/assets/wearables/KIESLECT/Kieslect Calling Smart Watch Ks2/Kieslect Smart Calling Watch Actor Leading.webp";
+import kieslectKs2_1 from "@/assets/wearables/KIESLECT/Kieslect Calling Smart Watch Ks2/kieslect-jewelry-kieslect-smart-calling-watch-actor-leading-whatsapp-calling-1127074608_1024x1024.webp";
+import kieslectKs2_2 from "@/assets/wearables/KIESLECT/Kieslect Calling Smart Watch Ks2/kieslect-jewelry-kieslect-smart-calling-watch-actor-leading-whatsapp-calling-1127074609_1024x1024.webp";
+import kieslectKs2_3 from "@/assets/wearables/KIESLECT/Kieslect Calling Smart Watch Ks2/kieslect-jewelry-kieslect-smart-calling-watch-actor-leading-whatsapp-calling-1127074610_1024x1024 (1).webp";
+
+// Kieslect Ks3 Imports
+import kieslectKs3Main from "@/assets/wearables/KIESLECT/Kieslect Calling Smart Watch Ks3/Kieslect Calling Smart Watch Ks3.webp";
+import kieslectKs3_1 from "@/assets/wearables/KIESLECT/Kieslect Calling Smart Watch Ks3/kieslect-jewelry-kieslect-calling-smart-watch-ks3-whatsapp-calling-1127074596_1024x1024.webp";
+import kieslectKs3_2 from "@/assets/wearables/KIESLECT/Kieslect Calling Smart Watch Ks3/kieslect-jewelry-kieslect-calling-smart-watch-ks3-whatsapp-calling-1127074598_1024x1024.webp";
+import kieslectKs3_3 from "@/assets/wearables/KIESLECT/Kieslect Calling Smart Watch Ks3/kieslect-jewelry-kieslect-calling-smart-watch-ks3-whatsapp-calling-1127074599_1024x1024.webp";
+
+// Kieslect Kr2 Imports
+import kieslectKr2Main from "@/assets/wearables/KIESLECT/Kieslect Smart Calling Watch Kr2/Kieslect Smart Calling Watch Kr2.webp";
+import kieslectKr2_1 from "@/assets/wearables/KIESLECT/Kieslect Smart Calling Watch Kr2/kieslect-jewelry-kieslect-kr2-smart-watch-34019300180100_1024x1024.webp";
+import kieslectKr2_2 from "@/assets/wearables/KIESLECT/Kieslect Smart Calling Watch Kr2/kieslect-jewelry-kieslect-kr2-smart-watch-34019300704388_1024x1024.webp";
+import kieslectKr2_3 from "@/assets/wearables/KIESLECT/Kieslect Smart Calling Watch Kr2/kieslect-jewelry-kieslect-kr2-smart-watch-34019301916804_1024x1024.webp";
+
+// Kieslect Actor Leading Imports
+import kieslectActorMain from "@/assets/wearables/KIESLECT/Kieslect Smart Calling Watch Actor Leading/Kieslect Smart Calling Watch Actor Leading.webp";
+import kieslectActor_1 from "@/assets/wearables/KIESLECT/Kieslect Smart Calling Watch Actor Leading/kieslect-jewelry-kieslect-smart-calling-watch-actor-leading-whatsapp-calling-1127074608_1024x1024.webp";
+import kieslectActor_2 from "@/assets/wearables/KIESLECT/Kieslect Smart Calling Watch Actor Leading/kieslect-jewelry-kieslect-smart-calling-watch-actor-leading-whatsapp-calling-1127074609_1024x1024.webp";
+import kieslectActor_3 from "@/assets/wearables/KIESLECT/Kieslect Smart Calling Watch Actor Leading/kieslect-jewelry-kieslect-smart-calling-watch-actor-leading-whatsapp-calling-1127074610_1024x1024.webp";
+
 // Mibro T2 Imports
 import mibroT2Blue from "@/assets/wearables/MIBRO/Mibro watch T2/Mibro watch T2 blue.jpg";
 import mibroT2Pink from "@/assets/wearables/MIBRO/Mibro watch T2/Mibro watch T2 pink.png";
@@ -391,6 +446,11 @@ import mibroGSExpBlack from "@/assets/wearables/MIBRO/WATCH GS EXPLORER/WATCH GS
 import mibroGSExpWhite from "@/assets/wearables/MIBRO/WATCH GS EXPLORER/WATCH GS EXPLORER white.jpg";
 import mibroGSExp_1 from "@/assets/wearables/MIBRO/WATCH GS EXPLORER/Mibro-Smart_Watch-GS-Explorer-detail_PC_A_01_2800x.webp";
 import mibroGSExp_2 from "@/assets/wearables/MIBRO/WATCH GS EXPLORER/Mibro-Smart_Watch-GS-Explorer-detail_PC_A_02_2800x.webp";
+
+// Samsung Galaxy Watch 3 Imports
+import samsungWatch3Black from "@/assets/wearables/SAMSUNG GALAXY WATCH 3/SAMSUNG GALAXY WATCH 3 black.webp";
+import samsungWatch3Bronze from "@/assets/wearables/SAMSUNG GALAXY WATCH 3/SAMSUNG GALAXY WATCH 3 bronze.webp";
+import samsungWatch3Silver from "@/assets/wearables/SAMSUNG GALAXY WATCH 3/SAMSUNG GALAXY WATCH 3 silver.webp";
 // Infinix Smart 10 imports
 import infinixSmart10Black from "@/assets/phones/infinix/smart 10/Infinix Smart 10.webp";
 import infinixSmart10Silver from "@/assets/phones/infinix/smart 10/Infinix Smart 10 silver.webp";
@@ -603,6 +663,7 @@ export interface Product {
   specifications?: Array<{ label: string; value: string }>;
   variants?: ProductVariant[];
   colors?: Array<{ name: string; image?: string; stock?: string }>;
+  sizes?: Array<{ name: string; price: number; stock?: string; description?: string }>;
   connectivityOptions?: string[];
   isPreorder?: boolean;
   secondaryCategories?: string[]; // For cross-categorization (e.g., Audio products also appearing in their specific subcategory)
@@ -635,6 +696,182 @@ export const phoneAccessories: Product[] = [
       { label: "Built-in Cables", value: "Lightning, USB-C" },
       { label: "Display", value: "Digital Battery Percentage" },
       { label: "Warranty", value: "18 months" }
+    ]
+  },
+  {
+    id: 140,
+    name: "JBL TUNE110 Earphones",
+    title: "JBL TUNE110 In-Ear Headphones with Pure Bass Sound",
+    price: 10,
+    image: jblTune110_1,
+    images: [jblTune110_1, jblTune110_2, jblTune110_3],
+    rating: 4.5,
+    category: "Audio",
+    brand: "JBL",
+    description: "Introducing JBL TUNE110 in-ear headphones. They're lightweight, comfortable and compact. Under the durable earpiece housing, a pair of 9mm drivers punch out some serious bass, reproducing the JBL Pure Bass sound you've experienced in concert halls, arenas and recording studios around the world. In addition, the single-button remote on a tangle-free flat cable lets you control music playback as well as answer calls on the fly with a built-in microphone. Making the JBL TUNE110 your everyday companion for work, at home and on the road.",
+    features: [
+      "JBL Pure Bass Sound: Experience the same JBL sound that punches out deep and powerful bass in venues around the world.",
+      "1-Button Remote with Microphone: Control music playback and answer calls on the fly with the built-in microphone.",
+      "Tangle-Free Flat Cable: A durable flat cable that won't get tangled up in knots."
+    ],
+    specifications: [
+      { label: "Driver Size", value: "9.0mm" },
+      { label: "Frequency Response", value: "20Hz – 20kHz" },
+      { label: "Connection", value: "3.5mm Jack" }
+    ],
+    colors: [
+      { name: "Black", image: jblTune110_1, stock: "available" },
+      { name: "Blue", image: jblTune110_2, stock: "available" },
+      { name: "White", image: jblTune110_3, stock: "available" }
+    ]
+  },
+  {
+    id: 141,
+    name: "JBL Tune 520BT Wireless Headphones",
+    title: "JBL Tune 520BT Wireless On-Ear Headphones",
+    price: 45,
+    image: jbl520BT_1,
+    images: [jbl520BT_1, jbl520BT_2, jbl520BT_3, jbl520BT_4],
+    rating: 4.7,
+    category: "Audio",
+    brand: "JBL",
+    description: "Wireless on-ear headphones with JBL Pure Bass sound. The JBL Tune 520BT headphones stream powerful JBL Pure Bass sound thanks to the latest 5.3 BT technology. Easy to use, these headphones provide up to 57 hours of pure pleasure and an extra 3 hours of battery with just 5 minutes of charge. Download the free JBL Headphones App and customize your sound through the EQ, while Voice Prompts guide you through the headphones features. Manage calls, sound and volume from the earcup, thanks to the convenient button control. If a call comes in while you are watching a video on another device, the JBL Tune 520BT seamlessly switches to your mobile device, so you never miss a call. Lightweight and comfortable even after hours of listening, the JBL Tune 520BT headphones fold flat in your backpack to follow you everywhere.",
+    features: [
+      "JBL Pure Bass Sound: Experience world-renowned JBL sound with deep, powerful bass.",
+      "Bluetooth 5.3: Stream high-quality sound wirelessly from your smartphone without messy cords.",
+      "Up to 57H Battery Life: Listen wirelessly for 57 hours and recharge the battery in as little as 2 hours.",
+      "Quick Charge: A quick 5-minute charge gives you 3 additional hours of music.",
+      "Multi-Point Connection: Effortlessly switch from one Bluetooth device to another.",
+      "Hands-Free Calls: Easily control your sound and manage your calls from your headphones with the convenient buttons on the ear-cup.",
+      "Voice Aware: Hear your own voice while talking.",
+      "Lightweight & Foldable: The lightweight materials and soft ear cushions make the headphones comfortable to wear for extended periods.",
+      "Siri/Google Assistant: Activate your device's voice assistant by pushing the multi-function button."
+    ],
+    specifications: [
+      { label: "Bluetooth Version", value: "5.3" },
+      { label: "Driver Size", value: "33mm" },
+      { label: "Battery Life", value: "Up to 57 hours" },
+      { label: "Charging Time", value: "2 hours" },
+      { label: "Weight", value: "157g" },
+      { label: "Frequency Response", value: "20 Hz - 20 kHz" },
+      { label: "Impedance", value: "30 ohm" },
+      { label: "Sensitivity", value: "102 dB SPL@ 1kHz 1mW" }
+    ],
+    colors: [
+      { name: "Black", image: jbl520BT_1, stock: "available" }
+    ]
+  },
+  {
+    id: 142,
+    name: "JBL Tune 720BT Wireless Headphones",
+    title: "JBL Tune 720BT Wireless Over-Ear Headphones",
+    price: 57,
+    image: jbl720BT_1,
+    images: [jbl720BT_1, jbl720BT_2, jbl720BT_3, jbl720BT_4, jbl720BT_5],
+    rating: 4.8,
+    category: "Audio",
+    brand: "JBL",
+    description: "The JBL Tune 720BT headphones wirelessly stream powerful JBL Pure Bass sound for up to 76 hours, while being comfortable and lightweight. Immerse in JBL Pure Bass sound wherever you go. The JBL Tune 720BT headphones stream powerful JBL Pure Bass sound thanks to the latest 5.3 BT technology. Easy to use, these headphones provide up to 76 hours of pure pleasure and an extra 3 hours of battery with just 5 minutes of charge. Download the free JBL Headphones App and customize your sound through the EQ, while Voice Prompts guide you through the headphones features. Manage calls, sound and volume from the earcup, thanks to the convenient button controls. If a call comes in while you are watching a video on another device, the JBL Tune 720BT seamlessly switches to your mobile device, so you never miss a call. Lightweight and comfortable even after hours of listening, the JBL Tune 720BT headphones fold flat in your backpack to follow you everywhere.",
+    features: [
+      "JBL Pure Bass Sound: Experience world-renowned JBL sound with deep, powerful bass.",
+      "Bluetooth 5.3: Stream high-quality sound wirelessly from your smartphone without messy cords.",
+      "Up to 76H Battery Life: Listen wirelessly for 76 hours and recharge the battery in as little as 2 hours.",
+      "Quick Charge: A quick 5-minute charge gives you 3 additional hours of music.",
+      "Multi-Point Connection: Effortlessly switch from one Bluetooth device to another.",
+      "Hands-Free Calls: Easily control your sound and manage your calls from your headphones with the convenient buttons on the ear-cup.",
+      "Voice Aware: Hear your own voice while talking.",
+      "Lightweight & Foldable: The lightweight materials and soft ear cushions make the headphones comfortable to wear for extended periods.",
+      "JBL Headphones App: Customize your listening experience with the free app."
+    ],
+    specifications: [
+      { label: "Bluetooth Version", value: "5.3" },
+      { label: "Driver Size", value: "40mm" },
+      { label: "Battery Life", value: "Up to 76 hours" },
+      { label: "Charging Time", value: "2 hours" },
+      { label: "Weight", value: "220g" },
+      { label: "Frequency Response", value: "20 Hz - 20 kHz" },
+      { label: "Impedance", value: "32 ohm" },
+      { label: "Sensitivity", value: "101 dB SPL@ 1kHz 1mW" }
+    ],
+    colors: [
+      { name: "Black", image: jbl720BT_1, stock: "available" },
+      { name: "Blue", image: jbl720BT_2, stock: "available" },
+      { name: "White", image: jbl720BT_3, stock: "available" }
+    ]
+  },
+  {
+    id: 143,
+    name: "JBL Go 4 Ultra-Portable Bluetooth Speaker",
+    title: "JBL Go 4 Ultra-Portable Waterproof Bluetooth Speaker",
+    price: 60,
+    image: jblGo4Black,
+    images: [jblGo4Black, jblGo4Blue, jblGo4Red, jblGo4White, jblGo4BackBlack],
+    rating: 4.9,
+    category: "Audio",
+    brand: "JBL",
+    description: "Take big JBL Pro sound wherever you go. The bold, colorful JBL Go 4 ultra-portable Bluetooth speaker fits in the palm of your hand, delivering clear, loud JBL Pro Sound with rich, punchy bass. Its newly redesigned integrated loop makes it easy to bring anywhere, and the variety of colorways means you can choose one that fits your vibe. Plus it's waterproof and dustproof, so it loves to go outside. And up to 7 hours of playtime means it will keep the good times rolling throughout a fun day trip or an evening chilling under the stars. Pair two Go 4's for stereo sound, or wirelessly connect multiple JBL Auracast-enabled speakers for even bigger sound. Crank it up and let your music take you anywhere.",
+    features: [
+      "Ultra-Portable JBL Pro Sound: Delivers clear, loud sound with rich, punchy bass in a palm-sized design.",
+      "Up to 7 Hours of Playtime: Keep the music going for longer on a single charge.",
+      "Waterproof and Dustproof (IP67): Perfect for pool parties, beach trips, or outdoor adventures.",
+      "Multi-Speaker Connection: Pair two Go 4s for stereo sound or connect multiple Auracast-enabled speakers.",
+      "Bluetooth 5.3: Seamless wireless streaming with the latest Bluetooth technology.",
+      "Redesigned Integrated Loop: Easy to carry or clip onto your bag.",
+      "Vibrant Color Options: Choose a color that fits your style and vibe.",
+      "Made with Recycled Materials: Incorporates post-consumer recycled plastic and fabric."
+    ],
+    specifications: [
+      { label: "Output Power", value: "4.2W" },
+      { label: "Frequency Response", value: "90 Hz – 20 kHz" },
+      { label: "Bluetooth Version", value: "5.3" },
+      { label: "Battery Life", value: "Up to 7 hours" },
+      { label: "Charging Time", value: "3 hours" },
+      { label: "Water/Dust Rating", value: "IP67" },
+      { label: "Dimensions", value: "9.4 x 7.8 x 4.2 cm" },
+      { label: "Weight", value: "0.19 kg" }
+    ],
+    colors: [
+      { name: "Black", image: jblGo4Black, stock: "available" },
+      { name: "Blue", image: jblGo4Blue, stock: "available" },
+      { name: "Red", image: jblGo4Red, stock: "available" },
+      { name: "White", image: jblGo4White, stock: "available" }
+    ]
+  },
+  {
+    id: 144,
+    name: "JBL PartyBox Club 120",
+    title: "JBL PartyBox Club 120 Portable Speaker with Lights",
+    price: 370,
+    image: jblPartyBox120Black,
+    images: [jblPartyBox120Black, jblPartyBox120White, jblPartyBox120TopWhite],
+    rating: 4.9,
+    category: "Audio",
+    brand: "JBL",
+    description: "The JBL PartyBox Club 120 turns any space to party, and vibe. Powerful JBL Pro Sound fills the air while an entrancing lightshow of starry lights, cool light trails, and strobe effects syncs to your beat. Instantly pair any Bluetooth device and stream your favorite party playlist, or use the mic and guitar inputs to share your own sound. Either way, you can steer the party's flow with fun interactive party effects using the JBL PartyBox app. A folding ergonomic handle makes the PartyBox Club 120 easy to take with you anywhere, and the splash-proof construction means it won't be troubled by a little rain. It delivers up to 12 hours of playtime—and if the party's still flowing by then, just swap out the replaceable battery and keep the music and lights going strong. For an even bigger time, stereo pair two JBL PartyBox Club 120s for a wider soundstage, or use the JBL PartyBox app to connect multiple JBL Auracast-enabled speakers wirelessly. Roll up to the party with the JBL PartyBox Club 120.",
+    features: [
+      "Powerful JBL Pro Sound: Fills the air with clear, dynamic sound and deep bass.",
+      "Futuristic Lightshow: Starry lights, light trails, and strobe effects sync to your beat.",
+      "Up to 12 Hours of Playtime: Keep the party going all night long.",
+      "Replaceable Battery: Swap out the battery (sold separately) to keep the music playing indefinitely.",
+      "Guitar & Mic Inputs: Plug in a guitar and microphone to jam along or host karaoke.",
+      "Splashproof (IPX4): Perfect for outdoor parties, rain or shine.",
+      "AI Sound Boost: Optimizes sound output for maximum impact and clarity.",
+      "Multi-Speaker Connection: Pair two speakers for stereo sound or wirelessly connect multiple Auracast-enabled speakers.",
+      "JBL PartyBox App: Control the music, adjust EQ, and customize the lightshow."
+    ],
+    specifications: [
+      { label: "Output Power", value: "160W" },
+      { label: "Frequency Response", value: "40 Hz - 20 kHz (-6dB)" },
+      { label: "Bluetooth Version", value: "5.3" },
+      { label: "Battery Life", value: "Up to 12 hours" },
+      { label: "Charging Time", value: "3.5 hours" },
+      { label: "Water Resistance", value: "IPX4" },
+      { label: "Dimensions", value: "28.8 x 57 x 29.7 cm" },
+      { label: "Weight", value: "11.05 kg" }
+    ],
+    colors: [
+      { name: "Black", image: jblPartyBox120Black, stock: "available" },
+      { name: "White", image: jblPartyBox120White, stock: "available" }
     ]
   },
   {
@@ -2424,6 +2661,94 @@ export const phoneAccessories: Product[] = [
       { label: "In Box", value: "Cooler, 5A cable, Magnetic sheet" }
     ]
   },
+  // Original Samsung Adapter 65W (ID: 231)
+  {
+    id: 231,
+    name: "Original Samsung Adapter 65W",
+    title: "Original Samsung 65W Power Adapter - Triple Device Fast Charging",
+    price: 30,
+    image: samsungAdapter65W,
+    rating: 4.9,
+    category: "Accessories",
+    brand: "Samsung",
+    secondaryCategories: ["Charging", "Electronics"],
+    description: "Get 3 devices charging—all at the same time. Go for the fast charge—with speed, stability, and power. Universal Compatibility. Features (USB-C1) Super Fast Charging 2.0 max. 45 W, PD 3.0 PDO max. 65 W, PPS max. 45 W / (USB-C2) Super Fast Charging max. 25 W, PD 3.0 PDO,PPS max. 25 W / (USB-A) AFC,QC max. 15 W / (C1+C2) 40 W + 25 W / (C1+A) 50 W + 15 W / (C2+A) 25 W + 15 W / (all) 35 W + 25 W + 15 W. Interface USB-C x2, USB-A. Packaging Contents Power Adapter, Quick Start Guide.",
+    features: [
+      "Triple Device Charging: Charge up to 3 devices simultaneously with multiple output options",
+      "Super Fast Charging 2.0: USB-C1 delivers up to 45W for compatible Samsung devices",
+      "Power Delivery 3.0: USB-C1 supports PD 3.0 up to 65W for laptops and other high-power devices",
+      "PPS Technology: Programmable Power Supply up to 45W for optimized charging efficiency",
+      "Universal Compatibility: Works with Samsung, Apple, Google, and other USB-C devices",
+      "Multiple Port Options: 2x USB-C ports and 1x USB-A port for versatile connectivity",
+      "Smart Power Distribution: Intelligently allocates power based on connected devices",
+      "Compact Design: Sleek and portable design perfect for travel and home use",
+      "Safety Features: Built-in protection against overcharging, overheating, and short circuits",
+      "Quick Start Guide: Includes comprehensive instructions for optimal use"
+    ],
+    specifications: [
+      { label: "Brand", value: "Samsung" },
+      { label: "Model", value: "Original 65W Power Adapter" },
+      { label: "Total Power Output", value: "65W maximum" },
+      { label: "USB-C1 Output", value: "Super Fast Charging 2.0 max 45W, PD 3.0 max 65W, PPS max 45W" },
+      { label: "USB-C2 Output", value: "Super Fast Charging max 25W, PD 3.0 max 25W, PPS max 25W" },
+      { label: "USB-A Output", value: "AFC, QC max 15W" },
+      { label: "Dual Port Output (C1+C2)", value: "40W + 25W" },
+      { label: "Dual Port Output (C1+A)", value: "50W + 15W" },
+      { label: "Dual Port Output (C2+A)", value: "25W + 15W" },
+      { label: "All Ports Simultaneous", value: "35W + 25W + 15W" },
+      { label: "Interface", value: "USB-C x2, USB-A x1" },
+      { label: "Compatibility", value: "Samsung devices, laptops, smartphones, tablets" },
+      { label: "Safety Features", value: "Overcharge, overheating, short circuit protection" },
+      { label: "Packaging", value: "Power Adapter, Quick Start Guide" },
+      { label: "Color", value: "Black" },
+      { label: "Dimensions", value: "Compact and portable" }
+    ]
+  },
+  // Apple Original Adapter 20W (ID: 232)
+  {
+    id: 232,
+    name: "Apple Original Adapter 20W",
+    title: "Apple Original 20W USB-C Power Adapter for iPhone, iPad - Fast Charging",
+    price: 25,
+    image: appleAdapter20W,
+    rating: 4.9,
+    category: "Accessories",
+    brand: "Apple",
+    secondaryCategories: ["Charging", "Electronics"],
+    description: "Charge your new iPhone or iPad with no-worry about damaging it using the original Apple 20W USB-C wall adapter! Use it for fast charging of your iPhone 12 series, from 0% to over 50% in just 30min. It is designed with a Type-C interface with a maximum output of 20W. Original Apple 20W USB-C power adapter - A powerful and reliable charger for iPhone, iPad. The Apple USB-C power adapter supports fast charging. It comes without the charging cable – you need to use your own cable.",
+    features: [
+      "Original Apple 20W USB-C power adapter with authentic Apple quality",
+      "Fast Charging Capability: Charge iPhone 12 series from 0% to over 50% in just 30 minutes",
+      "Type-C Interface: Modern USB-C design with maximum 20W output",
+      "Powerful and Reliable: Designed specifically for iPhone and iPad fast charging",
+      "Universal Fast Charging Support: Compatible with PD 3.0 and other fast charging protocols",
+      "Compact Design: Small and lightweight perfect for travel and everyday use",
+      "Apple Quality Assurance: Original Apple product with warranty and support",
+      "Safety Certified: Built-in protection against overcharging and overheating",
+      "Energy Efficient: Optimized power delivery for minimal energy waste",
+      "Cable Not Included: Use your existing USB-C to Lightning or USB-C cable"
+    ],
+    specifications: [
+      { label: "Brand", value: "Apple" },
+      { label: "Model", value: "Original 20W USB-C Power Adapter" },
+      { label: "Power Output", value: "20W maximum" },
+      { label: "Interface", value: "USB-C (Type-C)" },
+      { label: "Fast Charging", value: "0% to 50% in 30 minutes (iPhone 12 series)" },
+      { label: "Charging Protocol", value: "PD 3.0, USB Power Delivery" },
+      { label: "Input Voltage", value: "100-240V AC" },
+      { label: "Frequency", value: "50-60Hz" },
+      { label: "Cable Included", value: "No (use your own USB-C cable)" },
+      { label: "Color", value: "White" },
+      { label: "Dimensions", value: "Compact and portable" },
+      { label: "Weight", value: "Lightweight design" },
+      { label: "Safety Features", value: "Overcharge, overheating, short circuit protection" },
+      { label: "Warranty", value: "Apple warranty included" },
+      { label: "Certification", value: "Apple certified original product" },
+      { label: "iPhone Compatibility", value: "iPhone 12 series, iPhone 11 series, iPhone XS/XR/X/8/SE" },
+      { label: "iPad Compatibility", value: "iPad Air, iPad Pro, iPad Mini, iPad 10.2" },
+      { label: "Device Support", value: "All USB-C compatible Apple devices" }
+    ]
+  }
 ];
 
 // Smartphone products
@@ -8441,6 +8766,203 @@ export const wearablesProducts: Product[] = [
       { name: "Black", image: mibroA3Black, stock: "available" }
     ]
   },
+  // Kieslect KS Pro (ID: 225)
+  {
+    id: 225,
+    name: "Kieslect Calling Watch Ks Pro",
+    title: "Kieslect Ks Pro Smartwatch - 2.01\" Super Large AMOLED, Calling, IP68",
+    price: 65,
+    image: kieslectKSPro1,
+    images: [kieslectKSPro1, kieslectKSPro2, kieslectKSPro3, kieslectKSPro4],
+    rating: 4.8,
+    category: "Wearables",
+    brand: "Kieslect",
+    secondaryCategories: ["Smartwatches", "Fitness"],
+    description: "The Kieslect Ks Pro features a stunning 2.01\" Super Large AMOLED class-leading screen with high resolution, powered by Kieslect OS for a smooth user experience. This smartwatch offers stable and clear Bluetooth 5.2 calling, an abnormal heart rate alert for health safety, and live smart features including an AI Voice Assistant. With 100 sports modes and IP68 waterproof rating, it's ready for any activity. Enjoy built-in games, efficient message replies, convenient split-screen multitasking, and features like Find My Phone/Watch. Smart notifications keep you connected without reaching for your phone.",
+    features: [
+      "2.01\" Super Large AMOLED Display: Vivid and clear visuals.",
+      "Powered by Kieslect OS: Smooth and responsive interface.",
+      "Stable & Clear BT5.2 Calling: High-quality calls directly from your wrist.",
+      "Abnormal Heart Rate Alert: Monitors your heart rate and alerts you to irregularities.",
+      "100 Sports Modes: Comprehensive tracking for various activities.",
+      "IP68 Waterproof: Resistant to dust and water immersion.",
+      "Live Smart with AI Voice Assistant: Hands-free control and assistance.",
+      "Built-in Games: Entertainment on your wrist.",
+      "Convenient Split Screen: Multitasking made easy.",
+      "Efficient Message Reply: Quick responses to notifications.",
+      "Find My Phone/Watch: Locate your devices easily.",
+      "Smart Notification: Stay updated with apps and messages."
+    ],
+    specifications: [
+      { label: "Display", value: "2.01\" Super Large AMOLED" },
+      { label: "OS", value: "Kieslect OS" },
+      { label: "Calling", value: "Bluetooth 5.2 (Stable & Clear)" },
+      { label: "Health", value: "Abnormal Heart Rate Alert" },
+      { label: "Sports Modes", value: "100 Modes" },
+      { label: "Water Resistance", value: "IP68" },
+      { label: "Smart Features", value: "AI Voice Assistant, Split Screen, Games, Message Reply" }
+    ],
+    colors: [
+      { name: "Standard", image: kieslectKSPro1, stock: "available" }
+    ]
+  },
+  // Kieslect Ks2 (ID: 226)
+  {
+    id: 226,
+    name: "Kieslect Calling Smart Watch Ks2",
+    title: "Kieslect Ks2 Smartwatch - 2.01\" FHD AMOLED, 3ATM Waterproof, Kie OS",
+    price: 70,
+    image: kieslectKs2Main,
+    images: [kieslectKs2Main, kieslectKs2_1, kieslectKs2_2, kieslectKs2_3],
+    rating: 4.8,
+    category: "Wearables",
+    brand: "Kieslect",
+    secondaryCategories: ["Smartwatches", "Fitness"],
+    description: "The Kieslect KS2 Calling Smart Watch offers a stylish design and advanced health tracking features. It sports a 2.01\" FHD AMOLED Super Dynamic Display (410x502 resolution) in a square aluminum body. The watch runs on Kie OS and supports cloud-based watch faces. With comprehensive connectivity via Bluetooth v5.3, it ensures stable calls and smart notifications. Health features include 24H Heart Rate monitoring, SpO2 monitoring, and Sleep Quality analysis. It comes with 100+ workout modes, 3ATM water resistance, and a 300mAh battery offering 3-4 days of regular use (up to 10 days standby).",
+    features: [
+      "2.01\" FHD AMOLED Display: Large, clear screen with 410x502 resolution.",
+      "Kie OS: Smooth reliable performance with cloud-based watch faces.",
+      "Bluetooth v5.3: Stable connection for clear calls and notifications.",
+      "Comprehensive Health Monitoring: 24H Heart Rate, SpO2, and Sleep tracking.",
+      "100+ Workout Modes: Running, Cycling, Swimming, and many more.",
+      "3ATM Water Resistance: Suitable for daily use and light water activities.",
+      "3-4 Days Battery Life: 300mAh battery for consistent performance.",
+      "Premium Design: Aluminum body with magnetic/silicone strap."
+    ],
+    specifications: [
+      { label: "Display", value: "2.01\" FHD AMOLED (410x502)" },
+      { label: "Processor", value: "Kie OS" },
+      { label: "Connection", value: "Bluetooth v5.3" },
+      { label: "Water Resistance", value: "3ATM" },
+      { label: "Battery", value: "300mAh (3-4 days)" },
+      { label: "Body Material", value: "Aluminum" },
+      { label: "Strap", value: "22mm Magnetic/Silicone" },
+      { label: "Sensors", value: "Heart Rate, SpO2, Sleep" },
+      { label: "Charging", value: "2.5 Hours" }
+    ],
+    colors: [
+      { name: "Standard", image: kieslectKs2Main, stock: "available" }
+    ]
+  },
+  // Kieslect Ks3 (ID: 227)
+  {
+    id: 227,
+    name: "Kieslect Calling Smart Watch Ks3",
+    title: "Kieslect Ks3 Smartwatch - 2.1\" Curved AMOLED, Dual-Core GPS, 5ATM Waterproof",
+    price: 75,
+    image: kieslectKs3Main,
+    images: [kieslectKs3Main, kieslectKs3_1, kieslectKs3_2, kieslectKs3_3],
+    rating: 4.9,
+    category: "Wearables",
+    brand: "Kieslect",
+    secondaryCategories: ["Smartwatches", "Fitness", "Premium"],
+    description: "The Kieslect Ks3 features a massive 2.1\" Adaptive Curved AMOLED display with a 60Hz refresh rate for ultra-smooth visuals. It boasts precision dual-core GPS positioning supporting 6 satellite systems for accurate tracking. With 24-hour health monitoring, 5ATM waterproof rating, and 150+ sports modes, it's the ultimate fitness companion. The spin navigation wheel and 3D floating interface provide an intuitive user experience. Enjoy clear and stable Bluetooth calling and up to 2 weeks of battery life.",
+    features: [
+      "2.1\" Adaptive Curved AMOLED Display: Large, vibrant screen with 60Hz refresh rate.",
+      "Precision GPS Positioning: Supports 6 satellite systems for accurate tracking.",
+      "Clear and Stable Bluetooth Calling: Stay connected with high-quality calls.",
+      "24 Hours Health Monitoring: Continuous heart rate, SpO2, and sleep tracking.",
+      "5ATM Waterproof: Swim-proof and durable for water activities.",
+      "150+ Sports Modes: Comprehensive tracking for every workout.",
+      "Spin Navigation Wheel: Easy and intuitive menu navigation.",
+      "3D Floating Interface: Modern and smooth UI experience.",
+      "Up to 2 Weeks Battery Life: Long-lasting performance on a single charge.",
+      "Android and iOS Compatible: Works seamlessly with both platforms."
+    ],
+    specifications: [
+      { label: "Display", value: "2.1\" Adaptive Curved AMOLED, 60Hz" },
+      { label: "GPS", value: "Dual-core, 6 Satellite Systems" },
+      { label: "Calling", value: "Bluetooth Calling" },
+      { label: "Water Resistance", value: "5ATM" },
+      { label: "Sports Modes", value: "150+" },
+      { label: "Navigation", value: "Spin Wheel" },
+      { label: "Battery Life", value: "Up to 2 weeks" },
+      { label: "Compatibility", value: "Android & iOS" }
+    ],
+    colors: [
+      { name: "Standard", image: kieslectKs3Main, stock: "available" }
+    ]
+  },
+  // Kieslect Kr2 (ID: 228)
+  {
+    id: 228,
+    name: "Kieslect Smart Calling Watch Kr2",
+    title: "Kieslect Kr2 Smartwatch - Dual Core, 1.43\" FHD AMOLED, 24/7 Health Management",
+    price: 80,
+    image: kieslectKr2Main,
+    images: [kieslectKr2Main, kieslectKr2_1, kieslectKr2_2, kieslectKr2_3],
+    rating: 4.8,
+    category: "Wearables",
+    brand: "Kieslect",
+    secondaryCategories: ["Smartwatches", "Fitness", "Premium"],
+    description: "The Kieslect Kr2 is powered by Dual Core technology, delivering Triple Speed performance with a 60 FPS refresh rate and 30% lower power consumption. It features a 1.43\" FHD AMOLED display with an Always-On Display (AOD) and 1000 nits brightness. The watch offers advanced 24/7 health management with an upgraded biometric sensor, 100+ sports modes, and one-step pairing for clear Bluetooth calling. With 3 rotating digital crowns, IP68 water resistance, and up to 50 days battery life in saver mode, the Kr2 is designed for a healthier, smarter lifestyle.",
+    features: [
+      "Dual Core Technology: High performance (240MHz) and low power consumption (96MHz).",
+      "1.43\" FHD AMOLED Display: 466x466 resolution, 1000 nits brightness, and AOD support.",
+      "2.5D GPU Super Dynamic Display: Vibrant UI with 60 FPS refresh rate.",
+      "Advanced Biometric Sensor: Collects 35% more data for 40% better heart rate accuracy.",
+      "24/7 Health Management: Monitors heart rate, SpO2, stress, sleep, and body energy.",
+      "One-Step Pairing & Calls: Bluetooth 5.3 with 2-in-1 calling chipset.",
+      "100+ Sports Modes: Comprehensive tracking for fitness enthusiasts.",
+      "3 Rotating Digital Crowns: Easy navigation for brightness, menus, and modes.",
+      "Music Playback & Control: Enjoy your tunes directly from your wrist.",
+      "4 Built-in Mini Games: Entertainment on the go."
+    ],
+    specifications: [
+      { label: "Display", value: "1.43\" FHD AMOLED, 1000 nits" },
+      { label: "Processor", value: "Dual Core (240MHz/96MHz)" },
+      { label: "Refresh Rate", value: "60 FPS" },
+      { label: "Calling", value: "Bluetooth 5.3 (One-Step Pairing)" },
+      { label: "Sensors", value: "3-in-1 LEDs + 2 PDs" },
+      { label: "Water Resistance", value: "IP68" },
+      { label: "Sports Modes", value: "100+" },
+      { label: "Battery Life", value: "Up to 50 days (Saver Mode)" },
+      { label: "Navigation", value: "3 Rotating Crowns" }
+    ],
+    colors: [
+      { name: "Standard", image: kieslectKr2Main, stock: "available" }
+    ]
+  },
+  // Kieslect Actor Leading (ID: 229)
+  {
+    id: 229,
+    name: "Kieslect Smart Calling Watch Actor Leading",
+    title: "Kieslect Actor Leading Smartwatch - 1.6\" LTPO AMOLED, GPS, 5ATM Waterproof",
+    price: 90,
+    image: kieslectActorMain,
+    images: [kieslectActorMain, kieslectActor_1, kieslectActor_2, kieslectActor_3],
+    rating: 5.0,
+    category: "Wearables",
+    brand: "Kieslect",
+    secondaryCategories: ["Smartwatches", "Fitness", "Premium"],
+    description: "The Kieslect Actor Leading is a premium smartwatch featuring the world's biggest 1.6\" LTPO AMOLED display with 480x480 resolution, 1000 nits peak brightness, and true-to-life 16.7 million colors. It boasts a ceramic bezel refined through 140 processes for diamond-like hardness (1500HV). Equipped with highly accurate GPS (0.6m accuracy), 5ATM water resistance, and 150+ sports modes, it's built for performance. Enjoy clear Bluetooth calling, 2 hours of business meeting recording, and extended battery life up to 44 days in saver mode. Compatible with iOS and Android, including the latest Samsung devices.",
+    features: [
+      "1.6\" LTPO AMOLED Display: World's largest in class, 480x480 resolution, 347 PPI.",
+      "Ceramic Bezel: Ultra-hard (1500HV) and scratch-resistant.",
+      "Accurate GPS: Precision positioning within 0.6 meters.",
+      "Business Meeting Recording: Records up to 2 hours of audio.",
+      "Premium Design: Stainless steel buttons and strap (with detachment tool).",
+      "5ATM Waterproof: Swim-proof up to 50 meters.",
+      "Clear & Stable Bluetooth Calling: Stay connected with message notifications.",
+      "150+ Sports Modes: Comprehensive tracking for all your activities.",
+      "Long Battery Life: Up to 44 days in energy-saving mode.",
+      "Wide Compatibility: Works seamlessly with iOS and Android."
+    ],
+    specifications: [
+      { label: "Display", value: "1.6\" LTPO AMOLED, 1000 nits" },
+      { label: "Resolution", value: "480x480 pixels" },
+      { label: "Bezel", value: "Ceramic (1500HV hardness)" },
+      { label: "GPS Accuracy", value: "0.6 meters" },
+      { label: "Water Resistance", value: "5ATM (50m)" },
+      { label: "Sports Modes", value: "150+" },
+      { label: "Battery Life", value: "Up to 44 days (Saver Mode)" },
+      { label: "Recording", value: "Up to 2 hours" },
+      { label: "Compatibility", value: "Android & iOS" }
+    ],
+    colors: [
+      { name: "Standard", image: kieslectActorMain, stock: "available" }
+    ]
+  },
   // Mibro Watch T2 (ID: 222)
   {
     id: 222,
@@ -8683,6 +9205,70 @@ export const iphoneCases: Product[] = [
       { name: "Purple", image: siliconeStickyGripPurple },
       { name: "Heavy Pink", image: siliconeStickyGripHeavyPink }
     ]
+  },
+  // Samsung Galaxy Watch 3 (ID: 230)
+  {
+    id: 230,
+    name: "Samsung Galaxy Watch 3",
+    title: "Samsung Galaxy Watch 3 - Style You Can Count On with Military-Grade Durability",
+    price: 80, // Base price for 41mm, 45mm is $90
+    image: samsungWatch3Black,
+    images: [samsungWatch3Black, samsungWatch3Bronze, samsungWatch3Silver],
+    rating: 4.8,
+    category: "Wearables",
+    brand: "Samsung",
+    secondaryCategories: ["Smartwatches", "Fitness", "Premium"],
+    description: "STYLE YOU CAN COUNT ON: Galaxy Watch3 combines style—two sizes, two finishes, three colors and, 50,000 plus watch faces-with military-grade durability and water resistance. LEAVE YOUR PHONE BEHIND: Galaxy Watch3 gives you the freedom to call, text, stream music and get notifications via Bluetooth connectivity. You can share the PDF report of your ECG recording with your health care provider using the Samsung Health Monitor app on your compatible Galaxy phone. BATTERY BUILT FOR ENDURANCE: The Galaxy Watch3's long-lasting battery can go for more than a day on a single charge, and you can always get a quick boost from your compatible Galaxy phone with Wireless Power Share. STRONGER INSIGHTS. NEXT-LEVEL FITNESS: Spend your time moving while Galaxy Watch3 tracks seven popular activities automatically. Get more out of each movement thanks to built-in run coaching. LEVEL UP YOUR DOWNTIME: Galaxy Watch3's automatic sleep tracker offers insights on how to get a better night's sleep. It also monitors your stress level and helps you recenter with breathing guides. SMART WATCH. SMART LIFE: Integrated Bixby voice functionality can read your texts, make a call or initiate coaching on command and on the go. Samsung Pay lets you leave home without a wallet. And a multilayered defense-grade security platform keeps all your data safe. ANDROID/iOS COMPATIBLE: Pairs seamlessly with Android devices and select iOS devices.",
+    features: [
+      "Style You Can Count On: Two sizes (41mm & 45mm), two finishes, three colors, 50,000+ watch faces",
+      "Military-Grade Durability: Built to withstand harsh conditions with water resistance",
+      "Leave Your Phone Behind: Call, text, stream music, and get notifications via Bluetooth",
+      "ECG Monitoring: Share PDF reports with healthcare providers via Samsung Health Monitor app",
+      "Battery Built for Endurance: More than a day on single charge, Wireless Power Share compatible",
+      "Next-Level Fitness: Tracks 7 popular activities automatically with built-in run coaching",
+      "Advanced Sleep Tracking: Automatic sleep tracker with insights for better rest",
+      "Stress Management: Monitors stress levels with breathing guides for recentering",
+      "Smart Life Integration: Bixby voice functionality for texts, calls, and coaching",
+      "Samsung Pay: Leave home without a wallet with contactless payments",
+      "Defense-Grade Security: Multilayered security platform keeps your data safe",
+      "Cross-Platform Compatibility: Pairs with Android devices and select iOS devices"
+    ],
+    specifications: [
+      { label: "Brand", value: "Samsung" },
+      { label: "Model", value: "Galaxy Watch 3" },
+      { label: "Available Sizes", value: "41mm, 45mm" },
+      { label: "Display", value: "Super AMOLED" },
+      { label: "Water Resistance", value: "5ATM + IP68" },
+      { label: "Military Grade", value: "MIL-STD-810G" },
+      { label: "Battery Life", value: "More than a day" },
+      { label: "Charging", value: "Wireless Power Share compatible" },
+      { label: "Health Features", value: "ECG, Heart Rate, Sleep, Stress, SpO2" },
+      { label: "Connectivity", value: "Bluetooth 5.0, Wi-Fi" },
+      { label: "Voice Assistant", value: "Bixby" },
+      { label: "Payment", value: "Samsung Pay (NFC)" },
+      { label: "Watch Faces", value: "50,000+ options" },
+      { label: "Compatibility", value: "Android devices, select iOS devices" },
+      { label: "Colors", value: "Black, Bronze, Silver" }
+    ],
+    sizes: [
+      { 
+        name: "41mm", 
+        price: 80,
+        stock: "available",
+        description: "Compact size for smaller wrists"
+      },
+      { 
+        name: "45mm", 
+        price: 90,
+        stock: "available",
+        description: "Larger size for better visibility and battery life"
+      }
+    ],
+    colors: [
+      { name: "Black", image: samsungWatch3Black, stock: "available" },
+      { name: "Bronze", image: samsungWatch3Bronze, stock: "available" },
+      { name: "Silver", image: samsungWatch3Silver, stock: "available" }
+    ]
   }
 ];
 
@@ -8742,12 +9328,11 @@ export const gamingConsoles: Product[] = [
     id: 502,
     name: "Sony PlayStation 5 Slim Console",
     title: "Sony PlayStation 5 Slim - 1TB SSD with 4K 120Hz Gaming & Ray Tracing",
-    price: "0.00",
+    price: 580,
     image: ps5Slim,
     rating: 4.9,
     category: "Gaming",
     brand: "Sony",
-    isPreorder: true,
     description: "Step into the next generation of gaming with the PlayStation 5 Slim Console featuring a spacious 1TB SSD, cutting-edge AMD RDNA 2 graphics with ray tracing, and breathtaking 4K gaming at up to 120fps. The PS5 Slim is 30% smaller by volume than the original PS5 while delivering the same incredible performance with an 8-core AMD Ryzen Zen 2 CPU, 16GB GDDR6 RAM, and immersive Tempest 3D AudioTech. Experience lightning-fast load times, revolutionary DualSense controller with haptic feedback and adaptive triggers, and a massive library of exclusive next-gen titles. Includes a detachable 4K Blu-ray disc drive and pre-installed ASTRO's PLAYROOM game.",
     features: [
       "30% More Compact Design: Sleek, slim profile that's 30% smaller by volume and lighter than the original PS5, saving space in your entertainment center.",
@@ -8787,6 +9372,45 @@ export const gamingConsoles: Product[] = [
       { label: "Pre-installed Game", value: "ASTRO's PLAYROOM" },
       { label: "Vertical Stand", value: "Sold separately" },
       { label: "Condition", value: "Brand New (Preorder)" }
+    ]
+  },
+  {
+    id: 503,
+    name: "Call of Duty: Black Ops 6",
+    title: "Call of Duty: Black Ops 6 - PS4 Tactical Espionage Shooter Game",
+    price: 75,
+    image: codBlackOps6,
+    rating: 4.9,
+    category: "Gaming",
+    brand: "Sony",
+    description: "Immerse yourself in the shadowy world of covert operations in Call of Duty: Black Ops 6 for PS4, where treachery, suspense, and tactical warfare collide. Set in the early '90s, as the Cold War fades and new threats arise, Black Ops veterans like Frank Woods are cast into an intense life on the run. Stripped of their status and hunted by their own government, these former heroes must navigate a web of deception, where allies and enemies blur in a tale of espionage and survival. Crafted by Treyarch and Raven, Black Ops 6 offers a gripping story campaign that unfolds with stunning realism, throwing players into daring missions, spy intrigue, and relentless action.",
+    features: [
+      "Omnimovement: Enjoy unparalleled flexibility in movement and control, allowing seamless combat maneuvers in all directions for an edge in every mission.",
+      "Dynamic Gameplay: Conquer diverse environments with strategic heists, stealth missions, and explosive battles that keep each scenario fresh and intense.",
+      "Multiplayer Excellence: Dive into 16 distinct maps, with 12 core maps for standard 6v6 gameplay and 4 Strike maps for smaller, more tactical encounters.",
+      "Round-Based Zombies Mode: Experience thrilling zombie combat on two new maps at launch, with additional content planned for post-launch, offering endless replayability.",
+      "Gripping Story Campaign: Set in the early '90s as the Cold War fades, featuring Black Ops veterans on the run from their own government.",
+      "Advanced Tactical Warfare: Engage in intense covert operations with cutting-edge weaponry and tactical equipment.",
+      "Stunning Realism: Experience breathtaking visuals and immersive gameplay designed specifically for PS4 hardware.",
+      "Spy Espionage Elements: Navigate a web of deception where allies and enemies blur in this tale of espionage and survival."
+    ],
+    specifications: [
+      { label: "Game Title", value: "Call of Duty: Black Ops 6" },
+      { label: "Platform", value: "PS4" },
+      { label: "Developers", value: "Treyarch, Raven" },
+      { label: "Genre", value: "Action, Shooter, Espionage" },
+      { label: "Campaign Mode", value: "Single-player" },
+      { label: "Multiplayer Maps", value: "16 maps (12 core, 4 Strike maps)" },
+      { label: "Zombies Mode", value: "Round-Based with new maps at launch" },
+      { label: "Release Setting", value: "Early 1990s, Post-Cold War era" },
+      { label: "Main Characters", value: "Frank Woods and Black Ops veterans" },
+      { label: "Game Engine", value: "Custom Treyarch engine optimized for PS4" },
+      { label: "Display Resolution", value: "Up to 1080p on PS4" },
+      { label: "Frame Rate", value: "60 FPS target" },
+      { label: "Online Multiplayer", value: "Yes, with PS Plus subscription" },
+      { label: "Storage Required", value: "Approximately 150GB (subject to change)" },
+      { label: "Language Support", value: "Multiple languages with subtitles" },
+      { label: "Age Rating", value: "M for Mature (17+)" }
     ]
   }
 ];

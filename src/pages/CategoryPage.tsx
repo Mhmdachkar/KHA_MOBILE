@@ -30,6 +30,7 @@ import fonengLogo from "@/assets/logo's/foneng logo.jpg";
 import greenLionLogo from "@/assets/logo's/green lion logo.jpg";
 import hocoLogo from "@/assets/logo's/hoco logo.webp";
 import samsungLogo from "@/assets/logo's/samsung logo.avif";
+import sonyLogo from "@/assets/logo's/sony logo.png";
 import smartLogo from "@/assets/smart logo.jpg";
 import tecnoLogo from "@/assets/techno logo.jpg";
 import xiaomiLogo from "@/assets/logo's/xiaomi logo.png";
@@ -49,6 +50,7 @@ const brandLogoMap: Record<string, string> = {
   "REDMAGIC": redmagicLogo,
   "Oscal": oscalLogo,
   "Infinix": infinixLogo,
+  "Sony": sonyLogo,
 };
 
 // Quote map for each category
@@ -474,6 +476,24 @@ const CategoryPage = () => {
               price: getDisplayPrice(p)
             }))
           ];
+        }
+        // Add Green Lion products for this category (including secondary categories)
+        const greenLionCategory = getGreenLionProductsByCategory(categoryDisplayName);
+        if (Array.isArray(greenLionCategory) && greenLionCategory.length > 0) {
+          products = [...products, ...greenLionCategory.map(p => ({
+            id: p.id,
+            name: p.name,
+            title: p.title,
+            price: getDisplayPrice(p),
+            image: p.images[0],
+            images: p.images,
+            rating: p.rating,
+            category: p.category,
+            brand: p.brand,
+            description: p.description,
+            features: p.features,
+            isPreorder: p.isPreorder
+          }))];
         }
         // General sort by price
         products.sort((a, b) => b.price - a.price);
