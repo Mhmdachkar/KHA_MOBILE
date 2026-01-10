@@ -41,7 +41,7 @@ const STREAMING_SERVICES: StreamingService[] = [
       // Duration only (account type chosen at checkout)
       { id: 1, duration: "1 month", price: 5 },
       { id: 2, duration: "3 months", price: 10 },
-      { id: 3, duration: "1 year", price: 30 },
+      { id: 3, duration: "1 year", price: 35 },
     ]
   },
   {

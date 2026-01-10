@@ -36,31 +36,98 @@ const Accessories = () => {
     document.body.scrollTop = 0;
   }, []);
 
-  // Combine all accessory products (existing + Green Lion)
+  // Combine all accessory products from all sources
   // Exclude Audio, Gaming, and Wearables categories
-  const allAccessoryProducts = [
-    // Filter phoneAccessories to exclude Audio, Gaming, and Wearables
-    ...phoneAccessories
+  const allAccessoryProducts = useMemo(() => {
+    const products: any[] = [];
+    
+    // Get all products with category "Accessories", "Charging", or "iPhone Cases", or secondaryCategories includes "Accessories"
+    const accessoriesProducts = getProductsByCategory("Accessories");
+    const chargingProducts = getProductsByCategory("Charging");
+    const iphoneCasesProducts = getProductsByCategory("iPhone Cases");
+    
+    // Combine and deduplicate by ID
+    const productMap = new Map<number, any>();
+    
+    // Add Accessories products (excluding Audio, Gaming, Wearables)
+    accessoriesProducts.forEach((product) => {
+      const category = product.category?.toLowerCase();
+      if (category !== "audio" && category !== "gaming" && category !== "wearables") {
+        productMap.set(product.id, {
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.image,
+          images: product.images && product.images.length > 0 ? product.images : [product.image],
+          rating: product.rating,
+          category: product.category,
+          brand: product.brand || "Other",
+        });
+      }
+    });
+    
+    // Add Charging products (they should all be accessories)
+    chargingProducts.forEach((product) => {
+      const category = product.category?.toLowerCase();
+      if (category === "charging") {
+        productMap.set(product.id, {
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.image,
+          images: product.images && product.images.length > 0 ? product.images : [product.image],
+          rating: product.rating,
+          category: product.category,
+          brand: product.brand || "Other",
+        });
+      }
+    });
+    
+    // Add iPhone Cases products (they are also accessories)
+    iphoneCasesProducts.forEach((product) => {
+      const category = product.category?.toLowerCase();
+      if (category === "iphone cases") {
+        productMap.set(product.id, {
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.image,
+          images: product.images && product.images.length > 0 ? product.images : [product.image],
+          rating: product.rating,
+          category: product.category,
+          brand: product.brand || "Other",
+        });
+      }
+    });
+    
+    // Filter phoneAccessories to exclude Audio, Gaming, and Wearables (for products not caught above)
+    phoneAccessories
       .filter((product) => {
         const category = product.category?.toLowerCase();
-        // Exclude Audio, Gaming, and Wearables
         return category !== "audio" &&
           category !== "gaming" &&
-          category !== "wearables";
+          category !== "wearables" &&
+          !productMap.has(product.id); // Skip if already added
       })
-      .map((product) => ({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        image: product.image,
-        images: [product.image], // Convert single image to array for consistency
-        rating: product.rating,
-        category: product.category,
-        brand: product.brand || "Other",
-      })),
+      .forEach((product) => {
+        productMap.set(product.id, {
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.image,
+          images: [product.image],
+          rating: product.rating,
+          category: product.category,
+          brand: product.brand || "Other",
+        });
+      });
+    
     // Filter Green Lion products to exclude Audio, Gaming, and Wearables
-    ...greenLionProducts
+    greenLionProducts
       .filter((product) => {
+        // Skip if already added
+        if (productMap.has(product.id)) return false;
+        
         // Exclude if it has Audio, Gaming, or Wearables in secondary categories
         const hasAudio = product.secondaryCategories?.some(
           (cat) => cat.toLowerCase() === "audio" ||
@@ -102,17 +169,21 @@ const Accessories = () => {
         return !hasAudio && !hasGaming && !hasWearables &&
           !isAudioProduct && !isGamingProduct && !isWearableProduct;
       })
-      .map((product) => ({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        image: product.images[0], // Use first image for grid view
-        images: product.images, // Pass full images array for hover switching
-        rating: product.rating,
-        category: product.category,
-        brand: product.brand,
-      })),
-  ];
+      .forEach((product) => {
+        productMap.set(product.id, {
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.images[0],
+          images: product.images,
+          rating: product.rating,
+          category: product.category,
+          brand: product.brand,
+        });
+      });
+    
+    return Array.from(productMap.values());
+  }, []);
 
   // Get all unique brands for the filter
   const brands = Array.from(
@@ -231,9 +302,22 @@ const Accessories = () => {
           return matchesAdvanced;
         }
         
-        // Handle "charging" - standard category matching
+        // Handle "charging" - check both category and secondaryCategories
         if (selectedCat === "charging") {
-          return category === "charging";
+          const hasChargingSecondary = product.secondaryCategories?.some(
+            (cat) => cat.toLowerCase() === "charging"
+          );
+          return category === "charging" || hasChargingSecondary ||
+            nameLower.includes("charger") ||
+            nameLower.includes("charging") ||
+            nameLower.includes("power bank") ||
+            nameLower.includes("adapter") ||
+            nameLower.includes("cable") ||
+            nameLower.includes("usb") ||
+            nameLower.includes("type-c") ||
+            nameLower.includes("lightning") ||
+            nameLower.includes("dock") ||
+            nameLower.includes("magsafe");
         }
         
         // Standard category matching for other categories

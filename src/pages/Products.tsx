@@ -313,16 +313,8 @@ const Products = () => {
         });
         break;
       default:
-        // Default: Sort by price (highest to lowest)
+        // Default: Sort by price (highest to lowest) - pure price sort
         filtered.sort((a, b) => {
-          const aIsGreenLion = isGreenLionProduct(a);
-          const bIsGreenLion = isGreenLionProduct(b);
-
-          // Green Lion products first
-          if (aIsGreenLion && !bIsGreenLion) return -1;
-          if (!aIsGreenLion && bIsGreenLion) return 1;
-
-          // Then by price (highest to lowest)
           const aPrice = typeof a.price === 'string' ? parseFloat(a.price) : a.price;
           const bPrice = typeof b.price === 'string' ? parseFloat(b.price) : b.price;
           return bPrice - aPrice;

@@ -528,6 +528,7 @@ const CategoryPage = () => {
     if (name.includes("green lion")) return "Green Lion";
     if (name.includes("xiaomi") || name.includes("redmi") || name.includes("poco")) return "Xiaomi";
     if (name.includes("sony") || name.includes("playstation") || name.includes("ps5") || name.includes("ps4")) return "Sony";
+    if (name.includes("ea sports") || name.includes("fifa") || name.includes("fc ")) return "EA SPORTS";
     return undefined;
   };
 

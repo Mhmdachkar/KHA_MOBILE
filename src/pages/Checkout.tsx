@@ -165,7 +165,7 @@ const Checkout = () => {
   // Streaming plan pricing tables
   const STREAMING_PRICING: Record<string, Record<string, Record<string, number>>> = {
     Netflix: {
-      "1 user": { "1 month": 5, "3 months": 10, "1 year": 30 },
+      "1 user": { "1 month": 5, "3 months": 10, "1 year": 35 },
       "full account": { "1 month": 15, "3 months": 35, "1 year": 110 },
     },
     Shahid: {

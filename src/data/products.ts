@@ -113,6 +113,9 @@ import ps5ControllerWhite from "@/assets/gaming/ps5 controller/ps5 controller wh
 import ps5ControllerPink from "@/assets/gaming/ps5 controller/ps5 controller pink.webp";
 import ps5ControllerRed from "@/assets/gaming/ps5 controller/ps5 controller red.webp";
 import ps5ControllerGalacticPurple from "@/assets/gaming/ps5 controller/ps5 controller  galagticc purple.webp";
+// EA SPORTS FC 26 imports
+import eaSportsFC26PS4 from "@/assets/gaming/ps4 CD/EA SPORTS - FC 26 for PS4.png";
+import eaSportsFC26PS5 from "@/assets/gaming/ps5 cd/EA SPORTS FC 26 Standard Edition PS5.webp";
 // MagSafe Charger imports
 import magsafeCharger from "@/assets/recharges/magsafe charger/magsafe charger.gif";
 import magsafeCharger2 from "@/assets/recharges/magsafe charger/magsafe chargerr.gif";
@@ -685,6 +688,7 @@ export const phoneAccessories: Product[] = [
     rating: 4.8,
     category: "Charging",
     brand: "Hoco",
+    secondaryCategories: ["Accessories"],
     description: "Stay powered up wherever you go with the Hoco Q37 IntelligentBalance Power Bank. This compact and powerful 10000mAh charger is your perfect travel companion, featuring built-in cables so you never have to worry about forgetting yours. With multiple fast-charging outputs, it can power up your devices quickly and efficiently.",
     features: [
       "10000mAh Capacity: Provides multiple charges for most smartphones.",
@@ -937,6 +941,7 @@ export const phoneAccessories: Product[] = [
     rating: 4.9,
     category: "Charging",
     brand: "Hoco",
+    secondaryCategories: ["Accessories"],
     description: "The Hoco J132A is a high-capacity powerhouse, packing 20000mAh to keep all your devices running for days. With multiple built-in cables and support for 22.5W and PD 20W fast charging, this power bank is the ultimate solution for heavy users, travelers, and families. The clear LED display lets you know exactly how much power is left.",
     features: [
       "Massive 20000mAh Capacity: Ideal for long trips, charging tablets, or powering multiple devices.",
@@ -1069,6 +1074,7 @@ export const phoneAccessories: Product[] = [
     rating: 4.8,
     category: "Charging",
     brand: "Apple",
+    secondaryCategories: ["Accessories"],
     description: "Get the fast charge your device deserves with this 25W USB-C Power Adapter and Cable Set. Designed to provide 25W of power, it's ideal for fast-charging iPhones, iPads, and other compatible devices. The set includes both the wall adapter and a durable USB-C to Lightning cable.",
     features: [
       "25W Fast Charging: Provides significantly faster charging speeds than standard adapters.",
@@ -1325,6 +1331,7 @@ export const phoneAccessories: Product[] = [
     rating: 4.8,
     category: "Charging",
     brand: "Hoco",
+    secondaryCategories: ["Accessories"],
     description: "Never run out of power with the Hoco 22.5W Super Fast Charging Power Bank. This high-capacity 10000mAh portable charger delivers blazing-fast charging speeds, capable of charging your smartphone from 0% to 50% in just 30 minutes. Perfect for travelers, students, and professionals who need reliable power on the go.",
     features: [
       "22.5W Super Fast Charging: Charges compatible devices significantly faster than standard power banks.",
@@ -1354,6 +1361,7 @@ export const phoneAccessories: Product[] = [
     rating: 4.9,
     category: "Charging",
     brand: "Apple",
+    secondaryCategories: ["Accessories"],
     description: "Charge your iPhone, iPad, and other USB-C devices at maximum speed with the official Apple USB-C 25W Power Adapter. This compact adapter is designed by Apple to deliver fast, efficient charging while maintaining safety standards. Perfect for iPhone 14 Pro Max and other compatible devices that support fast charging.",
     features: [
       "Official Apple Product: Designed and manufactured by Apple for optimal compatibility and safety.",
@@ -1382,6 +1390,7 @@ export const phoneAccessories: Product[] = [
     rating: 4.6,
     category: "Charging",
     brand: "Foneng",
+    secondaryCategories: ["Accessories"],
     description: "Fast charge your devices with the Foneng 25W USB-C Power Adapter. This reliable wall charger delivers quick charging speeds for smartphones, tablets, and other USB-C compatible devices. Compact and portable, it's perfect for home, office, or travel use.",
     features: [
       "25W Fast Charging: Rapidly charges compatible devices up to 25W power output.",
@@ -1503,6 +1512,7 @@ export const phoneAccessories: Product[] = [
     rating: 4.6,
     category: "Charging",
     brand: "Foneng",
+    secondaryCategories: ["Accessories"],
     description: "Fast charge and sync your devices with the Foneng USB-A to USB-C Cable. This durable cable supports fast charging and high-speed data transfer, making it ideal for connecting your USB-C devices to computers, power banks, or wall chargers. Built to last with quality materials and reinforced connectors.",
     features: [
       "Fast Charging Support: Enables rapid charging for compatible devices with fast charge technology.",
@@ -1531,6 +1541,7 @@ export const phoneAccessories: Product[] = [
     rating: 4.7,
     category: "Charging",
     brand: "BOROFONE",
+    secondaryCategories: ["Accessories"],
     description: "Experience reliable charging and data transfer with the BOROFONE USB-A to USB-C Cable. This premium cable is designed for durability and performance, featuring fast charging capabilities and high-speed data synchronization. Perfect for daily use with your smartphone, tablet, or other USB-C devices.",
     features: [
       "Fast Charging: Supports fast charging protocols for rapid device charging.",
@@ -1589,6 +1600,7 @@ export const phoneAccessories: Product[] = [
     rating: 4.8,
     category: "Charging",
     brand: "Samsung",
+    secondaryCategories: ["Accessories"],
     description: "Fast charge your Samsung Galaxy devices and other USB-C phones with the Samsung 25W USB-C Power Delivery Adapter. This official Samsung charger delivers optimized charging performance for Galaxy smartphones and tablets, ensuring your device charges quickly and safely.",
     features: [
       "Official Samsung Product: Designed specifically for Samsung Galaxy devices for optimal performance.",
@@ -1810,6 +1822,7 @@ export const phoneAccessories: Product[] = [
     rating: 4.8,
     category: "Phone Accessories",
     brand: "Apple",
+    secondaryCategories: ["Accessories", "Charging"],
     description: "The MagSafe Charger makes wireless charging a snap. The perfectly aligned magnets attach to your iPhone 12 or later to provide faster wireless charging up to 15W. The MagSafe Charger maintains compatibility with Qi charging, so it can be used to wirelessly charge your iPhone 8 or later, as well as AirPods models with a wireless charging case.",
     features: [
       "Magnetic Alignment: Perfectly aligned magnets attach to iPhone 12, 13, 14, 15, and 16 models.",
@@ -1864,6 +1877,7 @@ export const phoneAccessories: Product[] = [
     rating: 4.7,
     category: "Charging",
     brand: "Generic",
+    secondaryCategories: ["Accessories"],
     description: "Experience the convenience of modern charging with this premium USB-C Charge Cable. Featuring dual USB-C connectors on both ends, this cable is designed for the latest generation of smartphones, tablets, and laptops. The woven/braided exterior provides superior durability and resistance to fraying, while the tangle-free design ensures hassle-free use. Finished in a clean, matte white color that matches premium tech accessories, this cable supports USB Power Delivery (PD) for fast charging compatible devices efficiently. Perfect for iPhone 15/16, iPad Pro/Air, MacBook, Android devices, and laptops.",
     features: [
       "Dual USB-C Connectors: Features reversible USB-C connectors on both ends, making it compatible with the latest smartphones, tablets, and laptops.",
@@ -2122,7 +2136,7 @@ export const phoneAccessories: Product[] = [
     rating: 4.7,
     category: "Charging",
     brand: "Xiaomi",
-    secondaryCategories: ["Charging"],
+    secondaryCategories: ["Accessories"],
     description: "The Mi 67W SonicCharge Fast Charger Adapter delivers blazing fast 67W output for ultra-rapid charging of your Xiaomi devices. This combo includes both the wall adapter and USB cable, providing everything you need for lightning-fast charging. Compatible with Xiaomi Mi 11 and a wide range of smartphones and tablets, this charger features short circuit protection, automatic shutoff, and a lightweight travel-friendly design. Charge your devices at maximum speed with complete safety.",
     features: [
       "67W blazing fast output for ultra-rapid charging",
@@ -9469,6 +9483,84 @@ export const gamingConsoles: Product[] = [
       { name: "Cosmic Red", image: ps5ControllerRed },
       { name: "Galactic Purple", image: ps5ControllerGalacticPurple },
       { name: "Camouflage Grey", stock: "available" }
+    ]
+  },
+  {
+    id: 505,
+    name: "EA SPORTS FC 26 for PS4",
+    title: "EA SPORTS FC 26 for PlayStation 4 - Immersive Football Simulation with Ultimate Team & Career Modes",
+    price: "0.00",
+    image: eaSportsFC26PS4,
+    images: [eaSportsFC26PS4],
+    rating: 4.8,
+    category: "Gaming",
+    brand: "Sony",
+    isPreorder: true,
+    description: "EA SPORTS FC 26 for PS4 offers an immersive football simulation designed to bring fans closer to the action. Built with authentic gameplay presets and community-driven improvements, the game provides both casual and competitive players with refined mechanics, smarter AI, and improved responsiveness on the pitch. Every pass, dribble, and goal has been tuned to deliver lifelike football moments that capture the intensity of the sport. Whether building a dream squad in Football Ultimate Team™, guiding a club in Manager Live Challenges, or experiencing an enhanced Women's Career mode, EA SPORTS FC 26 ensures unmatched variety. With over 20,000 licensed players, 750 clubs, 120 stadiums, and 35+ leagues, the game delivers unparalleled authenticity and countless opportunities to play your way.",
+    features: [
+      "Dual Gameplay Presets – Switch between Authentic Gameplay for a true-to-life football feel and Competitive Gameplay for fast-paced, tactical matches.",
+      "Manager Live Challenges – Tackle real-world inspired scenarios, testing your coaching skills in short-term objectives or long-term campaigns.",
+      "Football Ultimate Team™ – Create and customize your squad with tournaments, live events, refreshed Rivals, and Champs formats.",
+      "Player Archetypes – Inspired by football legends, Archetypes add individuality to Clubs and Career Mode, letting players define their style.",
+      "True-to-Life Football – More than 20,000 players, 750+ clubs, and 35+ leagues ensure unmatched realism.",
+      "Expanded Women's Career Mode – Lead teams through five licensed leagues, including the UEFA Women's Champions League, and build a lasting legacy.",
+      "Advanced Goalkeeping – Machine learning and volumetric animations power smarter saves, improved handling, and natural reactions.",
+      "Community Feedback Updates – Enjoy refined dribbling, smarter AI positioning, improved run curves, new PlayStyles, and enhanced accessibility features."
+    ],
+    specifications: [
+      { label: "Brand", value: "EA SPORTS" },
+      { label: "Game Title", value: "EA SPORTS FC 26" },
+      { label: "Platform", value: "PlayStation 4" },
+      { label: "Publisher", value: "Electronic Arts" },
+      { label: "Category", value: "Sports video game (Football/Soccer)" },
+      { label: "Players & Clubs", value: "20,000+ players, 750+ clubs, 120+ stadiums, and 35+ leagues" },
+      { label: "Game Modes", value: "Authentic Gameplay, Competitive Gameplay, Football Ultimate Team™, Career Mode, Manager Live Challenges, Clubs" },
+      { label: "New Additions", value: "Archetypes, PlayStyles, enhanced dribbling, re-tuned AI positioning, adjusted run curves" },
+      { label: "Women's Career", value: "Five licensed leagues, UEFA Women's Champions League format, Manager Live integration" },
+      { label: "Technical Features", value: "Reinforcement-Learning goalkeeper positioning, volumetric animations, accessibility enhancements" }
+    ]
+  },
+  {
+    id: 506,
+    name: "EA SPORTS FC 26 Standard Edition for PS5",
+    title: "EA SPORTS FC 26 Standard Edition for PlayStation 5 - Overhauled Community-Shaped Football with DualSense Haptics",
+    price: "0.00",
+    image: eaSportsFC26PS5,
+    images: [eaSportsFC26PS5],
+    rating: 4.9,
+    category: "Gaming",
+    brand: "Sony",
+    isPreorder: true,
+    description: "EA SPORTS FC 26 Standard Edition on PS5 delivers overhauled, community-shaped football with two presets: Authentic (tactical) and Competitive (responsive). Refined fundamentals, tighter dribbling, smarter AI and improved goalkeeper reactions pair with new PlayStyles, Player Roles, Archetypes and Perks for Clubs and Player Career. Manager Career adds Live Challenges and dynamic markets; FUT expands with knockout Tournaments and seasonal Live Events. Includes PS4 entitlement; online features, FC Points and DualSense haptics supported.",
+    features: [
+      "Two gameplay presets: Authentic (tactical) and Competitive (responsive)",
+      "Refined fundamentals with tighter dribbling, smarter AI positioning and improved goalkeeper reactions",
+      "New progression systems: PlayStyles, Player Roles, Archetypes and Perks for Clubs and Player Career",
+      "Evolved Manager Career with Manager Live Challenges, dynamic Manager Market and season-spanning storylines",
+      "Expanded Football Ultimate Team with knockout Tournaments, seasonal Live Events and refreshed Rivals & Champs",
+      "Massive licensed roster with 20,000+ players across 750+ clubs and 35+ leagues",
+      "Cross-buy PlayStation entitlement: PS5 includes PS4 version",
+      "DualSense haptics supported and multiple PS5 accessibility options",
+      "Optional in-game purchases (FC Points)",
+      "Online features require EA account and internet connection"
+    ],
+    specifications: [
+      { label: "Brand", value: "EA SPORTS" },
+      { label: "Category", value: "Sports video game (Football/Soccer)" },
+      { label: "Edition", value: "Standard Edition (digital/physical available)" },
+      { label: "Platform", value: "PlayStation 5 (includes PlayStation 4 entitlement)" },
+      { label: "Publisher", value: "Electronic Arts (PlayStation listing: EA Swiss Sarl)" },
+      { label: "Developer", value: "EA Vancouver, EA Romania" },
+      { label: "Release Date", value: "Sep 25, 2025 (worldwide from Sep 26, 2025)" },
+      { label: "Licensed Content", value: "20,000+ players, 750+ clubs & national teams, 35+ leagues, 120+ stadiums" },
+      { label: "Modes", value: "Single-player, multiplayer, online Clubs, Manager Career, Player Career, Football Ultimate Team (FUT), Rush/5v5" },
+      { label: "FC Points", value: "Optional in-game purchases (virtual currency)" },
+      { label: "Online Requirements", value: "EA account and internet connection required for online features" },
+      { label: "Max Online Players", value: "Supports up to 22 online players" },
+      { label: "Languages", value: "English, Arabic, Chinese (Simplified, Traditional), Czech, Danish, Dutch, French (France), German, Italian, Japanese, Korean, Norwegian, Polish, Portuguese (BR, PT), Russian, Spanish (ES, MX), Swedish, Turkish, Finnish, Hungarian, Romanian" },
+      { label: "Ratings", value: "PEGI 3, ESRB Everyone" },
+      { label: "Accessibility", value: "Multiple PS5 accessibility options (high contrast visuals, subtitles, controller remapping, mono/3D audio)" },
+      { label: "Controller Features", value: "DualSense haptics supported" }
     ]
   }
 ];
