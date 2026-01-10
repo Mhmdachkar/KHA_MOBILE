@@ -521,11 +521,44 @@ const ProductDetail = () => {
     return categorizedAccessories.filter((accessory) => accessory.accessoryCategory === selectedAccessoryFilter);
   }, [categorizedAccessories, selectedAccessoryFilter]);
 
+  // Ensure scroll works after any interaction
+  useEffect(() => {
+    const ensureScrollWorks = () => {
+      // Ensure document body allows scrolling
+      if (document.body) {
+        document.body.style.overflow = '';
+        document.body.style.overflowY = 'auto';
+        document.body.style.touchAction = 'pan-y';
+      }
+      if (document.documentElement) {
+        document.documentElement.style.overflow = '';
+        document.documentElement.style.overflowY = 'auto';
+        document.documentElement.style.touchAction = 'pan-y';
+      }
+    };
+
+    // Ensure scroll works on mount
+    ensureScrollWorks();
+
+    // Re-enable scroll after any touch interaction
+    const handleTouchEnd = () => {
+      setTimeout(ensureScrollWorks, 50);
+    };
+
+    document.addEventListener('touchend', handleTouchEnd, { passive: true });
+    document.addEventListener('touchcancel', handleTouchEnd, { passive: true });
+
+    return () => {
+      document.removeEventListener('touchend', handleTouchEnd);
+      document.removeEventListener('touchcancel', handleTouchEnd);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-white w-full">
       <Header />
 
-      <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12 max-w-full overflow-x-hidden" style={{ touchAction: 'pan-y pinch-zoom' }}>
+      <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12 max-w-full overflow-x-hidden">
         {/* Breadcrumb */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -554,7 +587,6 @@ const ProductDetail = () => {
 
             <div
               className="relative aspect-square bg-white rounded-sm mb-4 sm:mb-6 overflow-hidden group border border-border"
-              style={{ touchAction: "pan-y pinch-zoom" }}
             >
               {/* Dynamic Background Animation behind the product */}
               <motion.div
@@ -588,7 +620,7 @@ const ProductDetail = () => {
                 src={productImages[selectedImage]}
                 alt={product.name}
                 className="h-full w-full object-contain p-4 sm:p-6 md:p-8 transition-opacity duration-300 relative z-10 cursor-pointer hover:opacity-90"
-                style={{ maxHeight: "100%", maxWidth: "100%", margin: "0 auto", touchAction: "pan-y pinch-zoom" }}
+                style={{ maxHeight: "100%", maxWidth: "100%", margin: "0 auto" }}
                 onClick={() => setIsLightboxOpen(true)}
                 onError={(e) => {
                   // Fallback if image fails to load
@@ -622,7 +654,6 @@ const ProductDetail = () => {
             {productImages.length > 1 && (
               <div
                 className="grid grid-cols-4 gap-1.5 sm:gap-2 md:gap-3 lg:gap-4 mb-4 sm:mb-6 w-full"
-                style={{ touchAction: "pan-y pinch-zoom" }}
               >
                 {productImages.map((image, index) => (
                   <button
@@ -764,8 +795,8 @@ const ProductDetail = () => {
               }}
             />
 
-            <h1 className="text-elegant text-xl sm:text-2xl md:text-3xl mb-2 relative z-10 leading-tight sm:leading-normal" style={{ userSelect: 'text', WebkitUserSelect: 'text', touchAction: 'pan-y' }}>{product.title}</h1>
-            <p className="text-muted-foreground text-xs sm:text-sm mb-3 sm:mb-4" style={{ userSelect: 'text', WebkitUserSelect: 'text', touchAction: 'pan-y' }}>{product.category}</p>
+            <h1 className="text-elegant text-xl sm:text-2xl md:text-3xl mb-2 relative z-10 leading-tight sm:leading-normal" style={{ userSelect: 'text', WebkitUserSelect: 'text' }}>{product.title}</h1>
+            <p className="text-muted-foreground text-xs sm:text-sm mb-3 sm:mb-4" style={{ userSelect: 'text', WebkitUserSelect: 'text' }}>{product.category}</p>
 
             <div className="flex items-center gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 flex-wrap w-full">
               <div className="flex items-center gap-1">
@@ -808,7 +839,6 @@ const ProductDetail = () => {
             {(colorOptions.length > 0 || variantOptions.length > 0) && (
               <div
                 className="mb-6 sm:mb-8 border border-border rounded-sm bg-secondary/20 p-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
-                style={{ touchAction: 'pan-y' }}
               >
                 {colorOptions.length > 0 && (
                   <div>
@@ -854,7 +884,7 @@ const ProductDetail = () => {
             {colorOptions.length > 0 && (
               <div className="mb-6">
                 <h4 className="text-elegant text-sm sm:text-base mb-3 font-medium">Select Color</h4>
-                <div className="flex flex-wrap gap-3" style={{ touchAction: "pan-y" }}>
+                <div className="flex flex-wrap gap-3">
                   {colorOptions.map((color) => (
                     <button
                       key={color.name}
@@ -885,7 +915,7 @@ const ProductDetail = () => {
             {sizeOptions.length > 0 && (
               <div className="mb-6">
                 <h4 className="text-elegant text-sm sm:text-base mb-3 font-medium">Select Size</h4>
-                <div className="flex flex-wrap gap-3" style={{ touchAction: "pan-y" }}>
+                <div className="flex flex-wrap gap-3">
                   {sizeOptions.map((size) => (
                     <button
                       key={size.name}
@@ -914,7 +944,7 @@ const ProductDetail = () => {
             {variantOptions.length > 0 && (
               <div className="mb-6 sm:mb-8">
                 <h4 className="text-elegant text-sm sm:text-base mb-3 sm:mb-4 font-medium">Choose your configuration</h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3" style={{ touchAction: "pan-y" }}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
                   {variantOptions.map((variant) => {
                     const isActive = selectedVariant?.key === variant.key;
                     return (
@@ -951,9 +981,9 @@ const ProductDetail = () => {
             )}
 
             {/* Description */}
-            <div className="mb-8" style={{ touchAction: 'pan-y' }}>
+            <div className="mb-8">
               <h3 className="text-elegant text-lg mb-3 font-medium" style={{ userSelect: 'text', WebkitUserSelect: 'text' }}>Description</h3>
-              <p className="text-sm font-light leading-relaxed text-muted-foreground mb-3 break-words" style={{ userSelect: 'text', WebkitUserSelect: 'text', touchAction: 'pan-y' }}>
+              <p className="text-sm font-light leading-relaxed text-muted-foreground mb-3 break-words" style={{ userSelect: 'text', WebkitUserSelect: 'text' }}>
                 {truncatedDescription}
               </p>
               {product.description && product.description.length > 220 && (
@@ -1170,7 +1200,7 @@ const ProductDetail = () => {
                 className="flex gap-3 sm:gap-4 md:gap-5 overflow-x-auto scrollbar-hide scroll-smooth snap-x snap-mandatory px-2 sm:px-4 md:px-1"
                 style={{
                   WebkitOverflowScrolling: "touch",
-                  touchAction: "pan-x pan-y",
+                  touchAction: "pan-x",
                   scrollbarWidth: "none",
                   msOverflowStyle: "none",
                 }}

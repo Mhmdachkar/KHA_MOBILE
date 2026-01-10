@@ -527,6 +527,7 @@ const CategoryPage = () => {
     if (name.includes("apple")) return "Apple";
     if (name.includes("green lion")) return "Green Lion";
     if (name.includes("xiaomi") || name.includes("redmi") || name.includes("poco")) return "Xiaomi";
+    if (name.includes("sony") || name.includes("playstation") || name.includes("ps5") || name.includes("ps4")) return "Sony";
     return undefined;
   };
 
@@ -549,7 +550,12 @@ const CategoryPage = () => {
   }, [categoryProducts]);
 
   useEffect(() => {
-    setSelectedSmartphoneBrand("All");
+    // Auto-select Sony brand when entering Gaming category
+    if (categoryDisplayName === "Gaming") {
+      setSelectedSmartphoneBrand("Sony");
+    } else {
+      setSelectedSmartphoneBrand("All");
+    }
   }, [categoryDisplayName]);
 
   // Filter and sort products

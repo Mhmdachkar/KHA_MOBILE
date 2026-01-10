@@ -107,6 +107,12 @@ import appleWatchS10_46MM_3 from "@/assets/wearables/Apple watch S10 46MM/Screen
 import ps4Slim from "@/assets/gaming/ps4.webp";
 import ps5Slim from "@/assets/gaming/Screenshot 2025-12-09 013133.png";
 import codBlackOps6 from "@/assets/gaming/ps4 CD/Screenshot 2026-01-08 162214.png";
+// PS5 Controller imports
+import ps5ControllerBlack from "@/assets/gaming/ps5 controller/ps5 controller black.webp";
+import ps5ControllerWhite from "@/assets/gaming/ps5 controller/ps5 controller white.webp";
+import ps5ControllerPink from "@/assets/gaming/ps5 controller/ps5 controller pink.webp";
+import ps5ControllerRed from "@/assets/gaming/ps5 controller/ps5 controller red.webp";
+import ps5ControllerGalacticPurple from "@/assets/gaming/ps5 controller/ps5 controller  galagticc purple.webp";
 // MagSafe Charger imports
 import magsafeCharger from "@/assets/recharges/magsafe charger/magsafe charger.gif";
 import magsafeCharger2 from "@/assets/recharges/magsafe charger/magsafe chargerr.gif";
@@ -9411,6 +9417,58 @@ export const gamingConsoles: Product[] = [
       { label: "Storage Required", value: "Approximately 150GB (subject to change)" },
       { label: "Language Support", value: "Multiple languages with subtitles" },
       { label: "Age Rating", value: "M for Mature (17+)" }
+    ]
+  },
+  {
+    id: 504,
+    name: "PlayStation DualSense Wireless Controller",
+    title: "PlayStation DualSense Wireless Controller - Advanced Haptic Feedback & Adaptive Triggers",
+    price: 80,
+    image: ps5ControllerBlack,
+    images: [
+      ps5ControllerBlack,
+      ps5ControllerWhite,
+      ps5ControllerPink,
+      ps5ControllerRed,
+      ps5ControllerGalacticPurple
+    ],
+    rating: 4.9,
+    category: "Gaming",
+    brand: "Sony",
+    description: "Experience next-generation tactile immersion with the DualSense controller's advanced haptic feedback and dynamic adaptive triggers that convey textures and resistance. Built-in microphone array, speaker and mute button enable quick party chat without a headset. Charges via USB Type-C and connects wirelessly over Bluetooth; supports PS5, Windows, macOS, iOS, iPadOS, tvOS and supported Android devices.",
+    features: [
+      "Advanced haptic feedback (dual actuators) for realistic in-game textures and impact",
+      "Dynamic adaptive triggers (L2/R2) providing variable resistance for immersive actions",
+      "Built-in microphone array with mute button plus integrated speaker for quick chat and in-game audio",
+      "USB Type-C rechargeable battery for wired or docked play",
+      "Bluetooth wireless connectivity for PC and mobile devices",
+      "Capacitive touchpad, Create button and six-axis motion sensor for expanded input",
+      "3.5mm stereo headset jack for wired headset support",
+      "Compatible with PS5 and supported Windows, macOS, iOS, iPadOS, tvOS and Android devices",
+      "Available in multiple official color variants and limited-edition designs"
+    ],
+    specifications: [
+      { label: "Brand", value: "Sony" },
+      { label: "Model", value: "CFI‑ZCT1W (DualSense wireless controller)" },
+      { label: "Category/Type", value: "Wireless game controller" },
+      { label: "Compatibility", value: "PlayStation 5, Windows PC, macOS (supported from macOS 11.3), iOS (14.5+), iPadOS (14.5+), tvOS (14.5+), Android (varies)" },
+      { label: "Connectivity", value: "Bluetooth (wireless), USB Type-C (wired/charging)" },
+      { label: "Battery/charging", value: "Built-in rechargeable battery — charges via USB Type-C (cable supplied with PS5 console)" },
+      { label: "Key features", value: "Haptic feedback (dual actuators), Adaptive triggers (R2/L2), Built-in microphone array, Built-in speaker, Create button, Touchpad, Six-axis motion sensor, Reimagined light bar, Mute button" },
+      { label: "Stereo headset jack", value: "3.5mm headset jack" },
+      { label: "Dimensions", value: "Approx. 160 × 66 × 106 mm (W × H × D)" },
+      { label: "Weight", value: "Approx. 280 g" },
+      { label: "What's in the box", value: "DualSense wireless controller" },
+      { label: "Firmware & app", value: "PlayStation Accessories app for firmware updates and Windows PC firmware support" },
+      { label: "Colors", value: "Black, Camouflage Grey, Cosmic Red, Galactic Purple, Nova Pink, White" }
+    ],
+    colors: [
+      { name: "Black", image: ps5ControllerBlack },
+      { name: "White", image: ps5ControllerWhite },
+      { name: "Nova Pink", image: ps5ControllerPink },
+      { name: "Cosmic Red", image: ps5ControllerRed },
+      { name: "Galactic Purple", image: ps5ControllerGalacticPurple },
+      { name: "Camouflage Grey", stock: "available" }
     ]
   }
 ];

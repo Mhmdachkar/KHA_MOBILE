@@ -517,7 +517,7 @@ const Services = () => {
             </div>
           </div>
           <div className="pt-8 border-t border-accent-foreground/20 text-center text-sm font-light">
-            <p>&copy; 2025 KHA_MOBILE. All rights reserved.</p>
+            <p>&copy; 2026 KHA_MOBILE. All rights reserved.</p>
           </div>
         </div>
       </footer>

@@ -486,7 +486,7 @@ const Home = () => {
                     className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
                   />
                   <Sparkles className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-1" />
-                  New Collection 2025
+                  New Collection 2026
                 </Badge>
               </motion.div>
 
@@ -1105,7 +1105,7 @@ const Home = () => {
             </div>
           </div>
           <div className="pt-8 border-t border-accent-foreground/20 text-center text-sm font-light">
-            <p>&copy; 2025 TechStore. All rights reserved.</p>
+            <p>&copy; 2026 TechStore. All rights reserved.</p>
           </div>
         </div>
       </footer>

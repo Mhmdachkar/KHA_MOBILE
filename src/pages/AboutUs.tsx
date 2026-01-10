@@ -115,7 +115,7 @@ const AboutUs = () => {
       description: "Became the region's trusted source for cutting-edge technology, offering pre-orders for flagship devices."
     },
     {
-      year: "2025",
+      year: "2026",
       title: "Future Forward",
       description: "Continuing to innovate with AI-powered recommendations, instant delivery, and expanded product categories."
     }
@@ -640,7 +640,7 @@ const AboutUs = () => {
             </div>
           </div>
           <div className="pt-8 border-t border-accent-foreground/20 text-center text-sm font-light">
-            <p>&copy; 2025 KHA_MOBILE. All rights reserved.</p>
+            <p>&copy; 2026 KHA_MOBILE. All rights reserved.</p>
           </div>
         </div>
       </footer>
