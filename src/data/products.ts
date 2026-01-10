@@ -2686,7 +2686,7 @@ export const phoneAccessories: Product[] = [
     id: 231,
     name: "Original Samsung Adapter 65W",
     title: "Original Samsung 65W Power Adapter - Triple Device Fast Charging",
-    price: 30,
+    price: 40,
     image: samsungAdapter65W,
     rating: 4.9,
     category: "Accessories",

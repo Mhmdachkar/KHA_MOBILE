@@ -521,39 +521,6 @@ const ProductDetail = () => {
     return categorizedAccessories.filter((accessory) => accessory.accessoryCategory === selectedAccessoryFilter);
   }, [categorizedAccessories, selectedAccessoryFilter]);
 
-  // Ensure scroll works after any interaction
-  useEffect(() => {
-    const ensureScrollWorks = () => {
-      // Ensure document body allows scrolling
-      if (document.body) {
-        document.body.style.overflow = '';
-        document.body.style.overflowY = 'auto';
-        document.body.style.touchAction = 'pan-y';
-      }
-      if (document.documentElement) {
-        document.documentElement.style.overflow = '';
-        document.documentElement.style.overflowY = 'auto';
-        document.documentElement.style.touchAction = 'pan-y';
-      }
-    };
-
-    // Ensure scroll works on mount
-    ensureScrollWorks();
-
-    // Re-enable scroll after any touch interaction
-    const handleTouchEnd = () => {
-      setTimeout(ensureScrollWorks, 50);
-    };
-
-    document.addEventListener('touchend', handleTouchEnd, { passive: true });
-    document.addEventListener('touchcancel', handleTouchEnd, { passive: true });
-
-    return () => {
-      document.removeEventListener('touchend', handleTouchEnd);
-      document.removeEventListener('touchcancel', handleTouchEnd);
-    };
-  }, []);
-
   return (
     <div className="min-h-screen bg-white w-full">
       <Header />
