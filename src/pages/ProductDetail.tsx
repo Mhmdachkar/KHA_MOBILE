@@ -11,7 +11,11 @@ import { getGreenLionProductById, greenLionProducts, getGreenLionProductsByCateg
 import ProductCard from "@/components/ProductCard";
 import ProductCarousel from "@/components/ProductCarousel";
 import ImageLightbox from "@/components/ImageLightbox";
+import { useEnsureMobileScroll } from "@/hooks/useEnsureMobileScroll";
+
 const ProductDetail = () => {
+  // Ensure mobile scrolling always works
+  useEnsureMobileScroll();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(0);

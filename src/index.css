@@ -532,7 +532,13 @@ All colors MUST be HSL.
     }
     
     /* Motion components should not block scroll */
-    [data-framer-component], .motion-div, [class*="motion"] {
+    [data-framer-component], .motion-div, [class*="motion"], div[class*="motion-"] {
+      touch-action: auto !important;
+      pointer-events: auto !important;
+    }
+    
+    /* Framer Motion animated divs must not block scrolling */
+    div[style*="transform"], div[style*="opacity"] {
       touch-action: auto !important;
     }
     
@@ -604,8 +610,10 @@ All colors MUST be HSL.
     }
   }
 
-  /* Prevent body scroll when dialog is open */
-  body:has([data-radix-dialog-content]) {
-    overflow: hidden !important;
+  /* Prevent body scroll when dialog is open - DISABLED on mobile to prevent scroll lock bugs */
+  @media (min-width: 769px) {
+    body:has([data-radix-dialog-content]) {
+      overflow: hidden !important;
+    }
   }
 }
