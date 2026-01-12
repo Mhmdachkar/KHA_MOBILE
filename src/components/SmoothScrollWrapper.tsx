@@ -44,45 +44,32 @@ const SmoothScrollWrapper = ({ children }: SmoothScrollWrapperProps) => {
     }, []);
 
     useEffect(() => {
-        // Skip Lenis on mobile devices to prevent scroll freezing issues
+        // CRITICAL: Skip Lenis entirely on mobile devices - use native scrolling
         if (isMobile) {
-            // CRITICAL FIX: Remove any passive event listeners that might cause scroll freeze
-            const removePassiveListeners = () => {
-                // Remove any existing passive event listeners that might interfere
-                const clonedNode = document.documentElement.cloneNode(true);
-                // This forces the browser to re-evaluate touch event listeners
-                document.documentElement.style.touchAction = 'pan-y';
-                document.body.style.touchAction = 'pan-y';
-            };
-
-            // Apply the fix immediately and on any touch events
-            removePassiveListeners();
+            // Ensure native mobile scrolling is properly configured
+            document.documentElement.style.overflow = '';
+            document.body.style.overflow = '';
+            document.documentElement.style.touchAction = '';
+            document.body.style.touchAction = '';
             
-            // Add a one-time touch listener to ensure scroll works after any touch
-            const ensureScrollWorks = () => {
-                setTimeout(() => {
-                    window.scrollTo(0, window.scrollY);
-                }, 100);
-            };
+            // Remove any Lenis classes that might interfere
+            document.documentElement.classList.remove('lenis', 'lenis-smooth', 'lenis-stopped');
+            document.body.classList.remove('lenis', 'lenis-smooth', 'lenis-stopped');
             
-            document.addEventListener('touchend', ensureScrollWorks, { passive: true });
-            
-            return () => {
-                document.removeEventListener('touchend', ensureScrollWorks);
-            };
+            return; // Exit early - no Lenis initialization on mobile
         }
 
         // Initialize Lenis with performance-optimized settings (desktop only)
         const lenis = new Lenis({
-            duration: 0.7, // Faster for snappier feel with less lag
+            duration: 0.7,
             easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             orientation: 'vertical',
             gestureOrientation: 'vertical',
             smoothWheel: true,
-            wheelMultiplier: 0.9, // Balanced responsiveness
+            wheelMultiplier: 0.9,
             touchMultiplier: 1.5,
             infinite: false,
-            lerp: 0.15, // Slightly higher for smoother motion without lag
+            lerp: 0.15,
         });
 
         lenisRef.current = lenis;
@@ -120,7 +107,7 @@ const SmoothScrollWrapper = ({ children }: SmoothScrollWrapperProps) => {
     useEffect(() => {
         // For mobile, just use native scroll to top
         if (isMobile) {
-            window.scrollTo(0, 0);
+            window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
             document.documentElement.scrollTop = 0;
             document.body.scrollTop = 0;
             return;
@@ -133,7 +120,7 @@ const SmoothScrollWrapper = ({ children }: SmoothScrollWrapperProps) => {
         lenis.stop();
         requestAnimationFrame(() => {
             lenis.scrollTo(0, { immediate: true, force: true });
-            window.scrollTo(0, 0);
+            window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
             document.documentElement.scrollTop = 0;
             document.body.scrollTop = 0;
 

@@ -490,14 +490,13 @@ All colors MUST be HSL.
 
   /* CRITICAL: Enable vertical scrolling and momentum on mobile - fixes scroll freeze issue */
   @media (max-width: 768px) {
-    html, body, #root {
-      touch-action: pan-y pan-x pinch-zoom !important;
+    /* Force native scrolling with momentum */
+    html, body {
+      touch-action: auto !important;
       -webkit-overflow-scrolling: touch !important;
       overscroll-behavior-y: auto !important;
       overflow-y: scroll !important;
-      -webkit-touch-callout: none !important;
-      -webkit-user-select: none !important;
-      user-select: none !important;
+      overflow-x: hidden !important;
     }
     
     /* Allow text selection on specific elements */
@@ -506,33 +505,41 @@ All colors MUST be HSL.
       user-select: text !important;
     }
     
-    /* Ensure main content areas allow vertical scrolling with momentum */
-    main, section, article, .page-content {
-      touch-action: pan-y pan-x pinch-zoom !important;
+    /* Ensure main content areas allow scrolling with momentum */
+    #root, main, section, article, .page-content, [class*="container"] {
+      touch-action: auto !important;
       -webkit-overflow-scrolling: touch !important;
-      overscroll-behavior-y: auto !important;
     }
     
-    /* Allow horizontal scrolling only on carousels */
-    .carousel, [data-embla], .embla {
+    /* Allow horizontal scrolling on carousels while maintaining vertical scroll */
+    .carousel, [data-embla], .embla, [class*="overflow-x"] {
       touch-action: pan-x pan-y !important;
+      -webkit-overflow-scrolling: touch !important;
     }
     
-    /* Fix scroll freezing on all interactive elements */
+    /* Buttons and links should not interfere with scrolling */
     button, a, input, select, textarea {
       touch-action: manipulation !important;
       -webkit-tap-highlight-color: transparent !important;
     }
     
-    /* Ensure images don't block scroll */
+    /* Images should allow scrolling over them */
     img {
-      touch-action: pan-y pan-x pinch-zoom !important;
+      touch-action: auto !important;
       pointer-events: auto !important;
+      -webkit-user-select: none !important;
+      user-select: none !important;
     }
     
-    /* Prevent scroll interruption on motion components */
-    [data-framer-component], .motion-div {
-      touch-action: pan-y pan-x pinch-zoom !important;
+    /* Motion components should not block scroll */
+    [data-framer-component], .motion-div, [class*="motion"] {
+      touch-action: auto !important;
+    }
+    
+    /* Prevent any scroll blocking from Lenis or other libraries */
+    .lenis, .lenis-smooth, [data-lenis] {
+      touch-action: auto !important;
+      -webkit-overflow-scrolling: touch !important;
     }
   }
 
