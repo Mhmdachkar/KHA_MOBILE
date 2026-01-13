@@ -1939,9 +1939,9 @@ export const phoneAccessories: Product[] = [
       { label: "Design", value: "Lightweight, ergonomic anti-fall earbuds" }
     ]
   },
-  // Xiaomi Type-C Earphones (ID: 140)
+  // Xiaomi Type-C Earphones (ID: 259)
   {
-    id: 140,
+    id: 259,
     name: "Xiaomi Type-C Earphones",
     title: "Xiaomi Type-C Earphones - High-Resolution Digital Audio",
     price: 15,
@@ -1977,9 +1977,9 @@ export const phoneAccessories: Product[] = [
       { label: "Features", value: "Noise isolation, plug-and-play" }
     ]
   },
-  // Mi 37W Dual-Port Car Charger (ID: 141)
+  // Mi 37W Dual-Port Car Charger (ID: 260)
   {
-    id: 141,
+    id: 260,
     name: "Mi 37W Dual-Port Car Charger",
     title: "Mi Dual Port Car Charger 37W - Fast Charging for Two Devices",
     price: 18,
@@ -2014,9 +2014,9 @@ export const phoneAccessories: Product[] = [
       { label: "Dimensions", value: "74.7 × 30.8 × 30.8 mm" }
     ]
   },
-  // Smart Bulb 950IM (ID: 142)
+  // Smart Bulb 950IM (ID: 261)
   {
-    id: 142,
+    id: 261,
     name: "Smart Bulb 950IM",
     title: "SONOFF B05-BL Wi-Fi Smart LED Bulb - 950lm 9W",
     price: 20,
@@ -2052,9 +2052,9 @@ export const phoneAccessories: Product[] = [
       { label: "Certifications", value: "Energy Star, Energy-Related Products" }
     ]
   },
-  // Xiaomi Smart Plug 2 (ID: 143)
+  // Xiaomi Smart Plug 2 (ID: 262)
   {
-    id: 143,
+    id: 262,
     name: "Xiaomi Smart Plug 2",
     title: "Xiaomi Smart Plug 2 - Wi-Fi + Bluetooth 5.0 - 3680W Max",
     price: 22,
@@ -2087,9 +2087,9 @@ export const phoneAccessories: Product[] = [
       { label: "Features", value: "Remote control, scheduling, energy monitoring" }
     ]
   },
-  // Xiaomi Electric Toothbrush T302 (ID: 144)
+  // Xiaomi Electric Toothbrush T302 (ID: 263)
   {
-    id: 144,
+    id: 263,
     name: "Xiaomi Electric Toothbrush T302",
     title: "Xiaomi Electric Toothbrush T302 - Sonic Cleaning - 2W Power - Fast Type-C Charging - White",
     price: 27,
@@ -3418,9 +3418,9 @@ export const smartphoneProducts: Product[] = [
       { name: "Magic Silver", image: tecnoPova7White, stock: "available" }
     ]
   },
-  // Tecno Camon 30 5G (CL7) (ID: 231)
+  // Tecno Camon 30 5G (CL7) (ID: 264)
   {
-    id: 231,
+    id: 264,
     name: "Tecno Camon 30 5G",
     title: "Tecno Camon 30 5G - 50MP OIS, AMOLED 120Hz, 70W Charge",
     price: 364.99,
@@ -3469,9 +3469,9 @@ export const smartphoneProducts: Product[] = [
       { name: "Uyuni Salt White", image: tecnoCamon30White, stock: "available" }
     ]
   },
-  // Tecno Camon 40 Pro 4G (CM6) (ID: 232)
+  // Tecno Camon 40 Pro 4G (CM6) (ID: 265)
   {
-    id: 232,
+    id: 265,
     name: "Tecno Camon 40 Pro 4G",
     title: "Tecno Camon 40 Pro 4G - 50MP OIS, AMOLED 120Hz, IP68/IP69, 45W Fast Charge",
     price: 249.99,
@@ -8615,9 +8615,9 @@ export const wearablesProducts: Product[] = [
       { label: "Certification", value: "ISO 22810:2010 by TÜV SÜD" }
     ]
   },
-  // Mibro Smart Watch T1 (ID: 218)
+  // Mibro Smart Watch T1 (ID: 246)
   {
-    id: 218,
+    id: 246,
     name: "Mibro Smart Watch T1",
     title: "Mibro Smart Watch T1 - 1.6\" AMOLED HD Display, Bluetooth Calling, 7-Day Battery",
     price: 40,
@@ -8658,9 +8658,9 @@ export const wearablesProducts: Product[] = [
       { name: "Black", image: mibroT1_1, stock: "available" }
     ]
   },
-  // Mibro A2 Smart Watch (ID: 219)
+  // Mibro A2 Smart Watch (ID: 247)
   {
-    id: 219,
+    id: 247,
     name: "Mibro A2 Smart Watch",
     title: "Mibro A2 Smart Watch - 1.39\" HD Display, Bluetooth Calling, 70 Sports Modes",
     price: 50,
@@ -8699,9 +8699,9 @@ export const wearablesProducts: Product[] = [
       { name: "Black", image: mibroA2Black, stock: "available" }
     ]
   },
-  // Mibro Watch Lite 3 (ID: 220)
+  // Mibro Watch Lite 3 (ID: 248)
   {
-    id: 220,
+    id: 248,
     name: "Mibro Watch Lite 3",
     title: "Mibro Watch Lite 3 - 1.3\" AMOLED Vivid Display, Bluetooth Calling, 12-Day Battery",
     price: 58,
@@ -8742,9 +8742,9 @@ export const wearablesProducts: Product[] = [
       { name: "Black", image: mibroLite3, stock: "available" }
     ]
   },
-  // Mibro Watch A3 (ID: 221)
+  // Mibro Watch A3 (ID: 249)
   {
-    id: 221,
+    id: 249,
     name: "Mibro Watch A3",
     title: "Mibro Watch A3 - 1.39\" HD Display, Bluetooth Calling, 100+ Sports Modes",
     price: 65,
@@ -8786,9 +8786,9 @@ export const wearablesProducts: Product[] = [
       { name: "Black", image: mibroA3Black, stock: "available" }
     ]
   },
-  // Kieslect KS Pro (ID: 225)
+  // Kieslect KS Pro (ID: 250)
   {
-    id: 225,
+    id: 250,
     name: "Kieslect Calling Watch Ks Pro",
     title: "Kieslect Ks Pro Smartwatch - 2.01\" Super Large AMOLED, Calling, IP68",
     price: 65,
@@ -8826,9 +8826,9 @@ export const wearablesProducts: Product[] = [
       { name: "Standard", image: kieslectKSPro1, stock: "available" }
     ]
   },
-  // Kieslect Ks2 (ID: 226)
+  // Kieslect Ks2 (ID: 251)
   {
-    id: 226,
+    id: 251,
     name: "Kieslect Calling Smart Watch Ks2",
     title: "Kieslect Ks2 Smartwatch - 2.01\" FHD AMOLED, 3ATM Waterproof, Kie OS",
     price: 70,
@@ -8864,9 +8864,9 @@ export const wearablesProducts: Product[] = [
       { name: "Standard", image: kieslectKs2Main, stock: "available" }
     ]
   },
-  // Kieslect Ks3 (ID: 227)
+  // Kieslect Ks3 (ID: 252)
   {
-    id: 227,
+    id: 252,
     name: "Kieslect Calling Smart Watch Ks3",
     title: "Kieslect Ks3 Smartwatch - 2.1\" Curved AMOLED, Dual-Core GPS, 5ATM Waterproof",
     price: 75,
@@ -8903,9 +8903,9 @@ export const wearablesProducts: Product[] = [
       { name: "Standard", image: kieslectKs3Main, stock: "available" }
     ]
   },
-  // Kieslect Kr2 (ID: 228)
+  // Kieslect Kr2 (ID: 253)
   {
-    id: 228,
+    id: 253,
     name: "Kieslect Smart Calling Watch Kr2",
     title: "Kieslect Kr2 Smartwatch - Dual Core, 1.43\" FHD AMOLED, 24/7 Health Management",
     price: 80,
@@ -8943,9 +8943,9 @@ export const wearablesProducts: Product[] = [
       { name: "Standard", image: kieslectKr2Main, stock: "available" }
     ]
   },
-  // Kieslect Actor Leading (ID: 229)
+  // Kieslect Actor Leading (ID: 254)
   {
-    id: 229,
+    id: 254,
     name: "Kieslect Smart Calling Watch Actor Leading",
     title: "Kieslect Actor Leading Smartwatch - 1.6\" LTPO AMOLED, GPS, 5ATM Waterproof",
     price: 90,
@@ -8983,9 +8983,9 @@ export const wearablesProducts: Product[] = [
       { name: "Standard", image: kieslectActorMain, stock: "available" }
     ]
   },
-  // Mibro Watch T2 (ID: 222)
+  // Mibro Watch T2 (ID: 255)
   {
-    id: 222,
+    id: 255,
     name: "Mibro Watch T2",
     title: "Mibro Watch T2 - 1.75\" HD AMOLED, GPS, Bluetooth Calling",
     price: 70,
@@ -9026,9 +9026,9 @@ export const wearablesProducts: Product[] = [
       { name: "Pink", image: mibroT2Pink, stock: "available" }
     ]
   },
-  // Xiaomi Mibro P5 Waterproof Kids Smartwatch (ID: 223)
+  // Xiaomi Mibro P5 Waterproof Kids Smartwatch (ID: 256)
   {
-    id: 223,
+    id: 256,
     name: "Xiaomi Mibro P5 Kids Smartwatch",
     title: "Xiaomi Mibro P5 Kids Smartwatch Phone - 4G, GPS, Waterproof, Camera",
     price: 75,
@@ -9070,9 +9070,9 @@ export const wearablesProducts: Product[] = [
       { name: "Pink", image: mibroP5Pink, stock: "available" }
     ]
   },
-  // Mibro Watch GS Explorer (ID: 224)
+  // Mibro Watch GS Explorer (ID: 257)
   {
-    id: 224,
+    id: 257,
     name: "Mibro Watch GS Explorer",
     title: "Mibro Watch GS Explorer - GPS Outdoor Watch, 10ATM Waterproof, 10-Day Battery",
     price: 90,
@@ -9226,9 +9226,9 @@ export const iphoneCases: Product[] = [
       { name: "Heavy Pink", image: siliconeStickyGripHeavyPink }
     ]
   },
-  // Samsung Galaxy Watch 3 (ID: 230)
+  // Samsung Galaxy Watch 3 (ID: 258)
   {
-    id: 230,
+    id: 258,
     name: "Samsung Galaxy Watch 3",
     title: "Samsung Galaxy Watch 3 - Style You Can Count On with Military-Grade Durability",
     price: 80, // Base price for 41mm, 45mm is $90
