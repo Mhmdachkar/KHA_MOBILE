@@ -162,9 +162,12 @@ All colors MUST be HSL.
     overflow-x: hidden;
     overflow-y: scroll;
     height: 100%;
+    width: 100%;
+    max-width: 100vw;
     /* CRITICAL: Enable momentum scrolling on iOS */
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-y: auto;
+    overscroll-behavior-x: none;
     /* Performance optimizations for smoother scrolling */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -246,14 +249,15 @@ All colors MUST be HSL.
     font-family: "Helvetica Neue", Avenir, Arial, sans-serif;
     font-weight: 300;
     letter-spacing: 0.08em;
-    /* overflow-x: hidden; REMOVED to prevent implicit overflow-y: auto */
-    /* overflow-y: visible; */
+    overflow-x: hidden;
+    overflow-y: scroll;
     width: 100%;
+    max-width: 100vw;
     min-height: 100%;
     -webkit-overflow-scrolling: touch;
     /* CRITICAL: Enable momentum scrolling on iOS */
-    overflow-y: scroll;
     overscroll-behavior-y: auto;
+    overscroll-behavior-x: none;
     margin: 0;
     padding: 0;
     /* Performance optimizations for smoother scrolling */
@@ -270,7 +274,9 @@ All colors MUST be HSL.
 
   #root {
     width: 100%;
+    max-width: 100vw;
     min-height: 100vh;
+    overflow-x: hidden;
     /* Performance optimizations */
     transform: translateZ(0);
     -webkit-transform: translateZ(0);
@@ -289,6 +295,13 @@ All colors MUST be HSL.
 }
 
 @layer utilities {
+  /* Prevent horizontal scroll utility */
+  .no-horizontal-scroll {
+    overflow-x: hidden;
+    max-width: 100vw;
+    width: 100%;
+  }
+
   .text-elegant {
     font-weight: 300;
     letter-spacing: 0.12em;
