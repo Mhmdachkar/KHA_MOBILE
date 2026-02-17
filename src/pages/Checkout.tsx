@@ -11,6 +11,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useCart } from "@/context/CartContext";
+import { useAnalytics } from "@/context/AnalyticsContext";
 import { getProductById } from "@/data/products";
 import { getGreenLionProductById } from "@/data/greenLionProducts";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -136,6 +137,7 @@ const Checkout = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
+  const { trackCheckoutStart, trackCheckoutComplete, trackRemoveFromCart } = useAnalytics();
   const isMobile = useIsMobile();
 
   // Check if this is a recharge/gift card checkout (has URL params) or cart checkout
@@ -177,11 +179,18 @@ const Checkout = () => {
     },
   };
 
-  // Scroll to top on mount
+  // Scroll to top on mount and track checkout start
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
+    
+    // Track checkout start
+    const cartValue = isRechargeCheckout ? productPrice : cart.reduce((sum, item) => {
+      const price = typeof item.price === 'number' ? item.price : parseFloat(item.price);
+      return sum + (price * item.quantity);
+    }, 0);
+    trackCheckoutStart(cartValue);
   }, []);
 
   // Redirect to products if cart is empty and not a recharge checkout
@@ -655,6 +664,10 @@ const Checkout = () => {
 
     // Open WhatsApp
     window.open(whatsappUrl, "_blank");
+
+    // Track checkout completion
+    const orderId = `ORDER_${Date.now()}`;
+    trackCheckoutComplete(orderId, total);
 
     // Show success message
     toast({

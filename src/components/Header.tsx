@@ -1,10 +1,11 @@
 import { Search, Heart, ShoppingCart, Menu, MessageSquarePlus, Send, Phone, Package, X } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { useState, useRef, useMemo, useEffect } from "react";
 import AnnouncementBar from "./AnnouncementBar";
 import { useFavorites } from "@/context/FavoritesContext";
 import { useCart } from "@/context/CartContext";
+import { useAnalytics } from "@/context/AnalyticsContext";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "./ui/sheet";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "./ui/dialog";
 import { Input } from "./ui/input";
@@ -18,6 +19,7 @@ import { greenLionProducts } from "@/data/greenLionProducts";
 const Header = () => {
   const { favorites } = useFavorites();
   const { getTotalItems, toggleCart } = useCart();
+  const { trackSearch } = useAnalytics();
   const { scrollY } = useScroll();
   const navigate = useNavigate();
   const [hidden, setHidden] = useState(false);
@@ -119,6 +121,10 @@ const Header = () => {
   };
 
   const handleProductClick = (productId: number) => {
+    // Track search before navigating
+    if (searchQuery.trim()) {
+      trackSearch(searchQuery.trim());
+    }
     setSearchOpen(false);
     setSearchQuery("");
     navigate(`/product/${productId}`);

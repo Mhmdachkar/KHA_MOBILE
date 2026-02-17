@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { useFavorites } from "@/context/FavoritesContext";
 import { useCart } from "@/context/CartContext";
+import { useAnalytics } from "@/context/AnalyticsContext";
 import { getProductById, phoneAccessories, wearablesProducts, smartphoneProducts, tabletProducts, getProductsByCategory } from "@/data/products";
 import { getGreenLionProductById, greenLionProducts, getGreenLionProductsByCategory } from "@/data/greenLionProducts";
 import ProductCard from "@/components/ProductCard";
@@ -22,6 +23,7 @@ const ProductDetail = () => {
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const { isFavorite, toggleFavorite } = useFavorites();
   const { addToCart } = useCart();
+  const { trackProductView, trackAddToCart } = useAnalytics();
 
   const productId = id ? parseInt(id, 10) : null;
 
@@ -29,6 +31,13 @@ const ProductDetail = () => {
   const regularProduct = productId ? getProductById(productId) : null;
   const greenLionProduct = productId ? getGreenLionProductById(productId) : null;
   const product = regularProduct || greenLionProduct;
+
+  // Track product view
+  useEffect(() => {
+    if (product && productId) {
+      trackProductView(productId.toString(), product.name);
+    }
+  }, [productId, product]);
 
   // Scroll to top on mount and when product ID changes
   useEffect(() => {
@@ -213,6 +222,9 @@ const ProductDetail = () => {
       sizePrice: selectedSizeData?.price,
       isPreorder: product.isPreorder,
     });
+
+    // Track add to cart action
+    trackAddToCart(product.id.toString(), product.name, displayPrice);
 
     if (redirect) {
       navigate("/checkout");

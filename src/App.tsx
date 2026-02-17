@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { FavoritesProvider } from "@/context/FavoritesContext";
 import { CartProvider } from "@/context/CartContext";
+import { AnalyticsProvider } from "@/context/AnalyticsContext";
 import CartDashboard from "@/components/CartDashboard";
 import SmoothScrollWrapper from "@/components/SmoothScrollWrapper";
 import Home from "./pages/Home";
@@ -30,6 +31,7 @@ import InstagramPromoGolden from "./pages/InstagramPromoGolden";
 import InstagramPromoLive from "./pages/InstagramPromoLive";
 import InstagramPromoSale from "./pages/InstagramPromoSale";
 import InstagramPromoIPadBundle from "./pages/InstagramPromoIPadBundle";
+import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
 
 // ScrollToTop component to scroll to top on route change
@@ -72,6 +74,7 @@ const App = () => (
     <FavoritesProvider>
       <CartProvider>
         <BrowserRouter>
+          <AnalyticsProvider>
           <ScrollToTop />
           <SmoothScrollWrapper>
             <TooltipProvider>
@@ -80,6 +83,7 @@ const App = () => (
               <CartDashboard />
               <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/admin/analytics" element={<AdminDashboard />} />
                 <Route path="/products" element={<Products />} />
                 <Route path="/category/:categoryName" element={<CategoryPage />} />
                 <Route path="/smartphones" element={<CategoryPage />} />
@@ -113,6 +117,7 @@ const App = () => (
               </Routes>
             </TooltipProvider>
           </SmoothScrollWrapper>
+          </AnalyticsProvider>
         </BrowserRouter>
       </CartProvider>
     </FavoritesProvider>
