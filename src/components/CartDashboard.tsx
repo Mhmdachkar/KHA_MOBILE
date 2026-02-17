@@ -75,7 +75,7 @@ const CartDashboard = () => {
         document.body.style.height = '100%';
         document.body.style.overflow = "hidden";
 
-        // Selective scroll prevention - only block on background, allow in cart
+        // Store the event handler reference for proper cleanup
         const preventBackgroundScroll = (e: Event) => {
           const target = e.target as HTMLElement;
           const cartContainer = cartItemsContainerRef.current;
@@ -85,41 +85,43 @@ const CartDashboard = () => {
             return; // Let it scroll
           }
 
-          // Block scrolling on background
+          // Block scrolling on background only
           e.preventDefault();
           e.stopPropagation();
         };
 
-        // Add scroll prevention listeners - wheel events can still fire inside cart
-        document.addEventListener('wheel', preventBackgroundScroll, { passive: false });
-        document.addEventListener('touchmove', preventBackgroundScroll, { passive: false });
+        // Add scroll prevention listeners with proper options
+        document.addEventListener('wheel', preventBackgroundScroll, { passive: false, capture: true });
+        document.addEventListener('touchmove', preventBackgroundScroll, { passive: false, capture: true });
 
+        // Cleanup function - CRITICAL: Must remove listeners when cart closes
         return () => {
-          // Remove listeners
-          document.removeEventListener('wheel', preventBackgroundScroll);
-          document.removeEventListener('touchmove', preventBackgroundScroll);
+          // Remove listeners with same options
+          document.removeEventListener('wheel', preventBackgroundScroll, { capture: true });
+          document.removeEventListener('touchmove', preventBackgroundScroll, { capture: true });
+          
+          // Restore scroll immediately
+          const savedScrollY = document.body.style.top;
+          const htmlElement = document.documentElement;
+
+          // Re-enable scrolling
+          htmlElement.classList.remove('lenis-stopped');
+          htmlElement.style.overflow = '';
+          htmlElement.style.height = '';
+
+          document.body.style.position = "";
+          document.body.style.top = "";
+          document.body.style.left = "";
+          document.body.style.right = "";
+          document.body.style.width = "";
+          document.body.style.height = '';
+          document.body.style.overflow = "";
+
+          // Restore scroll position
+          if (savedScrollY) {
+            window.scrollTo(0, parseInt(savedScrollY || "0") * -1);
+          }
         };
-      } else {
-        // Restore scroll
-        const scrollY = document.body.style.top;
-        const htmlEl = document.documentElement;
-
-        // Re-enable
-        htmlEl.classList.remove('lenis-stopped');
-        htmlEl.style.overflow = '';
-        htmlEl.style.height = '';
-
-        document.body.style.position = "";
-        document.body.style.top = "";
-        document.body.style.left = "";
-        document.body.style.right = "";
-        document.body.style.width = "";
-        document.body.style.height = '';
-        document.body.style.overflow = "";
-
-        if (scrollY) {
-          window.scrollTo(0, parseInt(scrollY || "0") * -1);
-        }
       }
     }
   }, [isOpen]);
