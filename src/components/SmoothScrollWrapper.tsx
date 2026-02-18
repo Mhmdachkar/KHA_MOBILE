@@ -103,7 +103,7 @@ const SmoothScrollWrapper = ({ children }: SmoothScrollWrapperProps) => {
         };
     }, [isMobile]);
 
-    // Handle route changes
+    // Handle route changes - ensure Lenis restarts reliably to prevent scroll freeze
     useEffect(() => {
         // For mobile, just use native scroll to top
         if (isMobile) {
@@ -116,18 +116,27 @@ const SmoothScrollWrapper = ({ children }: SmoothScrollWrapperProps) => {
         const lenis = lenisRef.current;
         if (!lenis) return;
 
-        // Stop, scroll to top, then restart
+        // Stop, scroll to top, then restart - use multiple rAF for reliability
         lenis.stop();
-        requestAnimationFrame(() => {
+        let frame2Id: number | null = null;
+        const frame1Id = requestAnimationFrame(() => {
             lenis.scrollTo(0, { immediate: true, force: true });
             window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
             document.documentElement.scrollTop = 0;
             document.body.scrollTop = 0;
 
-            requestAnimationFrame(() => {
-                lenis.start();
+            // Ensure Lenis restarts - double rAF handles async timing
+            frame2Id = requestAnimationFrame(() => {
+                if (lenisRef.current === lenis) {
+                    lenis.start();
+                }
             });
         });
+
+        return () => {
+            cancelAnimationFrame(frame1Id);
+            if (frame2Id !== null) cancelAnimationFrame(frame2Id);
+        };
     }, [location.pathname, isMobile]);
 
     return <>{children}</>;

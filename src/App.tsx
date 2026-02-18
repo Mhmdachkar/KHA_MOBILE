@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { useScrollLockRestore } from "@/hooks/useScrollLockRestore";
 import { FavoritesProvider } from "@/context/FavoritesContext";
 import { CartProvider } from "@/context/CartContext";
 import { AnalyticsProvider } from "@/context/AnalyticsContext";
@@ -34,9 +35,12 @@ import InstagramPromoIPadBundle from "./pages/InstagramPromoIPadBundle";
 import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
 
-// ScrollToTop component to scroll to top on route change
+// ScrollToTop component to scroll to top on route change and restore scroll when lock persists
 const ScrollToTop = () => {
   const { pathname } = useLocation();
+
+  // Fix: Restore scroll when Radix Select/Dialog/Sheet leave orphaned scroll locks
+  useScrollLockRestore(pathname);
 
   useEffect(() => {
     // Immediately scroll to top on route change
