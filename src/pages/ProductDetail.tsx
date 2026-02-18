@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Heart, ShoppingCart, Star, ChevronLeft, ChevronRight, CheckCircle2 } from "lucide-react";
-import { Link, useParams, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useParams, useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { useFavorites } from "@/context/FavoritesContext";
@@ -13,10 +13,14 @@ import ProductCard from "@/components/ProductCard";
 import ProductCarousel from "@/components/ProductCarousel";
 import ImageLightbox from "@/components/ImageLightbox";
 import { useEnsureMobileScroll } from "@/hooks/useEnsureMobileScroll";
+import { useScrollLockRestore } from "@/hooks/useScrollLockRestore";
 
 const ProductDetail = () => {
+  const location = useLocation();
   // Ensure mobile scrolling always works
   useEnsureMobileScroll();
+  // Restore scroll when Radix Select/Dialog leave orphaned locks (color, size, variant selectors)
+  useScrollLockRestore(location.pathname);
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(0);
