@@ -229,7 +229,7 @@ const AdminProductList = () => {
       </div>
 
       {/* Result count */}
-      {!loading && (
+      {!catalogLoading && (
         <p className="text-xs text-muted-foreground">
           Showing <strong>{filtered.length}</strong> of <strong>{products.length}</strong> products
           {search && <> for "<em>{search}</em>"</>}
@@ -245,7 +245,7 @@ const AdminProductList = () => {
       )}
 
       {/* Empty state */}
-      {!loading && filtered.length === 0 && (
+      {!catalogLoading && filtered.length === 0 && (
         <div className="py-20 text-center rounded-xl border border-dashed">
           {products.length === 0 ? (
             <>
@@ -267,7 +267,7 @@ const AdminProductList = () => {
       )}
 
       {/* Grid view */}
-      {!loading && view === "grid" && filtered.length > 0 && (
+      {!catalogLoading && view === "grid" && filtered.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
           {filtered.map((p) => (
             <div key={p.dbId} className="group rounded-xl border bg-card overflow-hidden hover:shadow-md transition-shadow">
@@ -317,7 +317,7 @@ const AdminProductList = () => {
       )}
 
       {/* List view */}
-      {!loading && view === "list" && filtered.length > 0 && (
+      {!catalogLoading && view === "list" && filtered.length > 0 && (
         <div className="rounded-xl border overflow-hidden">
           {/* Table header — desktop */}
           <div className="hidden sm:grid grid-cols-[56px_1fr_140px_100px_90px_90px] gap-4 items-center px-4 py-2.5 bg-muted/40 text-xs text-muted-foreground font-medium border-b">
