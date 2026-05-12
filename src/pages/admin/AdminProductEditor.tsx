@@ -28,6 +28,7 @@ interface FormState {
   title: string;
   description: string;
   price: string;
+  compareAtPrice: string;
   primaryImageUrl: string;
   rating: string;
   category: string;
@@ -62,7 +63,7 @@ type TabId = (typeof TABS)[number]["id"];
 // ─── Helpers ────────────────────────────────────────────────────────────────
 const emptyForm = (): FormState => ({
   legacyOverrideId: "", name: "", title: "", description: "",
-  price: "", primaryImageUrl: "", rating: "4.5", category: "Smartphones",
+  price: "", compareAtPrice: "", primaryImageUrl: "", rating: "4.5", category: "Smartphones",
   brand: "", videoUrl: "", isPreorder: false, isActive: true,
   features: [""], specifications: [{ label: "", value: "" }],
   variants: [], colors: [], sizes: [], connectivityOptions: [], secondaryCategories: [], galleryImages: [],
@@ -163,6 +164,7 @@ const AdminProductEditor = () => {
           title: p.title || "",
           description: p.description || "",
           price: String(p.price ?? ""),
+          compareAtPrice: p.compareAtPrice != null ? String(p.compareAtPrice) : "",
           primaryImageUrl: p.image || "",
           rating: String(p.rating ?? "4.5"),
           category: p.category || "Smartphones",
@@ -248,6 +250,7 @@ const AdminProductEditor = () => {
         title: form.title.trim() || form.name.trim(),
         description: form.description,
         price: Number(form.price),
+        compareAtPrice: form.compareAtPrice ? Number(form.compareAtPrice) : null,
         primaryImageUrl: form.primaryImageUrl.trim(),
         rating: Number(form.rating),
         category: form.category.trim(),
@@ -367,6 +370,52 @@ const AdminProductEditor = () => {
           {/* ──────── BASICS ──────── */}
           {activeTab === "basics" && (
             <div className="space-y-5">
+              {/* Primary photo — quick upload right on the Basics tab */}
+              <SectionCard title="Product Photo" description="Main image shown in listings and the product page.">
+                <div className="flex items-start gap-4">
+                  <div className="shrink-0 h-24 w-24 rounded-xl border bg-muted/40 overflow-hidden flex items-center justify-center">
+                    {form.primaryImageUrl ? (
+                      <img
+                        src={form.primaryImageUrl}
+                        alt="Primary"
+                        className="h-full w-full object-cover"
+                        onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                      />
+                    ) : (
+                      <ImageIcon className="h-8 w-8 text-muted-foreground/30" />
+                    )}
+                  </div>
+                  <div className="flex-1 space-y-2">
+                    <div className="flex gap-2">
+                      <Button
+                        variant="outline" size="sm" type="button"
+                        className="touch-manipulation"
+                        style={{ touchAction: 'manipulation' }}
+                        onClick={() => pickAndUpload("image/*", false, ([url]) => patch("primaryImageUrl", url))}
+                      >
+                        <Upload className="h-3.5 w-3.5 mr-1.5" />Upload Photo
+                      </Button>
+                      {form.primaryImageUrl && (
+                        <Button
+                          variant="ghost" size="sm" type="button"
+                          className="text-muted-foreground hover:text-red-500"
+                          onClick={() => patch("primaryImageUrl", "")}
+                        >
+                          Remove
+                        </Button>
+                      )}
+                    </div>
+                    <Input
+                      value={form.primaryImageUrl}
+                      onChange={(e) => patch("primaryImageUrl", e.target.value)}
+                      placeholder="Or paste an image URL…"
+                      className="text-sm"
+                    />
+                    <p className="text-xs text-muted-foreground">JPEG, PNG, WebP up to 8 MB. You can also add extra gallery photos in the Images & Media tab.</p>
+                  </div>
+                </div>
+              </SectionCard>
+
               <SectionCard title="Identity" description="Core product information shown on the storefront.">
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="space-y-1.5 sm:col-span-2">
@@ -403,8 +452,10 @@ const AdminProductEditor = () => {
                       placeholder="e.g. Apple, Samsung…"
                     />
                   </div>
+
+                  {/* Pricing row */}
                   <div className="space-y-1.5">
-                    <Label>Price (USD) <span className="text-red-500">*</span></Label>
+                    <Label>Sale Price (USD) <span className="text-red-500">*</span></Label>
                     <div className="relative">
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">$</span>
                       <Input
@@ -416,6 +467,29 @@ const AdminProductEditor = () => {
                       />
                     </div>
                   </div>
+                  <div className="space-y-1.5">
+                    <div className="flex items-center gap-2">
+                      <Label>Compare At (was)</Label>
+                      {form.compareAtPrice && form.price &&
+                        Number(form.compareAtPrice) > Number(form.price) && (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 text-[10px] font-bold px-2 py-0.5">
+                          {Math.round((1 - Number(form.price) / Number(form.compareAtPrice)) * 100)}% OFF
+                        </span>
+                      )}
+                    </div>
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">$</span>
+                      <Input
+                        type="number" step="0.01" min={0}
+                        className="pl-7"
+                        value={form.compareAtPrice}
+                        onChange={(e) => patch("compareAtPrice", e.target.value)}
+                        placeholder="Original price (optional)"
+                      />
+                    </div>
+                    <p className="text-xs text-muted-foreground">Leave blank if no discount applies.</p>
+                  </div>
+
                   <div className="space-y-1.5">
                     <Label>Rating</Label>
                     <Input

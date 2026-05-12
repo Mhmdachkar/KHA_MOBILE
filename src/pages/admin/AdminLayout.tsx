@@ -144,7 +144,7 @@ const AdminLayout = () => {
   );
 
   return (
-    <div className="min-h-screen flex bg-background">
+    <div className="h-screen flex bg-background overflow-hidden">
       {/* ── Desktop sidebar ── */}
       <aside className="hidden sm:flex flex-col w-56 shrink-0 bg-gradient-to-b from-slate-900 to-slate-950 fixed left-0 top-0 h-screen overflow-hidden z-40">
         {sidebarContent}
@@ -174,9 +174,9 @@ const AdminLayout = () => {
       </aside>
 
       {/* ── Main content ── */}
-      <div className="flex-1 flex flex-col min-w-0 sm:ml-56">
+      <div className="flex-1 flex flex-col min-w-0 sm:ml-56 min-h-0">
         {/* Mobile top bar */}
-        <header className="sm:hidden sticky top-0 z-30 flex items-center gap-3 px-4 h-14 bg-slate-900 border-b border-white/10">
+        <header className="sm:hidden shrink-0 sticky top-0 z-30 flex items-center gap-3 px-4 h-14 bg-slate-900 border-b border-white/10">
           <button
             onClick={() => setDrawerOpen(true)}
             className="text-white/60 hover:text-white transition-colors"
@@ -206,8 +206,8 @@ const AdminLayout = () => {
           </div>
         </header>
 
-        {/* Page content */}
-        <main className="flex-1 overflow-auto">
+        {/* Page content — scrolls internally; sidebar stays fixed */}
+        <main className="flex-1 overflow-y-auto min-h-0">
           <Outlet />
         </main>
       </div>

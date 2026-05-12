@@ -81,8 +81,10 @@ function validateProductPayload(c) {
   const errors = [];
   if (!c.name) errors.push('name is required');
   if (c.price === undefined || c.price === null || Number(c.price) < 0) errors.push('valid price is required');
-  if (!c.primary_image_url) errors.push('primaryImageUrl (or image) is required');
   if (!c.category) errors.push('category is required');
+  if (c.compare_at_price != null && Number(c.compare_at_price) <= Number(c.price)) {
+    errors.push('compare_at_price must be greater than price when set');
+  }
   return errors;
 }
 
@@ -94,11 +96,11 @@ adminProductsRouter.post('/products', requirePool, requireAdmin, async (req, res
 
     const { rows } = await pool.query(
       `INSERT INTO products (
-        legacy_override_id, name, title, description, price, primary_image_url, rating, category, brand,
-        video_url, is_preorder, is_active, features, specifications, variants, colors, sizes,
-        connectivity_options, secondary_categories, gallery_images
+        legacy_override_id, name, title, description, price, compare_at_price, primary_image_url, rating,
+        category, brand, video_url, is_preorder, is_active, features, specifications, variants, colors,
+        sizes, connectivity_options, secondary_categories, gallery_images
       ) VALUES (
-        $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13::jsonb,$14::jsonb,$15::jsonb,$16::jsonb,$17::jsonb,$18::jsonb,$19::jsonb,$20::jsonb
+        $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14::jsonb,$15::jsonb,$16::jsonb,$17::jsonb,$18::jsonb,$19::jsonb,$20::jsonb,$21::jsonb
       ) RETURNING *`,
       [
         c.legacy_override_id,
@@ -106,6 +108,7 @@ adminProductsRouter.post('/products', requirePool, requireAdmin, async (req, res
         c.title,
         c.description,
         c.price,
+        c.compare_at_price,
         c.primary_image_url,
         c.rating,
         c.category,
@@ -148,23 +151,24 @@ adminProductsRouter.put('/products/:dbId', requirePool, requireAdmin, async (req
         title = $3,
         description = $4,
         price = $5,
-        primary_image_url = $6,
-        rating = $7,
-        category = $8,
-        brand = $9,
-        video_url = $10,
-        is_preorder = $11,
-        is_active = $12,
-        features = $13::jsonb,
-        specifications = $14::jsonb,
-        variants = $15::jsonb,
-        colors = $16::jsonb,
-        sizes = $17::jsonb,
-        connectivity_options = $18::jsonb,
-        secondary_categories = $19::jsonb,
-        gallery_images = $20::jsonb,
+        compare_at_price = $6,
+        primary_image_url = $7,
+        rating = $8,
+        category = $9,
+        brand = $10,
+        video_url = $11,
+        is_preorder = $12,
+        is_active = $13,
+        features = $14::jsonb,
+        specifications = $15::jsonb,
+        variants = $16::jsonb,
+        colors = $17::jsonb,
+        sizes = $18::jsonb,
+        connectivity_options = $19::jsonb,
+        secondary_categories = $20::jsonb,
+        gallery_images = $21::jsonb,
         updated_at = NOW()
-      WHERE id = $21
+      WHERE id = $22
       RETURNING *`,
       [
         c.legacy_override_id,
@@ -172,6 +176,7 @@ adminProductsRouter.put('/products/:dbId', requirePool, requireAdmin, async (req
         c.title,
         c.description,
         c.price,
+        c.compare_at_price,
         c.primary_image_url,
         c.rating,
         c.category,
