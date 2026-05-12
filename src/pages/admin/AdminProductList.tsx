@@ -6,6 +6,7 @@ import {
   TrendingUp, Tag, AlertTriangle,
 } from "lucide-react";
 import { adminFetch } from "@/lib/adminApi";
+import { useCatalog } from "@/context/CatalogContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -13,7 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
 interface AdminProduct {
-  dbId: number;
+  dbId?: number;
   id: number;
   name: string;
   price: number | string;
@@ -39,8 +40,7 @@ const StatCard = ({ icon: Icon, label, value, color }: { icon: typeof Package; l
 
 const AdminProductList = () => {
   const { toast } = useToast();
-  const [products, setProducts] = useState<AdminProduct[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { allProducts, loading: catalogLoading, refresh: refreshCatalog } = useCatalog();
   const [deleting, setDeleting] = useState<number | null>(null);
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("All");
@@ -48,14 +48,21 @@ const AdminProductList = () => {
   const [view, setView] = useState<"grid" | "list">("list");
   const [refreshKey, setRefreshKey] = useState(0);
 
-  useEffect(() => {
-    setLoading(true);
-    adminFetch("/api/admin/products")
-      .then((r) => r.json())
-      .then((d) => setProducts(d.products || []))
-      .catch(() => toast({ variant: "destructive", title: "Failed to load products" }))
-      .finally(() => setLoading(false));
-  }, [toast, refreshKey]);
+  // Convert catalog products to admin format
+  const products = useMemo<AdminProduct[]>(() => {
+    return allProducts.map(p => ({
+      dbId: (p as any).dbId, // May not exist for static-only products
+      id: p.id,
+      name: p.name,
+      price: p.price,
+      image: Array.isArray(p.images) && p.images.length > 0 ? p.images[0] : p.image,
+      category: p.category,
+      brand: p.brand,
+      rating: p.rating,
+      isActive: (p as any).isActive !== false,
+      isPreorder: (p as any).isPreorder,
+    }));
+  }, [allProducts, refreshKey]);
 
   const filtered = useMemo(() => {
     return products.filter((p) => {
@@ -85,14 +92,22 @@ const AdminProductList = () => {
     return ["All", ...cats.sort()];
   }, [products]);
 
-  const deleteProduct = async (dbId: number, name: string) => {
+  const deleteProduct = async (dbId: number | undefined, name: string) => {
+    if (!dbId) {
+      toast({ 
+        variant: "destructive", 
+        title: "Cannot delete", 
+        description: "This product exists only in static files. Edit the source code to remove it." 
+      });
+      return;
+    }
     if (!confirm(`Delete "${name}"? This cannot be undone.`)) return;
     setDeleting(dbId);
     try {
       const r = await adminFetch(`/api/admin/products/${dbId}`, { method: "DELETE" });
       if (!r.ok) throw new Error();
-      toast({ title: "Deleted", description: `"${name}" removed` });
-      setProducts((prev) => prev.filter((p) => p.dbId !== dbId));
+      toast({ title: "Deleted", description: `"${name}" removed. Refresh to see changes.` });
+      setRefreshKey(k => k + 1);
     } catch {
       toast({ variant: "destructive", title: "Delete failed" });
     } finally {
@@ -117,10 +132,10 @@ const AdminProductList = () => {
             size="icon"
             className="h-9 w-9 shrink-0 touch-manipulation"
             style={{ touchAction: 'manipulation' }}
-            onClick={() => setRefreshKey((k) => k + 1)}
+            onClick={() => { refreshCatalog(); setRefreshKey((k) => k + 1); }}
             title="Refresh"
           >
-            <RefreshCw className={cn("h-4 w-4", loading && "animate-spin")} />
+            <RefreshCw className={cn("h-4 w-4", catalogLoading && "animate-spin")} />
           </Button>
           <Button asChild className="flex-1 sm:flex-none touch-manipulation" style={{ touchAction: 'manipulation' }}>
             <Link to="/admin/products/new">
@@ -133,7 +148,7 @@ const AdminProductList = () => {
       </div>
 
       {/* Stats */}
-      {!loading && (
+      {!catalogLoading && (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <StatCard icon={Package} label="Total Products" value={stats.total} color="bg-muted/50" />
           <StatCard icon={CheckCircle2} label="Active" value={stats.active} color="bg-emerald-500/8 text-emerald-700 dark:text-emerald-400 border-emerald-500/20" />
@@ -222,7 +237,7 @@ const AdminProductList = () => {
       )}
 
       {/* Loading */}
-      {loading && (
+      {catalogLoading && (
         <div className="py-20 text-center">
           <RefreshCw className="h-6 w-6 animate-spin mx-auto text-muted-foreground mb-3" />
           <p className="text-sm text-muted-foreground">Loading products…</p>
