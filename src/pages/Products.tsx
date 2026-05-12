@@ -22,10 +22,14 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import type { Product } from "@/data/products";
+import type { GreenLionProduct } from "@/data/greenLionProducts";
 import { phoneAccessories, wearablesProducts, smartphoneProducts, tabletProducts, iphoneCases, gamingConsoles, electronicsProducts } from "@/data/products";
-import { greenLionProducts } from "@/data/greenLionProducts";
+import { getAllGreenLionProductsMerged, eachApiCatalogProduct } from "@/data/productLookup";
+import { useCatalog } from "@/context/CatalogContext";
 
 const Products = () => {
+  const { catalogTick } = useCatalog();
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
@@ -49,68 +53,97 @@ const Products = () => {
     document.body.scrollTop = 0;
   }, [location.pathname, location.search]);
 
-  // Helper function to get display price (uses first variant price if variants exist, otherwise base price)
-  const getDisplayPrice = (product: any): number | string => {
-    if (product.variants && product.variants.length > 0) {
-      // Use the first variant price to match what ProductDetail shows by default
-      return product.variants[0].price;
-    }
-    return product.price;
-  };
+  const allProducts = useMemo(() => {
+    const getDisplayPrice = (product: any): number | string => {
+      if (product.variants && product.variants.length > 0) {
+        return product.variants[0].price;
+      }
+      return product.price;
+    };
 
-  // Get all real products from products.ts (including wearables + Green Lion)
-  const allProducts = [
-    ...phoneAccessories.map(p => ({
-      ...p,
-      images: [p.image],
-      price: getDisplayPrice(p)
-    })),
-    ...wearablesProducts.map(p => ({
-      ...p,
-      images: [p.image],
-      price: getDisplayPrice(p)
-    })),
-    ...smartphoneProducts.map(p => ({
-      ...p,
-      images: p.images && p.images.length > 0 ? p.images : [p.image],
-      price: getDisplayPrice(p)
-    })),
-    ...tabletProducts.map(p => ({
-      ...p,
-      images: p.images && p.images.length > 0 ? p.images : [p.image],
-      price: getDisplayPrice(p)
-    })),
-    ...iphoneCases.map(p => ({
-      ...p,
-      images: p.images && p.images.length > 0 ? p.images : [p.image],
-      price: getDisplayPrice(p)
-    })),
-    ...gamingConsoles.map(p => ({
-      ...p,
-      images: p.images && p.images.length > 0 ? p.images : [p.image],
-      price: getDisplayPrice(p)
-    })),
-    ...electronicsProducts.map(p => ({
-      ...p,
-      images: p.images && p.images.length > 0 ? p.images : [p.image],
-      price: getDisplayPrice(p)
-    })),
-    ...greenLionProducts.map(p => ({
-      id: p.id,
-      name: p.name,
-      price: getDisplayPrice(p),
-      image: p.images[0],
-      images: p.images,
-      rating: p.rating,
-      category: p.category,
-      brand: p.brand,
-      description: p.description,
-      title: p.title,
-      isPreorder: p.isPreorder,
-      colors: p.colors,
-      secondaryCategories: p.secondaryCategories
-    }))
-  ] as any[];
+    const base = [
+      ...phoneAccessories.map((p) => ({
+        ...p,
+        images: [p.image],
+        price: getDisplayPrice(p),
+      })),
+      ...wearablesProducts.map((p) => ({
+        ...p,
+        images: [p.image],
+        price: getDisplayPrice(p),
+      })),
+      ...smartphoneProducts.map((p) => ({
+        ...p,
+        images: p.images && p.images.length > 0 ? p.images : [p.image],
+        price: getDisplayPrice(p),
+      })),
+      ...tabletProducts.map((p) => ({
+        ...p,
+        images: p.images && p.images.length > 0 ? p.images : [p.image],
+        price: getDisplayPrice(p),
+      })),
+      ...iphoneCases.map((p) => ({
+        ...p,
+        images: p.images && p.images.length > 0 ? p.images : [p.image],
+        price: getDisplayPrice(p),
+      })),
+      ...gamingConsoles.map((p) => ({
+        ...p,
+        images: p.images && p.images.length > 0 ? p.images : [p.image],
+        price: getDisplayPrice(p),
+      })),
+      ...electronicsProducts.map((p) => ({
+        ...p,
+        images: p.images && p.images.length > 0 ? p.images : [p.image],
+        price: getDisplayPrice(p),
+      })),
+      ...getAllGreenLionProductsMerged().map((p) => ({
+        id: p.id,
+        name: p.name,
+        price: getDisplayPrice(p),
+        image: p.images[0],
+        images: p.images,
+        rating: p.rating,
+        category: p.category,
+        brand: p.brand,
+        description: p.description,
+        title: p.title,
+        isPreorder: p.isPreorder,
+        colors: p.colors,
+        secondaryCategories: p.secondaryCategories,
+      })),
+    ] as any[];
+
+    const m = new Map<number, any>(base.map((p) => [p.id, p]));
+    eachApiCatalogProduct((id, hit) => {
+      if (hit.kind === "green") {
+        const g = hit.product as GreenLionProduct;
+        m.set(id, {
+          id: g.id,
+          name: g.name,
+          price: getDisplayPrice(g),
+          image: g.images[0],
+          images: g.images,
+          rating: g.rating,
+          category: g.category,
+          brand: g.brand,
+          description: g.description,
+          title: g.title,
+          isPreorder: g.isPreorder,
+          colors: g.colors,
+          secondaryCategories: g.secondaryCategories,
+        });
+      } else {
+        const r = hit.product as Product;
+        m.set(id, {
+          ...r,
+          images: r.images && r.images.length > 0 ? r.images : [r.image],
+          price: getDisplayPrice(r),
+        });
+      }
+    });
+    return Array.from(m.values());
+  }, [catalogTick]);
 
   // Get unique categories from real products
   const categories = useMemo(() => {

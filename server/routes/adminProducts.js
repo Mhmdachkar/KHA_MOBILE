@@ -1,0 +1,215 @@
+import { Router } from 'express';
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+import multer from 'multer';
+import { pool, requirePool } from '../lib/db.js';
+import { requireAdmin } from '../middleware/auth.js';
+import { bodyToRowColumns, rowToPublicProduct } from '../lib/productMapper.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const uploadsDir = path.join(__dirname, '..', 'uploads');
+
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
+const storage = multer.diskStorage({
+  destination: (_req, _file, cb) => cb(null, uploadsDir),
+  filename: (_req, file, cb) => {
+    const safe = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}${path.extname(file.originalname) || '.bin'}`;
+    cb(null, safe);
+  },
+});
+
+const upload = multer({
+  storage,
+  limits: { fileSize: 8 * 1024 * 1024 },
+  fileFilter: (_req, file, cb) => {
+    const ok = /^image\//.test(file.mimetype) || file.mimetype === 'video/mp4';
+    if (!ok) return cb(new Error('Only image or mp4 uploads are allowed'));
+    cb(null, true);
+  },
+});
+
+export const adminProductsRouter = Router();
+
+function publicUploadUrl(req, filename) {
+  const base =
+    process.env.API_PUBLIC_URL?.replace(/\/$/, '') ||
+    `${req.protocol}://${req.get('host')}`;
+  return `${base}/uploads/${filename}`;
+}
+
+adminProductsRouter.post('/upload', requirePool, requireAdmin, upload.single('file'), (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded (field name: file)' });
+    }
+    const url = publicUploadUrl(req, req.file.filename);
+    res.json({ url });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: e.message || 'Upload failed' });
+  }
+});
+
+adminProductsRouter.get('/products', requirePool, requireAdmin, async (_req, res) => {
+  try {
+    const { rows } = await pool.query(`SELECT * FROM products ORDER BY id DESC`);
+    res.json({ products: rows.map(rowToPublicProduct) });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'Failed to list products' });
+  }
+});
+
+adminProductsRouter.get('/products/:dbId', requirePool, requireAdmin, async (req, res) => {
+  try {
+    const dbId = Number(req.params.dbId);
+    if (!Number.isFinite(dbId)) return res.status(400).json({ error: 'Invalid id' });
+    const { rows } = await pool.query(`SELECT * FROM products WHERE id = $1`, [dbId]);
+    if (!rows[0]) return res.status(404).json({ error: 'Not found' });
+    res.json({ product: rowToPublicProduct(rows[0]) });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'Failed to load product' });
+  }
+});
+
+function validateProductPayload(c) {
+  const errors = [];
+  if (!c.name) errors.push('name is required');
+  if (c.price === undefined || c.price === null || Number(c.price) < 0) errors.push('valid price is required');
+  if (!c.primary_image_url) errors.push('primaryImageUrl (or image) is required');
+  if (!c.category) errors.push('category is required');
+  return errors;
+}
+
+adminProductsRouter.post('/products', requirePool, requireAdmin, async (req, res) => {
+  try {
+    const c = bodyToRowColumns(req.body);
+    const errs = validateProductPayload(c);
+    if (errs.length) return res.status(400).json({ error: errs.join('; ') });
+
+    const { rows } = await pool.query(
+      `INSERT INTO products (
+        legacy_override_id, name, title, description, price, primary_image_url, rating, category, brand,
+        video_url, is_preorder, is_active, features, specifications, variants, colors, sizes,
+        connectivity_options, secondary_categories, gallery_images
+      ) VALUES (
+        $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13::jsonb,$14::jsonb,$15::jsonb,$16::jsonb,$17::jsonb,$18::jsonb,$19::jsonb,$20::jsonb
+      ) RETURNING *`,
+      [
+        c.legacy_override_id,
+        c.name,
+        c.title,
+        c.description,
+        c.price,
+        c.primary_image_url,
+        c.rating,
+        c.category,
+        c.brand,
+        c.video_url,
+        c.is_preorder,
+        c.is_active,
+        JSON.stringify(c.features),
+        JSON.stringify(c.specifications),
+        JSON.stringify(c.variants),
+        JSON.stringify(c.colors),
+        JSON.stringify(c.sizes),
+        JSON.stringify(c.connectivity_options),
+        JSON.stringify(c.secondary_categories),
+        JSON.stringify(c.gallery_images),
+      ]
+    );
+    res.status(201).json({ product: rowToPublicProduct(rows[0]) });
+  } catch (e) {
+    console.error(e);
+    if (e.code === '23505') {
+      return res.status(409).json({ error: 'Duplicate legacy_override_id or constraint violation' });
+    }
+    res.status(500).json({ error: 'Failed to create product' });
+  }
+});
+
+adminProductsRouter.put('/products/:dbId', requirePool, requireAdmin, async (req, res) => {
+  try {
+    const dbId = Number(req.params.dbId);
+    if (!Number.isFinite(dbId)) return res.status(400).json({ error: 'Invalid id' });
+    const c = bodyToRowColumns(req.body);
+    const errs = validateProductPayload(c);
+    if (errs.length) return res.status(400).json({ error: errs.join('; ') });
+
+    const { rows } = await pool.query(
+      `UPDATE products SET
+        legacy_override_id = $1,
+        name = $2,
+        title = $3,
+        description = $4,
+        price = $5,
+        primary_image_url = $6,
+        rating = $7,
+        category = $8,
+        brand = $9,
+        video_url = $10,
+        is_preorder = $11,
+        is_active = $12,
+        features = $13::jsonb,
+        specifications = $14::jsonb,
+        variants = $15::jsonb,
+        colors = $16::jsonb,
+        sizes = $17::jsonb,
+        connectivity_options = $18::jsonb,
+        secondary_categories = $19::jsonb,
+        gallery_images = $20::jsonb,
+        updated_at = NOW()
+      WHERE id = $21
+      RETURNING *`,
+      [
+        c.legacy_override_id,
+        c.name,
+        c.title,
+        c.description,
+        c.price,
+        c.primary_image_url,
+        c.rating,
+        c.category,
+        c.brand,
+        c.video_url,
+        c.is_preorder,
+        c.is_active,
+        JSON.stringify(c.features),
+        JSON.stringify(c.specifications),
+        JSON.stringify(c.variants),
+        JSON.stringify(c.colors),
+        JSON.stringify(c.sizes),
+        JSON.stringify(c.connectivity_options),
+        JSON.stringify(c.secondary_categories),
+        JSON.stringify(c.gallery_images),
+        dbId,
+      ]
+    );
+    if (!rows[0]) return res.status(404).json({ error: 'Not found' });
+    res.json({ product: rowToPublicProduct(rows[0]) });
+  } catch (e) {
+    console.error(e);
+    if (e.code === '23505') {
+      return res.status(409).json({ error: 'Duplicate legacy_override_id' });
+    }
+    res.status(500).json({ error: 'Failed to update product' });
+  }
+});
+
+adminProductsRouter.delete('/products/:dbId', requirePool, requireAdmin, async (req, res) => {
+  try {
+    const dbId = Number(req.params.dbId);
+    if (!Number.isFinite(dbId)) return res.status(400).json({ error: 'Invalid id' });
+    const r = await pool.query(`DELETE FROM products WHERE id = $1 RETURNING id`, [dbId]);
+    if (r.rowCount === 0) return res.status(404).json({ error: 'Not found' });
+    res.json({ ok: true });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'Failed to delete product' });
+  }
+});

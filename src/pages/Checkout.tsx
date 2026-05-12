@@ -12,8 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { useCart } from "@/context/CartContext";
 import { useAnalytics } from "@/context/AnalyticsContext";
-import { getProductById } from "@/data/products";
-import { getGreenLionProductById } from "@/data/greenLionProducts";
+import { findStoreProductSplit } from "@/data/productLookup";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 // Import recharge images for display
@@ -530,9 +529,7 @@ const Checkout = () => {
   // Get cart items with full product details
   const getCartItemsWithDetails = () => {
     return cart.map(item => {
-      // Check both regular products and Green Lion products
-      const regularProduct = getProductById(item.id);
-      const greenLionProduct = item.id >= 5000 ? getGreenLionProductById(item.id) : null;
+      const { regularProduct, greenLionProduct } = findStoreProductSplit(item.id);
       const fullProduct = regularProduct || greenLionProduct;
 
       return {

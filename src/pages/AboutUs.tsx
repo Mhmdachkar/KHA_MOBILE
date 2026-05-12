@@ -18,9 +18,11 @@ import Header from "@/components/Header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { phoneAccessories, wearablesProducts, smartphoneProducts, tabletProducts, iphoneCases, gamingConsoles } from "@/data/products";
-import { greenLionProducts } from "@/data/greenLionProducts";
+import { getAllGreenLionProductsMerged } from "@/data/productLookup";
+import { useCatalog } from "@/context/CatalogContext";
 
 const AboutUs = () => {
+  const { catalogTick } = useCatalog();
   // Scroll to top on mount
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
@@ -36,8 +38,8 @@ const AboutUs = () => {
            tabletProducts.length + 
            iphoneCases.length + 
            gamingConsoles.length + 
-           greenLionProducts.length;
-  }, []);
+           getAllGreenLionProductsMerged().length;
+  }, [catalogTick]);
 
   // Calculate average rating from all products
   const averageRating = useMemo(() => {
@@ -48,11 +50,11 @@ const AboutUs = () => {
       ...tabletProducts,
       ...iphoneCases,
       ...gamingConsoles,
-      ...greenLionProducts
+      ...getAllGreenLionProductsMerged()
     ];
     const totalRating = allProducts.reduce((sum, p) => sum + (p.rating || 0), 0);
     return (totalRating / allProducts.length).toFixed(1);
-  }, []);
+  }, [catalogTick]);
 
   const values = [
     {

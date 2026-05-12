@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
@@ -6,8 +7,9 @@ import { ShoppingCart, Star, TrendingUp, Zap, ArrowRight, Heart } from "lucide-r
 import { useCart } from "@/context/CartContext";
 import { useFavorites } from "@/context/FavoritesContext";
 import { useToast } from "@/hooks/use-toast";
-import { getGreenLionProductById } from "@/data/greenLionProducts";
-import { getProductById } from "@/data/products";
+import { findStoreProductSplit } from "@/data/productLookup";
+import { useCatalog } from "@/context/CatalogContext";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 // Import recharge card images
 import recharge10 from "@/assets/recharges/10$.png";
 import recharge15_15 from "@/assets/recharges/15.15$.png";
@@ -21,16 +23,15 @@ const getRechargeCardById = (id: number) => {
   return rechargeCards.find(card => card.id === id);
 };
 
-// Define 6 strategically selected products for maximum sales
-// Mix of high-demand, trending, and best-selling items
-const FEATURED_PRODUCTS = [
-  { id: 7, type: "recharge" },     // Touch $10 Card (10 MTC)
-  { id: 9, type: "recharge" },     // Touch $15.15 Card (15 MTC)
-  { id: 309, type: "regular" },    // Tecno Spark Slim - Top Professional Phone
-  { id: 5031, type: "greenLion" }, // Green Lion Ultimate 10 Smart Watch
-  { id: 5027, type: "greenLion" }, // Green Lion Rhythm X50 ANC Headphone
-  { id: 401, type: "regular" },    // Samsung Galaxy Tab A9
-];
+// Static fallback — overridden by live site_settings.weekly_favorites
+const STATIC_FEATURED_PRODUCTS = [
+  { id: 7, type: "recharge" },
+  { id: 9, type: "recharge" },
+  { id: 309, type: "regular" },
+  { id: 5031, type: "greenLion" },
+  { id: 5027, type: "greenLion" },
+  { id: 401, type: "regular" },
+] as const;
 
 interface FeaturedProductCardProps {
   product: any;
@@ -212,6 +213,14 @@ const FeaturedProductCard = ({
 };
 
 const ThisWeeksFavorites = () => {
+  const { catalogTick } = useCatalog();
+  const { settings } = useSiteSettings();
+
+  const FEATURED_PRODUCTS =
+    settings.weekly_favorites.length > 0
+      ? settings.weekly_favorites
+      : STATIC_FEATURED_PRODUCTS;
+
   // Helper function to get display price (uses first variant price if variants exist, otherwise base price)
   const getDisplayPrice = (product: any): number => {
     if (product?.variants && product.variants.length > 0) {
@@ -220,37 +229,36 @@ const ThisWeeksFavorites = () => {
     return product?.price || 0;
   };
 
-  // Get products data
-  const featuredProductsData = FEATURED_PRODUCTS.map((item, index) => {
-    let product;
-    if (item.type === "greenLion") {
-      product = getGreenLionProductById(item.id);
-    } else if (item.type === "recharge") {
-      product = getRechargeCardById(item.id);
-      // Add images array for recharge cards to match other products
-      if (product) {
-        product.images = [product.image];
-      }
-    } else {
-      product = getProductById(item.id);
-    }
+  const featuredProductsData = useMemo(
+    () =>
+      FEATURED_PRODUCTS.map((item, index) => {
+        let product;
+        if (item.type === "recharge") {
+          product = getRechargeCardById(item.id);
+          if (product) {
+            product.images = [product.image];
+          }
+        } else {
+          const { regularProduct, greenLionProduct } = findStoreProductSplit(item.id);
+          product = regularProduct || greenLionProduct;
+        }
 
-    // Update price to use display price (first variant if exists)
-    if (product) {
-      product = {
-        ...product,
-        price: getDisplayPrice(product)
-      };
-    }
+        if (product) {
+          product = {
+            ...product,
+            price: getDisplayPrice(product),
+          };
+        }
 
-    return {
-      product,
-      index,
-      // Sales-focused labels - rotate for variety
-      isBestSeller: index % 3 === 0, // Every 3rd product is best seller
-      isTrending: index % 3 === 1, // Every 3rd product is trending
-    };
-  }).filter(item => item.product); // Filter out any null products
+        return {
+          product,
+          index,
+          isBestSeller: index % 3 === 0,
+          isTrending: index % 3 === 1,
+        };
+      }).filter((item) => item.product),
+    [catalogTick, settings.weekly_favorites]
+  );
 
   return (
     <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-b from-background to-secondary/30 relative overflow-hidden">

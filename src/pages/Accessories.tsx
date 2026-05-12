@@ -1,12 +1,13 @@
 import { useState, useEffect, useMemo } from "react";
+import { useCatalog } from "@/context/CatalogContext";
 import { motion } from "framer-motion";
 import { Grid3x3, List, Battery, Smartphone, Filter, Laptop, Cable, Shield, Scissors, Briefcase } from "lucide-react";
 import Header from "@/components/Header";
 import ProductCard from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { phoneAccessories, getProductsByCategory } from "@/data/products";
-import { greenLionProducts } from "@/data/greenLionProducts";
+import { phoneAccessories } from "@/data/products";
+import { getProductsByCategoryMerged, getAllGreenLionProductsMerged } from "@/data/productLookup";
 import {
   Select,
   SelectContent,
@@ -16,6 +17,7 @@ import {
 } from "@/components/ui/select";
 
 const Accessories = () => {
+  const { catalogTick } = useCatalog();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedBrand, setSelectedBrand] = useState<string>("all");
@@ -42,9 +44,9 @@ const Accessories = () => {
     const products: any[] = [];
     
     // Get all products with category "Accessories", "Charging", or "iPhone Cases", or secondaryCategories includes "Accessories"
-    const accessoriesProducts = getProductsByCategory("Accessories");
-    const chargingProducts = getProductsByCategory("Charging");
-    const iphoneCasesProducts = getProductsByCategory("iPhone Cases");
+    const accessoriesProducts = getProductsByCategoryMerged("Accessories");
+    const chargingProducts = getProductsByCategoryMerged("Charging");
+    const iphoneCasesProducts = getProductsByCategoryMerged("iPhone Cases");
     
     // Combine and deduplicate by ID
     const productMap = new Map<number, any>();
@@ -123,7 +125,7 @@ const Accessories = () => {
       });
     
     // Filter Green Lion products to exclude Audio, Gaming, and Wearables
-    greenLionProducts
+    getAllGreenLionProductsMerged()
       .filter((product) => {
         // Skip if already added
         if (productMap.has(product.id)) return false;
@@ -183,7 +185,7 @@ const Accessories = () => {
       });
     
     return Array.from(productMap.values());
-  }, []);
+  }, [catalogTick]);
 
   // Get all unique brands for the filter
   const brands = Array.from(

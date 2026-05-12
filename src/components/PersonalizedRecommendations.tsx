@@ -2,9 +2,10 @@ import { motion } from "framer-motion";
 import { Battery, Smartphone, Zap, Gamepad2, Headphones } from "lucide-react";
 import ProductCard from "./ProductCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-import { phoneAccessories, wearablesProducts, smartphoneProducts, tabletProducts, iphoneCases, gamingConsoles, getProductsByCategory } from "@/data/products";
-import { greenLionProducts, getGreenLionProductsByCategory } from "@/data/greenLionProducts";
-import { useState, useRef, useEffect } from "react";
+import { phoneAccessories, wearablesProducts, smartphoneProducts, tabletProducts, iphoneCases, gamingConsoles } from "@/data/products";
+import { getAllGreenLionProductsMerged } from "@/data/productLookup";
+import { useState, useRef, useEffect, useMemo } from "react";
+import { useCatalog } from "@/context/CatalogContext";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 // Horizontal Scroll Container Component
@@ -128,6 +129,8 @@ const HorizontalScrollContainer = ({ products }: { products: any[] }) => {
 };
 
 const PersonalizedRecommendations = () => {
+  const { catalogTick } = useCatalog();
+
   // Helper function to check if product is Green Lion
   const isGreenLionProduct = (product: any) => {
     return product.id >= 5000 || product.brand === "Green Lion" || product.name?.startsWith("Green Lion");
@@ -236,7 +239,7 @@ const PersonalizedRecommendations = () => {
       }));
 
     // Get Green Lion products for this category
-    const greenLionCategoryProducts = greenLionProducts
+    const greenLionCategoryProducts = getAllGreenLionProductsMerged()
       .filter(p => {
         const nameLower = p.name.toLowerCase();
         const primaryMatch = p.category === category;
@@ -317,11 +320,10 @@ const PersonalizedRecommendations = () => {
     });
   };
 
-  // Get products by category with Green Lion products first
-  const chargingProducts = getProductsForCategory("Charging");
-  const gamingProducts = getProductsForCategory("Gaming");
-  const accessoriesProducts = getProductsForCategory("Accessories");
-  const audioProducts = getProductsForCategory("Audio");
+  const chargingProducts = useMemo(() => getProductsForCategory("Charging"), [catalogTick]);
+  const gamingProducts = useMemo(() => getProductsForCategory("Gaming"), [catalogTick]);
+  const accessoriesProducts = useMemo(() => getProductsForCategory("Accessories"), [catalogTick]);
+  const audioProducts = useMemo(() => getProductsForCategory("Audio"), [catalogTick]);
 
   return (
     <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-background relative">

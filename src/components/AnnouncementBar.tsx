@@ -1,35 +1,31 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, Zap, Headphones, Smartphone, Gift, Gamepad2, LucideIcon } from "lucide-react";
+import { Sparkles, Zap, Headphones, Smartphone, Gift, Gamepad2 } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 
-interface Announcement {
-  icon: LucideIcon;
-  text: string;
-  color: string;
-  highlight?: boolean;
-}
+// Icon pool for announcements (cycles through)
+const ICONS = [Sparkles, Smartphone, Headphones, Gift, Gamepad2, Zap];
+const COLORS = ["text-primary", "text-accent", "text-primary", "text-accent", "text-primary", "text-accent"];
 
 const AnnouncementBar = () => {
-  const announcements: Announcement[] = [
-    { icon: Sparkles, text: "🎉 10% OFF Premium Gaming Accessories", color: "text-primary", highlight: true },
-    { icon: Smartphone, text: "Cutting-Edge Smartphones & Latest Tech", color: "text-accent" },
-    { icon: Headphones, text: "Crystal-Clear Audio Excellence", color: "text-primary" },
-    { icon: Gift, text: "🎁 Instant Digital Gift Cards Worldwide", color: "text-accent" },
-    { icon: Gamepad2, text: "PlayStation Store Cards - 10% OFF", color: "text-primary", highlight: true },
-    { icon: Zap, text: "Lightning-Fast Delivery • Free Shipping", color: "text-accent" },
-  ];
+  const { settings } = useSiteSettings();
+  const announcements = settings.announcements;
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
+    if (announcements.length === 0) return;
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % announcements.length);
-    }, 4000); // 4 seconds per announcement
-
+      setCurrentIndex((prev) => (prev + 1) % announcements.length);
+    }, 4000);
     return () => clearInterval(interval);
   }, [announcements.length]);
 
-  const currentAnnouncement = announcements[currentIndex];
+  if (announcements.length === 0) return null;
+
+  const current = announcements[currentIndex];
+  const Icon = ICONS[currentIndex % ICONS.length];
+  const color = COLORS[currentIndex % COLORS.length];
 
   return (
     <motion.div
@@ -48,54 +44,43 @@ const AnnouncementBar = () => {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5, ease: "easeInOut" }}
               className={`flex items-center gap-2 group cursor-pointer relative ${
-                currentAnnouncement.highlight ? 'px-3 py-1 rounded-full bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20' : ''
+                current.highlight ? "px-3 py-1 rounded-full bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20" : ""
               }`}
             >
-              {currentAnnouncement.highlight && (
+              {current.highlight && (
                 <motion.div
                   className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5 rounded-full"
-                  animate={{
-                    opacity: [0.5, 1, 0.5],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
+                  animate={{ opacity: [0.5, 1, 0.5] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                 />
               )}
-              <currentAnnouncement.icon 
-                className={`h-4 w-4 ${currentAnnouncement.color} group-hover:scale-110 transition-transform duration-300 relative z-10 ${
-                  currentAnnouncement.highlight ? 'animate-pulse' : ''
-                }`} 
+              <Icon
+                className={`h-4 w-4 ${color} group-hover:scale-110 transition-transform duration-300 relative z-10 ${
+                  current.highlight ? "animate-pulse" : ""
+                }`}
               />
-              <span className={`text-xs transition-colors duration-300 font-light tracking-wide relative z-10 ${
-                currentAnnouncement.highlight 
-                  ? 'text-primary font-medium' 
-                  : 'text-muted-foreground group-hover:text-foreground'
-              }`}>
-                {currentAnnouncement.text}
+              <span
+                className={`text-xs transition-colors duration-300 font-light tracking-wide relative z-10 ${
+                  current.highlight
+                    ? "text-primary font-medium"
+                    : "text-muted-foreground group-hover:text-foreground"
+                }`}
+              >
+                {current.text}
               </span>
             </motion.div>
           </AnimatePresence>
         </div>
       </div>
-      
-      {/* Elegant shimmer effect */}
+
       <motion.div
         className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
         initial={{ x: "-100%" }}
         animate={{ x: "100%" }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          repeatDelay: 5,
-          ease: "easeInOut"
-        }}
+        transition={{ duration: 3, repeat: Infinity, repeatDelay: 5, ease: "easeInOut" }}
       />
     </motion.div>
   );
 };
 
 export default AnnouncementBar;
-

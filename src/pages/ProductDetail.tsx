@@ -7,8 +7,13 @@ import { Button } from "@/components/ui/button";
 import { useFavorites } from "@/context/FavoritesContext";
 import { useCart } from "@/context/CartContext";
 import { useAnalytics } from "@/context/AnalyticsContext";
-import { getProductById, phoneAccessories, wearablesProducts, smartphoneProducts, tabletProducts, getProductsByCategory } from "@/data/products";
-import { getGreenLionProductById, greenLionProducts, getGreenLionProductsByCategory } from "@/data/greenLionProducts";
+import { phoneAccessories, wearablesProducts, smartphoneProducts, tabletProducts } from "@/data/products";
+import {
+  findStoreProductSplit,
+  getProductsByCategoryMerged,
+  getGreenLionProductsByCategoryMerged,
+  getAllGreenLionProductsMerged,
+} from "@/data/productLookup";
 import ProductCard from "@/components/ProductCard";
 import ProductCarousel from "@/components/ProductCarousel";
 import ImageLightbox from "@/components/ImageLightbox";
@@ -32,8 +37,11 @@ const ProductDetail = () => {
   const productId = id ? parseInt(id, 10) : null;
 
   // Check both regular products and Green Lion products
-  const regularProduct = productId ? getProductById(productId) : null;
-  const greenLionProduct = productId ? getGreenLionProductById(productId) : null;
+  const { regularProduct: reg, greenLionProduct: gl } = productId
+    ? findStoreProductSplit(productId)
+    : { regularProduct: null, greenLionProduct: null };
+  const regularProduct = reg;
+  const greenLionProduct = gl;
   const product = regularProduct || greenLionProduct;
 
   // Track product view
@@ -312,7 +320,7 @@ const ProductDetail = () => {
       colors: p.colors,
       isPreorder: p.isPreorder,
     })),
-    ...greenLionProducts.map((p) => ({
+    ...getAllGreenLionProductsMerged().map((p) => ({
       id: p.id,
       name: p.name,
       title: p.title,
@@ -434,7 +442,7 @@ const ProductDetail = () => {
         category: p.category,
         brand: p.brand || null,
       })),
-      ...greenLionProducts
+      ...getAllGreenLionProductsMerged()
         .filter(p =>
           p.category === "Accessories" ||
           p.secondaryCategories?.includes("Accessories") ||
@@ -1251,7 +1259,7 @@ const ProductDetail = () => {
             // Get all products from all arrays with Audio category
             const allRegularProducts = [...phoneAccessories, ...wearablesProducts, ...smartphoneProducts, ...tabletProducts];
             const regularAudio = allRegularProducts.filter(p => p.category === "Audio");
-            const greenLionAudio = getGreenLionProductsByCategory("Audio");
+            const greenLionAudio = getGreenLionProductsByCategoryMerged("Audio");
 
             // Combine and remove duplicates by ID
             const audioProductsMap = new Map();
@@ -1281,12 +1289,12 @@ const ProductDetail = () => {
 
             // Get all charging products (regular + Green Lion)
             const chargingProducts = [
-              ...getProductsByCategory("Charging").map(p => ({
+              ...getProductsByCategoryMerged("Charging").map(p => ({
                 ...p,
                 image: p.image || p.images?.[0],
                 images: p.images || [p.image],
               })),
-              ...getGreenLionProductsByCategory("Charging").map(p => ({
+              ...getGreenLionProductsByCategoryMerged("Charging").map(p => ({
                 ...p,
                 image: p.images[0],
                 images: p.images,
@@ -1300,7 +1308,7 @@ const ProductDetail = () => {
               ...tabletProducts,
               ...audioProducts,
               ...chargingProducts,
-              ...greenLionProducts.map(p => ({
+              ...getAllGreenLionProductsMerged().map(p => ({
                 ...p,
                 image: p.images[0],
                 images: p.images,

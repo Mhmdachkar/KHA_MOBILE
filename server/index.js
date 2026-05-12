@@ -1,32 +1,64 @@
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { Router } from 'express';
 import { Resend } from 'resend';
+import { adminAuthRouter } from './routes/adminAuth.js';
+import { adminProductsRouter } from './routes/adminProducts.js';
+import { adminSettingsRouter } from './routes/adminSettings.js';
+import { publicCatalogRouter } from './routes/publicCatalog.js';
+import { publicSettingsRouter } from './routes/publicSettings.js';
 
-// Load environment variables
-dotenv.config();
-
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Initialize Resend
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
-// Middleware
-app.use(cors({
-  origin: 'http://localhost:8080', // Frontend URL
-  credentials: true
-}));
-app.use(express.json());
+const origins = (process.env.FRONTEND_ORIGIN || 'http://localhost:8080')
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean);
 
-// Health check endpoint
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', message: 'Backend server is running' });
+app.use(
+  cors({
+    origin: origins,
+    credentials: true,
+  })
+);
+app.use(express.json({ limit: '2mb' }));
+
+const uploadsDir = path.join(__dirname, 'uploads');
+app.use('/uploads', express.static(uploadsDir));
+
+app.get('/api/health', (_req, res) => {
+  res.json({
+    status: 'OK',
+    message: 'Backend server is running',
+    database: Boolean(process.env.DATABASE_URL),
+  });
 });
 
-// Send order email endpoint
+const adminRouter = Router();
+adminRouter.use(adminAuthRouter);
+adminRouter.use(adminProductsRouter);
+adminRouter.use('/settings', adminSettingsRouter);
+app.use('/api/admin', adminRouter);
+
+app.use('/api/public', publicCatalogRouter);
+app.use('/api/public/settings', publicSettingsRouter);
+
 app.post('/api/send-order-email', async (req, res) => {
   try {
+    if (!resend || !process.env.ADMIN_EMAIL) {
+      return res.status(503).json({
+        success: false,
+        error: 'Email service not configured (RESEND_API_KEY / ADMIN_EMAIL)',
+      });
+    }
+
     const {
       paymentMethod,
       customerName,
@@ -36,48 +68,46 @@ app.post('/api/send-order-email', async (req, res) => {
       orderItems,
       subtotal,
       deliveryFee,
-      total
+      total,
     } = req.body;
 
-    // Validate required fields
     if (!customerName || !email || !phoneNumber || !deliveryLocation) {
       return res.status(400).json({
         success: false,
-        error: 'Missing required fields'
+        error: 'Missing required fields',
       });
     }
 
-    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return res.status(400).json({
         success: false,
-        error: 'Invalid email format'
+        error: 'Invalid email format',
       });
     }
 
-    // Build order items HTML
     let orderItemsHtml = '';
     if (orderItems && orderItems.length > 0) {
-      orderItemsHtml = orderItems.map(item => {
-        let itemLabel = item.name;
-        if (item.variantLabel) {
-          itemLabel += ` - ${item.variantLabel}`;
-        }
-        if (item.color) {
-          itemLabel += ` (Color: ${item.color})`;
-        }
-        return `
+      orderItemsHtml = orderItems
+        .map((item) => {
+          let itemLabel = item.name;
+          if (item.variantLabel) {
+            itemLabel += ` - ${item.variantLabel}`;
+          }
+          if (item.color) {
+            itemLabel += ` (Color: ${item.color})`;
+          }
+          return `
           <tr>
             <td style="padding: 10px; border-bottom: 1px solid #eee;">${itemLabel}</td>
             <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: center;">${item.quantity}</td>
             <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">$${(item.price * item.quantity).toFixed(2)}</td>
           </tr>
         `;
-      }).join('');
+        })
+        .join('');
     }
 
-    // Create email HTML
     const emailHtml = `
       <!DOCTYPE html>
       <html>
@@ -90,30 +120,16 @@ app.post('/api/send-order-email', async (req, res) => {
         <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
           <h1 style="color: white; margin: 0; font-size: 28px;">New Cash on Delivery Order</h1>
         </div>
-        
         <div style="background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px;">
           <div style="background: white; padding: 25px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
             <h2 style="color: #667eea; margin-top: 0; border-bottom: 2px solid #667eea; padding-bottom: 10px;">Customer Information</h2>
             <table style="width: 100%; border-collapse: collapse;">
-              <tr>
-                <td style="padding: 8px 0; font-weight: bold; width: 150px;">Name:</td>
-                <td style="padding: 8px 0;">${customerName}</td>
-              </tr>
-              <tr>
-                <td style="padding: 8px 0; font-weight: bold;">Email:</td>
-                <td style="padding: 8px 0;">${email}</td>
-              </tr>
-              <tr>
-                <td style="padding: 8px 0; font-weight: bold;">Phone:</td>
-                <td style="padding: 8px 0;">${phoneNumber}</td>
-              </tr>
-              <tr>
-                <td style="padding: 8px 0; font-weight: bold;">Delivery Location:</td>
-                <td style="padding: 8px 0;">${deliveryLocation}</td>
-              </tr>
+              <tr><td style="padding: 8px 0; font-weight: bold; width: 150px;">Name:</td><td style="padding: 8px 0;">${customerName}</td></tr>
+              <tr><td style="padding: 8px 0; font-weight: bold;">Email:</td><td style="padding: 8px 0;">${email}</td></tr>
+              <tr><td style="padding: 8px 0; font-weight: bold;">Phone:</td><td style="padding: 8px 0;">${phoneNumber}</td></tr>
+              <tr><td style="padding: 8px 0; font-weight: bold;">Delivery Location:</td><td style="padding: 8px 0;">${deliveryLocation}</td></tr>
             </table>
           </div>
-
           ${orderItems && orderItems.length > 0 ? `
           <div style="background: white; padding: 25px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
             <h2 style="color: #667eea; margin-top: 0; border-bottom: 2px solid #667eea; padding-bottom: 10px;">Order Items</h2>
@@ -125,83 +141,72 @@ app.post('/api/send-order-email', async (req, res) => {
                   <th style="padding: 12px 10px; text-align: right; border-bottom: 2px solid #667eea;">Price</th>
                 </tr>
               </thead>
-              <tbody>
-                ${orderItemsHtml}
-              </tbody>
+              <tbody>${orderItemsHtml}</tbody>
             </table>
           </div>
-
           <div style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
             <h2 style="color: #667eea; margin-top: 0; border-bottom: 2px solid #667eea; padding-bottom: 10px;">Order Summary</h2>
             <table style="width: 100%; border-collapse: collapse;">
-              <tr>
-                <td style="padding: 8px 0; font-size: 16px;">Subtotal:</td>
-                <td style="padding: 8px 0; text-align: right; font-size: 16px;">$${subtotal.toFixed(2)}</td>
-              </tr>
-              <tr>
-                <td style="padding: 8px 0; font-size: 16px;">Delivery Fee:</td>
-                <td style="padding: 8px 0; text-align: right; font-size: 16px;">$${deliveryFee.toFixed(2)}</td>
-              </tr>
+              <tr><td style="padding: 8px 0; font-size: 16px;">Subtotal:</td><td style="padding: 8px 0; text-align: right; font-size: 16px;">$${Number(subtotal).toFixed(2)}</td></tr>
+              <tr><td style="padding: 8px 0; font-size: 16px;">Delivery Fee:</td><td style="padding: 8px 0; text-align: right; font-size: 16px;">$${Number(deliveryFee).toFixed(2)}</td></tr>
               <tr style="border-top: 2px solid #667eea;">
                 <td style="padding: 15px 0 0 0; font-size: 20px; font-weight: bold; color: #667eea;">Total:</td>
-                <td style="padding: 15px 0 0 0; text-align: right; font-size: 20px; font-weight: bold; color: #667eea;">$${total.toFixed(2)}</td>
+                <td style="padding: 15px 0 0 0; text-align: right; font-size: 20px; font-weight: bold; color: #667eea;">$${Number(total).toFixed(2)}</td>
               </tr>
             </table>
-          </div>
-          ` : `
+          </div>` : `
           <div style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
             <h2 style="color: #667eea; margin-top: 0; border-bottom: 2px solid #667eea; padding-bottom: 10px;">Total Amount</h2>
-            <p style="font-size: 24px; font-weight: bold; color: #667eea; margin: 15px 0;">$${total.toFixed(2)}</p>
-          </div>
-          `}
-
+            <p style="font-size: 24px; font-weight: bold; color: #667eea; margin: 15px 0;">$${Number(total).toFixed(2)}</p>
+          </div>`}
           <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin-top: 20px; border-left: 4px solid #ffc107;">
-            <p style="margin: 0; color: #856404;">
-              <strong>⚠️ Payment Method:</strong> Cash on Delivery (COD)
-            </p>
-            <p style="margin: 10px 0 0 0; color: #856404; font-size: 14px;">
-              Customer will pay in cash upon delivery of the order.
-            </p>
+            <p style="margin: 0; color: #856404;"><strong>Payment Method:</strong> ${paymentMethod || 'COD'}</p>
           </div>
         </div>
-
         <div style="text-align: center; padding: 20px; color: #666; font-size: 12px;">
-          <p>This is an automated email notification from your e-commerce system.</p>
+          <p>Automated notification from KHA Mobile storefront.</p>
           <p>Order received at: ${new Date().toLocaleString()}</p>
         </div>
       </body>
       </html>
     `;
 
-    // Send email using Resend
     const data = await resend.emails.send({
-      from: 'onboarding@resend.dev', // Resend's test domain (works without verification)
+      from: process.env.RESEND_FROM || 'onboarding@resend.dev',
       to: [process.env.ADMIN_EMAIL],
-      subject: `New Cash on Delivery Order from ${customerName}`,
+      subject: `New order from ${customerName}`,
       html: emailHtml,
     });
-
-    console.log('Email sent successfully:', data);
 
     res.json({
       success: true,
       message: 'Order email sent successfully',
-      emailId: data.id
+      emailId: data.id,
     });
-
   } catch (error) {
     console.error('Error sending email:', error);
     res.status(500).json({
       success: false,
       error: 'Failed to send order email',
-      details: error.message
+      details: error.message,
     });
   }
 });
 
-// Start server
+// Multer / upload errors
+// eslint-disable-next-line no-unused-vars
+app.use((err, _req, res, _next) => {
+  if (err?.name === 'MulterError') {
+    return res.status(400).json({ error: err.message });
+  }
+  if (err) {
+    return res.status(400).json({ error: err.message || 'Bad request' });
+  }
+});
+
 app.listen(PORT, () => {
-  console.log(`🚀 Backend server running on http://localhost:${PORT}`);
-  console.log(`📧 Admin email configured: ${process.env.ADMIN_EMAIL || 'Not configured'}`);
-  console.log(`🔑 Resend API key: ${process.env.RESEND_API_KEY ? '✓ Configured' : '✗ Not configured'}`);
+  console.log(`Backend http://localhost:${PORT}`);
+  console.log(`CORS origins: ${origins.join(', ')}`);
+  console.log(`Database: ${process.env.DATABASE_URL ? 'configured' : 'not set (admin/catalog API disabled)'}`);
+  console.log(`Resend: ${process.env.RESEND_API_KEY ? 'on' : 'off'}`);
 });

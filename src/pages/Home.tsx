@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Smartphone, Headphones, Gamepad2, CreditCard, Gift, Tv, Watch, Zap, ArrowRight, Star, Sparkles, ShoppingCart, Tablet, Cpu } from "lucide-react";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import rechargeLogo from "@/assets/recharges/logo.png";
 import Header from "@/components/Header";
@@ -21,13 +21,25 @@ import iPhone16Teal from "@/assets/phones/iphone 16/iphone 16 teal.jpeg";
 import iPhone16Ultramarine from "@/assets/phones/iphone 16/iphone 16 ultramarine.jpeg";
 import iPhone16White from "@/assets/phones/iphone 16/iphone 16 white.jpeg";
 import silicon17ProMaxOrange from "@/assets/iphone covers/silicon 17 pro max/Screenshot 2025-12-09 010853 orange.png";
-import { getProductsByCategory } from "@/data/products";
+import { getProductsByCategoryMerged, findStoreProductSplit } from "@/data/productLookup";
+import { useCatalog } from "@/context/CatalogContext";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 
-// iPhone 16 Showcase Component
+// iPhone 16 / Flagship Showcase Component
 const FlagshipiPhone16Showcase = () => {
+  const { settings } = useSiteSettings();
+  const flagship = settings.flagship_showcase;
   const [selectedColor, setSelectedColor] = useState("ultramarine");
   const sectionRef = useRef<HTMLElement | null>(null);
   const scrollPositionRef = useRef<number>(0);
+  const { catalogTick } = useCatalog();
+
+  // When mode="product" and productId≠500, look up the swapped product
+  const swappedProduct = useMemo(() => {
+    if (flagship.mode !== "product" || flagship.productId === 500) return null;
+    const { regularProduct, greenLionProduct } = findStoreProductSplit(flagship.productId);
+    return regularProduct || greenLionProduct || null;
+  }, [flagship.mode, flagship.productId, catalogTick]);
 
   // Track scroll position (for reference, no auto-restore to avoid scroll lock)
   useEffect(() => {
@@ -123,7 +135,7 @@ const FlagshipiPhone16Showcase = () => {
             >
               <Badge className="text-[10px] sm:text-xs md:text-sm px-3 sm:px-4 py-1 sm:py-1.5 glassmorphism border-primary/30">
                 <Sparkles className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-1 sm:mr-1.5" />
-                Flagship Innovation
+                {flagship.custom_badge || "Flagship Innovation"}
               </Badge>
             </motion.div>
 
@@ -135,8 +147,12 @@ const FlagshipiPhone16Showcase = () => {
               transition={{ delay: 0.3, duration: 0.8 }}
             >
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight break-words">
-                <span className="text-elegant block mb-2">iPhone 16</span>
-                <span className="text-gradient block">Redefining Excellence</span>
+                <span className="text-elegant block mb-2">
+                  {swappedProduct ? swappedProduct.name : (flagship.mode === "custom" ? flagship.custom_name : "iPhone 16")}
+                </span>
+                <span className="text-gradient block">
+                  {flagship.mode === "custom" ? flagship.custom_tagline : "Redefining Excellence"}
+                </span>
               </h2>
             </motion.div>
 
@@ -148,7 +164,11 @@ const FlagshipiPhone16Showcase = () => {
               transition={{ delay: 0.4, duration: 0.8 }}
               className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0 leading-relaxed break-words px-2 sm:px-0"
             >
-              Experience unparalleled performance with the A18 Pro chip, stunning camera system, and revolutionary design. The most advanced iPhone ever created.
+              {swappedProduct
+                ? (swappedProduct.description || swappedProduct.name)
+                : (flagship.mode === "custom"
+                    ? flagship.custom_description
+                    : "Experience unparalleled performance with the A18 Pro chip, stunning camera system, and revolutionary design. The most advanced iPhone ever created.")}
             </motion.p>
 
             {/* Features Grid */}
@@ -159,12 +179,12 @@ const FlagshipiPhone16Showcase = () => {
               transition={{ delay: 0.5, duration: 0.8 }}
               className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 max-w-md mx-auto lg:mx-0 w-full"
             >
-              {[
+              {(flagship.feature_chips.length > 0 ? flagship.feature_chips : [
                 { label: "A18 Pro Chip", sublabel: "Next-Gen Performance" },
                 { label: "ProMotion", sublabel: "120Hz Display" },
                 { label: "48MP Camera", sublabel: "Pro Photography" },
                 { label: "All-Day Battery", sublabel: "Up to 29 Hours" },
-              ].map((feature, i) => (
+              ]).map((feature, i) => (
                 <motion.div
                   key={i}
                   initial={{ opacity: 0, scale: 0.8 }}
@@ -247,11 +267,11 @@ const FlagshipiPhone16Showcase = () => {
               transition={{ delay: 0.9, duration: 0.8 }}
               className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start pt-2 sm:pt-4 w-full"
             >
-              <Link to="/product/500" className="w-full sm:w-auto">
+              <Link to={flagship.cta1_url || (swappedProduct ? `/product/${swappedProduct.id}` : "/product/500")} className="w-full sm:w-auto">
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto">
                   <Button variant="gradient" size="lg" className="group shadow-glow w-full sm:w-auto text-sm sm:text-base">
                     <ShoppingCart className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-                    Order Now
+                    {flagship.cta1_label || "Order Now"}
                     <motion.div
                       whileHover={{ x: 4 }}
                       className="ml-2"
@@ -261,10 +281,10 @@ const FlagshipiPhone16Showcase = () => {
                   </Button>
                 </motion.div>
               </Link>
-              <Link to="/smartphones" className="w-full sm:w-auto">
+              <Link to={flagship.cta2_url || "/smartphones"} className="w-full sm:w-auto">
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto">
                   <Button variant="outline" size="lg" className="glassmorphism w-full sm:w-auto text-sm sm:text-base">
-                    View All iPhones
+                    {flagship.cta2_label || "View All iPhones"}
                   </Button>
                 </motion.div>
               </Link>
@@ -301,9 +321,9 @@ const FlagshipiPhone16Showcase = () => {
               transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
             />
 
-            {/* iPhone Image */}
+            {/* Product Image – swapped product, custom image, or default iPhone 16 */}
             <motion.div
-              key={selectedColor}
+              key={swappedProduct ? swappedProduct.id : selectedColor}
               initial={{ opacity: 0, scale: 0.9, rotateY: 90 }}
               animate={{ opacity: 1, scale: 1, rotateY: 0 }}
               exit={{ opacity: 0, scale: 0.9, rotateY: -90 }}
@@ -318,8 +338,14 @@ const FlagshipiPhone16Showcase = () => {
               }}
             >
               <motion.img
-                src={currentColor.image}
-                alt={`iPhone 16 ${currentColor.label}`}
+                src={
+                  swappedProduct
+                    ? (swappedProduct.images?.[0] ?? swappedProduct.image)
+                    : flagship.mode === "custom" && flagship.custom_image_url
+                      ? flagship.custom_image_url
+                      : currentColor.image
+                }
+                alt={swappedProduct ? swappedProduct.name : `iPhone 16 ${currentColor.label}`}
                 className="w-full h-auto max-w-full sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl 2xl:max-w-3xl mx-auto drop-shadow-2xl"
                 style={{
                   willChange: 'opacity, transform',
@@ -364,6 +390,10 @@ const FlagshipiPhone16Showcase = () => {
 };
 
 const Home = () => {
+  const { catalogTick } = useCatalog();
+  const { settings: siteSettings } = useSiteSettings();
+  const heroSettings = siteSettings.hero;
+
   // Scroll to top on mount
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
@@ -394,21 +424,24 @@ const Home = () => {
     { image: silicon17ProMaxOrange, name: "iPhone Cases", linkTo: "/category/iPhone Cases" },
   ];
 
-  const trendingSmartphones = getProductsByCategory("Smartphones")
-    .reverse()
-    .slice(0, 10)
-    .map(product => ({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.image,
-      images: product.images,
-      rating: product.rating,
-      category: product.category,
-    }));
+  const trendingSmartphones = useMemo(
+    () =>
+      getProductsByCategoryMerged("Smartphones")
+        .reverse()
+        .slice(0, 10)
+        .map((product) => ({
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.image,
+          images: product.images,
+          rating: product.rating,
+          category: product.category,
+        })),
+    [catalogTick]
+  );
 
-  // Get real audio products from phone accessories
-  const trendingAudio = getProductsByCategory("Audio");
+  const trendingAudio = useMemo(() => getProductsByCategoryMerged("Audio"), [catalogTick]);
 
   return (
     <div className="min-h-screen w-full overflow-x-hidden">
@@ -486,7 +519,7 @@ const Home = () => {
                     className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
                   />
                   <Sparkles className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-1" />
-                  New Collection 2026
+                  {heroSettings.badge}
                 </Badge>
               </motion.div>
 
@@ -513,7 +546,7 @@ const Home = () => {
                     className="text-gradient block"
                     whileHover={{ scale: 1.05, x: 10 }}
                   >
-                    Future
+                    {heroSettings.headline1}
                   </motion.span>
                   <motion.span
                     initial={{ opacity: 0, y: 80, rotateX: -120, scale: 0.5 }}
@@ -529,7 +562,7 @@ const Home = () => {
                     className="text-elegant block"
                     whileHover={{ scale: 1.05, x: 10 }}
                   >
-                    Is Now
+                    {heroSettings.headline2}
                   </motion.span>
                 </motion.h1>
               </motion.div>
@@ -550,8 +583,7 @@ const Home = () => {
                   transition={{ delay: 1.2, duration: 1 }}
                   className="text-xs sm:text-sm md:text-base lg:text-lg text-muted-foreground max-w-lg mx-auto lg:mx-0 font-light leading-relaxed px-2 sm:px-0 break-words"
                 >
-                  Experience the pinnacle of technology with our curated collection of premium devices,
-                  smart accessories, and cutting-edge innovations.
+                  {heroSettings.description}
                 </motion.p>
               </motion.div>
 
@@ -573,7 +605,7 @@ const Home = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <Link to="/products">
+                  <Link to={heroSettings.cta1_url}>
                     <Button variant="gradient" size="lg" className="group shadow-glow relative overflow-hidden">
                       <motion.div
                         initial={{ x: "-100%" }}
@@ -581,7 +613,7 @@ const Home = () => {
                         transition={{ duration: 0.6 }}
                         className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
                       />
-                      <span className="relative z-10">Explore Collection</span>
+                      <span className="relative z-10">{heroSettings.cta1_label}</span>
                       <motion.div
                         whileHover={{ x: 4 }}
                         transition={{ duration: 0.2 }}
@@ -595,6 +627,7 @@ const Home = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
+                  <Link to={heroSettings.cta2_url}>
                   <Button variant="outline" size="lg" className="glassmorphism relative overflow-hidden">
                     <motion.div
                       initial={{ scale: 0, opacity: 0 }}
@@ -602,8 +635,9 @@ const Home = () => {
                       transition={{ duration: 0.3 }}
                       className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 rounded-md"
                     />
-                    <span className="relative z-10">View Deals</span>
+                    <span className="relative z-10">{heroSettings.cta2_label}</span>
                   </Button>
+                  </Link>
                 </motion.div>
               </motion.div>
 
@@ -622,9 +656,9 @@ const Home = () => {
                 className="flex flex-wrap gap-3 sm:gap-4 md:gap-6 lg:gap-8 pt-4 sm:pt-6 md:pt-8 justify-center lg:justify-start w-full"
               >
                 {[
-                  { value: "10K+", label: "Products" },
-                  { value: "4.9", label: "Rating", icon: Star },
-                  { value: "50K+", label: "Customers" },
+                  { value: heroSettings.stat1_value, label: heroSettings.stat1_label },
+                  { value: heroSettings.stat2_value, label: heroSettings.stat2_label, icon: Star },
+                  { value: heroSettings.stat3_value, label: heroSettings.stat3_label },
                 ].map((stat, i) => (
                   <motion.div
                     key={i}

@@ -16,9 +16,8 @@ import {
   tabletProducts,
   iphoneCases,
   gamingConsoles,
-  getProductsByCategory,
 } from "@/data/products";
-import { greenLionProducts } from "@/data/greenLionProducts";
+import { getAllGreenLionProductsMerged } from "@/data/productLookup";
 
 interface Product {
   id: number;
@@ -157,7 +156,7 @@ const InstagramGenerator = () => {
       })),
     ];
 
-    const greenLionProductsList: Product[] = greenLionProducts.map(p => ({
+    const greenLionProductsList: Product[] = getAllGreenLionProductsMerged().map(p => ({
       id: p.id,
       name: p.name,
       title: p.title,

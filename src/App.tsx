@@ -2,12 +2,14 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useScrollLockRestore } from "@/hooks/useScrollLockRestore";
 import { FavoritesProvider } from "@/context/FavoritesContext";
 import { CartProvider } from "@/context/CartContext";
 import { AnalyticsProvider } from "@/context/AnalyticsContext";
+import { CatalogProvider } from "@/context/CatalogContext";
+import { SiteSettingsProvider } from "@/context/SiteSettingsContext";
 import CartDashboard from "@/components/CartDashboard";
 import SmoothScrollWrapper from "@/components/SmoothScrollWrapper";
 import Home from "./pages/Home";
@@ -33,6 +35,11 @@ import InstagramPromoLive from "./pages/InstagramPromoLive";
 import InstagramPromoSale from "./pages/InstagramPromoSale";
 import InstagramPromoIPadBundle from "./pages/InstagramPromoIPadBundle";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminLayout from "./pages/admin/AdminLayout";
+import AdminProductList from "./pages/admin/AdminProductList";
+import AdminProductEditor from "./pages/admin/AdminProductEditor";
+import AdminSiteContent from "./pages/admin/AdminSiteContent";
 import NotFound from "./pages/NotFound";
 
 // ScrollToTop component to scroll to top on route change and restore scroll when lock persists
@@ -77,6 +84,8 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <FavoritesProvider>
       <CartProvider>
+        <CatalogProvider>
+        <SiteSettingsProvider>
         <BrowserRouter>
           <AnalyticsProvider>
           <ScrollToTop />
@@ -87,7 +96,15 @@ const App = () => (
               <CartDashboard />
               <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/admin/analytics" element={<AdminDashboard />} />
+                <Route path="/admin/login" element={<AdminLogin />} />
+                <Route path="/admin" element={<AdminLayout />}>
+                  <Route index element={<Navigate to="products" replace />} />
+                  <Route path="products" element={<AdminProductList />} />
+                  <Route path="products/new" element={<AdminProductEditor />} />
+                  <Route path="products/:dbId" element={<AdminProductEditor />} />
+                  <Route path="analytics" element={<AdminDashboard />} />
+                  <Route path="site-content" element={<AdminSiteContent />} />
+                </Route>
                 <Route path="/products" element={<Products />} />
                 <Route path="/category/:categoryName" element={<CategoryPage />} />
                 <Route path="/smartphones" element={<CategoryPage />} />
@@ -123,6 +140,8 @@ const App = () => (
           </SmoothScrollWrapper>
           </AnalyticsProvider>
         </BrowserRouter>
+        </SiteSettingsProvider>
+        </CatalogProvider>
       </CartProvider>
     </FavoritesProvider>
   </QueryClientProvider>

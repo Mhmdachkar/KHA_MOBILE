@@ -13,10 +13,14 @@ import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { useToast } from "@/hooks/use-toast";
+import type { Product } from "@/data/products";
+import type { GreenLionProduct } from "@/data/greenLionProducts";
 import { phoneAccessories, wearablesProducts, smartphoneProducts, tabletProducts, iphoneCases, gamingConsoles, electronicsProducts } from "@/data/products";
-import { greenLionProducts } from "@/data/greenLionProducts";
+import { getAllGreenLionProductsMerged, eachApiCatalogProduct } from "@/data/productLookup";
+import { useCatalog } from "@/context/CatalogContext";
 
 const Header = () => {
+  const { catalogTick } = useCatalog();
   const { favorites } = useFavorites();
   const { getTotalItems, toggleCart } = useCart();
   const { trackSearch } = useAnalytics();
@@ -41,9 +45,7 @@ const Header = () => {
   const lastScrollY = useRef(0);
   const { toast } = useToast();
 
-  // Get all products for search
   const allProducts = useMemo(() => {
-    // Combine all regular products
     const regularProducts = [
       ...phoneAccessories,
       ...wearablesProducts,
@@ -54,8 +56,7 @@ const Header = () => {
       ...electronicsProducts,
     ];
 
-    // Map Green Lion products to match Product interface structure
-    const mappedGreenLionProducts = greenLionProducts.map(p => ({
+    const mappedGreenLionProducts = getAllGreenLionProductsMerged().map((p) => ({
       id: p.id,
       name: p.name,
       title: p.title,
@@ -74,8 +75,39 @@ const Header = () => {
       isPreorder: p.isPreorder,
     }));
 
-    return [...regularProducts, ...mappedGreenLionProducts];
-  }, []);
+    const base = [...regularProducts, ...mappedGreenLionProducts];
+    const m = new Map<number, (typeof base)[number]>(base.map((p) => [p.id, p]));
+    eachApiCatalogProduct((id, hit) => {
+      if (hit.kind === "green") {
+        const g = hit.product as GreenLionProduct;
+        m.set(id, {
+          id: g.id,
+          name: g.name,
+          title: g.title,
+          price: g.price,
+          image: g.images[0],
+          images: g.images,
+          rating: g.rating,
+          category: g.category,
+          brand: g.brand,
+          description: g.description,
+          features: g.features || [],
+          specifications: g.specifications || [],
+          variants: g.variants,
+          colors: g.colors,
+          connectivityOptions: g.connectivityOptions,
+          isPreorder: g.isPreorder,
+        });
+      } else {
+        const r = hit.product as Product;
+        m.set(id, {
+          ...r,
+          images: r.images && r.images.length > 0 ? r.images : [r.image],
+        });
+      }
+    });
+    return Array.from(m.values());
+  }, [catalogTick]);
 
   // Filter products based on search query (case-insensitive)
   const searchResults = useMemo(() => {
@@ -89,9 +121,9 @@ const Header = () => {
     return allProducts.filter((product) => {
       // Normalize all product fields to lowercase for case-insensitive comparison
       const normalizedName = product.name.toLowerCase();
-      const normalizedTitle = product.title.toLowerCase();
+      const normalizedTitle = (product.title || "").toLowerCase();
       const normalizedCategory = product.category.toLowerCase();
-      const normalizedDescription = product.description.toLowerCase();
+      const normalizedDescription = (product.description || "").toLowerCase();
 
       // Create a comprehensive searchable text (all normalized to lowercase)
       const searchableText = `${normalizedName} ${normalizedTitle} ${normalizedCategory} ${normalizedDescription}`;

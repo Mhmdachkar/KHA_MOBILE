@@ -1,8 +1,10 @@
 import { motion } from "framer-motion";
+import { useMemo } from "react";
+import { useCatalog } from "@/context/CatalogContext";
 import { Store, TrendingUp, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { phoneAccessories, smartphoneProducts, tabletProducts, wearablesProducts, gamingConsoles } from "@/data/products";
-import { greenLionProducts } from "@/data/greenLionProducts";
+import { getAllGreenLionProductsMerged } from "@/data/productLookup";
 
 // Import brand logos
 import appleLogo from "@/assets/logo's/apple logo.png";
@@ -22,6 +24,7 @@ interface Brand {
 }
 
 const BrandShowcase = () => {
+  const { catalogTick } = useCatalog();
   const navigate = useNavigate();
 
   // Helper function to extract brand from product name
@@ -67,44 +70,46 @@ const BrandShowcase = () => {
     return null;
   };
 
-  // Get all products and extract brands
-  const allProducts = [
-    ...phoneAccessories.map(p => ({
-      ...p,
-      brand: p.brand || extractBrand(p.name, p.category) || "Other",
-      images: [p.image],
-    })),
-    ...smartphoneProducts.map(p => ({
-      ...p,
-      brand: p.brand || extractBrand(p.name, p.category) || "Other",
-      images: p.images && p.images.length > 0 ? p.images : [p.image],
-    })),
-    ...tabletProducts.map(p => ({
-      ...p,
-      brand: p.brand || extractBrand(p.name, p.category) || "Other",
-      images: p.images && p.images.length > 0 ? p.images : [p.image],
-    })),
-    ...wearablesProducts.map(p => ({
-      ...p,
-      brand: p.brand || extractBrand(p.name, p.category) || "Other",
-      images: p.images && p.images.length > 0 ? p.images : [p.image],
-    })),
-    ...gamingConsoles.map(p => ({
-      ...p,
-      brand: p.brand || extractBrand(p.name, p.category) || "Other",
-      images: p.images && p.images.length > 0 ? p.images : [p.image],
-    })),
-    ...greenLionProducts.map(p => ({
-      id: p.id,
-      name: p.name,
-      price: p.price,
-      image: p.images[0],
-      images: p.images,
-      rating: p.rating,
-      category: p.category,
-      brand: p.brand || "Green Lion", // Ensure Green Lion products are always branded
-    })),
-  ];
+  const allProducts = useMemo(
+    () => [
+      ...phoneAccessories.map((p) => ({
+        ...p,
+        brand: p.brand || extractBrand(p.name, p.category) || "Other",
+        images: [p.image],
+      })),
+      ...smartphoneProducts.map((p) => ({
+        ...p,
+        brand: p.brand || extractBrand(p.name, p.category) || "Other",
+        images: p.images && p.images.length > 0 ? p.images : [p.image],
+      })),
+      ...tabletProducts.map((p) => ({
+        ...p,
+        brand: p.brand || extractBrand(p.name, p.category) || "Other",
+        images: p.images && p.images.length > 0 ? p.images : [p.image],
+      })),
+      ...wearablesProducts.map((p) => ({
+        ...p,
+        brand: p.brand || extractBrand(p.name, p.category) || "Other",
+        images: p.images && p.images.length > 0 ? p.images : [p.image],
+      })),
+      ...gamingConsoles.map((p) => ({
+        ...p,
+        brand: p.brand || extractBrand(p.name, p.category) || "Other",
+        images: p.images && p.images.length > 0 ? p.images : [p.image],
+      })),
+      ...getAllGreenLionProductsMerged().map((p) => ({
+        id: p.id,
+        name: p.name,
+        price: p.price,
+        image: p.images[0],
+        images: p.images,
+        rating: p.rating,
+        category: p.category,
+        brand: p.brand || "Green Lion",
+      })),
+    ],
+    [catalogTick]
+  );
 
   // Brand logo mapping
   const brandLogos: Record<string, string> = {

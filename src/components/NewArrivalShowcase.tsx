@@ -18,42 +18,40 @@ import {
   ThermometerSun,
   Wifi
 } from "lucide-react";
-import { getGreenLionProductById } from "@/data/greenLionProducts";
-import { useState, useEffect } from "react";
+import { findStoreProductSplit } from "@/data/productLookup";
+import { useState, useEffect, useMemo } from "react";
+import { useCatalog } from "@/context/CatalogContext";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 
 const ROTATION_INTERVAL = 7 * 1000; // 7 seconds
 
 const isBrowser = typeof window !== "undefined";
 const canHover = isBrowser && window.matchMedia("(hover: hover)").matches;
 
-const NewArrivalShowcase = () => {
+// Map feature icon names from settings to Lucide components
+const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
+  Camera, ScanFace, Battery, Zap, Gauge, Activity,
+  ThermometerSun, Power, Wifi, Radio,
+};
+const ICON_KEYS = Object.keys(ICON_MAP);
 
-  const showcases = [
-    {
-      id: 5019, // Green Lion New York Gimbal
-      highlightFeatures: [
-        { icon: Camera, label: "Stabilization", value: "3-Axis Gimbal" },
-        { icon: ScanFace, label: "Smart Tracking", value: "Face & Object Tracking" },
-        { icon: Battery, label: "Working Time", value: "7-10 Hours" }
-      ]
-    },
-    {
-      id: 5002, // Green Lion Mini Massage Gun Pro
-      highlightFeatures: [
-        { icon: Zap, label: "Power", value: "40W High Torque" },
-        { icon: Gauge, label: "Speed Levels", value: "4 Adjustable Speeds" },
-        { icon: Activity, label: "Quiet Motor", value: "<55dB Noise Level" }
-      ]
-    },
-    {
-      id: 5034, // Green Lion Bedside Clock (Explicit Request)
-      highlightFeatures: [
-        { icon: ThermometerSun, label: "Color Temperature", value: "3000±300K" },
-        { icon: Power, label: "Power Input", value: "9V/3A, 27W Max" },
-        { icon: Wifi, label: "Wireless Output", value: "15W Max" }
-      ]
-    }
-  ];
+const NewArrivalShowcase = () => {
+  const { catalogTick } = useCatalog();
+  const { settings } = useSiteSettings();
+
+  // Build showcases from live settings, falling back to static defaults
+  const showcases = useMemo(() => {
+    const entries = settings.new_arrival_showcases;
+    if (!entries || entries.length === 0) return [];
+    return entries.map((entry, idx) => ({
+      id: entry.productId,
+      highlightFeatures: entry.features.map((f, fi) => ({
+        icon: ICON_MAP[ICON_KEYS[(idx * 3 + fi) % ICON_KEYS.length]],
+        label: f.label,
+        value: f.value,
+      })),
+    }));
+  }, [settings.new_arrival_showcases]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
@@ -77,7 +75,10 @@ const NewArrivalShowcase = () => {
   }, []);
 
   const currentShowcase = showcases[currentIndex];
-  const product = getGreenLionProductById(currentShowcase.id);
+  const product = useMemo(() => {
+    const { regularProduct, greenLionProduct } = findStoreProductSplit(currentShowcase.id);
+    return greenLionProduct || regularProduct;
+  }, [currentShowcase.id, catalogTick]);
 
   if (!product) return null;
 

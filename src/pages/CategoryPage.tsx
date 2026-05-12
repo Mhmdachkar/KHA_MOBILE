@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
+import { useCatalog } from "@/context/CatalogContext";
 import { motion } from "framer-motion";
 import { Grid3x3, List, Filter, Check } from "lucide-react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
@@ -21,8 +22,11 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { getProductsByCategory } from "@/data/products";
-import { greenLionProducts, getGreenLionProductsByCategory } from "@/data/greenLionProducts";
+import {
+  getProductsByCategoryMerged,
+  getGreenLionProductsByCategoryMerged,
+  getAllGreenLionProductsMerged,
+} from "@/data/productLookup";
 
 // Import brand logos
 import appleLogo from "@/assets/logo's/apple logo.png";
@@ -147,6 +151,7 @@ const categoryMap: Record<string, string> = {
 };
 
 const CategoryPage = () => {
+  const { catalogTick } = useCatalog();
   const location = useLocation();
   const navigate = useNavigate();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
@@ -211,7 +216,7 @@ const CategoryPage = () => {
 
       // Get real products from data file based on category
       if (categoryDisplayName === "Audio") {
-        const audioProducts = getProductsByCategory("Audio");
+        const audioProducts = getProductsByCategoryMerged("Audio");
         if (Array.isArray(audioProducts) && audioProducts.length > 0) {
           products = [...products, ...audioProducts.map(p => ({
             ...p,
@@ -220,7 +225,7 @@ const CategoryPage = () => {
           }))];
         }
         // Add Green Lion audio products
-        const greenLionAudio = getGreenLionProductsByCategory("Audio");
+        const greenLionAudio = getGreenLionProductsByCategoryMerged("Audio");
         if (Array.isArray(greenLionAudio) && greenLionAudio.length > 0) {
           products = [...products, ...greenLionAudio.map(p => ({
             id: p.id,
@@ -277,7 +282,7 @@ const CategoryPage = () => {
           return b.price - a.price;
         });
       } else if (categoryDisplayName === "Gaming") {
-        const gamingProducts = getProductsByCategory("Gaming");
+        const gamingProducts = getProductsByCategoryMerged("Gaming");
         if (Array.isArray(gamingProducts) && gamingProducts.length > 0) {
           products = [...products, ...gamingProducts.map(p => ({
             ...p,
@@ -290,7 +295,7 @@ const CategoryPage = () => {
           }))];
         }
         // Add Green Lion gaming products if any
-        const greenLionGaming = greenLionProducts.filter(p =>
+        const greenLionGaming = getAllGreenLionProductsMerged().filter(p =>
           p.secondaryCategories?.includes("Gaming") || p.name.toLowerCase().includes("gaming")
         );
         if (greenLionGaming.length > 0) {
@@ -322,7 +327,7 @@ const CategoryPage = () => {
           return b.price - a.price;
         });
       } else if (categoryDisplayName === "Smartphones") {
-        const smartphones = getProductsByCategory("Smartphones");
+        const smartphones = getProductsByCategoryMerged("Smartphones");
         if (Array.isArray(smartphones) && smartphones.length > 0) {
           products = [
             ...products,
@@ -346,7 +351,7 @@ const CategoryPage = () => {
           return b.price - a.price;
         });
       } else if (categoryDisplayName === "Wearables") {
-        const wearables = getProductsByCategory("Wearables");
+        const wearables = getProductsByCategoryMerged("Wearables");
         if (Array.isArray(wearables) && wearables.length > 0) {
           products = [...products, ...wearables.map(p => ({
             ...p,
@@ -355,7 +360,7 @@ const CategoryPage = () => {
           }))];
         }
         // Add Green Lion smartwatches
-        const greenLionWearables = getGreenLionProductsByCategory("Wearables");
+        const greenLionWearables = getGreenLionProductsByCategoryMerged("Wearables");
         if (Array.isArray(greenLionWearables) && greenLionWearables.length > 0) {
           products = [...products, ...greenLionWearables.map(p => ({
             id: p.id,
@@ -413,7 +418,7 @@ const CategoryPage = () => {
           return b.price - a.price;
         });
       } else if (categoryDisplayName === "Tablets") {
-        const tablets = getProductsByCategory("Tablets");
+        const tablets = getProductsByCategoryMerged("Tablets");
         if (Array.isArray(tablets) && tablets.length > 0) {
           products = [
             ...products,
@@ -437,7 +442,7 @@ const CategoryPage = () => {
           return b.price - a.price;
         });
       } else if (categoryDisplayName === "iPhone Cases" || categoryDisplayName === "IPhone Cases" || categoryDisplayName.toLowerCase() === "iphone cases" || categoryDisplayName === "Iphone cases") {
-        const cases = getProductsByCategory("iPhone Cases");
+        const cases = getProductsByCategoryMerged("iPhone Cases");
         if (Array.isArray(cases) && cases.length > 0) {
           products = [
             ...products,
@@ -466,7 +471,7 @@ const CategoryPage = () => {
         });
       } else {
         // Default loading for other categories (like Electronics)
-        const otherProducts = getProductsByCategory(categoryDisplayName);
+        const otherProducts = getProductsByCategoryMerged(categoryDisplayName);
         if (Array.isArray(otherProducts) && otherProducts.length > 0) {
           products = [
             ...products,
@@ -478,7 +483,7 @@ const CategoryPage = () => {
           ];
         }
         // Add Green Lion products for this category (including secondary categories)
-        const greenLionCategory = getGreenLionProductsByCategory(categoryDisplayName);
+        const greenLionCategory = getGreenLionProductsByCategoryMerged(categoryDisplayName);
         if (Array.isArray(greenLionCategory) && greenLionCategory.length > 0) {
           products = [...products, ...greenLionCategory.map(p => ({
             id: p.id,
@@ -503,7 +508,7 @@ const CategoryPage = () => {
     }
 
     return products;
-  }, [categoryDisplayName]);
+  }, [categoryDisplayName, catalogTick]);
 
   // Helper function to check if product is Green Lion
   const isGreenLionProduct = (product: any) => {

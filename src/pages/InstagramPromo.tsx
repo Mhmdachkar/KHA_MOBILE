@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { smartphonesProducts, tabletProducts, audioProducts, wearablesProducts, gamingProducts } from '../data/allProducts';
+import { useState, useMemo } from 'react';
+import { buildSmartphonesProducts, buildGamingProducts } from '../data/allProducts';
+import { useCatalog } from '../context/CatalogContext';
 import { iphoneCases } from '../data/products';
 import html2canvas from 'html2canvas';
 
@@ -11,7 +12,10 @@ interface PromoItem {
 }
 
 export default function InstagramPromo() {
+    const { catalogTick } = useCatalog();
     const [downloading, setDownloading] = useState(false);
+    const smartphonesProducts = useMemo(() => buildSmartphonesProducts(), [catalogTick]);
+    const gamingProducts = useMemo(() => buildGamingProducts(), [catalogTick]);
 
     // Filter products for the promo page
     // We want to be selective to ensure it fits nicely in the 1080px layout
