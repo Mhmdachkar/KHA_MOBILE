@@ -102,12 +102,12 @@ const FeatureRow = ({
 const SpecRow = ({
   spec, onChange, onRemove,
 }: { spec: Spec; onChange: (s: Spec) => void; onRemove: () => void }) => (
-  <div className="flex items-center gap-2">
+  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
     <Input
       placeholder="Label (e.g. Battery)"
       value={spec.label}
       onChange={(e) => onChange({ ...spec, label: e.target.value })}
-      className="w-36 shrink-0 text-sm"
+      className="w-full sm:w-36 sm:shrink-0 text-sm"
     />
     <Input
       placeholder="Value (e.g. 5000mAh)"
@@ -116,7 +116,8 @@ const SpecRow = ({
       className="flex-1 text-sm"
     />
     <Button
-      variant="ghost" size="icon" className="h-9 w-9 shrink-0 hover:bg-red-500/10 hover:text-red-500"
+      variant="ghost" size="icon" className="h-9 w-9 shrink-0 hover:bg-red-500/10 hover:text-red-500 touch-manipulation self-end sm:self-auto"
+      style={{ touchAction: 'manipulation' }}
       onClick={onRemove} type="button"
     >
       <Trash2 className="h-3.5 w-3.5" />
@@ -297,7 +298,7 @@ const AdminProductEditor = () => {
     <div className="flex flex-col min-h-[calc(100vh-56px)] sm:min-h-screen">
       {/* ── Top bar ── */}
       <div className="sticky top-0 sm:top-0 z-20 bg-background/95 backdrop-blur border-b px-4 sm:px-6 py-3 flex items-center gap-3">
-        <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0" asChild>
+        <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0 touch-manipulation" style={{ touchAction: 'manipulation' }} asChild>
           <Link to="/admin/products"><ArrowLeft className="h-4 w-4" /></Link>
         </Button>
         <div className="flex-1 min-w-0">
@@ -325,7 +326,7 @@ const AdminProductEditor = () => {
           <Button variant="outline" size="sm" asChild className="hidden sm:flex">
             <Link to="/admin/products">Cancel</Link>
           </Button>
-          <Button size="sm" onClick={() => void save()} disabled={saving} className="min-w-[80px]">
+          <Button size="sm" onClick={() => void save()} disabled={saving} className="min-w-[80px] touch-manipulation" style={{ touchAction: 'manipulation' }}>
             {saving ? (
               <span className="flex items-center gap-1.5">
                 <div className="h-3 w-3 rounded-full border border-current border-t-transparent animate-spin" />
@@ -344,11 +345,12 @@ const AdminProductEditor = () => {
               key={id}
               onClick={() => setActiveTab(id)}
               className={cn(
-                "flex items-center gap-2 px-3 py-3 text-sm font-medium border-b-2 transition-all shrink-0 whitespace-nowrap",
+                "flex items-center gap-2 px-3 py-3 text-sm font-medium border-b-2 transition-all shrink-0 whitespace-nowrap touch-manipulation",
                 activeTab === id
                   ? "border-foreground text-foreground"
                   : "border-transparent text-muted-foreground hover:text-foreground"
               )}
+              style={{ touchAction: 'manipulation' }}
             >
               <Icon className="h-3.5 w-3.5" />
               <span className="hidden sm:inline">{label}</span>
@@ -861,10 +863,10 @@ const AdminProductEditor = () => {
 
       {/* ── Mobile save bar ── */}
       <div className="sm:hidden fixed bottom-0 inset-x-0 z-30 border-t bg-background/95 backdrop-blur px-4 py-3 flex gap-2">
-        <Button variant="outline" className="flex-1 touch-manipulation" asChild>
+        <Button variant="outline" className="flex-1 touch-manipulation" style={{ touchAction: 'manipulation' }} asChild>
           <Link to="/admin/products">Cancel</Link>
         </Button>
-        <Button className="flex-1 touch-manipulation" onClick={() => void save()} disabled={saving}>
+        <Button className="flex-1 touch-manipulation" style={{ touchAction: 'manipulation' }} onClick={() => void save()} disabled={saving}>
           {saving ? "Saving…" : "Save Changes"}
         </Button>
       </div>

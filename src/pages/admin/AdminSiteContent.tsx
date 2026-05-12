@@ -72,13 +72,13 @@ const ProductPicker = ({
 
   return (
     <div className="space-y-2">
-      <div className="flex gap-2">
+      <div className="flex flex-col sm:flex-row gap-2">
         <Input
           type="number"
-          placeholder="Product ID (e.g. 500)"
+          placeholder="ID (e.g. 500)"
           value={value || ""}
           onChange={(e) => onChange(Number(e.target.value))}
-          className="w-32"
+          className="w-full sm:w-28 shrink-0"
         />
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
@@ -213,7 +213,12 @@ const AdminSiteContent = () => {
         </Button>
       </SectionCard>
       <div className="flex justify-end">
-        <Button onClick={() => void saveSetting("announcements", announcements)} disabled={saving}>
+        <Button 
+          onClick={() => void saveSetting("announcements", announcements)} 
+          disabled={saving}
+          className="w-full sm:w-auto touch-manipulation"
+          style={{ touchAction: 'manipulation' }}
+        >
           <Save className="h-4 w-4 mr-2" />
           Save Announcements
         </Button>
@@ -285,7 +290,12 @@ const AdminSiteContent = () => {
         </div>
       </SectionCard>
       <div className="flex justify-end">
-        <Button onClick={() => void saveSetting("hero", hero)} disabled={saving}>
+        <Button 
+          onClick={() => void saveSetting("hero", hero)} 
+          disabled={saving}
+          className="w-full sm:w-auto touch-manipulation"
+          style={{ touchAction: 'manipulation' }}
+        >
           <Save className="h-4 w-4 mr-2" />
           Save Hero Section
         </Button>
@@ -445,7 +455,12 @@ const AdminSiteContent = () => {
       </SectionCard>
 
       <div className="flex justify-end">
-        <Button onClick={() => void saveSetting("flagship_showcase", flagship)} disabled={saving}>
+        <Button 
+          onClick={() => void saveSetting("flagship_showcase", flagship)} 
+          disabled={saving}
+          className="w-full sm:w-auto touch-manipulation"
+          style={{ touchAction: 'manipulation' }}
+        >
           <Save className="h-4 w-4 mr-2" />
           Save Flagship Showcase
         </Button>
@@ -568,7 +583,12 @@ const AdminSiteContent = () => {
         </Button>
       )}
       <div className="flex justify-end">
-        <Button onClick={() => void saveSetting("new_arrival_showcases", newArrivals)} disabled={saving}>
+        <Button 
+          onClick={() => void saveSetting("new_arrival_showcases", newArrivals)} 
+          disabled={saving}
+          className="w-full sm:w-auto touch-manipulation"
+          style={{ touchAction: 'manipulation' }}
+        >
           <Save className="h-4 w-4 mr-2" />
           Save New Arrivals
         </Button>
@@ -592,46 +612,51 @@ const AdminSiteContent = () => {
       <SectionCard title="6 Featured Products">
         <div className="space-y-3">
           {weeklyFavs.map((item, i) => (
-            <div key={i} className="flex items-center gap-3 p-3 rounded-xl border bg-muted/20">
-              <div className="h-6 w-6 rounded-full bg-muted flex items-center justify-center text-xs font-bold shrink-0">
-                {i + 1}
-              </div>
-              <div className="flex-1 min-w-0">
-                <ProductPicker
-                  value={item.id}
-                  onChange={(id) =>
-                    setWeeklyFavs((prev) =>
-                      prev.map((x, j) => (j === i ? { ...x, id } : x))
-                    )
-                  }
-                />
-              </div>
-              <div className="flex flex-col gap-1 shrink-0">
-                <p className="text-[10px] text-muted-foreground uppercase tracking-wide">Type</p>
-                <select
-                  value={item.type}
-                  onChange={(e) =>
-                    setWeeklyFavs((prev) =>
-                      prev.map((x, j) =>
-                        j === i
-                          ? { ...x, type: e.target.value as "regular" | "greenLion" | "recharge" }
-                          : x
+            <div key={i} className="flex flex-col sm:flex-row sm:items-center gap-3 p-3 rounded-xl border bg-muted/20">
+              <div className="flex items-center gap-3 flex-1 min-w-0">
+                <div className="h-6 w-6 rounded-full bg-muted flex items-center justify-center text-xs font-bold shrink-0">
+                  {i + 1}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <ProductPicker
+                    value={item.id}
+                    onChange={(id) =>
+                      setWeeklyFavs((prev) =>
+                        prev.map((x, j) => (j === i ? { ...x, id } : x))
                       )
-                    )
-                  }
-                  className="text-xs rounded-lg border bg-background px-2 py-1.5"
-                >
-                  {TYPE_OPTIONS.map((o) => (
-                    <option key={o.value} value={o.value}>{o.label}</option>
-                  ))}
-                </select>
+                    }
+                  />
+                </div>
               </div>
-              <button
-                onClick={() => setWeeklyFavs((prev) => prev.filter((_, j) => j !== i))}
-                className="p-1.5 rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors shrink-0"
-              >
-                <Trash2 className="h-4 w-4" />
-              </button>
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="flex flex-col gap-1 flex-1 sm:flex-none sm:shrink-0">
+                  <p className="text-[10px] text-muted-foreground uppercase tracking-wide">Type</p>
+                  <select
+                    value={item.type}
+                    onChange={(e) =>
+                      setWeeklyFavs((prev) =>
+                        prev.map((x, j) =>
+                          j === i
+                            ? { ...x, type: e.target.value as "regular" | "greenLion" | "recharge" }
+                            : x
+                        )
+                      )
+                    }
+                    className="text-xs rounded-lg border bg-background px-2 py-1.5 min-w-[120px]"
+                  >
+                    {TYPE_OPTIONS.map((o) => (
+                      <option key={o.value} value={o.value}>{o.label}</option>
+                    ))}
+                  </select>
+                </div>
+                <button
+                  onClick={() => setWeeklyFavs((prev) => prev.filter((_, j) => j !== i))}
+                  className="p-1.5 rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors shrink-0 touch-manipulation"
+                  style={{ touchAction: 'manipulation' }}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              </div>
             </div>
           ))}
           {weeklyFavs.length < 8 && (
@@ -649,7 +674,12 @@ const AdminSiteContent = () => {
         </div>
       </SectionCard>
       <div className="flex justify-end">
-        <Button onClick={() => void saveSetting("weekly_favorites", weeklyFavs)} disabled={saving}>
+        <Button 
+          onClick={() => void saveSetting("weekly_favorites", weeklyFavs)} 
+          disabled={saving}
+          className="w-full sm:w-auto touch-manipulation"
+          style={{ touchAction: 'manipulation' }}
+        >
           <Save className="h-4 w-4 mr-2" />
           Save Weekly Favorites
         </Button>
@@ -668,21 +698,22 @@ const AdminSiteContent = () => {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Header */}
-      <div className="px-4 sm:px-6 pt-6 pb-4 border-b">
-        <div className="max-w-4xl mx-auto flex items-start justify-between gap-4 flex-wrap">
-          <div>
-            <h1 className="text-2xl font-bold flex items-center gap-2">
-              <Layout className="h-6 w-6 text-primary" />
-              Site Content
+      <div className="px-4 sm:px-6 pt-4 sm:pt-6 pb-3 sm:pb-4 border-b">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex items-center justify-between gap-3 mb-2">
+            <h1 className="text-xl sm:text-2xl font-bold flex items-center gap-2">
+              <Layout className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+              <span>Site Content</span>
             </h1>
-            <p className="text-sm text-muted-foreground mt-0.5">
-              Control what's displayed in each section of your homepage. All changes go live instantly.
-            </p>
+            <Badge variant="outline" className="gap-1.5 shrink-0 text-xs">
+              <Package className="h-3 w-3" />
+              <span className="hidden xs:inline">5 sections</span>
+              <span className="xs:hidden">5</span>
+            </Badge>
           </div>
-          <Badge variant="outline" className="gap-1.5 self-start">
-            <Package className="h-3 w-3" />
-            5 editable sections
-          </Badge>
+          <p className="text-xs sm:text-sm text-muted-foreground">
+            Control what's displayed in each section of your homepage. All changes go live instantly.
+          </p>
         </div>
       </div>
 

@@ -28,11 +28,11 @@ interface AdminProduct {
 const CATEGORIES = ["All", "Smartphones", "Tablets", "Audio", "Computers", "Wearables", "Gaming", "Accessories", "Charging", "Electronics"];
 
 const StatCard = ({ icon: Icon, label, value, color }: { icon: typeof Package; label: string; value: number; color: string }) => (
-  <div className={cn("flex items-center gap-3 rounded-xl border px-4 py-3", color)}>
-    <Icon className="h-5 w-5 shrink-0 opacity-70" />
-    <div>
-      <p className="text-2xl font-bold leading-none">{value}</p>
-      <p className="text-xs text-muted-foreground mt-0.5">{label}</p>
+  <div className={cn("flex items-center gap-2 sm:gap-3 rounded-xl border px-3 sm:px-4 py-2.5 sm:py-3", color)}>
+    <Icon className="h-4 w-4 sm:h-5 sm:w-5 shrink-0 opacity-70" />
+    <div className="min-w-0">
+      <p className="text-xl sm:text-2xl font-bold leading-none">{value}</p>
+      <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5 truncate">{label}</p>
     </div>
   </div>
 );
@@ -106,25 +106,27 @@ const AdminProductList = () => {
   return (
     <div className="p-4 sm:p-6 space-y-6 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="flex items-start justify-between gap-4 flex-wrap">
-        <div>
-          <h1 className="text-2xl font-bold">Products</h1>
-          <p className="text-sm text-muted-foreground mt-0.5">Manage your catalog — changes go live instantly.</p>
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
+        <div className="flex-1">
+          <h1 className="text-xl sm:text-2xl font-bold">Products</h1>
+          <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">Manage your catalog — changes go live instantly.</p>
         </div>
         <div className="flex items-center gap-2">
           <Button
             variant="outline"
             size="icon"
-            className="h-9 w-9"
+            className="h-9 w-9 shrink-0 touch-manipulation"
+            style={{ touchAction: 'manipulation' }}
             onClick={() => setRefreshKey((k) => k + 1)}
             title="Refresh"
           >
             <RefreshCw className={cn("h-4 w-4", loading && "animate-spin")} />
           </Button>
-          <Button asChild>
+          <Button asChild className="flex-1 sm:flex-none touch-manipulation" style={{ touchAction: 'manipulation' }}>
             <Link to="/admin/products/new">
               <Plus className="h-4 w-4 mr-1.5" />
-              New Product
+              <span className="hidden xs:inline">New Product</span>
+              <span className="xs:hidden">New</span>
             </Link>
           </Button>
         </div>
@@ -152,7 +154,7 @@ const AdminProductList = () => {
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
             {/* Status filter */}
             <div className="flex items-center rounded-lg border bg-muted/30 p-0.5 gap-0.5">
               {(["all", "active", "inactive"] as const).map((s) => (
@@ -160,9 +162,10 @@ const AdminProductList = () => {
                   key={s}
                   onClick={() => setStatusFilter(s)}
                   className={cn(
-                    "px-3 py-1.5 text-xs font-medium rounded-md transition-all capitalize",
+                    "px-2.5 sm:px-3 py-1.5 text-xs font-medium rounded-md transition-all capitalize touch-manipulation",
                     statusFilter === s ? "bg-background shadow text-foreground" : "text-muted-foreground"
                   )}
+                  style={{ touchAction: 'manipulation' }}
                 >
                   {s}
                 </button>
@@ -172,13 +175,17 @@ const AdminProductList = () => {
             <div className="flex items-center rounded-lg border bg-muted/30 p-0.5 gap-0.5">
               <button
                 onClick={() => setView("list")}
-                className={cn("p-1.5 rounded-md transition-all", view === "list" ? "bg-background shadow text-foreground" : "text-muted-foreground")}
+                className={cn("p-1.5 rounded-md transition-all touch-manipulation", view === "list" ? "bg-background shadow text-foreground" : "text-muted-foreground")}
+                style={{ touchAction: 'manipulation' }}
+                title="List view"
               >
                 <LayoutList className="h-4 w-4" />
               </button>
               <button
                 onClick={() => setView("grid")}
-                className={cn("p-1.5 rounded-md transition-all", view === "grid" ? "bg-background shadow text-foreground" : "text-muted-foreground")}
+                className={cn("p-1.5 rounded-md transition-all touch-manipulation", view === "grid" ? "bg-background shadow text-foreground" : "text-muted-foreground")}
+                style={{ touchAction: 'manipulation' }}
+                title="Grid view"
               >
                 <LayoutGrid className="h-4 w-4" />
               </button>
@@ -193,11 +200,12 @@ const AdminProductList = () => {
               key={cat}
               onClick={() => setCategoryFilter(cat)}
               className={cn(
-                "px-3 py-1 rounded-full text-xs font-medium border transition-all",
+                "px-3 py-1.5 rounded-full text-xs font-medium border transition-all touch-manipulation",
                 categoryFilter === cat
                   ? "bg-foreground text-background border-foreground"
                   : "bg-muted/30 text-muted-foreground border-border hover:border-foreground/30"
               )}
+              style={{ touchAction: 'manipulation' }}
             >
               {cat}
             </button>
@@ -273,13 +281,14 @@ const AdminProductList = () => {
                   <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">{priceLabel(p)}</span>
                 </div>
                 <div className="flex gap-1 mt-2">
-                  <Button variant="outline" size="icon" className="h-7 w-7 flex-1" asChild>
+                  <Button variant="outline" size="icon" className="h-7 w-7 flex-1 touch-manipulation" style={{ touchAction: 'manipulation' }} asChild>
                     <Link to={`/admin/products/${p.dbId}`}><Pencil className="h-3 w-3" /></Link>
                   </Button>
                   <Button
                     variant="outline"
                     size="icon"
-                    className="h-7 w-7 hover:bg-red-500/10 hover:text-red-500 hover:border-red-500/30"
+                    className="h-7 w-7 hover:bg-red-500/10 hover:text-red-500 hover:border-red-500/30 touch-manipulation"
+                    style={{ touchAction: 'manipulation' }}
                     onClick={() => void deleteProduct(p.dbId, p.name)}
                     disabled={deleting === p.dbId}
                   >
@@ -382,13 +391,14 @@ const AdminProductList = () => {
                     <div className="flex items-center justify-between mt-2">
                       <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">{priceLabel(p)}</span>
                       <div className="flex items-center gap-1">
-                        <Button variant="outline" size="icon" className="h-8 w-8 touch-manipulation" asChild>
+                        <Button variant="outline" size="icon" className="h-8 w-8 touch-manipulation" style={{ touchAction: 'manipulation' }} asChild>
                           <Link to={`/admin/products/${p.dbId}`}><Pencil className="h-3.5 w-3.5" /></Link>
                         </Button>
                         <Button
                           variant="outline"
                           size="icon"
                           className="h-8 w-8 touch-manipulation hover:bg-red-500/10 hover:text-red-500"
+                          style={{ touchAction: 'manipulation' }}
                           onClick={() => void deleteProduct(p.dbId, p.name)}
                           disabled={deleting === p.dbId}
                         >
