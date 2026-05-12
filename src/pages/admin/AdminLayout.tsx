@@ -4,7 +4,7 @@ import {
   Package, BarChart3, LogOut, Store, Menu, X, ChevronRight,
   ShieldCheck, Layout,
 } from "lucide-react";
-import { getAdminToken, setAdminToken, adminFetch } from "@/lib/adminApi";
+import { getAdminToken, setAdminToken, adminFetch, siteUrl } from "@/lib/adminApi";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -109,7 +109,7 @@ const AdminLayout = () => {
         <div className="pt-3">
           <p className="text-[10px] text-white/30 uppercase tracking-widest px-2 mb-2">Store</p>
           <a
-            href="/"
+            href={`${siteUrl()}/`}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/60 hover:bg-white/8 hover:text-white/90 transition-all"

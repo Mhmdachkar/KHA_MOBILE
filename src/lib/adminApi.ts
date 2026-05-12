@@ -4,6 +4,19 @@ export function apiBase(): string {
   return import.meta.env.VITE_API_URL || "http://localhost:3001";
 }
 
+/** Public storefront origin, no trailing slash (e.g. https://khamobile.com). */
+export function siteUrl(): string {
+  const raw = (import.meta.env.VITE_SITE_URL as string | undefined)?.trim();
+  if (raw) return raw.replace(/\/+$/, "");
+  if (typeof window !== "undefined") return window.location.origin;
+  return "http://localhost:8080";
+}
+
+/** Full URL to the admin sign-in page (share with staff). */
+export function adminLoginAbsoluteUrl(): string {
+  return `${siteUrl()}/admin/login`;
+}
+
 export function getAdminToken(): string | null {
   return localStorage.getItem(TOKEN_KEY);
 }

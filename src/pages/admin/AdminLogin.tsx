@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { adminFetch, apiBase, setAdminToken, getAdminToken } from "@/lib/adminApi";
+import { adminFetch, apiBase, setAdminToken, getAdminToken, siteUrl, adminLoginAbsoluteUrl } from "@/lib/adminApi";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -90,10 +90,23 @@ const AdminLogin = () => {
                 {submitting ? "Signing in…" : "Sign in"}
               </Button>
             </form>
-            <p className="text-xs text-slate-500 mt-4">
-              API: <code className="text-slate-400">{apiBase()}</code> — the Express app in <code className="text-slate-400">server/</code> must be running (
-              <code className="text-slate-400">npm run dev</code>). Default admin is in{" "}
-              <code className="text-slate-400">sql/002_seed_admin.sql</code>.
+            <p className="text-xs text-slate-500 mt-4 space-y-2">
+              <span className="block">
+                <span className="text-slate-500">Storefront: </span>
+                <a href={siteUrl()} className="text-primary underline-offset-2 hover:underline break-all" target="_blank" rel="noopener noreferrer">
+                  {siteUrl()}
+                </a>
+              </span>
+              <span className="block">
+                <span className="text-slate-500">Admin sign-in URL: </span>
+                <a href={adminLoginAbsoluteUrl()} className="text-primary underline-offset-2 hover:underline break-all">
+                  {adminLoginAbsoluteUrl()}
+                </a>
+              </span>
+              <span className="block pt-1 border-t border-slate-800 mt-3">
+                API: <code className="text-slate-400 break-all">{apiBase()}</code> — run <code className="text-slate-400">npm run dev</code> in <code className="text-slate-400">server/</code>.
+                Set <code className="text-slate-400">VITE_SITE_URL</code> in <code className="text-slate-400">.env</code> to your live site (and add that origin to server <code className="text-slate-400">FRONTEND_ORIGIN</code>). Admin accounts: <code className="text-slate-400">sql/002_seed_admin.sql</code>.
+              </span>
             </p>
           </CardContent>
         </Card>

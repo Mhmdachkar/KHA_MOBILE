@@ -207,6 +207,7 @@ app.use((err, _req, res, _next) => {
 app.listen(PORT, () => {
   console.log(`Backend http://localhost:${PORT}`);
   console.log(`CORS origins: ${origins.join(', ')}`);
+  if (process.env.SITE_URL) console.log(`SITE_URL (storefront): ${process.env.SITE_URL}`);
   console.log(`Database: ${process.env.DATABASE_URL ? 'configured' : 'not set (admin/catalog API disabled)'}`);
   console.log(`Resend: ${process.env.RESEND_API_KEY ? 'on' : 'off'}`);
 });
