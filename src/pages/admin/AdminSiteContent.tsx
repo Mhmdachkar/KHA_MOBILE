@@ -740,7 +740,7 @@ const AdminSiteContent = () => {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 overflow-y-auto min-h-0">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 pb-24">
           {tabContent[activeTab]}
         </div>

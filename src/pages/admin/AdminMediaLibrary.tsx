@@ -133,7 +133,7 @@ const AdminMediaLibrary = () => {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-auto px-4 sm:px-6 py-4">
+      <div className="flex-1 overflow-y-auto min-h-0 px-4 sm:px-6 py-4">
         {loading ? (
           <div className="flex items-center justify-center py-20">
             <div className="h-8 w-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />

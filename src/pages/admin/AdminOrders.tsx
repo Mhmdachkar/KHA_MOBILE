@@ -221,9 +221,9 @@ const AdminOrders = () => {
       </div>
 
       {/* Content */}
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex-1 flex overflow-hidden min-h-0">
         {/* Order list */}
-        <div className={`flex-1 overflow-auto ${selectedOrder ? "hidden md:block md:w-1/2 lg:w-3/5 border-r" : ""}`}>
+        <div className={`flex-1 overflow-y-auto ${selectedOrder ? "hidden md:block md:w-1/2 lg:w-3/5 border-r" : ""}`}>
           {loading ? (
             <div className="flex items-center justify-center py-20">
               <div className="h-8 w-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />

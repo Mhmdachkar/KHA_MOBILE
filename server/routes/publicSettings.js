@@ -1,5 +1,5 @@
 import express from 'express';
-import { requirePool } from '../lib/db.js';
+import { pool, requirePool } from '../lib/db.js';
 
 const router = express.Router();
 
@@ -7,7 +7,6 @@ const router = express.Router();
 // returns { hero: {...}, announcements: {...} }
 router.get('/', requirePool, async (req, res) => {
   try {
-    const { pool } = req;
     const keys = req.query.keys
       ? req.query.keys.split(',').map((k) => k.trim()).filter(Boolean)
       : null;
