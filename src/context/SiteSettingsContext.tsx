@@ -61,12 +61,35 @@ export interface WeeklyFavoriteEntry {
   type: "regular" | "greenLion" | "recharge";
 }
 
+export interface TrendingSection {
+  title: string;
+  category: string;
+  productIds: number[];
+}
+
+export interface BrandEntry {
+  name: string;
+  logoUrl: string;
+  link: string;
+  featured: boolean;
+}
+
+export interface HomepageCategory {
+  name: string;
+  icon: string;
+  linkTo: string;
+  enabled: boolean;
+}
+
 export interface SiteSettings {
   announcements: Announcement[];
   hero: HeroSettings;
   flagship_showcase: FlagshipShowcaseSettings;
   new_arrival_showcases: NewArrivalEntry[];
   weekly_favorites: WeeklyFavoriteEntry[];
+  trending_sections: TrendingSection[];
+  brand_showcase: BrandEntry[];
+  homepage_categories: HomepageCategory[];
 }
 
 // ─── Defaults ─────────────────────────────────────────────────────────────────
@@ -151,6 +174,24 @@ const DEFAULT_SETTINGS: SiteSettings = {
     { id: 5027, type: "greenLion" },
     { id: 401, type: "regular" },
   ],
+  trending_sections: [
+    { title: "Trending in Smartphones", category: "Smartphones", productIds: [] },
+    { title: "Tech Essentials", category: "Audio", productIds: [] },
+  ],
+  brand_showcase: [],
+  homepage_categories: [
+    { name: "Smartphones", icon: "Smartphone", linkTo: "/smartphones", enabled: true },
+    { name: "Audio", icon: "Headphones", linkTo: "/audio", enabled: true },
+    { name: "Tablets", icon: "Tablet", linkTo: "/tablets", enabled: true },
+    { name: "Streaming", icon: "Tv", linkTo: "/streaming-services", enabled: true },
+    { name: "Wearables", icon: "Watch", linkTo: "/wearables", enabled: true },
+    { name: "Gaming", icon: "Gamepad2", linkTo: "/gaming", enabled: true },
+    { name: "Recharges", icon: "CreditCard", linkTo: "/recharges", enabled: true },
+    { name: "Gift Cards", icon: "Gift", linkTo: "/gift-cards", enabled: true },
+    { name: "Accessories", icon: "Zap", linkTo: "/accessories", enabled: true },
+    { name: "Electronics", icon: "Cpu", linkTo: "/electronics", enabled: true },
+    { name: "iPhone Cases", icon: "Smartphone", linkTo: "/category/iPhone Cases", enabled: true },
+  ],
 };
 
 // ─── Context ──────────────────────────────────────────────────────────────────
@@ -177,6 +218,9 @@ const ALL_KEYS = [
   "flagship_showcase",
   "new_arrival_showcases",
   "weekly_favorites",
+  "trending_sections",
+  "brand_showcase",
+  "homepage_categories",
 ];
 
 export const SiteSettingsProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -204,6 +248,15 @@ export const SiteSettingsProvider: React.FC<{ children: React.ReactNode }> = ({
           : {}),
         ...(data.weekly_favorites
           ? { weekly_favorites: data.weekly_favorites }
+          : {}),
+        ...(data.trending_sections
+          ? { trending_sections: data.trending_sections }
+          : {}),
+        ...(data.brand_showcase
+          ? { brand_showcase: data.brand_showcase }
+          : {}),
+        ...(data.homepage_categories
+          ? { homepage_categories: data.homepage_categories }
           : {}),
       }));
     } catch {

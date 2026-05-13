@@ -424,22 +424,30 @@ const Home = () => {
     { image: silicon17ProMaxOrange, name: "iPhone Cases", linkTo: "/category/iPhone Cases" },
   ];
 
-  const trendingSmartphones = useMemo(
-    () =>
-      getProductsByCategoryMerged("Smartphones")
-        .reverse()
-        .slice(0, 10)
-        .map((product) => ({
-          id: product.id,
-          name: product.name,
-          price: product.price,
-          image: product.image,
-          images: product.images,
-          rating: product.rating,
-          category: product.category,
-        })),
-    [catalogTick]
-  );
+  const trendingSections = siteSettings.trending_sections || [];
+  const trendingSmartphones = useMemo(() => {
+    const section = trendingSections.find((s) => s.category === "Smartphones") || trendingSections[0];
+    if (section?.productIds?.length > 0) {
+      const allMerged = getProductsByCategoryMerged("Smartphones");
+      const allProducts = [...allMerged, ...getProductsByCategoryMerged("Audio"), ...getProductsByCategoryMerged("Tablets")];
+      return section.productIds
+        .map((id) => allProducts.find((p) => p.id === id))
+        .filter(Boolean)
+        .map((p: any) => ({ id: p.id, name: p.name, price: p.price, image: p.image, images: p.images, rating: p.rating, category: p.category }));
+    }
+    return getProductsByCategoryMerged(section?.category || "Smartphones")
+      .reverse()
+      .slice(0, 10)
+      .map((product) => ({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.image,
+        images: product.images,
+        rating: product.rating,
+        category: product.category,
+      }));
+  }, [catalogTick, trendingSections]);
 
   const trendingAudio = useMemo(() => getProductsByCategoryMerged("Audio"), [catalogTick]);
 
@@ -1078,7 +1086,7 @@ const Home = () => {
             viewport={{ once: true }}
           >
             <ProductCarousel
-              title="Trending in Smartphones"
+              title={trendingSections[0]?.title || "Trending in Smartphones"}
               products={trendingSmartphones}
             />
           </motion.div>

@@ -4,7 +4,8 @@ import {
   Package, BarChart3, LogOut, Store, Menu, X, ChevronRight,
   ShieldCheck, Layout, Ticket, Image, ScrollText, ShoppingBag,
 } from "lucide-react";
-import { getAdminToken, setAdminToken, adminFetch, siteUrl } from "@/lib/adminApi";
+import { getAdminToken, setAdminToken, siteUrl } from "@/lib/adminApi";
+import { useCatalog } from "@/context/CatalogContext";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -28,7 +29,11 @@ const AdminLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [stats, setStats] = useState<{ total: number; active: number } | null>(null);
+  const { allProducts, catalogLoaded } = useCatalog();
+
+  const stats = catalogLoaded
+    ? { total: allProducts.length, active: allProducts.filter((p: any) => p.isActive !== false).length }
+    : null;
 
   useEffect(() => {
     if (!getAdminToken()) {
@@ -39,21 +44,6 @@ const AdminLayout = () => {
   useEffect(() => {
     setDrawerOpen(false);
   }, [location.pathname]);
-
-  useEffect(() => {
-    adminFetch("/api/admin/products")
-      .then((r) => r.json())
-      .then((d) => {
-        if (d.products) {
-          const all = d.products as { isActive?: boolean }[];
-          setStats({
-            total: all.length,
-            active: all.filter((p) => p.isActive !== false).length,
-          });
-        }
-      })
-      .catch(() => {});
-  }, []);
 
   const logout = () => {
     setAdminToken(null);
@@ -179,9 +169,9 @@ const AdminLayout = () => {
   );
 
   return (
-    <div className="h-screen flex bg-background overflow-hidden">
+    <div className="min-h-screen flex bg-background">
       {/* ── Desktop sidebar ── */}
-      <aside className="hidden sm:flex flex-col w-56 shrink-0 bg-gradient-to-b from-slate-900 to-slate-950 overflow-hidden z-40">
+      <aside className="hidden sm:flex flex-col w-56 shrink-0 bg-gradient-to-b from-slate-900 to-slate-950 fixed left-0 top-0 h-screen overflow-hidden z-40">
         {sidebarContent}
       </aside>
 
@@ -209,7 +199,7 @@ const AdminLayout = () => {
       </aside>
 
       {/* ── Main content ── */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 sm:ml-56">
         {/* Mobile top bar */}
         <header className="sm:hidden sticky top-0 z-30 flex items-center gap-3 px-4 h-14 bg-slate-900 border-b border-white/10">
           <button
@@ -242,7 +232,7 @@ const AdminLayout = () => {
         </header>
 
         {/* Page content */}
-        <main className="flex-1 overflow-y-auto min-h-0">
+        <main className="flex-1">
           <Outlet />
         </main>
       </div>

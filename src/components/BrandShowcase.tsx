@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useMemo } from "react";
 import { useCatalog } from "@/context/CatalogContext";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 import { Store, TrendingUp, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { phoneAccessories, smartphoneProducts, tabletProducts, wearablesProducts, gamingConsoles } from "@/data/products";
@@ -25,7 +26,9 @@ interface Brand {
 
 const BrandShowcase = () => {
   const { catalogTick } = useCatalog();
+  const { settings: siteSettings } = useSiteSettings();
   const navigate = useNavigate();
+  const adminBrands = siteSettings.brand_showcase || [];
 
   // Helper function to extract brand from product name
   const extractBrand = (productName: string, productCategory?: string): string | null => {
@@ -127,27 +130,38 @@ const BrandShowcase = () => {
   const excludedBrands = ["Dobe", "Kakusiga", "JBL", "BOROFONE"];
 
   // Get unique brands with product counts and logos
-  const brands: Brand[] = Array.from(
-    new Set(allProducts.map(p => p.brand))
-  )
-    .filter(brand => brand && brand !== "Other" && !excludedBrands.includes(brand))
-    .filter(brand => brandLogos[brand!]) // Only include brands that have logos
-    .map(brand => ({
-      name: brand!,
-      logo: brandLogos[brand!],
-      productCount: allProducts.filter(p => p.brand === brand).length,
-    }))
-    .sort((a, b) => {
-      // Sort: Green Lion first, then by product count (high to low)
-      if (a.name === "Green Lion") return -1;
-      if (b.name === "Green Lion") return 1;
-      return b.productCount - a.productCount;
-    });
+  // If admin has configured brands via CMS, use those; otherwise auto-detect
+  const brands: Brand[] = adminBrands.length > 0
+    ? adminBrands
+        .filter((b) => b.featured !== false)
+        .map((b) => ({
+          name: b.name,
+          logo: b.logoUrl || brandLogos[b.name],
+          productCount: allProducts.filter((p) => p.brand === b.name).length,
+        }))
+    : Array.from(new Set(allProducts.map(p => p.brand)))
+        .filter(brand => brand && brand !== "Other" && !excludedBrands.includes(brand))
+        .filter(brand => brandLogos[brand!])
+        .map(brand => ({
+          name: brand!,
+          logo: brandLogos[brand!],
+          productCount: allProducts.filter(p => p.brand === brand).length,
+        }))
+        .sort((a, b) => {
+          if (a.name === "Green Lion") return -1;
+          if (b.name === "Green Lion") return 1;
+          return b.productCount - a.productCount;
+        });
 
   // Handle brand click - navigate directly to products page with brand filter
   const handleBrandClick = (brandName: string) => {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-    navigate(`/products?brand=${encodeURIComponent(brandName)}`);
+    const adminBrand = adminBrands.find((b) => b.name === brandName);
+    if (adminBrand?.link) {
+      navigate(adminBrand.link);
+    } else {
+      navigate(`/products?brand=${encodeURIComponent(brandName)}`);
+    }
   };
 
   // Brand icons/colors (fallback if no logo)

@@ -308,7 +308,7 @@ const AdminProductEditor = () => {
   }
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col min-h-[calc(100vh-56px)] sm:min-h-screen">
       {/* ── Top bar ── */}
       <div className="sticky top-0 sm:top-0 z-20 bg-background/95 backdrop-blur border-b px-4 sm:px-6 py-3 flex items-center gap-3">
         <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0 touch-manipulation" style={{ touchAction: 'manipulation' }} asChild>
@@ -374,7 +374,7 @@ const AdminProductEditor = () => {
       </div>
 
       {/* ── Tab content ── */}
-      <div className="flex-1 overflow-y-auto min-h-0">
+      <div className="flex-1">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 space-y-6 pb-24">
 
           {/* ──────── BASICS ──────── */}

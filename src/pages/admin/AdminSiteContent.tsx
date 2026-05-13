@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import {
   Megaphone, Layout, Star, Heart, Save, Plus, Trash2,
   RefreshCw, ChevronRight, Search, Package, AlertCircle,
+  TrendingUp, Store, Grid3X3,
 } from "lucide-react";
 import { adminFetch } from "@/lib/adminApi";
 import { useSiteSettings, SiteSettings } from "@/context/SiteSettingsContext";
@@ -22,6 +23,9 @@ const TABS = [
   { id: "flagship",         label: "Flagship Showcase",   icon: Star },
   { id: "new_arrivals",     label: "New Arrivals",        icon: RefreshCw },
   { id: "weekly_favorites", label: "Weekly Favorites",    icon: Heart },
+  { id: "trending",         label: "Trending Sections",   icon: TrendingUp },
+  { id: "brands",           label: "Shop by Brand",       icon: Store },
+  { id: "categories",       label: "Categories",          icon: Grid3X3 },
 ] as const;
 type TabId = (typeof TABS)[number]["id"];
 
@@ -687,12 +691,250 @@ const AdminSiteContent = () => {
     </div>
   );
 
+  // ─── Trending Sections Tab ──────────────────────────────────────────────────
+  const [trendingSections, setTrendingSections] = useState(liveSettings.trending_sections || []);
+  useEffect(() => { setTrendingSections(liveSettings.trending_sections || []); }, [liveSettings]);
+
+  const TrendingTab = (
+    <div className="space-y-6">
+      <SectionCard title="Trending Product Sections">
+        <p className="text-xs text-muted-foreground mb-4">
+          Configure the "Trending in..." carousels on the homepage. Add product IDs (comma-separated) or leave blank to auto-generate from category.
+        </p>
+        <div className="space-y-4">
+          {trendingSections.map((section, i) => (
+            <div key={i} className="rounded-xl border p-4 space-y-3 bg-muted/20">
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-medium">Section {i + 1}</p>
+                <button
+                  onClick={() => setTrendingSections((prev) => prev.filter((_, j) => j !== i))}
+                  className="p-1.5 rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div className="space-y-1.5">
+                  <Label className="text-xs">Section Title</Label>
+                  <Input
+                    value={section.title}
+                    onChange={(e) => setTrendingSections((prev) => prev.map((s, j) => j === i ? { ...s, title: e.target.value } : s))}
+                    placeholder="e.g. Trending in Smartphones"
+                    className="text-sm"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label className="text-xs">Category Filter</Label>
+                  <Input
+                    value={section.category}
+                    onChange={(e) => setTrendingSections((prev) => prev.map((s, j) => j === i ? { ...s, category: e.target.value } : s))}
+                    placeholder="e.g. Smartphones, Audio, Tablets..."
+                    className="text-sm"
+                  />
+                </div>
+              </div>
+              <div className="space-y-1.5">
+                <Label className="text-xs">Product IDs (comma-separated, leave blank for auto)</Label>
+                <Input
+                  value={(section.productIds || []).join(", ")}
+                  onChange={(e) => {
+                    const ids = e.target.value.split(",").map(s => parseInt(s.trim())).filter(n => !isNaN(n));
+                    setTrendingSections((prev) => prev.map((s, j) => j === i ? { ...s, productIds: ids } : s));
+                  }}
+                  placeholder="e.g. 500, 501, 502 (blank = auto from category)"
+                  className="text-sm font-mono"
+                />
+              </div>
+            </div>
+          ))}
+          <Button
+            variant="outline" size="sm"
+            onClick={() => setTrendingSections((prev) => [...prev, { title: "", category: "", productIds: [] }])}
+            className="gap-1.5"
+          >
+            <Plus className="h-3.5 w-3.5" /> Add Trending Section
+          </Button>
+        </div>
+      </SectionCard>
+      <div className="flex justify-end">
+        <Button onClick={() => void saveSetting("trending_sections", trendingSections)} disabled={saving} className="w-full sm:w-auto">
+          <Save className="h-4 w-4 mr-2" /> Save Trending Sections
+        </Button>
+      </div>
+    </div>
+  );
+
+  // ─── Brands Tab ────────────────────────────────────────────────────────────
+  const [brands, setBrands] = useState(liveSettings.brand_showcase || []);
+  useEffect(() => { setBrands(liveSettings.brand_showcase || []); }, [liveSettings]);
+
+  const BrandsTab = (
+    <div className="space-y-6">
+      <SectionCard title="Shop by Brand">
+        <p className="text-xs text-muted-foreground mb-4">
+          Configure which brands appear in the "Shop by Brand" section. Leave empty to auto-detect from product catalog.
+        </p>
+        <div className="space-y-3">
+          {brands.map((brand, i) => (
+            <div key={i} className="flex items-center gap-3 rounded-xl border p-3 bg-muted/20">
+              {brand.logoUrl && (
+                <img src={brand.logoUrl} alt={brand.name} className="h-8 w-8 rounded object-cover border shrink-0" />
+              )}
+              <div className="flex-1 grid gap-2 sm:grid-cols-3">
+                <Input
+                  value={brand.name}
+                  onChange={(e) => setBrands((prev) => prev.map((b, j) => j === i ? { ...b, name: e.target.value } : b))}
+                  placeholder="Brand Name"
+                  className="text-sm"
+                />
+                <Input
+                  value={brand.logoUrl}
+                  onChange={(e) => setBrands((prev) => prev.map((b, j) => j === i ? { ...b, logoUrl: e.target.value } : b))}
+                  placeholder="Logo URL"
+                  className="text-sm"
+                />
+                <Input
+                  value={brand.link}
+                  onChange={(e) => setBrands((prev) => prev.map((b, j) => j === i ? { ...b, link: e.target.value } : b))}
+                  placeholder="Link (e.g. /category/Apple)"
+                  className="text-sm"
+                />
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <Switch
+                  checked={brand.featured}
+                  onCheckedChange={(v) => setBrands((prev) => prev.map((b, j) => j === i ? { ...b, featured: v } : b))}
+                />
+                <button
+                  onClick={() => setBrands((prev) => prev.filter((_, j) => j !== i))}
+                  className="p-1.5 rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          ))}
+          <Button
+            variant="outline" size="sm"
+            onClick={() => setBrands((prev) => [...prev, { name: "", logoUrl: "", link: "", featured: true }])}
+            className="gap-1.5"
+          >
+            <Plus className="h-3.5 w-3.5" /> Add Brand
+          </Button>
+        </div>
+      </SectionCard>
+      <div className="flex justify-end">
+        <Button onClick={() => void saveSetting("brand_showcase", brands)} disabled={saving} className="w-full sm:w-auto">
+          <Save className="h-4 w-4 mr-2" /> Save Brands
+        </Button>
+      </div>
+    </div>
+  );
+
+  // ─── Categories Tab ────────────────────────────────────────────────────────
+  const [categories, setCategories] = useState(liveSettings.homepage_categories || []);
+  useEffect(() => { setCategories(liveSettings.homepage_categories || []); }, [liveSettings]);
+
+  const CategoriesTab = (
+    <div className="space-y-6">
+      <SectionCard title="Homepage Categories">
+        <p className="text-xs text-muted-foreground mb-4">
+          Control which categories appear on the homepage "Shop by Category" grid. Toggle visibility, rename, or reorder.
+        </p>
+        <div className="space-y-2">
+          {categories.map((cat, i) => (
+            <div key={i} className="flex items-center gap-3 rounded-xl border p-3 bg-muted/20">
+              <span className="text-xs text-muted-foreground w-5 text-center shrink-0">{i + 1}</span>
+              <div className="flex-1 grid gap-2 sm:grid-cols-3">
+                <Input
+                  value={cat.name}
+                  onChange={(e) => setCategories((prev) => prev.map((c, j) => j === i ? { ...c, name: e.target.value } : c))}
+                  placeholder="Category Name"
+                  className="text-sm"
+                />
+                <Input
+                  value={cat.linkTo}
+                  onChange={(e) => setCategories((prev) => prev.map((c, j) => j === i ? { ...c, linkTo: e.target.value } : c))}
+                  placeholder="Link (e.g. /smartphones)"
+                  className="text-sm"
+                />
+                <Input
+                  value={cat.icon}
+                  onChange={(e) => setCategories((prev) => prev.map((c, j) => j === i ? { ...c, icon: e.target.value } : c))}
+                  placeholder="Icon name (e.g. Smartphone)"
+                  className="text-sm"
+                />
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <Switch
+                  checked={cat.enabled}
+                  onCheckedChange={(v) => setCategories((prev) => prev.map((c, j) => j === i ? { ...c, enabled: v } : c))}
+                />
+                <div className="flex flex-col gap-0.5">
+                  <button
+                    onClick={() => {
+                      if (i === 0) return;
+                      setCategories((prev) => {
+                        const next = [...prev];
+                        [next[i - 1], next[i]] = [next[i], next[i - 1]];
+                        return next;
+                      });
+                    }}
+                    disabled={i === 0}
+                    className="p-0.5 text-muted-foreground hover:text-foreground disabled:opacity-30"
+                  >
+                    <ChevronRight className="h-3 w-3 -rotate-90" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      if (i === categories.length - 1) return;
+                      setCategories((prev) => {
+                        const next = [...prev];
+                        [next[i], next[i + 1]] = [next[i + 1], next[i]];
+                        return next;
+                      });
+                    }}
+                    disabled={i === categories.length - 1}
+                    className="p-0.5 text-muted-foreground hover:text-foreground disabled:opacity-30"
+                  >
+                    <ChevronRight className="h-3 w-3 rotate-90" />
+                  </button>
+                </div>
+                <button
+                  onClick={() => setCategories((prev) => prev.filter((_, j) => j !== i))}
+                  className="p-1.5 rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          ))}
+          <Button
+            variant="outline" size="sm"
+            onClick={() => setCategories((prev) => [...prev, { name: "", icon: "Smartphone", linkTo: "/", enabled: true }])}
+            className="gap-1.5"
+          >
+            <Plus className="h-3.5 w-3.5" /> Add Category
+          </Button>
+        </div>
+      </SectionCard>
+      <div className="flex justify-end">
+        <Button onClick={() => void saveSetting("homepage_categories", categories)} disabled={saving} className="w-full sm:w-auto">
+          <Save className="h-4 w-4 mr-2" /> Save Categories
+        </Button>
+      </div>
+    </div>
+  );
+
   const tabContent: Record<TabId, React.ReactNode> = {
     announcements:    <AnnouncementsTab />,
     hero:             <HeroTab />,
     flagship:         <FlagshipTab />,
     new_arrivals:     <NewArrivalsTab />,
     weekly_favorites: <WeeklyFavoritesTab />,
+    trending:         TrendingTab,
+    brands:           BrandsTab,
+    categories:       CategoriesTab,
   };
 
   return (
@@ -707,8 +949,8 @@ const AdminSiteContent = () => {
             </h1>
             <Badge variant="outline" className="gap-1.5 shrink-0 text-xs">
               <Package className="h-3 w-3" />
-              <span className="hidden xs:inline">5 sections</span>
-              <span className="xs:hidden">5</span>
+              <span className="hidden xs:inline">8 sections</span>
+              <span className="xs:hidden">8</span>
             </Badge>
           </div>
           <p className="text-xs sm:text-sm text-muted-foreground">
