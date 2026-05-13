@@ -80,7 +80,7 @@ const AdminLayout = () => {
       )}
 
       {/* Navigation */}
-      <nav className="flex-1 px-3 py-3 space-y-1 overflow-y-auto">
+      <nav className="flex-1 px-3 py-3 space-y-1 overflow-y-auto scrollbar-hide">
         <p className="text-[10px] text-white/30 uppercase tracking-widest px-2 mb-2">Catalog</p>
         {catalogNav.map(({ to, label, icon: Icon }) => (
           <NavLink
