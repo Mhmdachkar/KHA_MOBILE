@@ -38,5 +38,11 @@ export async function adminFetch(path: string, options: RequestInit = {}) {
     headers.set("Content-Type", "application/json");
   }
   const res = await fetch(`${apiBase()}${path}`, { ...options, headers });
+  if (res.status === 401 && !path.includes("/login")) {
+    setAdminToken(null);
+    if (typeof window !== "undefined") {
+      window.location.href = "/admin/login";
+    }
+  }
   return res;
 }

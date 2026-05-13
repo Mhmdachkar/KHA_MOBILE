@@ -8,8 +8,13 @@ import { Resend } from 'resend';
 import { adminAuthRouter } from './routes/adminAuth.js';
 import { adminProductsRouter } from './routes/adminProducts.js';
 import { adminSettingsRouter } from './routes/adminSettings.js';
+import { adminCouponsRouter } from './routes/adminCoupons.js';
+import { adminAuditRouter } from './routes/adminAudit.js';
+import { adminMediaRouter } from './routes/adminMedia.js';
+import { adminOrdersRouter } from './routes/adminOrders.js';
 import { publicCatalogRouter } from './routes/publicCatalog.js';
 import { publicSettingsRouter } from './routes/publicSettings.js';
+import { publicCouponsRouter } from './routes/publicCoupons.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -45,10 +50,15 @@ const adminRouter = Router();
 adminRouter.use(adminAuthRouter);
 adminRouter.use(adminProductsRouter);
 adminRouter.use('/settings', adminSettingsRouter);
+adminRouter.use(adminCouponsRouter);
+adminRouter.use(adminAuditRouter);
+adminRouter.use(adminMediaRouter);
+adminRouter.use(adminOrdersRouter);
 app.use('/api/admin', adminRouter);
 
 app.use('/api/public', publicCatalogRouter);
 app.use('/api/public/settings', publicSettingsRouter);
+app.use('/api/public', publicCouponsRouter);
 
 app.post('/api/send-order-email', async (req, res) => {
   try {

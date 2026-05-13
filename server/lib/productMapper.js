@@ -43,6 +43,7 @@ export function rowToPublicProduct(row) {
     sizes: row.sizes || [],
     connectivityOptions: row.connectivity_options || [],
     secondaryCategories: row.secondary_categories || [],
+    stockQuantity: row.stock_quantity != null ? Number(row.stock_quantity) : null,
   };
 }
 
@@ -70,5 +71,6 @@ export function bodyToRowColumns(body) {
     connectivity_options: b.connectivityOptions ?? b.connectivity_options ?? [],
     secondary_categories: b.secondaryCategories ?? b.secondary_categories ?? [],
     gallery_images: b.galleryImages ?? b.gallery_images ?? [],
+    stock_quantity: (b.stockQuantity != null && b.stockQuantity !== '') ? Number(b.stockQuantity) : (b.stock_quantity ?? null),
   };
 }

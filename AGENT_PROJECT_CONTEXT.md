@@ -237,7 +237,57 @@ From `src/App.tsx`:
 - Admin product list switched to **merged catalog** (`allProducts`) so thumbnails match the site (bundled asset URLs), not only DB `primary_image_url`.
 - Extended **CatalogContext** to compute and export **`allProducts`** plus `loading` / `refresh` alias.
 - Removed ephemeral docs/scripts that were superseded (e.g. Supabase bucket upload guide / one-off checklists) in favor of this single handoff file.
+- **Admin layout** rearchitected: outer wrapper `h-screen overflow-hidden`, sidebar is flex child (no `fixed`), only `<main>` scrolls via `overflow-auto min-h-0`. Fixes sidebar scrolling with content.
+- **Product editor `/new` route** fixed: `isNew` now checks `!dbId` (param is `undefined` on the dedicated route, not `"new"`).
+- **CRITICAL fix `adminSettings.js`**: routes used `req.pool` which was never attached — imported `pool` directly from `db.js`.
+- **Sidebar stats**: removed per-route-change re-fetch of all products; now fetches once on mount with proper active count.
+- **React key fix**: `AdminProductList` uses `p.dbId ?? \`s-${p.id}\`` to avoid duplicate `undefined` keys for static-only products.
+- **401 auto-logout**: `adminFetch` now clears token and redirects to `/admin/login` on any 401 (expired JWT).
+- **Admin child pages** (`AdminSiteContent`, `AdminDashboard`, `AdminProductEditor`): replaced `min-h-screen` with `h-full` / no min-h so they work within the viewport-constrained layout.
+- **Mobile save bar** in product editor changed from `fixed bottom-0` to `sticky bottom-0` for correct behavior inside overflow-auto container.
 
 ---
 
-*Last updated for agent onboarding. When making significant architectural changes, update this file in the same PR.*
+## 16. Roadmap — Full-Control Admin Enhancements
+
+These features would bring the admin panel to production-grade with full control over the storefront:
+
+| Priority | Feature | Description |
+|----------|---------|-------------|
+| ~~**P1**~~ | ~~**Backend Pagination & Search**~~ | ✅ DONE — `GET /api/admin/products` now supports `?page=&limit=&search=&category=`. |
+| ~~**P1**~~ | ~~**Media Library**~~ | ✅ DONE — `/admin/media` page with upload, browse, delete, copy URL, preview modal. |
+| ~~**P1**~~ | ~~**Unsaved Changes Guard**~~ | ✅ DONE — `useUnsavedChanges` hook with `beforeunload` + React Router `useBlocker` on product editor. |
+| ~~**P2**~~ | ~~**Discount / Coupon System**~~ | ✅ DONE — Full CRUD at `/admin/coupons`, public `POST /api/public/validate-coupon` for checkout. |
+| ~~**P2**~~ | ~~**Stock / Inventory Tracking**~~ | ✅ DONE — `stock_quantity` column, product editor field, low-stock/out-of-stock badges. |
+| ~~**P2**~~ | ~~**Admin Activity Audit Log**~~ | ✅ DONE — `audit_log` table, auto-logged on product/coupon/media actions, `/admin/audit-log` page with filters + pagination. |
+| ~~**P0**~~ | ~~**Orders Management**~~ | ✅ DONE — `orders` + `order_items` tables, full CRUD API, admin page with filters, status/payment updates, CSV export, order detail panel. |
+| ~~**P0**~~ | ~~**Bulk Product Actions**~~ | ✅ DONE — Multi-select in product list, bulk activate/deactivate/delete/change category via `POST /api/admin/products/bulk`. |
+| **P3** | **SEO Management** | Per-product meta title/description fields, auto-generate `<meta>` tags on product detail page. |
+| **P3** | **Customer Management** | If user accounts are added: list customers, view order history, manage addresses. |
+| **P3** | **Server-Side Analytics** | Replace client-side localStorage analytics with real server events (page views, add-to-cart, purchases) for reliable data. |
+| **P3** | **Role-Based Access** | Multiple admin roles (superadmin, editor, viewer) with permission gates on routes and UI elements. |
+
+---
+
+## 17. New Key Files (added in P0/P1/P2 pass)
+
+| Topic | File(s) |
+|-------|---------|
+| Coupons CRUD API | `server/routes/adminCoupons.js` |
+| Public coupon validation | `server/routes/publicCoupons.js` |
+| Media library API | `server/routes/adminMedia.js` |
+| Audit log API | `server/routes/adminAudit.js` |
+| Audit log helper | `server/lib/audit.js` |
+| Orders CRUD API | `server/routes/adminOrders.js` |
+| Bulk product actions | `POST /products/bulk` in `server/routes/adminProducts.js` |
+| SQL migration (coupons, audit, stock) | `sql/006_coupons_audit_stock.sql` |
+| SQL migration (orders) | `sql/007_orders.sql` |
+| Admin Coupons page | `src/pages/admin/AdminCoupons.tsx` |
+| Admin Media Library page | `src/pages/admin/AdminMediaLibrary.tsx` |
+| Admin Audit Log page | `src/pages/admin/AdminAuditLog.tsx` |
+| Admin Orders page | `src/pages/admin/AdminOrders.tsx` |
+| Unsaved changes hook | `src/hooks/useUnsavedChanges.ts` |
+
+---
+
+*Last updated after P0+P1+P2 feature implementation (orders, bulk actions, pagination, media library, unsaved guard, coupons, stock tracking, audit log). When making significant architectural changes, update this file in the same PR.*

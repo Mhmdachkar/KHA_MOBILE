@@ -40,6 +40,10 @@ import AdminLayout from "./pages/admin/AdminLayout";
 import AdminProductList from "./pages/admin/AdminProductList";
 import AdminProductEditor from "./pages/admin/AdminProductEditor";
 import AdminSiteContent from "./pages/admin/AdminSiteContent";
+import AdminCoupons from "./pages/admin/AdminCoupons";
+import AdminMediaLibrary from "./pages/admin/AdminMediaLibrary";
+import AdminAuditLog from "./pages/admin/AdminAuditLog";
+import AdminOrders from "./pages/admin/AdminOrders";
 import NotFound from "./pages/NotFound";
 
 // ScrollToTop component to scroll to top on route change and restore scroll when lock persists
@@ -104,6 +108,10 @@ const App = () => (
                   <Route path="products/:dbId" element={<AdminProductEditor />} />
                   <Route path="analytics" element={<AdminDashboard />} />
                   <Route path="site-content" element={<AdminSiteContent />} />
+                  <Route path="orders" element={<AdminOrders />} />
+                  <Route path="coupons" element={<AdminCoupons />} />
+                  <Route path="media" element={<AdminMediaLibrary />} />
+                  <Route path="audit-log" element={<AdminAuditLog />} />
                 </Route>
                 <Route path="/products" element={<Products />} />
                 <Route path="/category/:categoryName" element={<CategoryPage />} />

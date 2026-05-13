@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import {
   Plus, Pencil, Trash2, Search, Package, CheckCircle2,
   XCircle, Filter, LayoutGrid, LayoutList, RefreshCw,
-  TrendingUp, Tag, AlertTriangle,
+  TrendingUp, Tag, AlertTriangle, CheckSquare, Square, Eye, EyeOff, FolderEdit, X,
 } from "lucide-react";
 import { adminFetch } from "@/lib/adminApi";
 import { useCatalog } from "@/context/CatalogContext";
@@ -47,6 +47,10 @@ const AdminProductList = () => {
   const [statusFilter, setStatusFilter] = useState<"all" | "active" | "inactive">("all");
   const [view, setView] = useState<"grid" | "list">("list");
   const [refreshKey, setRefreshKey] = useState(0);
+  const [selected, setSelected] = useState<Set<number>>(new Set());
+  const [bulkBusy, setBulkBusy] = useState(false);
+  const [showCatPicker, setShowCatPicker] = useState(false);
+  const [bulkCategory, setBulkCategory] = useState("Smartphones");
 
   // Convert catalog products to admin format
   const products = useMemo<AdminProduct[]>(() => {
@@ -117,6 +121,50 @@ const AdminProductList = () => {
 
   const priceLabel = (p: AdminProduct) =>
     typeof p.price === "number" ? `$${p.price.toFixed(2)}` : `$${p.price}`;
+
+  // ── Bulk selection helpers ──
+  const dbFiltered = filtered.filter((p) => p.dbId != null);
+  const allSelected = dbFiltered.length > 0 && dbFiltered.every((p) => selected.has(p.dbId!));
+
+  const toggleOne = (dbId: number) => {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(dbId)) next.delete(dbId); else next.add(dbId);
+      return next;
+    });
+  };
+
+  const toggleAll = () => {
+    if (allSelected) {
+      setSelected(new Set());
+    } else {
+      setSelected(new Set(dbFiltered.map((p) => p.dbId!)));
+    }
+  };
+
+  const bulkAction = async (action: string, value?: string) => {
+    if (selected.size === 0) return;
+    const label = action === 'delete' ? `Delete ${selected.size} product(s)?` : `${action} ${selected.size} product(s)?`;
+    if (!confirm(label + ' This cannot be undone.')) return;
+    setBulkBusy(true);
+    try {
+      const res = await adminFetch('/api/admin/products/bulk', {
+        method: 'POST',
+        body: JSON.stringify({ ids: Array.from(selected), action, value }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Bulk action failed');
+      toast({ title: `Done — ${data.affected} product(s) ${action}d` });
+      setSelected(new Set());
+      setShowCatPicker(false);
+      refreshCatalog();
+      setRefreshKey((k) => k + 1);
+    } catch (e: any) {
+      toast({ variant: 'destructive', title: 'Bulk action failed', description: e.message });
+    } finally {
+      setBulkBusy(false);
+    }
+  };
 
   return (
     <div className="p-4 sm:p-6 space-y-6 max-w-7xl mx-auto">
@@ -228,12 +276,57 @@ const AdminProductList = () => {
         </div>
       </div>
 
-      {/* Result count */}
+      {/* Result count + bulk bar */}
       {!catalogLoading && (
-        <p className="text-xs text-muted-foreground">
-          Showing <strong>{filtered.length}</strong> of <strong>{products.length}</strong> products
-          {search && <> for "<em>{search}</em>"</>}
-        </p>
+        <div className="flex items-center justify-between gap-3">
+          <p className="text-xs text-muted-foreground">
+            Showing <strong>{filtered.length}</strong> of <strong>{products.length}</strong> products
+            {search && <> for "<em>{search}</em>"</>}
+          </p>
+          {dbFiltered.length > 0 && (
+            <Button variant="ghost" size="sm" className="text-xs gap-1.5 h-7" onClick={toggleAll}>
+              {allSelected ? <CheckSquare className="h-3.5 w-3.5" /> : <Square className="h-3.5 w-3.5" />}
+              {allSelected ? "Deselect All" : "Select All"}
+            </Button>
+          )}
+        </div>
+      )}
+
+      {/* Bulk actions bar */}
+      {selected.size > 0 && (
+        <div className="flex flex-wrap items-center gap-2 rounded-xl border bg-muted/40 px-4 py-2.5">
+          <span className="text-sm font-medium">{selected.size} selected</span>
+          <div className="flex-1" />
+          <Button variant="outline" size="sm" className="text-xs gap-1.5 h-8" disabled={bulkBusy} onClick={() => bulkAction('activate')}>
+            <Eye className="h-3.5 w-3.5" /> Activate
+          </Button>
+          <Button variant="outline" size="sm" className="text-xs gap-1.5 h-8" disabled={bulkBusy} onClick={() => bulkAction('deactivate')}>
+            <EyeOff className="h-3.5 w-3.5" /> Deactivate
+          </Button>
+          {!showCatPicker ? (
+            <Button variant="outline" size="sm" className="text-xs gap-1.5 h-8" disabled={bulkBusy} onClick={() => setShowCatPicker(true)}>
+              <FolderEdit className="h-3.5 w-3.5" /> Category
+            </Button>
+          ) : (
+            <div className="flex items-center gap-1.5">
+              <select
+                value={bulkCategory}
+                onChange={(e) => setBulkCategory(e.target.value)}
+                className="h-8 rounded-md border border-input bg-background px-2 text-xs"
+              >
+                {CATEGORIES.filter((c) => c !== "All").map((c) => <option key={c}>{c}</option>)}
+              </select>
+              <Button size="sm" className="h-8 text-xs" disabled={bulkBusy} onClick={() => bulkAction('change_category', bulkCategory)}>Apply</Button>
+              <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => setShowCatPicker(false)}><X className="h-3.5 w-3.5" /></Button>
+            </div>
+          )}
+          <Button variant="outline" size="sm" className="text-xs gap-1.5 h-8 hover:bg-red-500/10 hover:text-red-500 hover:border-red-500/30" disabled={bulkBusy} onClick={() => bulkAction('delete')}>
+            <Trash2 className="h-3.5 w-3.5" /> Delete
+          </Button>
+          <Button variant="ghost" size="sm" className="text-xs h-8" onClick={() => setSelected(new Set())} disabled={bulkBusy}>
+            Clear
+          </Button>
+        </div>
       )}
 
       {/* Loading */}
@@ -270,8 +363,16 @@ const AdminProductList = () => {
       {!catalogLoading && view === "grid" && filtered.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
           {filtered.map((p) => (
-            <div key={p.dbId} className="group rounded-xl border bg-card overflow-hidden hover:shadow-md transition-shadow">
+            <div key={p.dbId ?? `s-${p.id}`} className={cn("group rounded-xl border bg-card overflow-hidden hover:shadow-md transition-shadow", p.dbId && selected.has(p.dbId) && "ring-2 ring-primary")}>
               <div className="aspect-square relative bg-muted/30 overflow-hidden">
+                {p.dbId != null && (
+                  <button
+                    className="absolute top-2 right-2 z-10 h-6 w-6 rounded bg-background/80 flex items-center justify-center border shadow-sm"
+                    onClick={(e) => { e.stopPropagation(); toggleOne(p.dbId!); }}
+                  >
+                    {selected.has(p.dbId) ? <CheckSquare className="h-3.5 w-3.5 text-primary" /> : <Square className="h-3.5 w-3.5 text-muted-foreground" />}
+                  </button>
+                )}
                 <img
                   src={p.image}
                   alt={p.name}
@@ -320,7 +421,8 @@ const AdminProductList = () => {
       {!catalogLoading && view === "list" && filtered.length > 0 && (
         <div className="rounded-xl border overflow-hidden">
           {/* Table header — desktop */}
-          <div className="hidden sm:grid grid-cols-[56px_1fr_140px_100px_90px_90px] gap-4 items-center px-4 py-2.5 bg-muted/40 text-xs text-muted-foreground font-medium border-b">
+          <div className="hidden sm:grid grid-cols-[32px_56px_1fr_140px_100px_90px_90px] gap-4 items-center px-4 py-2.5 bg-muted/40 text-xs text-muted-foreground font-medium border-b">
+            <span></span>
             <span>Image</span>
             <span>Product</span>
             <span>Category</span>
@@ -331,9 +433,16 @@ const AdminProductList = () => {
 
           <div className="divide-y">
             {filtered.map((p) => (
-              <div key={p.dbId}>
+              <div key={p.dbId ?? `s-${p.id}`}>
                 {/* Desktop row */}
-                <div className="hidden sm:grid grid-cols-[56px_1fr_140px_100px_90px_90px] gap-4 items-center px-4 py-3 hover:bg-muted/20 transition-colors">
+                <div className="hidden sm:grid grid-cols-[32px_56px_1fr_140px_100px_90px_90px] gap-4 items-center px-4 py-3 hover:bg-muted/20 transition-colors">
+                  <div className="flex items-center justify-center">
+                    {p.dbId != null ? (
+                      <button onClick={() => toggleOne(p.dbId!)} className="touch-manipulation" style={{ touchAction: 'manipulation' }}>
+                        {selected.has(p.dbId) ? <CheckSquare className="h-4 w-4 text-primary" /> : <Square className="h-4 w-4 text-muted-foreground/40" />}
+                      </button>
+                    ) : <span className="h-4 w-4" />}
+                  </div>
                   <div className="h-12 w-12 rounded-lg border bg-muted/30 overflow-hidden shrink-0">
                     <img
                       src={p.image}
@@ -383,6 +492,11 @@ const AdminProductList = () => {
 
                 {/* Mobile row */}
                 <div className="sm:hidden flex items-start gap-3 p-4 hover:bg-muted/20 transition-colors">
+                  {p.dbId != null && (
+                    <button onClick={() => toggleOne(p.dbId!)} className="shrink-0 mt-1 touch-manipulation" style={{ touchAction: 'manipulation' }}>
+                      {selected.has(p.dbId) ? <CheckSquare className="h-5 w-5 text-primary" /> : <Square className="h-5 w-5 text-muted-foreground/30" />}
+                    </button>
+                  )}
                   <div className="h-14 w-14 rounded-lg border bg-muted/30 overflow-hidden shrink-0">
                     <img
                       src={p.image}

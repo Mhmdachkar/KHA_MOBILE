@@ -696,7 +696,7 @@ const AdminSiteContent = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col h-full">
       {/* Header */}
       <div className="px-4 sm:px-6 pt-4 sm:pt-6 pb-3 sm:pb-4 border-b">
         <div className="max-w-4xl mx-auto">

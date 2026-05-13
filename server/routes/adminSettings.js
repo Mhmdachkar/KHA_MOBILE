@@ -1,12 +1,11 @@
 import express from 'express';
-import { requirePool } from '../lib/db.js';
+import { pool, requirePool } from '../lib/db.js';
 import { requireAdmin } from '../middleware/auth.js';
 
 const router = express.Router();
 
 router.get('/', requireAdmin, requirePool, async (req, res) => {
   try {
-    const { pool } = req;
     const result = await pool.query(
       'SELECT key, value, updated_at FROM site_settings ORDER BY key'
     );
@@ -19,7 +18,6 @@ router.get('/', requireAdmin, requirePool, async (req, res) => {
 
 router.get('/:key', requireAdmin, requirePool, async (req, res) => {
   try {
-    const { pool } = req;
     const { key } = req.params;
     const result = await pool.query(
       'SELECT key, value, updated_at FROM site_settings WHERE key = $1',
@@ -35,7 +33,6 @@ router.get('/:key', requireAdmin, requirePool, async (req, res) => {
 
 router.put('/:key', requireAdmin, requirePool, async (req, res) => {
   try {
-    const { pool } = req;
     const { key } = req.params;
     const { value } = req.body;
     if (value === undefined) {

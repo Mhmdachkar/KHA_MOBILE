@@ -2,18 +2,27 @@ import { useEffect, useState } from "react";
 import { Outlet, NavLink, useNavigate, useLocation } from "react-router-dom";
 import {
   Package, BarChart3, LogOut, Store, Menu, X, ChevronRight,
-  ShieldCheck, Layout,
+  ShieldCheck, Layout, Ticket, Image, ScrollText, ShoppingBag,
 } from "lucide-react";
 import { getAdminToken, setAdminToken, adminFetch, siteUrl } from "@/lib/adminApi";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-const navItems = [
-  { to: "/admin/products", label: "Products", icon: Package, end: false },
-  { to: "/admin/site-content", label: "Site Content", icon: Layout, end: false },
-  { to: "/admin/analytics", label: "Analytics", icon: BarChart3, end: false },
+const catalogNav = [
+  { to: "/admin/products", label: "Products", icon: Package },
+  { to: "/admin/orders", label: "Orders", icon: ShoppingBag },
+  { to: "/admin/coupons", label: "Coupons", icon: Ticket },
+  { to: "/admin/media", label: "Media Library", icon: Image },
 ];
+
+const siteNav = [
+  { to: "/admin/site-content", label: "Site Content", icon: Layout },
+  { to: "/admin/analytics", label: "Analytics", icon: BarChart3 },
+  { to: "/admin/audit-log", label: "Activity Log", icon: ScrollText },
+];
+
+const navItems = [...catalogNav, ...siteNav];
 
 const AdminLayout = () => {
   const navigate = useNavigate();
@@ -32,18 +41,19 @@ const AdminLayout = () => {
   }, [location.pathname]);
 
   useEffect(() => {
-    adminFetch("/api/admin/products?limit=1")
+    adminFetch("/api/admin/products")
       .then((r) => r.json())
       .then((d) => {
         if (d.products) {
+          const all = d.products as { isActive?: boolean }[];
           setStats({
-            total: d.total ?? d.products.length,
-            active: d.products.filter?.((p: { isActive?: boolean }) => p.isActive !== false).length ?? 0,
+            total: all.length,
+            active: all.filter((p) => p.isActive !== false).length,
           });
         }
       })
       .catch(() => {});
-  }, [location.pathname]);
+  }, []);
 
   const logout = () => {
     setAdminToken(null);
@@ -82,11 +92,10 @@ const AdminLayout = () => {
       {/* Navigation */}
       <nav className="flex-1 px-3 py-3 space-y-1 overflow-y-auto">
         <p className="text-[10px] text-white/30 uppercase tracking-widest px-2 mb-2">Catalog</p>
-        {navItems.map(({ to, label, icon: Icon, end }) => (
+        {catalogNav.map(({ to, label, icon: Icon }) => (
           <NavLink
             key={to}
             to={to}
-            end={end}
             className={({ isActive }) =>
               cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all",
@@ -105,6 +114,32 @@ const AdminLayout = () => {
             )}
           </NavLink>
         ))}
+
+        <div className="pt-3">
+          <p className="text-[10px] text-white/30 uppercase tracking-widest px-2 mb-2">Management</p>
+          {siteNav.map(({ to, label, icon: Icon }) => (
+            <NavLink
+              key={to}
+              to={to}
+              className={({ isActive }) =>
+                cn(
+                  "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all",
+                  isActive
+                    ? "bg-white/15 text-white shadow-sm"
+                    : "text-white/60 hover:bg-white/8 hover:text-white/90"
+                )
+              }
+            >
+              {({ isActive }) => (
+                <>
+                  <Icon className={cn("h-4 w-4 shrink-0", isActive ? "text-white" : "text-white/50")} />
+                  <span className="flex-1">{label}</span>
+                  {isActive && <ChevronRight className="h-3 w-3 text-white/40" />}
+                </>
+              )}
+            </NavLink>
+          ))}
+        </div>
 
         <div className="pt-3">
           <p className="text-[10px] text-white/30 uppercase tracking-widest px-2 mb-2">Store</p>
@@ -144,9 +179,9 @@ const AdminLayout = () => {
   );
 
   return (
-    <div className="min-h-screen flex bg-background">
+    <div className="h-screen flex bg-background overflow-hidden">
       {/* ── Desktop sidebar ── */}
-      <aside className="hidden sm:flex flex-col w-56 shrink-0 bg-gradient-to-b from-slate-900 to-slate-950 fixed left-0 top-0 h-screen overflow-hidden z-40">
+      <aside className="hidden sm:flex flex-col w-56 shrink-0 bg-gradient-to-b from-slate-900 to-slate-950 overflow-hidden z-40">
         {sidebarContent}
       </aside>
 
@@ -174,12 +209,13 @@ const AdminLayout = () => {
       </aside>
 
       {/* ── Main content ── */}
-      <div className="flex-1 flex flex-col min-w-0 sm:ml-56">
+      <div className="flex-1 flex flex-col min-w-0">
         {/* Mobile top bar */}
         <header className="sm:hidden sticky top-0 z-30 flex items-center gap-3 px-4 h-14 bg-slate-900 border-b border-white/10">
           <button
             onClick={() => setDrawerOpen(true)}
-            className="text-white/60 hover:text-white transition-colors"
+            className="text-white/60 hover:text-white transition-colors touch-manipulation"
+            style={{ touchAction: 'manipulation' }}
           >
             <Menu className="h-5 w-5" />
           </button>
@@ -187,27 +223,26 @@ const AdminLayout = () => {
             <Store className="h-4 w-4 text-white/60 shrink-0" />
             <span className="text-sm font-semibold text-white truncate">KHA Mobile Admin</span>
           </div>
-          <div className="flex items-center gap-1">
-            {navItems.map(({ to, label, icon: Icon }) => (
-              <NavLink
-                key={to}
-                to={to}
-                className={({ isActive }) =>
-                  cn(
-                    "flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all",
-                    isActive ? "bg-white/15 text-white" : "text-white/50 hover:text-white"
-                  )
-                }
-              >
-                <Icon className="h-3.5 w-3.5" />
-                <span className="hidden xs:inline">{label}</span>
-              </NavLink>
-            ))}
-          </div>
+          {/* Active page indicator */}
+          {navItems.map(({ to, icon: Icon }) => (
+            <NavLink
+              key={to}
+              to={to}
+              className={({ isActive }) => isActive ? "block" : "hidden"}
+            >
+              {({ isActive }) =>
+                isActive ? (
+                  <div className="h-8 w-8 rounded-lg bg-white/15 flex items-center justify-center">
+                    <Icon className="h-4 w-4 text-white" />
+                  </div>
+                ) : null
+              }
+            </NavLink>
+          ))}
         </header>
 
         {/* Page content */}
-        <main className="flex-1 overflow-auto">
+        <main className="flex-1 overflow-auto min-h-0">
           <Outlet />
         </main>
       </div>

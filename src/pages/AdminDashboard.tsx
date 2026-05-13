@@ -113,7 +113,7 @@ const AdminDashboard = () => {
 
   if (!analytics) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="flex-1 flex items-center justify-center">
         <div className="text-center">
           <RefreshCw className="h-12 w-12 animate-spin text-primary mx-auto mb-4" />
           <p className="text-muted-foreground">Loading analytics...</p>
@@ -125,9 +125,9 @@ const AdminDashboard = () => {
   const COLORS = ['#8b5cf6', '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#ec4899'];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="bg-background">
       {/* Header */}
-      <div className="border-b border-border bg-white sticky top-0 z-40">
+      <div className="border-b border-border bg-white sticky top-0 z-20">
         <div className="container mx-auto px-4 sm:px-6 py-4">
           <div className="flex items-center justify-between">
             <div>

@@ -15,6 +15,7 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { useUnsavedChanges } from "@/hooks/useUnsavedChanges";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 interface Spec { label: string; value: string }
@@ -44,6 +45,7 @@ interface FormState {
   connectivityOptions: string[];
   secondaryCategories: string[];
   galleryImages: string[];
+  stockQuantity: string;
 }
 
 const CATEGORIES = [
@@ -67,6 +69,7 @@ const emptyForm = (): FormState => ({
   brand: "", videoUrl: "", isPreorder: false, isActive: true,
   features: [""], specifications: [{ label: "", value: "" }],
   variants: [], colors: [], sizes: [], connectivityOptions: [], secondaryCategories: [], galleryImages: [],
+  stockQuantity: "",
 });
 
 const StarRating = ({ value }: { value: number }) => (
@@ -129,7 +132,7 @@ const SpecRow = ({
 // ─── Main Component ──────────────────────────────────────────────────────────
 const AdminProductEditor = () => {
   const { dbId } = useParams<{ dbId: string }>();
-  const isNew = dbId === "new";
+  const isNew = !dbId || dbId === "new";
   const navigate = useNavigate();
   const { toast } = useToast();
   const { refreshCatalog } = useCatalog();
@@ -137,6 +140,9 @@ const AdminProductEditor = () => {
   const [saving, setSaving] = useState(false);
   const [activeTab, setActiveTab] = useState<TabId>("basics");
   const [form, setForm] = useState<FormState>(emptyForm);
+  const [savedForm, setSavedForm] = useState<FormState>(emptyForm);
+  const isDirty = JSON.stringify(form) !== JSON.stringify(savedForm);
+  useUnsavedChanges(isDirty);
 
   const patch = useCallback(<K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm((f) => ({ ...f, [key]: value }));
@@ -187,7 +193,9 @@ const AdminProductEditor = () => {
           connectivityOptions: p.connectivityOptions || [],
           secondaryCategories: p.secondaryCategories || [],
           galleryImages: (p.images || []).filter((u: string) => u && u !== p.image),
+          stockQuantity: p.stockQuantity != null ? String(p.stockQuantity) : "",
         });
+        setForm((cur) => { setSavedForm(cur); return cur; });
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -266,6 +274,7 @@ const AdminProductEditor = () => {
         connectivityOptions: form.connectivityOptions.filter(Boolean),
         secondaryCategories: form.secondaryCategories.filter(Boolean),
         galleryImages: form.galleryImages.filter(Boolean),
+        stockQuantity: form.stockQuantity !== "" ? Number(form.stockQuantity) : null,
       };
       const url = isNew ? "/api/admin/products" : `/api/admin/products/${dbId}`;
       const res = await adminFetch(url, { method: isNew ? "POST" : "PUT", body: JSON.stringify(body) });
@@ -274,6 +283,7 @@ const AdminProductEditor = () => {
         toast({ variant: "destructive", title: "Save failed", description: data.error || res.statusText });
         return;
       }
+      setSavedForm({ ...form });
       toast({ title: isNew ? "Product created! 🎉" : "Changes saved" });
       await refreshCatalog();
       if (isNew && data.product?.dbId) {
@@ -298,7 +308,7 @@ const AdminProductEditor = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-[calc(100vh-56px)] sm:min-h-screen">
+    <div className="flex flex-col h-full">
       {/* ── Top bar ── */}
       <div className="sticky top-0 sm:top-0 z-20 bg-background/95 backdrop-blur border-b px-4 sm:px-6 py-3 flex items-center gap-3">
         <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0 touch-manipulation" style={{ touchAction: 'manipulation' }} asChild>
@@ -517,6 +527,35 @@ const AdminProductEditor = () => {
                       <p className="text-xs text-muted-foreground">Shows a pre-order badge and note on the product page.</p>
                     </div>
                     <Switch checked={form.isPreorder} onCheckedChange={(v) => patch("isPreorder", v)} />
+                  </div>
+                </div>
+              </SectionCard>
+
+              <SectionCard title="Stock Tracking" description="Manage inventory. Leave blank for unlimited stock.">
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="space-y-1.5">
+                    <Label>Stock Quantity</Label>
+                    <Input
+                      type="number" min={0} step={1}
+                      value={form.stockQuantity}
+                      onChange={(e) => patch("stockQuantity", e.target.value)}
+                      placeholder="Unlimited (blank)"
+                    />
+                    <p className="text-xs text-muted-foreground">Leave blank for unlimited. Set 0 to mark as out of stock.</p>
+                  </div>
+                  <div className="flex items-end pb-1">
+                    {form.stockQuantity !== "" && (
+                      <Badge
+                        variant={Number(form.stockQuantity) === 0 ? "destructive" : Number(form.stockQuantity) <= 5 ? "outline" : "secondary"}
+                        className="text-xs"
+                      >
+                        {Number(form.stockQuantity) === 0
+                          ? "Out of Stock"
+                          : Number(form.stockQuantity) <= 5
+                          ? `Low Stock (${form.stockQuantity})`
+                          : `${form.stockQuantity} in stock`}
+                      </Badge>
+                    )}
                   </div>
                 </div>
               </SectionCard>
@@ -936,7 +975,7 @@ const AdminProductEditor = () => {
       </div>
 
       {/* ── Mobile save bar ── */}
-      <div className="sm:hidden fixed bottom-0 inset-x-0 z-30 border-t bg-background/95 backdrop-blur px-4 py-3 flex gap-2">
+      <div className="sm:hidden sticky bottom-0 z-30 border-t bg-background/95 backdrop-blur px-4 py-3 flex gap-2">
         <Button variant="outline" className="flex-1 touch-manipulation" style={{ touchAction: 'manipulation' }} asChild>
           <Link to="/admin/products">Cancel</Link>
         </Button>

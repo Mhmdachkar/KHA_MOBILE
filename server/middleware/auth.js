@@ -16,10 +16,17 @@ export function signAdminToken(adminRow) {
 
 export function requireAdmin(req, res, next) {
   const header = req.headers.authorization;
-  if (!header?.startsWith('Bearer ')) {
+  let token = null;
+
+  if (header?.startsWith('Bearer ')) {
+    token = header.slice(7);
+  } else if (req.query?.token) {
+    token = req.query.token;
+  }
+
+  if (!token) {
     return res.status(401).json({ error: 'Missing or invalid Authorization header' });
   }
-  const token = header.slice(7);
   try {
     const payload = jwt.verify(token, JWT_SECRET);
     req.admin = payload;

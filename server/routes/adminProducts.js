@@ -6,6 +6,7 @@ import multer from 'multer';
 import { pool, requirePool } from '../lib/db.js';
 import { requireAdmin } from '../middleware/auth.js';
 import { bodyToRowColumns, rowToPublicProduct } from '../lib/productMapper.js';
+import { logAudit } from '../lib/audit.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const uploadsDir = path.join(__dirname, '..', 'uploads');
@@ -54,10 +55,46 @@ adminProductsRouter.post('/upload', requirePool, requireAdmin, upload.single('fi
   }
 });
 
-adminProductsRouter.get('/products', requirePool, requireAdmin, async (_req, res) => {
+adminProductsRouter.get('/products', requirePool, requireAdmin, async (req, res) => {
   try {
-    const { rows } = await pool.query(`SELECT * FROM products ORDER BY id DESC`);
-    res.json({ products: rows.map(rowToPublicProduct) });
+    const page = Math.max(1, parseInt(req.query.page) || 1);
+    const limit = Math.min(100, Math.max(1, parseInt(req.query.limit) || 50));
+    const search = (req.query.search || '').trim();
+    const category = (req.query.category || '').trim();
+    const offset = (page - 1) * limit;
+
+    const conditions = [];
+    const params = [];
+    let paramIdx = 1;
+
+    if (search) {
+      conditions.push(`(name ILIKE $${paramIdx} OR brand ILIKE $${paramIdx})`);
+      params.push(`%${search}%`);
+      paramIdx++;
+    }
+    if (category) {
+      conditions.push(`category = $${paramIdx}`);
+      params.push(category);
+      paramIdx++;
+    }
+
+    const where = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
+
+    const countQ = await pool.query(`SELECT COUNT(*) FROM products ${where}`, params);
+    const total = parseInt(countQ.rows[0].count, 10);
+
+    const dataQ = await pool.query(
+      `SELECT * FROM products ${where} ORDER BY id DESC LIMIT $${paramIdx} OFFSET $${paramIdx + 1}`,
+      [...params, limit, offset]
+    );
+
+    res.json({
+      products: dataQ.rows.map(rowToPublicProduct),
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    });
   } catch (e) {
     console.error(e);
     res.status(500).json({ error: 'Failed to list products' });
@@ -98,9 +135,9 @@ adminProductsRouter.post('/products', requirePool, requireAdmin, async (req, res
       `INSERT INTO products (
         legacy_override_id, name, title, description, price, compare_at_price, primary_image_url, rating,
         category, brand, video_url, is_preorder, is_active, features, specifications, variants, colors,
-        sizes, connectivity_options, secondary_categories, gallery_images
+        sizes, connectivity_options, secondary_categories, gallery_images, stock_quantity
       ) VALUES (
-        $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14::jsonb,$15::jsonb,$16::jsonb,$17::jsonb,$18::jsonb,$19::jsonb,$20::jsonb,$21::jsonb
+        $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14::jsonb,$15::jsonb,$16::jsonb,$17::jsonb,$18::jsonb,$19::jsonb,$20::jsonb,$21::jsonb,$22
       ) RETURNING *`,
       [
         c.legacy_override_id,
@@ -124,9 +161,12 @@ adminProductsRouter.post('/products', requirePool, requireAdmin, async (req, res
         JSON.stringify(c.connectivity_options),
         JSON.stringify(c.secondary_categories),
         JSON.stringify(c.gallery_images),
+        c.stock_quantity,
       ]
     );
-    res.status(201).json({ product: rowToPublicProduct(rows[0]) });
+    const created = rowToPublicProduct(rows[0]);
+    await logAudit(req.admin, 'create', 'product', rows[0].id, { name: c.name });
+    res.status(201).json({ product: created });
   } catch (e) {
     console.error(e);
     if (e.code === '23505') {
@@ -167,8 +207,9 @@ adminProductsRouter.put('/products/:dbId', requirePool, requireAdmin, async (req
         connectivity_options = $19::jsonb,
         secondary_categories = $20::jsonb,
         gallery_images = $21::jsonb,
+        stock_quantity = $22,
         updated_at = NOW()
-      WHERE id = $22
+      WHERE id = $23
       RETURNING *`,
       [
         c.legacy_override_id,
@@ -192,10 +233,12 @@ adminProductsRouter.put('/products/:dbId', requirePool, requireAdmin, async (req
         JSON.stringify(c.connectivity_options),
         JSON.stringify(c.secondary_categories),
         JSON.stringify(c.gallery_images),
+        c.stock_quantity,
         dbId,
       ]
     );
     if (!rows[0]) return res.status(404).json({ error: 'Not found' });
+    await logAudit(req.admin, 'update', 'product', dbId, { name: c.name });
     res.json({ product: rowToPublicProduct(rows[0]) });
   } catch (e) {
     console.error(e);
@@ -212,9 +255,72 @@ adminProductsRouter.delete('/products/:dbId', requirePool, requireAdmin, async (
     if (!Number.isFinite(dbId)) return res.status(400).json({ error: 'Invalid id' });
     const r = await pool.query(`DELETE FROM products WHERE id = $1 RETURNING id`, [dbId]);
     if (r.rowCount === 0) return res.status(404).json({ error: 'Not found' });
+    await logAudit(req.admin, 'delete', 'product', dbId, {});
     res.json({ ok: true });
   } catch (e) {
     console.error(e);
     res.status(500).json({ error: 'Failed to delete product' });
+  }
+});
+
+// ── Bulk actions ───────────────────────────────────────────────────────────
+adminProductsRouter.post('/products/bulk', requirePool, requireAdmin, async (req, res) => {
+  try {
+    const { ids, action, value } = req.body || {};
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({ error: 'ids array is required' });
+    }
+    const numIds = ids.map(Number).filter(Number.isFinite);
+    if (numIds.length === 0) {
+      return res.status(400).json({ error: 'No valid ids provided' });
+    }
+
+    let affected = 0;
+
+    switch (action) {
+      case 'activate': {
+        const r = await pool.query(
+          `UPDATE products SET is_active = true, updated_at = NOW() WHERE id = ANY($1::int[])`,
+          [numIds]
+        );
+        affected = r.rowCount;
+        break;
+      }
+      case 'deactivate': {
+        const r = await pool.query(
+          `UPDATE products SET is_active = false, updated_at = NOW() WHERE id = ANY($1::int[])`,
+          [numIds]
+        );
+        affected = r.rowCount;
+        break;
+      }
+      case 'delete': {
+        const r = await pool.query(
+          `DELETE FROM products WHERE id = ANY($1::int[])`,
+          [numIds]
+        );
+        affected = r.rowCount;
+        break;
+      }
+      case 'change_category': {
+        if (!value || typeof value !== 'string') {
+          return res.status(400).json({ error: 'value (category name) is required for change_category' });
+        }
+        const r = await pool.query(
+          `UPDATE products SET category = $1, updated_at = NOW() WHERE id = ANY($2::int[])`,
+          [value.trim(), numIds]
+        );
+        affected = r.rowCount;
+        break;
+      }
+      default:
+        return res.status(400).json({ error: `Unknown action "${action}". Valid: activate, deactivate, delete, change_category` });
+    }
+
+    await logAudit(req.admin, 'bulk_' + action, 'product', null, { ids: numIds, affected, value });
+    res.json({ ok: true, affected });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'Bulk action failed' });
   }
 });
