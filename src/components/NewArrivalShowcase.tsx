@@ -57,12 +57,13 @@ const NewArrivalShowcase = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    if (showcases.length === 0) return;
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % showcases.length);
     }, ROTATION_INTERVAL);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [showcases.length]);
 
   // Check if mobile for responsive animations
   useEffect(() => {
@@ -74,13 +75,16 @@ const NewArrivalShowcase = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  const currentShowcase = showcases[currentIndex];
+  const safeIndex = showcases.length > 0 ? currentIndex % showcases.length : 0;
+  const currentShowcase = showcases[safeIndex];
+
   const product = useMemo(() => {
+    if (!currentShowcase) return null;
     const { regularProduct, greenLionProduct } = findStoreProductSplit(currentShowcase.id);
     return greenLionProduct || regularProduct;
-  }, [currentShowcase.id, catalogTick]);
+  }, [currentShowcase, catalogTick]);
 
-  if (!product) return null;
+  if (!currentShowcase || !product) return null;
 
   // "Heavy" scroll transition variants - mimics Apple's friction/mass
   // Lighter feel on mobile for better performance

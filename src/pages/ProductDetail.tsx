@@ -58,29 +58,8 @@ const ProductDetail = () => {
     document.body.scrollTop = 0;
   }, [id]);
 
-  // If product not found, redirect to products page
-  useEffect(() => {
-    if (productId && !product) {
-      navigate("/products");
-    }
-  }, [productId, product, navigate]);
-
-  if (!product) {
-    return (
-      <div className="min-h-screen bg-white w-full">
-        <Header />
-        <div className="container mx-auto px-6 py-12 text-center">
-          <h2 className="text-2xl mb-4">Product not found</h2>
-          <Link to="/products">
-            <Button>Back to Products</Button>
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
-  // Variant handling (for smartphones and future configurable products)
-  const variantOptions = useMemo(() => product.variants || [], [product]);
+  // All hooks must be called unconditionally (Rules of Hooks)
+  const variantOptions = useMemo(() => product?.variants || [], [product]);
   const [searchParams] = useSearchParams();
   const variantParam = searchParams.get("variant");
   const [selectedVariantKey, setSelectedVariantKey] = useState<string | null>(null);
@@ -103,7 +82,6 @@ const ProductDetail = () => {
     return variantOptions.find((variant) => variant.key === selectedVariantKey) || variantOptions[0];
   }, [variantOptions, selectedVariantKey]);
 
-  // Use multiple images for Green Lion or smartphone products, fallback to single image
   const productImages = useMemo(() => {
     if (greenLionProduct) {
       return greenLionProduct.images;
@@ -114,9 +92,29 @@ const ProductDetail = () => {
     return regularProduct ? [regularProduct.image] : [];
   }, [greenLionProduct, regularProduct]);
 
-  // Color selection handling
-  const colorOptions = useMemo(() => product.colors || [], [product]);
+  const colorOptions = useMemo(() => product?.colors || [], [product]);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
+
+  // If product not found, redirect to products page
+  useEffect(() => {
+    if (productId && !product) {
+      navigate("/products");
+    }
+  }, [productId, product, navigate]);
+
+  if (!product) {
+    return (
+      <div className="min-h-screen bg-white w-full">
+        <Header />
+        <div className="container mx-auto px-6 py-12 text-center">
+          <h2 className="text-2xl mb-4">Product not found</h2>
+          <Link to="/products">
+            <Button>Back to Products</Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   useEffect(() => {
     // Reset selectedColor when product changes

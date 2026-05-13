@@ -218,10 +218,10 @@ const Products = () => {
         const queryWords = normalizedQuery.split(/\s+/).filter(word => word.length > 0);
 
         // Normalize all product fields to lowercase for case-insensitive comparison
-        const normalizedName = product.name.toLowerCase();
-        const normalizedTitle = product.title.toLowerCase();
-        const normalizedCategory = product.category.toLowerCase();
-        const normalizedDescription = product.description.toLowerCase();
+        const normalizedName = (product.name || "").toLowerCase();
+        const normalizedTitle = (product.title || product.name || "").toLowerCase();
+        const normalizedCategory = (product.category || "").toLowerCase();
+        const normalizedDescription = (product.description || "").toLowerCase();
 
         // Create a comprehensive searchable text (all normalized to lowercase)
         const searchableText = `${normalizedName} ${normalizedTitle} ${normalizedCategory} ${normalizedDescription}`;
