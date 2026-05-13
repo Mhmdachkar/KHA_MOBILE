@@ -110,7 +110,8 @@ const AdminProductList = () => {
     try {
       const r = await adminFetch(`/api/admin/products/${dbId}`, { method: "DELETE" });
       if (!r.ok) throw new Error();
-      toast({ title: "Deleted", description: `"${name}" removed. Refresh to see changes.` });
+      toast({ title: "Deleted", description: `"${name}" has been removed.` });
+      refreshCatalog();
       setRefreshKey(k => k + 1);
     } catch {
       toast({ variant: "destructive", title: "Delete failed" });
@@ -154,7 +155,8 @@ const AdminProductList = () => {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Bulk action failed');
-      toast({ title: `Done — ${data.affected} product(s) ${action}d` });
+      const actionLabel = action === "change_category" ? "updated" : `${action}d`;
+      toast({ title: `Done — ${data.affected} product(s) ${actionLabel}` });
       setSelected(new Set());
       setShowCatPicker(false);
       refreshCatalog();
@@ -397,9 +399,15 @@ const AdminProductList = () => {
                   <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">{priceLabel(p)}</span>
                 </div>
                 <div className="flex gap-1 mt-2">
-                  <Button variant="outline" size="icon" className="h-7 w-7 flex-1 touch-manipulation" style={{ touchAction: 'manipulation' }} asChild>
-                    <Link to={`/admin/products/${p.dbId}`}><Pencil className="h-3 w-3" /></Link>
-                  </Button>
+                  {p.dbId != null ? (
+                    <Button variant="outline" size="icon" className="h-7 w-7 flex-1 touch-manipulation" style={{ touchAction: 'manipulation' }} asChild>
+                      <Link to={`/admin/products/${p.dbId}`}><Pencil className="h-3 w-3" /></Link>
+                    </Button>
+                  ) : (
+                    <Button variant="outline" size="icon" className="h-7 w-7 flex-1 opacity-40 cursor-not-allowed" disabled title="Static product — edit source code or create a DB override">
+                      <Pencil className="h-3 w-3" />
+                    </Button>
+                  )}
                   <Button
                     variant="outline"
                     size="icon"
@@ -475,9 +483,15 @@ const AdminProductList = () => {
                     )}
                   </div>
                   <div className="flex items-center justify-end gap-1">
-                    <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
-                      <Link to={`/admin/products/${p.dbId}`}><Pencil className="h-3.5 w-3.5" /></Link>
-                    </Button>
+                    {p.dbId != null ? (
+                      <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
+                        <Link to={`/admin/products/${p.dbId}`}><Pencil className="h-3.5 w-3.5" /></Link>
+                      </Button>
+                    ) : (
+                      <Button variant="ghost" size="icon" className="h-8 w-8 opacity-40 cursor-not-allowed" disabled title="Static product">
+                        <Pencil className="h-3.5 w-3.5" />
+                      </Button>
+                    )}
                     <Button
                       variant="ghost"
                       size="icon"
@@ -520,9 +534,15 @@ const AdminProductList = () => {
                     <div className="flex items-center justify-between mt-2">
                       <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">{priceLabel(p)}</span>
                       <div className="flex items-center gap-1">
-                        <Button variant="outline" size="icon" className="h-8 w-8 touch-manipulation" style={{ touchAction: 'manipulation' }} asChild>
-                          <Link to={`/admin/products/${p.dbId}`}><Pencil className="h-3.5 w-3.5" /></Link>
-                        </Button>
+                        {p.dbId != null ? (
+                          <Button variant="outline" size="icon" className="h-8 w-8 touch-manipulation" style={{ touchAction: 'manipulation' }} asChild>
+                            <Link to={`/admin/products/${p.dbId}`}><Pencil className="h-3.5 w-3.5" /></Link>
+                          </Button>
+                        ) : (
+                          <Button variant="outline" size="icon" className="h-8 w-8 opacity-40 cursor-not-allowed" disabled title="Static product">
+                            <Pencil className="h-3.5 w-3.5" />
+                          </Button>
+                        )}
                         <Button
                           variant="outline"
                           size="icon"

@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import {
   Megaphone, Layout, Star, Heart, Save, Plus, Trash2,
   RefreshCw, ChevronRight, Search, Package, AlertCircle,
@@ -67,6 +67,7 @@ const ProductPicker = ({
       setSearching(true);
       try {
         const r = await adminFetch(`/api/admin/products?search=${encodeURIComponent(query)}&limit=8`);
+        if (!r.ok) { setResults([]); return; }
         const d = await r.json();
         setResults(d.products ?? []);
       } catch { /* ignore */ } finally { setSearching(false); }
@@ -133,14 +134,23 @@ const AdminSiteContent = () => {
   const [flagship, setFlagship] = useState(liveSettings.flagship_showcase);
   const [newArrivals, setNewArrivals] = useState(liveSettings.new_arrival_showcases);
   const [weeklyFavs, setWeeklyFavs] = useState(liveSettings.weekly_favorites);
+  const [trendingSections, setTrendingSections] = useState(liveSettings.trending_sections || []);
+  const [brands, setBrands] = useState(liveSettings.brand_showcase || []);
+  const [categories, setCategories] = useState(liveSettings.homepage_categories || []);
 
-  // Sync drafts when live settings load
+  // Sync drafts only on initial load (not after saves, to avoid overwriting unsaved edits)
+  const initialLoadRef = useRef(true);
   useEffect(() => {
+    if (!initialLoadRef.current) return;
+    initialLoadRef.current = false;
     setAnnouncements(liveSettings.announcements);
     setHero(liveSettings.hero);
     setFlagship(liveSettings.flagship_showcase);
     setNewArrivals(liveSettings.new_arrival_showcases);
     setWeeklyFavs(liveSettings.weekly_favorites);
+    setTrendingSections(liveSettings.trending_sections || []);
+    setBrands(liveSettings.brand_showcase || []);
+    setCategories(liveSettings.homepage_categories || []);
   }, [liveSettings]);
 
   const saveSetting = useCallback(async (key: string, value: unknown) => {
@@ -167,7 +177,7 @@ const AdminSiteContent = () => {
 
   // ── Announcements tab ─────────────────────────────────────────────────────
 
-  const AnnouncementsTab = () => (
+  const AnnouncementsTab = (
     <div className="space-y-5">
       <p className="text-sm text-muted-foreground">
         These messages rotate in the announcement bar at the very top of every page. Changes go live immediately after saving.
@@ -232,7 +242,7 @@ const AdminSiteContent = () => {
 
   // ── Hero tab ───────────────────────────────────────────────────────────────
 
-  const HeroTab = () => (
+  const HeroTab = (
     <div className="space-y-5">
       <p className="text-sm text-muted-foreground">
         Customize the main hero banner at the top of the homepage — headline, description, call-to-action buttons, and the trust stats.
@@ -309,7 +319,7 @@ const AdminSiteContent = () => {
 
   // ── Flagship showcase tab ─────────────────────────────────────────────────
 
-  const FlagshipTab = () => (
+  const FlagshipTab = (
     <div className="space-y-5">
       <div className="rounded-xl border border-blue-500/30 bg-blue-500/5 p-4 flex gap-3">
         <AlertCircle className="h-4 w-4 text-blue-500 shrink-0 mt-0.5" />
@@ -474,7 +484,7 @@ const AdminSiteContent = () => {
 
   // ── New arrivals tab ──────────────────────────────────────────────────────
 
-  const NewArrivalsTab = () => (
+  const NewArrivalsTab = (
     <div className="space-y-5">
       <p className="text-sm text-muted-foreground">
         The "New Arrival Showcase" rotates through these products automatically every 7 seconds. Each entry shows the product's image and name from the catalog, plus the custom highlight features you define here.
@@ -608,7 +618,7 @@ const AdminSiteContent = () => {
     { value: "recharge", label: "Recharge Card" },
   ] as const;
 
-  const WeeklyFavoritesTab = () => (
+  const WeeklyFavoritesTab = (
     <div className="space-y-5">
       <p className="text-sm text-muted-foreground">
         "This Week's Favorites" shows a 6-product grid on the homepage. You can swap any slot with any product from your catalog. The first 2 slots often feature recharge cards.
@@ -692,8 +702,6 @@ const AdminSiteContent = () => {
   );
 
   // ─── Trending Sections Tab ──────────────────────────────────────────────────
-  const [trendingSections, setTrendingSections] = useState(liveSettings.trending_sections || []);
-  useEffect(() => { setTrendingSections(liveSettings.trending_sections || []); }, [liveSettings]);
 
   const TrendingTab = (
     <div className="space-y-6">
@@ -765,8 +773,6 @@ const AdminSiteContent = () => {
   );
 
   // ─── Brands Tab ────────────────────────────────────────────────────────────
-  const [brands, setBrands] = useState(liveSettings.brand_showcase || []);
-  useEffect(() => { setBrands(liveSettings.brand_showcase || []); }, [liveSettings]);
 
   const BrandsTab = (
     <div className="space-y-6">
@@ -832,8 +838,6 @@ const AdminSiteContent = () => {
   );
 
   // ─── Categories Tab ────────────────────────────────────────────────────────
-  const [categories, setCategories] = useState(liveSettings.homepage_categories || []);
-  useEffect(() => { setCategories(liveSettings.homepage_categories || []); }, [liveSettings]);
 
   const CategoriesTab = (
     <div className="space-y-6">
@@ -927,11 +931,11 @@ const AdminSiteContent = () => {
   );
 
   const tabContent: Record<TabId, React.ReactNode> = {
-    announcements:    <AnnouncementsTab />,
-    hero:             <HeroTab />,
-    flagship:         <FlagshipTab />,
-    new_arrivals:     <NewArrivalsTab />,
-    weekly_favorites: <WeeklyFavoritesTab />,
+    announcements:    AnnouncementsTab,
+    hero:             HeroTab,
+    flagship:         FlagshipTab,
+    new_arrivals:     NewArrivalsTab,
+    weekly_favorites: WeeklyFavoritesTab,
     trending:         TrendingTab,
     brands:           BrandsTab,
     categories:       CategoriesTab,

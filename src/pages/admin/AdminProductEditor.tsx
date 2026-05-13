@@ -158,13 +158,13 @@ const AdminProductEditor = () => {
         const res = await adminFetch(`/api/admin/products/${dbId}`);
         const data = await res.json().catch(() => ({}));
         if (!res.ok || !data.product) {
-          toast({ variant: "destructive", title: "Load failed", description: data.error });
+          toast({ variant: "destructive", title: "Load failed", description: data.error || "Product not found" });
           navigate("/admin/products");
           return;
         }
         if (cancelled) return;
         const p = data.product;
-        setForm({
+        const loaded: FormState = {
           legacyOverrideId: p.legacyOverrideId != null ? String(p.legacyOverrideId) : "",
           name: p.name || "",
           title: p.title || "",
@@ -194,8 +194,14 @@ const AdminProductEditor = () => {
           secondaryCategories: p.secondaryCategories || [],
           galleryImages: (p.images || []).filter((u: string) => u && u !== p.image),
           stockQuantity: p.stockQuantity != null ? String(p.stockQuantity) : "",
-        });
-        setForm((cur) => { setSavedForm(cur); return cur; });
+        };
+        setForm(loaded);
+        setSavedForm(loaded);
+      } catch (err) {
+        if (!cancelled) {
+          toast({ variant: "destructive", title: "Load failed", description: "Network error — check your connection" });
+          navigate("/admin/products");
+        }
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -284,13 +290,15 @@ const AdminProductEditor = () => {
         return;
       }
       setSavedForm({ ...form });
-      toast({ title: isNew ? "Product created! 🎉" : "Changes saved" });
+      toast({ title: isNew ? "Product created!" : "Changes saved" });
       await refreshCatalog();
       if (isNew && data.product?.dbId) {
         navigate(`/admin/products/${data.product.dbId}`, { replace: true });
       } else {
         navigate("/admin/products");
       }
+    } catch {
+      toast({ variant: "destructive", title: "Save failed", description: "Network error — check your connection" });
     } finally {
       setSaving(false);
     }
@@ -636,7 +644,7 @@ const AdminProductEditor = () => {
                   {form.galleryImages.filter(Boolean).length > 0 && (
                     <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
                       {form.galleryImages.filter(Boolean).map((url, i) => (
-                        <div key={i} className="relative group aspect-square rounded-lg overflow-hidden border bg-muted/30">
+                        <div key={url + i} className="relative group aspect-square rounded-lg overflow-hidden border bg-muted/30">
                           <img
                             src={url}
                             alt={`Gallery ${i + 1}`}
@@ -645,7 +653,7 @@ const AdminProductEditor = () => {
                           />
                           <button
                             className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity"
-                            onClick={() => patch("galleryImages", form.galleryImages.filter((_, idx) => idx !== i))}
+                            onClick={() => patch("galleryImages", form.galleryImages.filter((u) => u !== url))}
                             type="button"
                           >
                             <Trash2 className="h-4 w-4 text-white" />

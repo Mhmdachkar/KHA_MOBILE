@@ -58,6 +58,7 @@ const AdminMediaLibrary = () => {
       if (!input.files?.length) return;
       setUploading(true);
       let uploaded = 0;
+      let failed = 0;
       for (const file of Array.from(input.files)) {
         try {
           const fd = new FormData();
@@ -72,9 +73,14 @@ const AdminMediaLibrary = () => {
             }
           );
           if (res.ok) uploaded++;
-        } catch { /* skip */ }
+          else failed++;
+        } catch { failed++; }
       }
-      toast({ title: `Uploaded ${uploaded} file(s)` });
+      if (failed > 0) {
+        toast({ title: `Uploaded ${uploaded}, failed ${failed}`, variant: uploaded > 0 ? "default" : "destructive" });
+      } else {
+        toast({ title: `Uploaded ${uploaded} file(s)` });
+      }
       setUploading(false);
       void fetchFiles();
     };
@@ -95,8 +101,10 @@ const AdminMediaLibrary = () => {
   };
 
   const copyUrl = (url: string) => {
-    navigator.clipboard.writeText(url);
-    toast({ title: "URL copied to clipboard" });
+    navigator.clipboard.writeText(url).then(
+      () => toast({ title: "URL copied to clipboard" }),
+      () => toast({ title: "Copy failed", description: "Clipboard access denied", variant: "destructive" }),
+    );
   };
 
   const totalSize = files.reduce((s, f) => s + f.size, 0);

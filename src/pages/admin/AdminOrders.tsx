@@ -93,6 +93,7 @@ const AdminOrders = () => {
       if (dateTo) params.set("date_to", dateTo);
 
       const res = await adminFetch(`/api/admin/orders?${params}`);
+      if (!res.ok) throw new Error("Server error");
       const data = await res.json();
       setOrders(data.orders || []);
       setTotalPages(data.totalPages || 1);
@@ -111,9 +112,12 @@ const AdminOrders = () => {
     setDetailLoading(true);
     try {
       const res = await adminFetch(`/api/admin/orders/${order.id}`);
+      if (!res.ok) throw new Error();
       const data = await res.json();
       if (data.order) setSelectedOrder(data.order);
-    } catch { /* keep what we have */ }
+    } catch {
+      toast({ title: "Error", description: "Failed to load order details", variant: "destructive" });
+    }
     setDetailLoading(false);
   };
 
@@ -445,8 +449,8 @@ const AdminOrders = () => {
                     <Label className="text-xs">Admin Notes</Label>
                     <Textarea
                       value={selectedOrder.notes || ""}
-                      onChange={(e) => setSelectedOrder({ ...selectedOrder, notes: e.target.value })}
-                      onBlur={() => updateOrder("notes", selectedOrder.notes || "")}
+                      onChange={(e) => setSelectedOrder((prev) => prev ? { ...prev, notes: e.target.value } : prev)}
+                      onBlur={(e) => updateOrder("notes", e.target.value)}
                       placeholder="Internal notes…"
                       className="text-sm min-h-[60px]"
                     />
