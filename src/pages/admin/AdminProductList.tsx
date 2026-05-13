@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { adminFetch } from "@/lib/adminApi";
 import { useCatalog } from "@/context/CatalogContext";
+import { resolveImageUrl } from "@/lib/imageUtils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -376,7 +377,7 @@ const AdminProductList = () => {
                   </button>
                 )}
                 <img
-                  src={p.image}
+                  src={resolveImageUrl(p.image)}
                   alt={p.name}
                   className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-200"
                   onError={(e) => {
@@ -453,7 +454,7 @@ const AdminProductList = () => {
                   </div>
                   <div className="h-12 w-12 rounded-lg border bg-muted/30 overflow-hidden shrink-0">
                     <img
-                      src={p.image}
+                      src={resolveImageUrl(p.image)}
                       alt={p.name}
                       className="h-full w-full object-cover"
                       onError={(e) => {
@@ -513,7 +514,7 @@ const AdminProductList = () => {
                   )}
                   <div className="h-14 w-14 rounded-lg border bg-muted/30 overflow-hidden shrink-0">
                     <img
-                      src={p.image}
+                      src={resolveImageUrl(p.image)}
                       alt={p.name}
                       className="h-full w-full object-cover"
                       onError={(e) => {

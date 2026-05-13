@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { adminFetch, apiBase, getAdminToken } from "@/lib/adminApi";
 import { useToast } from "@/hooks/use-toast";
+import { resolveImageUrl } from "@/lib/imageUtils";
 
 interface MediaFile {
   name: string;
@@ -166,7 +167,7 @@ const AdminMediaLibrary = () => {
                   >
                     {isImage ? (
                       <img
-                        src={f.url}
+                        src={resolveImageUrl(f.url)}
                         alt={f.name}
                         className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-200"
                         loading="lazy"
@@ -226,7 +227,7 @@ const AdminMediaLibrary = () => {
               <X className="h-5 w-5" />
             </Button>
             <img
-              src={preview.url}
+              src={resolveImageUrl(preview.url)}
               alt={preview.name}
               className="max-w-full max-h-[80vh] rounded-lg object-contain"
             />

@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { adminFetch } from "@/lib/adminApi";
 import { useSiteSettings, SiteSettings } from "@/context/SiteSettingsContext";
+import { resolveImageUrl } from "@/lib/imageUtils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -104,7 +105,7 @@ const ProductPicker = ({
               onClick={() => { onChange(p.id); setQuery(""); setResults([]); }}
             >
               {p.primaryImageUrl && (
-                <img src={p.primaryImageUrl} alt="" className="h-8 w-8 rounded object-contain border bg-muted" />
+                <img src={resolveImageUrl(p.primaryImageUrl)} alt="" className="h-8 w-8 rounded object-contain border bg-muted" />
               )}
               <div className="min-w-0">
                 <p className="font-medium truncate">{p.name}</p>
@@ -784,7 +785,7 @@ const AdminSiteContent = () => {
           {brands.map((brand, i) => (
             <div key={i} className="flex items-center gap-3 rounded-xl border p-3 bg-muted/20">
               {brand.logoUrl && (
-                <img src={brand.logoUrl} alt={brand.name} className="h-8 w-8 rounded object-cover border shrink-0" />
+                <img src={resolveImageUrl(brand.logoUrl)} alt={brand.name} className="h-8 w-8 rounded object-cover border shrink-0" />
               )}
               <div className="flex-1 grid gap-2 sm:grid-cols-3">
                 <Input

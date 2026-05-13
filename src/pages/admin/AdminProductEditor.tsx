@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { adminFetch, apiBase, getAdminToken } from "@/lib/adminApi";
 import { useCatalog } from "@/context/CatalogContext";
+import { resolveImageUrl } from "@/lib/imageUtils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -394,7 +395,7 @@ const AdminProductEditor = () => {
                   <div className="shrink-0 h-24 w-24 rounded-xl border bg-muted/40 overflow-hidden flex items-center justify-center">
                     {form.primaryImageUrl ? (
                       <img
-                        src={form.primaryImageUrl}
+                        src={resolveImageUrl(form.primaryImageUrl)}
                         alt="Primary"
                         className="h-full w-full object-cover"
                         onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
@@ -614,7 +615,7 @@ const AdminProductEditor = () => {
                   {form.primaryImageUrl && (
                     <div className="rounded-xl overflow-hidden border bg-muted/30 aspect-square max-w-[200px]">
                       <img
-                        src={form.primaryImageUrl}
+                        src={resolveImageUrl(form.primaryImageUrl)}
                         alt="Primary"
                         className="h-full w-full object-cover"
                         onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
@@ -646,7 +647,7 @@ const AdminProductEditor = () => {
                       {form.galleryImages.filter(Boolean).map((url, i) => (
                         <div key={url + i} className="relative group aspect-square rounded-lg overflow-hidden border bg-muted/30">
                           <img
-                            src={url}
+                            src={resolveImageUrl(url)}
                             alt={`Gallery ${i + 1}`}
                             className="h-full w-full object-cover"
                             onError={(e) => { (e.target as HTMLImageElement).style.opacity = "0.3"; }}
