@@ -3,7 +3,9 @@ import {
   registerPublicApiProducts, 
   type ApiPublicProduct,
   getProductsByCategoryMerged,
-  getAllGreenLionProductsMerged
+  getAllGreenLionProductsMerged,
+  getProductFromApiById,
+  eachApiCatalogProduct
 } from "@/data/productLookup";
 import { 
   phoneAccessories, 
@@ -78,7 +80,7 @@ export function CatalogProvider({ children }: { children: React.ReactNode }) {
 
   // Get all products merged from static files + API
   const allProducts = useMemo<CatalogProduct[]>(() => {
-    // Merge all static products
+    // Merge all static products with API overrides
     const staticProducts = [
       ...phoneAccessories,
       ...wearablesProducts,
@@ -89,16 +91,29 @@ export function CatalogProvider({ children }: { children: React.ReactNode }) {
       ...electronicsProducts,
     ];
 
-    // Get Green Lion products
+    // Get Green Lion products with API overrides
     const greenLionProducts = getAllGreenLionProductsMerged();
 
+    // Merge static products with API data (similar to Green Lion merge)
+    const mergedStatic = staticProducts.map((p) => {
+      const override = getProductFromApiById(p.id);
+      return override || p;
+    });
+
     // Combine all and ensure unique IDs
-    const allMerged = [...staticProducts, ...greenLionProducts];
+    const allMerged = [...mergedStatic, ...greenLionProducts];
     const uniqueMap = new Map<number, CatalogProduct>();
     
     for (const product of allMerged) {
       uniqueMap.set(product.id, product as CatalogProduct);
     }
+
+    // Add API-only products that don't have static counterparts
+    eachApiCatalogProduct((storefrontId, hit) => {
+      if (!uniqueMap.has(storefrontId)) {
+        uniqueMap.set(storefrontId, hit.product as CatalogProduct);
+      }
+    });
 
     return Array.from(uniqueMap.values());
   }, [catalogTick]); // Recompute when catalog updates

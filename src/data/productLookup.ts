@@ -41,6 +41,8 @@ function mapApiToProduct(p: ApiPublicProduct): Product {
   const imgs = p.images?.length ? p.images : [p.image];
   return {
     id: p.id,
+    dbId: p.dbId,
+    legacyOverrideId: p.legacyOverrideId,
     name: p.name,
     title: p.title,
     price: p.price,
@@ -59,13 +61,16 @@ function mapApiToProduct(p: ApiPublicProduct): Product {
     secondaryCategories: p.secondaryCategories?.length ? p.secondaryCategories : undefined,
     video: p.video,
     isPreorder: p.isPreorder,
-  };
+    isActive: p.isActive,
+  } as Product;
 }
 
 function mapApiToGreenLion(p: ApiPublicProduct): GreenLionProduct {
   const imgs = p.images?.length ? p.images : [p.image];
   return {
     id: p.id,
+    dbId: p.dbId,
+    legacyOverrideId: p.legacyOverrideId,
     name: p.name,
     title: p.title,
     price: typeof p.price === "number" ? p.price : Number(p.price),
@@ -82,7 +87,8 @@ function mapApiToGreenLion(p: ApiPublicProduct): GreenLionProduct {
     secondaryCategories: p.secondaryCategories?.length ? p.secondaryCategories : undefined,
     video: p.video,
     isPreorder: p.isPreorder,
-  };
+    isActive: p.isActive,
+  } as GreenLionProduct;
 }
 
 /**
@@ -100,6 +106,14 @@ export function registerPublicApiProducts(rows: ApiPublicProduct[]) {
       apiByStorefrontId.set(p.id, { kind: "regular", product: mapApiToProduct(p) });
     }
   }
+}
+
+export function getProductFromApiById(id: number): Product | null {
+  const hit = apiByStorefrontId.get(id);
+  if (hit && hit.kind === "regular") {
+    return hit.product as Product;
+  }
+  return null;
 }
 
 export function findStoreProductSplit(id: number): {
