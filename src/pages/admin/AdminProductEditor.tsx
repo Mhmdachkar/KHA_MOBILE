@@ -293,6 +293,33 @@ const AdminProductEditor = () => {
       setActiveTab("basics");
       return;
     }
+
+    /** When Basics sale price changes, keep variant/size rows that still matched the old sale in sync so ProductDetail (which prefers variant price) still shows discounts. */
+    const prevBasics = computeCatalogSaveFromBasics({
+      name: savedForm.name,
+      price: savedForm.price,
+      compareAtPrice: savedForm.compareAtPrice,
+      isPreorder: savedForm.isPreorder,
+      legacyOverrideId: savedForm.legacyOverrideId,
+      rating: savedForm.rating,
+    });
+    let variantsOut = form.variants;
+    let sizesOut = form.sizes;
+    if (prevBasics.ok && basics.ok) {
+      const prevSale = prevBasics.price;
+      const newSale = basics.price;
+      const matchesPrevSale = (n: number) => Number.isFinite(n) && Math.abs(n - prevSale) < 0.005;
+      variantsOut = form.variants.map((v) =>
+        matchesPrevSale(Number(v.price)) ? { ...v, price: newSale } : v
+      );
+      sizesOut = form.sizes.map((s) => {
+        if (s.price === "") return s;
+        const sp = typeof s.price === "number" ? s.price : Number(s.price);
+        return matchesPrevSale(sp) ? { ...s, price: newSale } : s;
+      });
+    }
+    const formSynced = { ...form, variants: variantsOut, sizes: sizesOut };
+
     setSaving(true);
     try {
       const legacy = form.legacyOverrideId === "" ? null : Number(form.legacyOverrideId);
@@ -313,9 +340,9 @@ const AdminProductEditor = () => {
         isActive: form.isActive,
         features: form.features.map((f) => f.trim()).filter(Boolean),
         specifications: form.specifications.filter((s) => s.label.trim()),
-        variants: form.variants,
+        variants: variantsOut,
         colors: form.colors.map((c) => ({ ...c, price: c.price === "" ? undefined : Number(c.price) })),
-        sizes: form.sizes.map((s) => ({ ...s, price: s.price === "" ? undefined : Number(s.price) })),
+        sizes: sizesOut.map((s) => ({ ...s, price: s.price === "" ? undefined : Number(s.price) })),
         connectivityOptions: form.connectivityOptions.filter(Boolean),
         secondaryCategories: form.secondaryCategories.filter(Boolean),
         galleryImages: form.galleryImages.filter(Boolean),
@@ -332,7 +359,8 @@ const AdminProductEditor = () => {
         });
         return;
       }
-      setSavedForm({ ...form });
+      setSavedForm({ ...formSynced });
+      setForm({ ...formSynced });
       toast({ title: isNew ? "Product created!" : "Changes saved" });
       await refreshCatalog();
       if (isNew && data.product?.dbId) {
@@ -564,7 +592,7 @@ const AdminProductEditor = () => {
                 </div>
               </SectionCard>
 
-              <SectionCard title="Visibility & Status" description="Control whether this product appears on the storefront.">
+              <SectionCard title="Visibility & Status" description="Control whether this product appears on the storefront." className="overflow-visible">
                 <div className="space-y-3">
                   <div className="flex items-center justify-between rounded-lg border px-4 py-3 hover:bg-muted/30 transition-colors">
                     <div>
@@ -593,13 +621,14 @@ const AdminProductEditor = () => {
                         Choose whether customers see the price or only &quot;Pre-order&quot; (no dollar amount).
                       </p>
                       <Select
+                        modal={false}
                         value={form.showPreorderPrice ? "show" : "hide"}
                         onValueChange={(v) => patch("showPreorderPrice", v === "show")}
                       >
                         <SelectTrigger className="w-full max-w-md touch-manipulation" style={{ touchAction: "manipulation" }}>
                           <SelectValue placeholder="Price visibility" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent position="popper" sideOffset={4}>
                           <SelectItem value="show">Show price on storefront</SelectItem>
                           <SelectItem value="hide">Hide price (Pre-order text only)</SelectItem>
                         </SelectContent>
@@ -1067,9 +1096,9 @@ const AdminProductEditor = () => {
 
 // ─── SectionCard ─────────────────────────────────────────────────────────────
 const SectionCard = ({
-  title, description, children,
-}: { title: string; description?: string; children: React.ReactNode }) => (
-  <div className="rounded-xl border bg-card overflow-hidden">
+  title, description, children, className,
+}: { title: string; description?: string; children: React.ReactNode; className?: string }) => (
+  <div className={cn("rounded-xl border bg-card overflow-hidden", className)}>
     <div className="px-5 py-4 border-b bg-muted/20">
       <h3 className="text-sm font-semibold">{title}</h3>
       {description && <p className="text-xs text-muted-foreground mt-0.5">{description}</p>}
