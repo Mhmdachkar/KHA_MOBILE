@@ -304,7 +304,11 @@ const AdminProductEditor = () => {
       const res = await adminFetch(url, { method: isNew ? "POST" : "PUT", body: JSON.stringify(body) });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        toast({ variant: "destructive", title: "Save failed", description: data.error || res.statusText });
+        toast({
+          variant: "destructive",
+          title: "Save failed",
+          description: [data.error, data.detail].filter(Boolean).join(" — ") || res.statusText,
+        });
         return;
       }
       setSavedForm({ ...form });

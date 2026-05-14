@@ -47,17 +47,36 @@ export function rowToPublicProduct(row) {
   };
 }
 
+function finiteOrNull(v) {
+  if (v === null || v === undefined || v === '') return null;
+  const n = Number(v);
+  return Number.isFinite(n) ? n : null;
+}
+
 export function bodyToRowColumns(body) {
   const b = body || {};
+  const legacyRaw = b.legacyOverrideId ?? b.legacy_override_id ?? null;
+  const legacy =
+    legacyRaw === null || legacyRaw === undefined || legacyRaw === ''
+      ? null
+      : finiteOrNull(legacyRaw);
+
+  const rawRating = Number(b.rating ?? 4.5);
+  const rating = Number.isFinite(rawRating)
+    ? Math.min(5, Math.max(0, rawRating))
+    : 4.5;
+
   return {
-    legacy_override_id: b.legacyOverrideId ?? b.legacy_override_id ?? null,
+    legacy_override_id: legacy,
     name: b.name,
     title: b.title ?? b.name,
     description: b.description ?? '',
-    price: b.price,
-    compare_at_price: (b.compareAtPrice != null && b.compareAtPrice !== '') ? Number(b.compareAtPrice) : (b.compare_at_price ?? null),
+    price: finiteOrNull(b.price),
+    compare_at_price: (b.compareAtPrice != null && b.compareAtPrice !== '')
+      ? finiteOrNull(b.compareAtPrice)
+      : finiteOrNull(b.compare_at_price ?? null),
     primary_image_url: b.primaryImageUrl ?? b.primary_image_url ?? b.image ?? '',
-    rating: b.rating ?? 4.5,
+    rating,
     category: b.category,
     brand: b.brand ?? null,
     video_url: b.videoUrl ?? b.video_url ?? b.video ?? null,
@@ -71,6 +90,9 @@ export function bodyToRowColumns(body) {
     connectivity_options: b.connectivityOptions ?? b.connectivity_options ?? [],
     secondary_categories: b.secondaryCategories ?? b.secondary_categories ?? [],
     gallery_images: b.galleryImages ?? b.gallery_images ?? [],
-    stock_quantity: (b.stockQuantity != null && b.stockQuantity !== '') ? Number(b.stockQuantity) : (b.stock_quantity ?? null),
+    stock_quantity:
+      b.stockQuantity != null && b.stockQuantity !== ''
+        ? finiteOrNull(b.stockQuantity)
+        : finiteOrNull(b.stock_quantity ?? null),
   };
 }

@@ -1,4 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { apiBase } from "@/lib/adminApi";
 import { 
   registerPublicApiProducts, 
   type ApiPublicProduct,
@@ -16,10 +17,6 @@ import {
   gamingConsoles, 
   electronicsProducts 
 } from "@/data/products";
-
-function apiBase(): string {
-  return import.meta.env.VITE_API_URL || "http://localhost:3001";
-}
 
 type CatalogProduct = {
   id: number;

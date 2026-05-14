@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
-
-const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:3001";
+import { apiBase } from "@/lib/adminApi";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -232,7 +231,7 @@ export const SiteSettingsProvider: React.FC<{ children: React.ReactNode }> = ({
   const fetch = useCallback(async () => {
     try {
       const res = await window.fetch(
-        `${API_BASE}/api/public/settings?keys=${ALL_KEYS.join(",")}`
+        `${apiBase()}/api/public/settings?keys=${ALL_KEYS.join(",")}`
       );
       if (!res.ok) return;
       const data = await res.json();

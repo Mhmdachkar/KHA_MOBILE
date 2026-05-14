@@ -22,10 +22,27 @@ const PORT = process.env.PORT || 3001;
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
-const origins = (process.env.FRONTEND_ORIGIN || 'http://localhost:8080')
+/** Browser origins from FRONTEND_ORIGIN (comma-separated). */
+const fromEnv = (process.env.FRONTEND_ORIGIN || 'http://localhost:8080')
   .split(',')
   .map((s) => s.trim())
   .filter(Boolean);
+
+/**
+ * Common local Vite / dev server origins. Merged so a deployed API (e.g. Render)
+ * still answers browser requests when the storefront runs on localhost with
+ * VITE_API_URL pointing at production — without a separate CORS deploy step.
+ */
+const LOCAL_DEV_ORIGINS = [
+  'http://localhost:8080',
+  'http://localhost:5173',
+  'http://localhost:4173',
+  'http://127.0.0.1:8080',
+  'http://127.0.0.1:5173',
+  'http://127.0.0.1:4173',
+];
+
+const origins = [...new Set([...fromEnv, ...LOCAL_DEV_ORIGINS])];
 
 app.use(
   cors({

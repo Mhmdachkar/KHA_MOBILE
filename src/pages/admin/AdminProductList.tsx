@@ -381,7 +381,11 @@ const AdminProductList = () => {
                   alt={p.name}
                   className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-200"
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src = `https://placehold.co/200x200/0f172a/666?text=${encodeURIComponent(p.name.slice(0, 10))}`;
+                    const el = e.target as HTMLImageElement;
+                    if (el.dataset.errHandled) return;
+                    el.dataset.errHandled = "1";
+                    el.removeAttribute("src");
+                    el.style.opacity = "0.35";
                   }}
                 />
                 {p.isActive === false && (
@@ -458,7 +462,11 @@ const AdminProductList = () => {
                       alt={p.name}
                       className="h-full w-full object-cover"
                       onError={(e) => {
-                        (e.target as HTMLImageElement).src = `https://placehold.co/56x56/0f172a/666?text=?`;
+                        const el = e.target as HTMLImageElement;
+                        if (el.dataset.errHandled) return;
+                        el.dataset.errHandled = "1";
+                        el.removeAttribute("src");
+                        el.style.opacity = "0.35";
                       }}
                     />
                   </div>
@@ -518,7 +526,11 @@ const AdminProductList = () => {
                       alt={p.name}
                       className="h-full w-full object-cover"
                       onError={(e) => {
-                        (e.target as HTMLImageElement).src = `https://placehold.co/56x56/0f172a/666?text=?`;
+                        const el = e.target as HTMLImageElement;
+                        if (el.dataset.errHandled) return;
+                        el.dataset.errHandled = "1";
+                        el.removeAttribute("src");
+                        el.style.opacity = "0.35";
                       }}
                     />
                   </div>

@@ -117,7 +117,9 @@ adminProductsRouter.get('/products/:dbId', requirePool, requireAdmin, async (req
 function validateProductPayload(c) {
   const errors = [];
   if (!c.name) errors.push('name is required');
-  if (c.price === undefined || c.price === null || Number(c.price) < 0) errors.push('valid price is required');
+  if (c.price == null || !Number.isFinite(Number(c.price)) || Number(c.price) < 0) {
+    errors.push('valid price is required');
+  }
   if (!c.category) errors.push('category is required');
   if (c.compare_at_price != null && Number(c.compare_at_price) <= Number(c.price)) {
     errors.push('compare_at_price must be greater than price when set');
@@ -168,11 +170,33 @@ adminProductsRouter.post('/products', requirePool, requireAdmin, async (req, res
     await logAudit(req.admin, 'create', 'product', rows[0].id, { name: c.name });
     res.status(201).json({ product: created });
   } catch (e) {
-    console.error(e);
+    console.error('[adminProducts POST]', e);
     if (e.code === '23505') {
       return res.status(409).json({ error: 'Duplicate legacy_override_id or constraint violation' });
     }
-    res.status(500).json({ error: 'Failed to create product' });
+    if (e.code === '42703') {
+      return res.status(503).json({
+        error:
+          'Database schema is missing a column the API expects (often compare_at_price or stock_quantity). In Supabase: run sql/005_add_discount.sql then sql/006_coupons_audit_stock.sql, or run sql/008_ensure_product_admin_columns.sql once.',
+        code: e.code,
+      });
+    }
+    if (e.code === '22001') {
+      return res.status(400).json({
+        error: 'A field is too long for the database (e.g. name or title over 500 characters). Shorten the text and try again.',
+      });
+    }
+    if (e.code === '23514') {
+      return res.status(400).json({
+        error: 'Database rejected a value (check constraint). Check price ≥ 0 and rating between 0 and 5.',
+        code: e.code,
+      });
+    }
+    res.status(500).json({
+      error: 'Failed to create product',
+      code: e.code,
+      detail: process.env.NODE_ENV !== 'production' ? e.message : undefined,
+    });
   }
 });
 
@@ -241,11 +265,25 @@ adminProductsRouter.put('/products/:dbId', requirePool, requireAdmin, async (req
     await logAudit(req.admin, 'update', 'product', dbId, { name: c.name });
     res.json({ product: rowToPublicProduct(rows[0]) });
   } catch (e) {
-    console.error(e);
+    console.error('[adminProducts PUT]', e);
     if (e.code === '23505') {
       return res.status(409).json({ error: 'Duplicate legacy_override_id' });
     }
-    res.status(500).json({ error: 'Failed to update product' });
+    if (e.code === '42703') {
+      return res.status(503).json({
+        error:
+          'Database schema is missing a column the API expects. Run sql/008_ensure_product_admin_columns.sql (or 005 + 006) on your database.',
+        code: e.code,
+      });
+    }
+    if (e.code === '22001') {
+      return res.status(400).json({ error: 'A field is too long for the database.' });
+    }
+    res.status(500).json({
+      error: 'Failed to update product',
+      code: e.code,
+      detail: process.env.NODE_ENV !== 'production' ? e.message : undefined,
+    });
   }
 });
 
