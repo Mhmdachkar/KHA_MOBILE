@@ -1,5 +1,11 @@
 import { apiBase } from "./adminApi";
 
+/** True only when VITE_API_URL is explicitly set (not the localhost fallback). */
+function hasConfiguredApiBase(): boolean {
+  const env = (import.meta.env.VITE_API_URL as string | undefined)?.trim();
+  return Boolean(env && !env.startsWith("http://localhost") && !env.startsWith("http://127.0.0.1"));
+}
+
 function joinApiBase(path: string): string {
   const base = apiBase().replace(/\/+$/, "");
   const p = path.startsWith("/") ? path : `/${path}`;
@@ -28,21 +34,27 @@ export function resolveImageUrl(url: string | undefined): string {
     return `https:${u}`;
   }
 
-  // Any http(s) URL that points at our uploads folder → current API base
+  // Any http(s) URL that points at our uploads folder → rewrite host to apiBase
+  // only when VITE_API_URL is explicitly configured (avoids localhost rewrites in prod).
   if (/^https?:\/\//i.test(u)) {
-    try {
-      const parsed = new URL(u);
-      if (parsed.pathname.startsWith("/uploads/")) {
-        return joinApiBase(parsed.pathname + parsed.search);
+    if (hasConfiguredApiBase()) {
+      try {
+        const parsed = new URL(u);
+        if (parsed.pathname.startsWith("/uploads/")) {
+          return joinApiBase(parsed.pathname + parsed.search);
+        }
+      } catch {
+        /* ignore */
       }
-    } catch {
-      /* ignore */
     }
     return u;
   }
 
   if (u.startsWith("/uploads/") || u.startsWith("uploads/")) {
-    return joinApiBase(u.startsWith("/") ? u : `/${u}`);
+    if (hasConfiguredApiBase()) {
+      return joinApiBase(u.startsWith("/") ? u : `/${u}`);
+    }
+    return u;
   }
 
   if (u.startsWith("/")) return u;

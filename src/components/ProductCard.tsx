@@ -4,6 +4,7 @@ import { Heart, ShoppingCart, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useFavorites } from "@/context/FavoritesContext";
 import { useCart } from "@/context/CartContext";
+import { resolveImageUrl } from "@/lib/imageUtils";
 
 interface ProductCardProps {
   id: number;
@@ -26,7 +27,7 @@ const ProductCard = ({ id, name, title, price, image, images, rating = 4.5, cate
   const imageFitClass = "object-contain p-3 sm:p-4 md:p-5";
 
   // Use images array if provided, otherwise use single image
-  const productImages = images && images.length > 0 ? images : [image];
+  const productImages = (images && images.length > 0 ? images : [image]).map(resolveImageUrl);
   const hasMultipleImages = productImages.length > 1;
   const defaultImage = productImages[0];
   const hoverImage = hasMultipleImages ? productImages[1] : defaultImage;
@@ -44,7 +45,7 @@ const ProductCard = ({ id, name, title, price, image, images, rating = 4.5, cate
 
     // If the product has colors, default to the first color for cart context
     const defaultColor = colors && colors.length > 0 ? colors[0] : undefined;
-    const colorImage = defaultColor?.image || defaultImage;
+    const colorImage = resolveImageUrl(defaultColor?.image) || defaultImage;
 
     addToCart({
       id,

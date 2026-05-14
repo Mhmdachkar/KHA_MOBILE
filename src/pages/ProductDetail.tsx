@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Heart, ShoppingCart, Star, ChevronLeft, ChevronRight, CheckCircle2 } from "lucide-react";
 import { Link, useParams, useNavigate, useSearchParams, useLocation } from "react-router-dom";
+import { resolveImageUrl } from "@/lib/imageUtils";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { useFavorites } from "@/context/FavoritesContext";
@@ -83,13 +84,15 @@ const ProductDetail = () => {
   }, [variantOptions, selectedVariantKey]);
 
   const productImages = useMemo(() => {
+    let raw: string[];
     if (greenLionProduct) {
-      return greenLionProduct.images;
+      raw = greenLionProduct.images;
+    } else if (regularProduct?.images && regularProduct.images.length > 0) {
+      raw = regularProduct.images;
+    } else {
+      raw = regularProduct ? [regularProduct.image] : [];
     }
-    if (regularProduct?.images && regularProduct.images.length > 0) {
-      return regularProduct.images;
-    }
-    return regularProduct ? [regularProduct.image] : [];
+    return raw.map(resolveImageUrl);
   }, [greenLionProduct, regularProduct]);
 
   const colorOptions = useMemo(() => product?.colors || [], [product]);
@@ -131,7 +134,7 @@ const ProductDetail = () => {
   const colorImage = useMemo(() => {
     if (!selectedColor || !colorOptions.length) return null;
     const color = colorOptions.find(c => c.name === selectedColor);
-    return color?.image;
+    return color?.image ? resolveImageUrl(color.image) : undefined;
   }, [selectedColor, colorOptions]);
 
   // Size selection handling
@@ -189,8 +192,8 @@ const ProductDetail = () => {
   };
   const primaryImage =
     productImages[0] ||
-    regularProduct?.image ||
-    (greenLionProduct ? greenLionProduct.images[0] : "/placeholder.svg");
+    resolveImageUrl(regularProduct?.image) ||
+    (greenLionProduct ? resolveImageUrl(greenLionProduct.images[0]) : "/placeholder.svg");
 
   const favorite = isFavorite(product.id);
 
@@ -1125,10 +1128,10 @@ const ProductDetail = () => {
                 <video
                   controls
                   className="w-full h-full object-contain"
-                  poster={product.image}
+                  poster={resolveImageUrl((product as any).image)}
                   preload="metadata"
                 >
-                  <source src={product.video} type="video/mp4" />
+                  <source src={resolveImageUrl((product as any).video)} type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
               </div>
@@ -1505,7 +1508,7 @@ const ProductDetail = () => {
                             <div className="bg-white border-2 border-border hover:border-primary/50 rounded-lg p-4 sm:p-5 transition-all duration-300 cursor-pointer group">
                               <div className="aspect-square mb-3 bg-white rounded-md overflow-hidden">
                                 <img
-                                  src={item.image}
+                                  src={resolveImageUrl(item.image)}
                                   alt={item.name}
                                   className="w-full h-full object-contain p-2 group-hover:scale-110 transition-transform duration-300"
                                   loading="lazy"
