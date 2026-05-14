@@ -7,6 +7,7 @@ import { pool, requirePool } from '../lib/db.js';
 import { requireAdmin } from '../middleware/auth.js';
 import { bodyToRowColumns, rowToPublicProduct } from '../lib/productMapper.js';
 import { logAudit } from '../lib/audit.js';
+import { buildPublicUploadUrl } from '../lib/uploadUrl.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const uploadsDir = path.join(__dirname, '..', 'uploads');
@@ -35,19 +36,12 @@ const upload = multer({
 
 export const adminProductsRouter = Router();
 
-function publicUploadUrl(req, filename) {
-  const base =
-    process.env.API_PUBLIC_URL?.replace(/\/$/, '') ||
-    `${req.protocol}://${req.get('host')}`;
-  return `${base}/uploads/${filename}`;
-}
-
 adminProductsRouter.post('/upload', requirePool, requireAdmin, upload.single('file'), (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'No file uploaded (field name: file)' });
     }
-    const url = publicUploadUrl(req, req.file.filename);
+    const url = buildPublicUploadUrl(req, req.file.filename);
     res.json({ url });
   } catch (e) {
     console.error(e);

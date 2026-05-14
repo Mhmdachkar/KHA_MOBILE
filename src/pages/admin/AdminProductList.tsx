@@ -377,6 +377,7 @@ const AdminProductList = () => {
                   </button>
                 )}
                 <img
+                  key={`${p.id}-${p.dbId ?? "static"}-${resolveImageUrl(p.image)}`}
                   src={resolveImageUrl(p.image)}
                   alt={p.name}
                   className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-200"
@@ -458,6 +459,7 @@ const AdminProductList = () => {
                   </div>
                   <div className="h-12 w-12 rounded-lg border bg-muted/30 overflow-hidden shrink-0">
                     <img
+                      key={`${p.id}-${p.dbId ?? "static"}-${resolveImageUrl(p.image)}`}
                       src={resolveImageUrl(p.image)}
                       alt={p.name}
                       className="h-full w-full object-cover"
@@ -522,6 +524,7 @@ const AdminProductList = () => {
                   )}
                   <div className="h-14 w-14 rounded-lg border bg-muted/30 overflow-hidden shrink-0">
                     <img
+                      key={`${p.id}-${p.dbId ?? "static"}-${resolveImageUrl(p.image)}`}
                       src={resolveImageUrl(p.image)}
                       alt={p.name}
                       className="h-full w-full object-cover"

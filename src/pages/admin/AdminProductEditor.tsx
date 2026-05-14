@@ -219,6 +219,7 @@ const AdminProductEditor = () => {
       method: "POST",
       headers: token ? { Authorization: `Bearer ${token}` } : {},
       body: fd,
+      cache: "no-store",
     });
     const data = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(data.error || "Upload failed");

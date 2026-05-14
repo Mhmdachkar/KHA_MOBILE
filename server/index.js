@@ -18,6 +18,8 @@ import { publicCouponsRouter } from './routes/publicCoupons.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
+/** Required so `req.protocol` / host match the browser URL behind Render, nginx, etc. */
+app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3001;
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;

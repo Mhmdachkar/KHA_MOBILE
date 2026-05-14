@@ -53,7 +53,7 @@ export function CatalogProvider({ children }: { children: React.ReactNode }) {
     setLoading(true);
     setLastError(null);
     try {
-      const res = await fetch(`${apiBase()}/api/public/products`);
+      const res = await fetch(`${apiBase()}/api/public/products`, { cache: "no-store" });
       if (!res.ok) {
         registerPublicApiProducts([]);
         setLastError(`Catalog API returned ${res.status}`);

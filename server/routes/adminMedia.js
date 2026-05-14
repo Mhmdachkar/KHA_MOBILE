@@ -5,18 +5,12 @@ import { fileURLToPath } from 'url';
 import { requirePool } from '../lib/db.js';
 import { requireAdmin } from '../middleware/auth.js';
 import { logAudit } from '../lib/audit.js';
+import { buildPublicUploadUrl } from '../lib/uploadUrl.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const uploadsDir = path.join(__dirname, '..', 'uploads');
 
 export const adminMediaRouter = Router();
-
-function publicUploadUrl(req, filename) {
-  const base =
-    process.env.API_PUBLIC_URL?.replace(/\/$/, '') ||
-    `${req.protocol}://${req.get('host')}`;
-  return `${base}/uploads/${filename}`;
-}
 
 // List all uploaded files
 adminMediaRouter.get('/media', requireAdmin, async (req, res) => {
@@ -33,7 +27,7 @@ adminMediaRouter.get('/media', requireAdmin, async (req, res) => {
           if (!stat.isFile()) return null;
           return {
             name,
-            url: publicUploadUrl(req, name),
+            url: buildPublicUploadUrl(req, name),
             size: stat.size,
             modified: stat.mtime.toISOString(),
           };

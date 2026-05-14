@@ -231,7 +231,8 @@ export const SiteSettingsProvider: React.FC<{ children: React.ReactNode }> = ({
   const fetch = useCallback(async () => {
     try {
       const res = await window.fetch(
-        `${apiBase()}/api/public/settings?keys=${ALL_KEYS.join(",")}`
+        `${apiBase()}/api/public/settings?keys=${ALL_KEYS.join(",")}`,
+        { cache: "no-store" }
       );
       if (!res.ok) return;
       const data = await res.json();

@@ -8,6 +8,50 @@ export function storefrontIdFromRow(row) {
   return Number(row.id);
 }
 
+/** Collapse `https://host/uploads/x` → `/uploads/x` so DB stays host-agnostic. */
+function stripToUploadPath(url) {
+  if (url == null || url === '') return url;
+  const s = String(url).trim();
+  const m = s.match(/(\/uploads\/[^?#]+)/);
+  if (m) return m[1];
+  return s;
+}
+
+function stripGalleryUrls(gallery) {
+  if (!Array.isArray(gallery)) return [];
+  return gallery
+    .map((x) => (typeof x === 'string' ? stripToUploadPath(x) : x))
+    .filter((x) => x != null && x !== '');
+}
+
+/**
+ * Public JSON: make upload paths absolute using API_PUBLIC_URL when set
+ * (Netlify storefront + Render API).
+ */
+function expandMediaUrlForPublicClient(url) {
+  if (url == null || url === '') return '';
+  const s = String(url).trim();
+  if (!s) return '';
+  if (/^https?:\/\//i.test(s)) {
+    try {
+      const u = new URL(s);
+      if (u.pathname.startsWith('/uploads/')) {
+        const base = process.env.API_PUBLIC_URL?.replace(/\/$/, '');
+        if (base) return `${base}${u.pathname}${u.search}`;
+      }
+      return s;
+    } catch {
+      return s;
+    }
+  }
+  const path = s.startsWith('uploads/') ? `/${s}` : s.startsWith('/') ? s : `/${s}`;
+  if (path.startsWith('/uploads/')) {
+    const base = process.env.API_PUBLIC_URL?.replace(/\/$/, '');
+    if (base) return `${base}${path}`;
+  }
+  return s;
+}
+
 function normalizeGallery(primary, gallery) {
   const g = Array.isArray(gallery) ? gallery : [];
   const merged = [primary, ...g].filter(Boolean);
@@ -15,8 +59,9 @@ function normalizeGallery(primary, gallery) {
 }
 
 export function rowToPublicProduct(row) {
-  const primary = row.primary_image_url;
-  const gallery = normalizeGallery(primary, row.gallery_images);
+  const primaryRaw = row.primary_image_url;
+  const primary = expandMediaUrlForPublicClient(primaryRaw);
+  const gallery = normalizeGallery(primaryRaw, row.gallery_images).map(expandMediaUrlForPublicClient);
   const images = gallery.length > 1 ? gallery : gallery.length === 1 ? [gallery[0]] : [];
 
   return {
@@ -66,6 +111,13 @@ export function bodyToRowColumns(body) {
     ? Math.min(5, Math.max(0, rawRating))
     : 4.5;
 
+  const rawPrimary = b.primaryImageUrl ?? b.primary_image_url ?? b.image ?? '';
+  const primary_image_url =
+    typeof rawPrimary === 'string' ? stripToUploadPath(rawPrimary) : rawPrimary;
+
+  const rawGallery = b.galleryImages ?? b.gallery_images ?? [];
+  const gallery_images = stripGalleryUrls(Array.isArray(rawGallery) ? rawGallery : []);
+
   return {
     legacy_override_id: legacy,
     name: b.name,
@@ -75,7 +127,7 @@ export function bodyToRowColumns(body) {
     compare_at_price: (b.compareAtPrice != null && b.compareAtPrice !== '')
       ? finiteOrNull(b.compareAtPrice)
       : finiteOrNull(b.compare_at_price ?? null),
-    primary_image_url: b.primaryImageUrl ?? b.primary_image_url ?? b.image ?? '',
+    primary_image_url,
     rating,
     category: b.category,
     brand: b.brand ?? null,
@@ -89,7 +141,7 @@ export function bodyToRowColumns(body) {
     sizes: b.sizes ?? [],
     connectivity_options: b.connectivityOptions ?? b.connectivity_options ?? [],
     secondary_categories: b.secondaryCategories ?? b.secondary_categories ?? [],
-    gallery_images: b.galleryImages ?? b.gallery_images ?? [],
+    gallery_images,
     stock_quantity:
       b.stockQuantity != null && b.stockQuantity !== ''
         ? finiteOrNull(b.stockQuantity)

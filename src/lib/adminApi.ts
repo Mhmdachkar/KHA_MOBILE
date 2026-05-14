@@ -37,7 +37,11 @@ export async function adminFetch(path: string, options: RequestInit = {}) {
   ) {
     headers.set("Content-Type", "application/json");
   }
-  const res = await fetch(`${apiBase()}${path}`, { ...options, headers });
+  const res = await fetch(`${apiBase()}${path}`, {
+    ...options,
+    cache: options.cache ?? "no-store",
+    headers,
+  });
   if (res.status === 401 && !path.includes("/login")) {
     setAdminToken(null);
     if (typeof window !== "undefined") {

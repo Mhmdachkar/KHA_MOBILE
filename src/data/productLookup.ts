@@ -1,5 +1,6 @@
 import type { Product } from "@/data/products";
 import type { GreenLionProduct } from "@/data/greenLionProducts";
+import { resolveImageUrl } from "@/lib/imageUtils";
 import { getProductById, getProductsByCategory } from "@/data/products";
 import {
   getGreenLionProductById,
@@ -37,8 +38,22 @@ export type ApiHit = { kind: "regular" | "green"; product: Product | GreenLionPr
 
 const apiByStorefrontId = new Map<number, ApiHit>();
 
+function resolveColorsImages<T extends { name: string; image?: string; stock?: string }>(
+  colors: T[] | undefined
+): T[] | undefined {
+  if (!colors?.length) return undefined;
+  return colors.map((c) => ({
+    ...c,
+    image:
+      c.image != null && String(c.image).trim() !== ""
+        ? resolveImageUrl(c.image)
+        : c.image,
+  }));
+}
+
 function mapApiToProduct(p: ApiPublicProduct): Product {
-  const imgs = p.images?.length ? p.images : [p.image];
+  const rawImgs = p.images?.length ? p.images : [p.image];
+  const imgs = rawImgs.map((u) => resolveImageUrl(u));
   return {
     id: p.id,
     dbId: p.dbId,
@@ -46,7 +61,7 @@ function mapApiToProduct(p: ApiPublicProduct): Product {
     name: p.name,
     title: p.title,
     price: p.price,
-    image: p.image,
+    image: resolveImageUrl(p.image),
     images: imgs.length > 1 ? imgs : imgs.length === 1 ? [imgs[0]] : undefined,
     rating: p.rating,
     category: p.category,
@@ -55,7 +70,7 @@ function mapApiToProduct(p: ApiPublicProduct): Product {
     features: p.features || [],
     specifications: p.specifications || [],
     variants: p.variants?.length ? p.variants : undefined,
-    colors: p.colors?.length ? p.colors : undefined,
+    colors: resolveColorsImages(p.colors),
     sizes: p.sizes?.length ? p.sizes : undefined,
     connectivityOptions: p.connectivityOptions?.length ? p.connectivityOptions : undefined,
     secondaryCategories: p.secondaryCategories?.length ? p.secondaryCategories : undefined,
@@ -66,7 +81,8 @@ function mapApiToProduct(p: ApiPublicProduct): Product {
 }
 
 function mapApiToGreenLion(p: ApiPublicProduct): GreenLionProduct {
-  const imgs = p.images?.length ? p.images : [p.image];
+  const rawImgs = p.images?.length ? p.images : [p.image];
+  const imgs = rawImgs.map((u) => resolveImageUrl(u));
   return {
     id: p.id,
     dbId: p.dbId,
@@ -81,7 +97,7 @@ function mapApiToGreenLion(p: ApiPublicProduct): GreenLionProduct {
     description: p.description,
     features: p.features || [],
     specifications: p.specifications || [],
-    colors: p.colors?.length ? p.colors : undefined,
+    colors: resolveColorsImages(p.colors),
     variants: p.variants?.length ? p.variants : undefined,
     connectivityOptions: p.connectivityOptions?.length ? p.connectivityOptions : undefined,
     secondaryCategories: p.secondaryCategories?.length ? p.secondaryCategories : undefined,
