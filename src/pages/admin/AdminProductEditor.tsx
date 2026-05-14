@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { adminFetch, apiBase, getAdminToken } from "@/lib/adminApi";
 import { useCatalog } from "@/context/CatalogContext";
+import { resolvePrimaryImageWithStaticFallback } from "@/data/productLookup";
 import { resolveImageUrl } from "@/lib/imageUtils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -165,6 +166,11 @@ const AdminProductEditor = () => {
         }
         if (cancelled) return;
         const p = data.product;
+        const displayPrimary = resolvePrimaryImageWithStaticFallback({
+          id: p.id,
+          image: p.image,
+          legacyOverrideId: p.legacyOverrideId ?? null,
+        });
         const loaded: FormState = {
           legacyOverrideId: p.legacyOverrideId != null ? String(p.legacyOverrideId) : "",
           name: p.name || "",
@@ -172,7 +178,7 @@ const AdminProductEditor = () => {
           description: p.description || "",
           price: String(p.price ?? ""),
           compareAtPrice: p.compareAtPrice != null ? String(p.compareAtPrice) : "",
-          primaryImageUrl: p.image || "",
+          primaryImageUrl: displayPrimary,
           rating: String(p.rating ?? "4.5"),
           category: p.category || "Smartphones",
           brand: p.brand || "",
@@ -193,7 +199,9 @@ const AdminProductEditor = () => {
           })),
           connectivityOptions: p.connectivityOptions || [],
           secondaryCategories: p.secondaryCategories || [],
-          galleryImages: (p.images || []).filter((u: string) => u && u !== p.image),
+          galleryImages: (p.images || []).filter(
+            (u: string) => u && u !== p.image && u !== displayPrimary
+          ),
           stockQuantity: p.stockQuantity != null ? String(p.stockQuantity) : "",
         };
         setForm(loaded);

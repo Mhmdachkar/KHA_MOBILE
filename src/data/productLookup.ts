@@ -39,12 +39,36 @@ export type ApiHit = { kind: "regular" | "green"; product: Product | GreenLionPr
 const apiByStorefrontId = new Map<number, ApiHit>();
 
 /** Seed SQL uses placehold.co URLs; keep real photos from the bundled static catalog until admin replaces them. */
-function shouldPreferStaticCatalogImage(url: string | undefined): boolean {
+export function isSeedPlaceholderImageUrl(url: string | undefined): boolean {
   if (url == null) return true;
   const s = String(url).trim();
   if (!s) return true;
   const low = s.toLowerCase();
   return low.includes("placehold.co") || low.includes("via.placeholder.com");
+}
+
+function shouldPreferStaticCatalogImage(url: string | undefined): boolean {
+  return isSeedPlaceholderImageUrl(url);
+}
+
+/**
+ * Admin editor / previews: use bundled static photos when the API row still has seed placeholders.
+ */
+export function resolvePrimaryImageWithStaticFallback(api: {
+  id: number;
+  image?: string;
+  legacyOverrideId?: number | null;
+}): string {
+  const raw = api.image != null ? String(api.image) : "";
+  if (!shouldPreferStaticCatalogImage(raw)) return raw;
+  const legacy = api.legacyOverrideId;
+  if (legacy != null) {
+    const gl = getGreenLionProductById(legacy);
+    if (gl?.images?.[0]) return gl.images[0];
+  }
+  const reg = getProductById(api.id);
+  if (reg?.image != null && String(reg.image).trim() !== "") return String(reg.image);
+  return raw;
 }
 
 function mergeRegularWithStaticImages(apiProduct: Product, staticPeer: Product): Product {

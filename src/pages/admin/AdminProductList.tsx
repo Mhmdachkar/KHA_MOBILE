@@ -1,12 +1,13 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import {
   Plus, Pencil, Trash2, Search, Package, CheckCircle2,
-  XCircle, Filter, LayoutGrid, LayoutList, RefreshCw,
-  TrendingUp, Tag, AlertTriangle, CheckSquare, Square, Eye, EyeOff, FolderEdit, X,
+  XCircle, LayoutGrid, LayoutList, RefreshCw,
+  TrendingUp, CheckSquare, Square, Eye, EyeOff, FolderEdit, X,
 } from "lucide-react";
 import { adminFetch } from "@/lib/adminApi";
 import { useCatalog } from "@/context/CatalogContext";
+import { resolvePrimaryImageWithStaticFallback } from "@/data/productLookup";
 import { resolveImageUrl } from "@/lib/imageUtils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,7 +16,7 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
 interface AdminProduct {
-  dbId?: number;
+  dbId: number;
   id: number;
   name: string;
   price: number | string;
@@ -41,7 +42,9 @@ const StatCard = ({ icon: Icon, label, value, color }: { icon: typeof Package; l
 
 const AdminProductList = () => {
   const { toast } = useToast();
-  const { allProducts, loading: catalogLoading, refresh: refreshCatalog } = useCatalog();
+  const { refresh: refreshCatalog } = useCatalog();
+  const [listLoading, setListLoading] = useState(true);
+  const [adminRows, setAdminRows] = useState<AdminProduct[]>([]);
   const [deleting, setDeleting] = useState<number | null>(null);
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("All");
@@ -53,21 +56,63 @@ const AdminProductList = () => {
   const [showCatPicker, setShowCatPicker] = useState(false);
   const [bulkCategory, setBulkCategory] = useState("Smartphones");
 
-  // Convert catalog products to admin format
-  const products = useMemo<AdminProduct[]>(() => {
-    return allProducts.map(p => ({
-      dbId: (p as any).dbId, // May not exist for static-only products
-      id: p.id,
-      name: p.name,
-      price: p.price,
-      image: Array.isArray(p.images) && p.images.length > 0 ? p.images[0] : p.image,
-      category: p.category,
-      brand: p.brand,
-      rating: p.rating,
-      isActive: (p as any).isActive !== false,
-      isPreorder: (p as any).isPreorder,
-    }));
-  }, [allProducts, refreshKey]);
+  const loadAdminProducts = useCallback(async () => {
+    setListLoading(true);
+    const merged: AdminProduct[] = [];
+    try {
+      let page = 1;
+      const limit = 100;
+      while (true) {
+        const res = await adminFetch(`/api/admin/products?page=${page}&limit=${limit}`);
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          toast({
+            variant: "destructive",
+            title: "Could not load products",
+            description: data.error || `Server returned ${res.status}`,
+          });
+          setAdminRows([]);
+          return;
+        }
+        const rows = Array.isArray(data.products) ? data.products : [];
+        for (const p of rows) {
+          const dbId = Number(p.dbId);
+          if (!Number.isFinite(dbId)) continue;
+          const rawImg =
+            Array.isArray(p.images) && p.images.length > 0 ? p.images[0] : p.image;
+          const image = resolvePrimaryImageWithStaticFallback({
+            id: p.id,
+            image: rawImg,
+            legacyOverrideId: p.legacyOverrideId ?? null,
+          });
+          merged.push({
+            dbId,
+            id: Number(p.id),
+            name: p.name,
+            price: p.price,
+            image,
+            category: p.category,
+            brand: p.brand,
+            rating: p.rating,
+            isActive: p.isActive !== false,
+            isPreorder: p.isPreorder,
+          });
+        }
+        if (rows.length < limit) break;
+        page += 1;
+        if (page > 200) break;
+      }
+      setAdminRows(merged);
+    } finally {
+      setListLoading(false);
+    }
+  }, [toast]);
+
+  useEffect(() => {
+    void loadAdminProducts();
+  }, [loadAdminProducts, refreshKey]);
+
+  const products = useMemo(() => adminRows, [adminRows]);
 
   const filtered = useMemo(() => {
     return products.filter((p) => {
@@ -97,15 +142,7 @@ const AdminProductList = () => {
     return ["All", ...cats.sort()];
   }, [products]);
 
-  const deleteProduct = async (dbId: number | undefined, name: string) => {
-    if (!dbId) {
-      toast({ 
-        variant: "destructive", 
-        title: "Cannot delete", 
-        description: "This product exists only in static files. Edit the source code to remove it." 
-      });
-      return;
-    }
+  const deleteProduct = async (dbId: number, name: string) => {
     if (!confirm(`Delete "${name}"? This cannot be undone.`)) return;
     setDeleting(dbId);
     try {
@@ -125,7 +162,7 @@ const AdminProductList = () => {
     typeof p.price === "number" ? `$${p.price.toFixed(2)}` : `$${p.price}`;
 
   // ── Bulk selection helpers ──
-  const dbFiltered = filtered.filter((p) => p.dbId != null);
+  const dbFiltered = filtered;
   const allSelected = dbFiltered.length > 0 && dbFiltered.every((p) => selected.has(p.dbId!));
 
   const toggleOne = (dbId: number) => {
@@ -186,7 +223,7 @@ const AdminProductList = () => {
             onClick={() => { refreshCatalog(); setRefreshKey((k) => k + 1); }}
             title="Refresh"
           >
-            <RefreshCw className={cn("h-4 w-4", catalogLoading && "animate-spin")} />
+            <RefreshCw className={cn("h-4 w-4", listLoading && "animate-spin")} />
           </Button>
           <Button asChild className="flex-1 sm:flex-none touch-manipulation" style={{ touchAction: 'manipulation' }}>
             <Link to="/admin/products/new">
@@ -199,7 +236,7 @@ const AdminProductList = () => {
       </div>
 
       {/* Stats */}
-      {!catalogLoading && (
+      {!listLoading && (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <StatCard icon={Package} label="Total Products" value={stats.total} color="bg-muted/50" />
           <StatCard icon={CheckCircle2} label="Active" value={stats.active} color="bg-emerald-500/8 text-emerald-700 dark:text-emerald-400 border-emerald-500/20" />
@@ -280,7 +317,7 @@ const AdminProductList = () => {
       </div>
 
       {/* Result count + bulk bar */}
-      {!catalogLoading && (
+      {!listLoading && (
         <div className="flex items-center justify-between gap-3">
           <p className="text-xs text-muted-foreground">
             Showing <strong>{filtered.length}</strong> of <strong>{products.length}</strong> products
@@ -333,7 +370,7 @@ const AdminProductList = () => {
       )}
 
       {/* Loading */}
-      {catalogLoading && (
+      {listLoading && (
         <div className="py-20 text-center">
           <RefreshCw className="h-6 w-6 animate-spin mx-auto text-muted-foreground mb-3" />
           <p className="text-sm text-muted-foreground">Loading products…</p>
@@ -341,7 +378,7 @@ const AdminProductList = () => {
       )}
 
       {/* Empty state */}
-      {!catalogLoading && filtered.length === 0 && (
+      {!listLoading && filtered.length === 0 && (
         <div className="py-20 text-center rounded-xl border border-dashed">
           {products.length === 0 ? (
             <>
@@ -363,21 +400,19 @@ const AdminProductList = () => {
       )}
 
       {/* Grid view */}
-      {!catalogLoading && view === "grid" && filtered.length > 0 && (
+      {!listLoading && view === "grid" && filtered.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
           {filtered.map((p) => (
-            <div key={p.dbId ?? `s-${p.id}`} className={cn("group rounded-xl border bg-card overflow-hidden hover:shadow-md transition-shadow", p.dbId && selected.has(p.dbId) && "ring-2 ring-primary")}>
+            <div key={p.dbId} className={cn("group rounded-xl border bg-card overflow-hidden hover:shadow-md transition-shadow", selected.has(p.dbId) && "ring-2 ring-primary")}>
               <div className="aspect-square relative bg-muted/30 overflow-hidden">
-                {p.dbId != null && (
-                  <button
+                <button
                     className="absolute top-2 right-2 z-10 h-6 w-6 rounded bg-background/80 flex items-center justify-center border shadow-sm"
-                    onClick={(e) => { e.stopPropagation(); toggleOne(p.dbId!); }}
+                    onClick={(e) => { e.stopPropagation(); toggleOne(p.dbId); }}
                   >
                     {selected.has(p.dbId) ? <CheckSquare className="h-3.5 w-3.5 text-primary" /> : <Square className="h-3.5 w-3.5 text-muted-foreground" />}
                   </button>
-                )}
                 <img
-                  key={`${p.id}-${p.dbId ?? "static"}-${resolveImageUrl(p.image)}`}
+                  key={`${p.id}-${p.dbId}-${resolveImageUrl(p.image)}`}
                   src={resolveImageUrl(p.image)}
                   alt={p.name}
                   className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-200"
@@ -405,15 +440,9 @@ const AdminProductList = () => {
                   <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">{priceLabel(p)}</span>
                 </div>
                 <div className="flex gap-1 mt-2">
-                  {p.dbId != null ? (
-                    <Button variant="outline" size="icon" className="h-7 w-7 flex-1 touch-manipulation" style={{ touchAction: 'manipulation' }} asChild>
-                      <Link to={`/admin/products/${p.dbId}`}><Pencil className="h-3 w-3" /></Link>
-                    </Button>
-                  ) : (
-                    <Button variant="outline" size="icon" className="h-7 w-7 flex-1 opacity-40 cursor-not-allowed" disabled title="Static product — edit source code or create a DB override">
-                      <Pencil className="h-3 w-3" />
-                    </Button>
-                  )}
+                  <Button variant="outline" size="icon" className="h-7 w-7 flex-1 touch-manipulation" style={{ touchAction: 'manipulation' }} asChild>
+                    <Link to={`/admin/products/${p.dbId}`}><Pencil className="h-3 w-3" /></Link>
+                  </Button>
                   <Button
                     variant="outline"
                     size="icon"
@@ -432,7 +461,7 @@ const AdminProductList = () => {
       )}
 
       {/* List view */}
-      {!catalogLoading && view === "list" && filtered.length > 0 && (
+      {!listLoading && view === "list" && filtered.length > 0 && (
         <div className="rounded-xl border overflow-hidden">
           {/* Table header — desktop */}
           <div className="hidden sm:grid grid-cols-[32px_56px_1fr_140px_100px_90px_90px] gap-4 items-center px-4 py-2.5 bg-muted/40 text-xs text-muted-foreground font-medium border-b">
@@ -447,19 +476,17 @@ const AdminProductList = () => {
 
           <div className="divide-y">
             {filtered.map((p) => (
-              <div key={p.dbId ?? `s-${p.id}`}>
+              <div key={p.dbId}>
                 {/* Desktop row */}
                 <div className="hidden sm:grid grid-cols-[32px_56px_1fr_140px_100px_90px_90px] gap-4 items-center px-4 py-3 hover:bg-muted/20 transition-colors">
                   <div className="flex items-center justify-center">
-                    {p.dbId != null ? (
-                      <button onClick={() => toggleOne(p.dbId!)} className="touch-manipulation" style={{ touchAction: 'manipulation' }}>
-                        {selected.has(p.dbId) ? <CheckSquare className="h-4 w-4 text-primary" /> : <Square className="h-4 w-4 text-muted-foreground/40" />}
-                      </button>
-                    ) : <span className="h-4 w-4" />}
+                    <button onClick={() => toggleOne(p.dbId)} className="touch-manipulation" style={{ touchAction: 'manipulation' }}>
+                      {selected.has(p.dbId) ? <CheckSquare className="h-4 w-4 text-primary" /> : <Square className="h-4 w-4 text-muted-foreground/40" />}
+                    </button>
                   </div>
                   <div className="h-12 w-12 rounded-lg border bg-muted/30 overflow-hidden shrink-0">
                     <img
-                      key={`${p.id}-${p.dbId ?? "static"}-${resolveImageUrl(p.image)}`}
+                      key={`${p.id}-${p.dbId}-${resolveImageUrl(p.image)}`}
                       src={resolveImageUrl(p.image)}
                       alt={p.name}
                       className="h-full w-full object-cover"
@@ -494,15 +521,9 @@ const AdminProductList = () => {
                     )}
                   </div>
                   <div className="flex items-center justify-end gap-1">
-                    {p.dbId != null ? (
-                      <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
-                        <Link to={`/admin/products/${p.dbId}`}><Pencil className="h-3.5 w-3.5" /></Link>
-                      </Button>
-                    ) : (
-                      <Button variant="ghost" size="icon" className="h-8 w-8 opacity-40 cursor-not-allowed" disabled title="Static product">
-                        <Pencil className="h-3.5 w-3.5" />
-                      </Button>
-                    )}
+                    <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
+                      <Link to={`/admin/products/${p.dbId}`}><Pencil className="h-3.5 w-3.5" /></Link>
+                    </Button>
                     <Button
                       variant="ghost"
                       size="icon"
@@ -517,14 +538,12 @@ const AdminProductList = () => {
 
                 {/* Mobile row */}
                 <div className="sm:hidden flex items-start gap-3 p-4 hover:bg-muted/20 transition-colors">
-                  {p.dbId != null && (
-                    <button onClick={() => toggleOne(p.dbId!)} className="shrink-0 mt-1 touch-manipulation" style={{ touchAction: 'manipulation' }}>
-                      {selected.has(p.dbId) ? <CheckSquare className="h-5 w-5 text-primary" /> : <Square className="h-5 w-5 text-muted-foreground/30" />}
-                    </button>
-                  )}
+                  <button onClick={() => toggleOne(p.dbId)} className="shrink-0 mt-1 touch-manipulation" style={{ touchAction: 'manipulation' }}>
+                    {selected.has(p.dbId) ? <CheckSquare className="h-5 w-5 text-primary" /> : <Square className="h-5 w-5 text-muted-foreground/30" />}
+                  </button>
                   <div className="h-14 w-14 rounded-lg border bg-muted/30 overflow-hidden shrink-0">
                     <img
-                      key={`${p.id}-${p.dbId ?? "static"}-${resolveImageUrl(p.image)}`}
+                      key={`${p.id}-${p.dbId}-${resolveImageUrl(p.image)}`}
                       src={resolveImageUrl(p.image)}
                       alt={p.name}
                       className="h-full w-full object-cover"
@@ -550,15 +569,9 @@ const AdminProductList = () => {
                     <div className="flex items-center justify-between mt-2">
                       <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">{priceLabel(p)}</span>
                       <div className="flex items-center gap-1">
-                        {p.dbId != null ? (
-                          <Button variant="outline" size="icon" className="h-8 w-8 touch-manipulation" style={{ touchAction: 'manipulation' }} asChild>
-                            <Link to={`/admin/products/${p.dbId}`}><Pencil className="h-3.5 w-3.5" /></Link>
-                          </Button>
-                        ) : (
-                          <Button variant="outline" size="icon" className="h-8 w-8 opacity-40 cursor-not-allowed" disabled title="Static product">
-                            <Pencil className="h-3.5 w-3.5" />
-                          </Button>
-                        )}
+                        <Button variant="outline" size="icon" className="h-8 w-8 touch-manipulation" style={{ touchAction: 'manipulation' }} asChild>
+                          <Link to={`/admin/products/${p.dbId}`}><Pencil className="h-3.5 w-3.5" /></Link>
+                        </Button>
                         <Button
                           variant="outline"
                           size="icon"
