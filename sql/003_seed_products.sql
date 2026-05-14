@@ -1,7 +1,8 @@
 -- KHA Mobile – Full Product Seed
 -- Run AFTER 001_schema.sql and 002_seed_admin.sql
--- NOTE: Images use placeholder URLs. Update them through the Admin panel
---       (Admin → Products → Edit → Upload primary / gallery images).
+-- NOTE: Images use placeholder URLs (placehold.co). The storefront and admin
+--       prefer bundled static catalog photos when the API still has those
+--       placeholders; upload a real image in Admin to replace them in the DB.
 --       The legacy_override_id matches each product's static ID so the
 --       database version OVERRIDES the static TypeScript version.
 

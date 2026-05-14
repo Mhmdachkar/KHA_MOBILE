@@ -38,6 +38,30 @@ export type ApiHit = { kind: "regular" | "green"; product: Product | GreenLionPr
 
 const apiByStorefrontId = new Map<number, ApiHit>();
 
+/** Seed SQL uses placehold.co URLs; keep real photos from the bundled static catalog until admin replaces them. */
+function shouldPreferStaticCatalogImage(url: string | undefined): boolean {
+  if (url == null) return true;
+  const s = String(url).trim();
+  if (!s) return true;
+  const low = s.toLowerCase();
+  return low.includes("placehold.co") || low.includes("via.placeholder.com");
+}
+
+function mergeRegularWithStaticImages(apiProduct: Product, staticPeer: Product): Product {
+  return {
+    ...apiProduct,
+    image: staticPeer.image,
+    images: staticPeer.images?.length ? staticPeer.images : [staticPeer.image],
+  };
+}
+
+function mergeGreenWithStaticImages(apiProduct: GreenLionProduct, staticPeer: GreenLionProduct): GreenLionProduct {
+  return {
+    ...apiProduct,
+    images: staticPeer.images?.length ? staticPeer.images : apiProduct.images,
+  };
+}
+
 function resolveColorsImages<T extends { name: string; image?: string; stock?: string }>(
   colors: T[] | undefined
 ): T[] | undefined {
@@ -117,9 +141,22 @@ export function registerPublicApiProducts(rows: ApiPublicProduct[]) {
     const legacy = p.legacyOverrideId;
     const isGreen = legacy != null && getGreenLionProductById(legacy) !== undefined;
     if (isGreen) {
-      apiByStorefrontId.set(p.id, { kind: "green", product: mapApiToGreenLion(p) });
+      const mapped = mapApiToGreenLion(p);
+      const staticPeer = getGreenLionProductById(legacy!);
+      const primary = mapped.images?.[0];
+      const product =
+        staticPeer && shouldPreferStaticCatalogImage(primary)
+          ? mergeGreenWithStaticImages(mapped, staticPeer)
+          : mapped;
+      apiByStorefrontId.set(p.id, { kind: "green", product });
     } else {
-      apiByStorefrontId.set(p.id, { kind: "regular", product: mapApiToProduct(p) });
+      const mapped = mapApiToProduct(p);
+      const staticPeer = getProductById(p.id);
+      const product =
+        staticPeer && shouldPreferStaticCatalogImage(mapped.image)
+          ? mergeRegularWithStaticImages(mapped, staticPeer)
+          : mapped;
+      apiByStorefrontId.set(p.id, { kind: "regular", product });
     }
   }
 }
