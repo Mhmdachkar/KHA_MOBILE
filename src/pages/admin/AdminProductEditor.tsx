@@ -155,16 +155,20 @@ const AdminProductEditor = () => {
     if (isNew || !dbId) return;
     let cancelled = false;
     (async () => {
+      console.log('[AdminProductEditor] Loading product, dbId:', dbId);
       setLoading(true);
       try {
         const res = await adminFetch(`/api/admin/products/${dbId}`);
+        console.log('[AdminProductEditor] Load response status:', res.status);
         const data = await res.json().catch(() => ({}));
         if (!res.ok || !data.product) {
+          console.error('[AdminProductEditor] Load failed:', data.error || 'Product not found');
           toast({ variant: "destructive", title: "Load failed", description: data.error || "Product not found" });
           navigate("/admin/products");
           return;
         }
         if (cancelled) return;
+        console.log('[AdminProductEditor] Product loaded successfully:', data.product.name);
         const p = data.product;
         const displayPrimary = resolvePrimaryImageWithStaticFallback({
           id: p.id,
@@ -220,6 +224,7 @@ const AdminProductEditor = () => {
 
   // ── Upload helper ──
   const uploadFile = async (file: File) => {
+    console.log('[AdminProductEditor] Uploading file:', file.name, 'size:', file.size, 'type:', file.type);
     const fd = new FormData();
     fd.append("file", file);
     const token = getAdminToken();
@@ -229,8 +234,13 @@ const AdminProductEditor = () => {
       body: fd,
       cache: "no-store",
     });
+    console.log('[AdminProductEditor] Upload response status:', res.status);
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(data.error || "Upload failed");
+    if (!res.ok) {
+      console.error('[AdminProductEditor] Upload failed:', data);
+      throw new Error(data.error || "Upload failed");
+    }
+    console.log('[AdminProductEditor] Upload successful, URL:', data.url);
     return data.url as string;
   };
 

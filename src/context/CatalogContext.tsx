@@ -50,24 +50,30 @@ export function CatalogProvider({ children }: { children: React.ReactNode }) {
   const [lastError, setLastError] = useState<string | null>(null);
 
   const refreshCatalog = useCallback(async () => {
+    console.log('[CatalogContext] Refreshing catalog...');
     setLoading(true);
     setLastError(null);
     try {
       const res = await fetch(`${apiBase()}/api/public/products`, { cache: "no-store" });
+      console.log('[CatalogContext] Catalog API response status:', res.status);
       if (!res.ok) {
+        console.error('[CatalogContext] Catalog API error:', res.status);
         registerPublicApiProducts([]);
         setLastError(`Catalog API returned ${res.status}`);
         return;
       }
       const data = await res.json();
+      console.log('[CatalogContext] Loaded', data.products?.length || 0, 'products from API');
       registerPublicApiProducts((data.products || []) as ApiPublicProduct[]);
-    } catch {
+    } catch (err) {
+      console.error('[CatalogContext] Catalog fetch error:', err);
       registerPublicApiProducts([]);
       setLastError("Could not reach catalog API (using static products only)");
     } finally {
       setCatalogLoaded(true);
       setLoading(false);
       setCatalogTick((n) => n + 1);
+      console.log('[CatalogContext] Catalog refresh complete');
     }
   }, []);
 

@@ -27,27 +27,46 @@ function stripGalleryUrls(gallery) {
 /**
  * Public JSON: make upload paths absolute using API_PUBLIC_URL when set
  * (Netlify storefront + Render API).
+ * 
+ * IMPORTANT: Always returns full URLs for /uploads/ paths so storefront can load them.
  */
-function expandMediaUrlForPublicClient(url) {
+function expandMediaUrlForPublicClient(url, req) {
   if (url == null || url === '') return '';
   const s = String(url).trim();
   if (!s) return '';
+  
+  // If already a full URL
   if (/^https?:\/\//i.test(s)) {
     try {
       const u = new URL(s);
       if (u.pathname.startsWith('/uploads/')) {
         const base = process.env.API_PUBLIC_URL?.replace(/\/$/, '');
         if (base) return `${base}${u.pathname}${u.search}`;
+        // Fallback: use request origin
+        if (req) {
+          const proto = req.get('x-forwarded-proto') || req.protocol || 'http';
+          const host = req.get('x-forwarded-host') || req.get('host') || 'localhost:3001';
+          return `${proto}://${host}${u.pathname}${u.search}`;
+        }
       }
       return s;
     } catch {
       return s;
     }
   }
+  
+  // Relative path - convert to full URL
   const path = s.startsWith('uploads/') ? `/${s}` : s.startsWith('/') ? s : `/${s}`;
   if (path.startsWith('/uploads/')) {
     const base = process.env.API_PUBLIC_URL?.replace(/\/$/, '');
     if (base) return `${base}${path}`;
+    
+    // Fallback: build from request if available
+    if (req) {
+      const proto = req.get('x-forwarded-proto') || req.protocol || 'http';
+      const host = req.get('x-forwarded-host') || req.get('host') || 'localhost:3001';
+      return `${proto}://${host}${path}`;
+    }
   }
   return s;
 }
@@ -58,10 +77,10 @@ function normalizeGallery(primary, gallery) {
   return [...new Set(merged)];
 }
 
-export function rowToPublicProduct(row) {
+export function rowToPublicProduct(row, req) {
   const primaryRaw = row.primary_image_url;
-  const primary = expandMediaUrlForPublicClient(primaryRaw);
-  const gallery = normalizeGallery(primaryRaw, row.gallery_images).map(expandMediaUrlForPublicClient);
+  const primary = expandMediaUrlForPublicClient(primaryRaw, req);
+  const gallery = normalizeGallery(primaryRaw, row.gallery_images).map(url => expandMediaUrlForPublicClient(url, req));
   const images = gallery.length > 1 ? gallery : gallery.length === 1 ? [gallery[0]] : [];
 
   return {

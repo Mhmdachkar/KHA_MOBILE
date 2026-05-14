@@ -38,13 +38,17 @@ export const adminProductsRouter = Router();
 
 adminProductsRouter.post('/upload', requirePool, requireAdmin, upload.single('file'), (req, res) => {
   try {
+    console.log('[Upload] Request from:', req.admin?.email);
     if (!req.file) {
+      console.error('[Upload] No file in request');
       return res.status(400).json({ error: 'No file uploaded (field name: file)' });
     }
+    console.log('[Upload] File uploaded:', req.file.filename, 'size:', req.file.size, 'type:', req.file.mimetype);
     const url = buildPublicUploadUrl(req, req.file.filename);
+    console.log('[Upload] Generated URL:', url);
     res.json({ url });
   } catch (e) {
-    console.error(e);
+    console.error('[Upload] Error:', e);
     res.status(500).json({ error: e.message || 'Upload failed' });
   }
 });
@@ -83,7 +87,7 @@ adminProductsRouter.get('/products', requirePool, requireAdmin, async (req, res)
     );
 
     res.json({
-      products: dataQ.rows.map(rowToPublicProduct),
+      products: dataQ.rows.map(row => rowToPublicProduct(row, req)),
       total,
       page,
       limit,
@@ -101,7 +105,7 @@ adminProductsRouter.get('/products/:dbId', requirePool, requireAdmin, async (req
     if (!Number.isFinite(dbId)) return res.status(400).json({ error: 'Invalid id' });
     const { rows } = await pool.query(`SELECT * FROM products WHERE id = $1`, [dbId]);
     if (!rows[0]) return res.status(404).json({ error: 'Not found' });
-    res.json({ product: rowToPublicProduct(rows[0]) });
+    res.json({ product: rowToPublicProduct(rows[0], req) });
   } catch (e) {
     console.error(e);
     res.status(500).json({ error: 'Failed to load product' });
@@ -123,9 +127,13 @@ function validateProductPayload(c) {
 
 adminProductsRouter.post('/products', requirePool, requireAdmin, async (req, res) => {
   try {
+    console.log('[Create Product] Request from:', req.admin?.email, 'Product name:', req.body.name);
     const c = bodyToRowColumns(req.body);
     const errs = validateProductPayload(c);
-    if (errs.length) return res.status(400).json({ error: errs.join('; ') });
+    if (errs.length) {
+      console.error('[Create Product] Validation errors:', errs);
+      return res.status(400).json({ error: errs.join('; ') });
+    }
 
     const { rows } = await pool.query(
       `INSERT INTO products (
@@ -160,11 +168,12 @@ adminProductsRouter.post('/products', requirePool, requireAdmin, async (req, res
         c.stock_quantity,
       ]
     );
-    const created = rowToPublicProduct(rows[0]);
+    const created = rowToPublicProduct(rows[0], req);
+    console.log('[Create Product] Success, ID:', rows[0].id, 'Name:', c.name);
     await logAudit(req.admin, 'create', 'product', rows[0].id, { name: c.name });
     res.status(201).json({ product: created });
   } catch (e) {
-    console.error('[adminProducts POST]', e);
+    console.error('[Create Product] Error:', e.message, 'Code:', e.code);
     if (e.code === '23505') {
       return res.status(409).json({ error: 'Duplicate legacy_override_id or constraint violation' });
     }
@@ -197,10 +206,14 @@ adminProductsRouter.post('/products', requirePool, requireAdmin, async (req, res
 adminProductsRouter.put('/products/:dbId', requirePool, requireAdmin, async (req, res) => {
   try {
     const dbId = Number(req.params.dbId);
+    console.log('[Update Product] Request from:', req.admin?.email, 'Product ID:', dbId, 'Name:', req.body.name);
     if (!Number.isFinite(dbId)) return res.status(400).json({ error: 'Invalid id' });
     const c = bodyToRowColumns(req.body);
     const errs = validateProductPayload(c);
-    if (errs.length) return res.status(400).json({ error: errs.join('; ') });
+    if (errs.length) {
+      console.error('[Update Product] Validation errors:', errs);
+      return res.status(400).json({ error: errs.join('; ') });
+    }
 
     const { rows } = await pool.query(
       `UPDATE products SET
@@ -256,10 +269,11 @@ adminProductsRouter.put('/products/:dbId', requirePool, requireAdmin, async (req
       ]
     );
     if (!rows[0]) return res.status(404).json({ error: 'Not found' });
+    console.log('[Update Product] Success, ID:', dbId, 'Name:', c.name);
     await logAudit(req.admin, 'update', 'product', dbId, { name: c.name });
-    res.json({ product: rowToPublicProduct(rows[0]) });
+    res.json({ product: rowToPublicProduct(rows[0], req) });
   } catch (e) {
-    console.error('[adminProducts PUT]', e);
+    console.error('[Update Product] Error:', e.message, 'Code:', e.code);
     if (e.code === '23505') {
       return res.status(409).json({ error: 'Duplicate legacy_override_id' });
     }

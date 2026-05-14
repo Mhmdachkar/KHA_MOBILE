@@ -57,15 +57,19 @@ const AdminProductList = () => {
   const [bulkCategory, setBulkCategory] = useState("Smartphones");
 
   const loadAdminProducts = useCallback(async () => {
+    console.log('[AdminProductList] Loading admin products...');
     setListLoading(true);
     const merged: AdminProduct[] = [];
     try {
       let page = 1;
       const limit = 100;
       while (true) {
+        console.log('[AdminProductList] Fetching page', page);
         const res = await adminFetch(`/api/admin/products?page=${page}&limit=${limit}`);
+        console.log('[AdminProductList] Response status:', res.status);
         const data = await res.json().catch(() => ({}));
         if (!res.ok) {
+          console.error('[AdminProductList] Load failed:', data.error);
           toast({
             variant: "destructive",
             title: "Could not load products",
@@ -100,9 +104,20 @@ const AdminProductList = () => {
         }
         if (rows.length < limit) break;
         page += 1;
-        if (page > 200) break;
+        if (page > 200) {
+          console.warn('[AdminProductList] Reached page limit (200)');
+          break;
+        }
       }
+      console.log('[AdminProductList] Loaded', merged.length, 'products');
       setAdminRows(merged);
+    } catch (err) {
+      console.error('[AdminProductList] Error loading products:', err);
+      toast({
+        variant: "destructive",
+        title: "Error loading products",
+        description: err instanceof Error ? err.message : "Unknown error"
+      });
     } finally {
       setListLoading(false);
     }
@@ -144,15 +159,27 @@ const AdminProductList = () => {
 
   const deleteProduct = async (dbId: number, name: string) => {
     if (!confirm(`Delete "${name}"? This cannot be undone.`)) return;
+    console.log('[AdminProductList] Deleting product:', dbId, name);
     setDeleting(dbId);
     try {
       const r = await adminFetch(`/api/admin/products/${dbId}`, { method: "DELETE" });
-      if (!r.ok) throw new Error();
-      toast({ title: "Deleted", description: `"${name}" has been removed.` });
+      console.log('[AdminProductList] Delete response status:', r.status);
+      if (!r.ok) {
+        const errorData = await r.json().catch(() => ({}));
+        console.error('[AdminProductList] Delete failed:', errorData);
+        throw new Error(errorData.error || 'Delete failed');
+      }
+      console.log('[AdminProductList] Product deleted successfully');
+      toast({ title: "✓ Deleted successfully", description: `"${name}" has been removed.` });
       refreshCatalog();
       setRefreshKey(k => k + 1);
-    } catch {
-      toast({ variant: "destructive", title: "Delete failed" });
+    } catch (err) {
+      console.error('[AdminProductList] Delete error:', err);
+      toast({ 
+        variant: "destructive", 
+        title: "Delete failed",
+        description: err instanceof Error ? err.message : "Unknown error"
+      });
     } finally {
       setDeleting(null);
     }
@@ -183,6 +210,7 @@ const AdminProductList = () => {
 
   const bulkAction = async (action: string, value?: string) => {
     if (selected.size === 0) return;
+    console.log('[AdminProductList] Bulk action:', action, 'on', selected.size, 'products');
     const label = action === 'delete' ? `Delete ${selected.size} product(s)?` : `${action} ${selected.size} product(s)?`;
     if (!confirm(label + ' This cannot be undone.')) return;
     setBulkBusy(true);
@@ -191,15 +219,21 @@ const AdminProductList = () => {
         method: 'POST',
         body: JSON.stringify({ ids: Array.from(selected), action, value }),
       });
+      console.log('[AdminProductList] Bulk action response status:', res.status);
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Bulk action failed');
+      if (!res.ok) {
+        console.error('[AdminProductList] Bulk action failed:', data.error);
+        throw new Error(data.error || 'Bulk action failed');
+      }
       const actionLabel = action === "change_category" ? "updated" : `${action}d`;
-      toast({ title: `Done — ${data.affected} product(s) ${actionLabel}` });
+      console.log('[AdminProductList] Bulk action successful, affected:', data.affected);
+      toast({ title: `✓ Done — ${data.affected} product(s) ${actionLabel}` });
       setSelected(new Set());
       setShowCatPicker(false);
       refreshCatalog();
       setRefreshKey((k) => k + 1);
     } catch (e: any) {
+      console.error('[AdminProductList] Bulk action error:', e);
       toast({ variant: 'destructive', title: 'Bulk action failed', description: e.message });
     } finally {
       setBulkBusy(false);
