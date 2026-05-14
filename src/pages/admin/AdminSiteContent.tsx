@@ -82,8 +82,8 @@ const ProductPicker = ({
         <Input
           type="number"
           placeholder="ID (e.g. 500)"
-          value={value || ""}
-          onChange={(e) => onChange(Number(e.target.value))}
+          value={value === 0 ? "" : value || ""}
+          onChange={(e) => onChange(e.target.value === "" ? 0 : Number(e.target.value))}
           className="w-full sm:w-28 shrink-0"
         />
         <div className="relative flex-1">
@@ -410,7 +410,7 @@ const AdminSiteContent = () => {
 
       <SectionCard title="Feature Chips (4 highlight boxes on the left side)">
         <div className="space-y-2">
-          {flagship.feature_chips.map((chip, i) => (
+          {(flagship.feature_chips || []).map((chip, i) => (
             <div key={i} className="flex items-center gap-2">
               <Input
                 placeholder="Label"
@@ -451,7 +451,7 @@ const AdminSiteContent = () => {
               </button>
             </div>
           ))}
-          {flagship.feature_chips.length < 4 && (
+          {(flagship.feature_chips || []).length < 4 && (
             <Button
               variant="outline"
               size="sm"

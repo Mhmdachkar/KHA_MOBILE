@@ -35,10 +35,12 @@ const AdminMediaLibrary = () => {
     setLoading(true);
     try {
       const res = await adminFetch("/api/admin/media");
+      if (!res.ok) throw new Error("Server error");
       const data = await res.json();
       setFiles(data.files || []);
     } catch {
       toast({ title: "Error", description: "Failed to load media", variant: "destructive" });
+      setFiles([]);
     } finally {
       setLoading(false);
     }

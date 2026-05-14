@@ -61,12 +61,16 @@ const AdminAuditLog = () => {
       if (filterAction) params.set("action", filterAction);
 
       const res = await adminFetch(`/api/admin/audit-log?${params}`);
+      if (!res.ok) throw new Error("Server error");
       const data = await res.json();
       setEntries(data.entries || []);
       setTotalPages(data.totalPages || 1);
       setTotal(data.total || 0);
     } catch {
       toast({ title: "Error", description: "Failed to load audit log", variant: "destructive" });
+      setEntries([]);
+      setTotalPages(1);
+      setTotal(0);
     } finally {
       setLoading(false);
     }

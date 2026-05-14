@@ -54,10 +54,12 @@ const AdminCoupons = () => {
     try {
       const params = search ? `?search=${encodeURIComponent(search)}` : "";
       const res = await adminFetch(`/api/admin/coupons${params}`);
+      if (!res.ok) throw new Error("Server error");
       const data = await res.json();
       setCoupons(data.coupons || []);
     } catch {
       toast({ title: "Error", description: "Failed to load coupons", variant: "destructive" });
+      setCoupons([]);
     } finally {
       setLoading(false);
     }
@@ -99,9 +101,9 @@ const AdminCoupons = () => {
         ...form,
         starts_at: form.starts_at || null,
         expires_at: form.expires_at || null,
-        min_order_amount: form.min_order_amount || null,
-        max_discount_amount: form.max_discount_amount || null,
-        max_uses: form.max_uses || null,
+        min_order_amount: form.min_order_amount === "" || form.min_order_amount === null ? null : Number(form.min_order_amount),
+        max_discount_amount: form.max_discount_amount === "" || form.max_discount_amount === null ? null : Number(form.max_discount_amount),
+        max_uses: form.max_uses === "" || form.max_uses === null ? null : Number(form.max_uses),
       };
       const url = editingId ? `/api/admin/coupons/${editingId}` : "/api/admin/coupons";
       const method = editingId ? "PUT" : "POST";

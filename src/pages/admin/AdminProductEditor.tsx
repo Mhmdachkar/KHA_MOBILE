@@ -251,8 +251,25 @@ const AdminProductEditor = () => {
       setActiveTab("basics");
       return;
     }
-    if (!form.price || isNaN(Number(form.price))) {
-      toast({ variant: "destructive", title: "Valid price is required" });
+    const priceNum = Number(form.price);
+    if (form.price.trim() === "" || isNaN(priceNum) || priceNum < 0) {
+      toast({ variant: "destructive", title: "Valid price is required (must be 0 or greater)" });
+      setActiveTab("basics");
+      return;
+    }
+    if (form.compareAtPrice && Number(form.compareAtPrice) <= priceNum) {
+      toast({ variant: "destructive", title: "'Compare At' price must be greater than sale price" });
+      setActiveTab("basics");
+      return;
+    }
+    if (form.legacyOverrideId && (isNaN(Number(form.legacyOverrideId)) || Number(form.legacyOverrideId) < 0)) {
+      toast({ variant: "destructive", title: "Legacy Override ID must be a valid positive number" });
+      setActiveTab("basics");
+      return;
+    }
+    const ratingNum = Number(form.rating);
+    if (isNaN(ratingNum) || ratingNum < 0 || ratingNum > 5) {
+      toast({ variant: "destructive", title: "Rating must be between 0 and 5" });
       setActiveTab("basics");
       return;
     }
@@ -516,7 +533,7 @@ const AdminProductEditor = () => {
                       value={form.rating}
                       onChange={(e) => patch("rating", e.target.value)}
                     />
-                    {form.rating && <StarRating value={parseFloat(form.rating) || 0} />}
+                    {form.rating !== "" && <StarRating value={parseFloat(form.rating) || 0} />}
                   </div>
                 </div>
               </SectionCard>
