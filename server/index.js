@@ -15,6 +15,7 @@ import { adminOrdersRouter } from './routes/adminOrders.js';
 import { publicCatalogRouter } from './routes/publicCatalog.js';
 import { publicSettingsRouter } from './routes/publicSettings.js';
 import { publicCouponsRouter } from './routes/publicCoupons.js';
+import { publicOrdersRouter } from './routes/publicOrders.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -78,9 +79,15 @@ app.use('/api/admin', adminRouter);
 app.use('/api/public', publicCatalogRouter);
 app.use('/api/public/settings', publicSettingsRouter);
 app.use('/api/public', publicCouponsRouter);
+app.use('/api/public', publicOrdersRouter);
 
+// DEPRECATED — kept for backwards compatibility with older client bundles.
+// New checkouts call POST /api/public/orders, which persists the order AND
+// emails the admin in one shot. This route will be removed once analytics
+// confirm the storefront no longer hits it.
 app.post('/api/send-order-email', async (req, res) => {
   try {
+    console.warn('[deprecated] /api/send-order-email called — client should use /api/public/orders');
     if (!resend || !process.env.ADMIN_EMAIL) {
       return res.status(503).json({
         success: false,

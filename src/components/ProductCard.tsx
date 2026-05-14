@@ -167,7 +167,7 @@ const ProductCard = ({ id, name, title, price, image, images, rating = 4.5, cate
               ({rating})
             </span>
           </div>
-          {isPreorder && (price === 0 || price === "0.00" || typeof price === "string") ? (
+          {isPreorder && Number(price) === 0 ? (
             <p className="text-elegant text-xs sm:text-sm font-normal text-primary">Pre-order</p>
           ) : (
             <p className="text-elegant text-xs sm:text-sm font-normal bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">${typeof price === "string" ? price : price.toFixed(2)}</p>

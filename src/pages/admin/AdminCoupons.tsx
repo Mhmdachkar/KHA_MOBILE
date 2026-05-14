@@ -30,10 +30,10 @@ const emptyCoupon = {
   code: "",
   description: "",
   discount_type: "percentage" as "percentage" | "fixed",
-  discount_value: 10,
-  min_order_amount: null as number | null,
-  max_discount_amount: null as number | null,
-  max_uses: null as number | null,
+  discount_value: "",
+  min_order_amount: "",
+  max_discount_amount: "",
+  max_uses: "",
   is_active: true,
   starts_at: "",
   expires_at: "",
@@ -78,10 +78,10 @@ const AdminCoupons = () => {
       code: c.code,
       description: c.description,
       discount_type: c.discount_type,
-      discount_value: c.discount_value,
-      min_order_amount: c.min_order_amount,
-      max_discount_amount: c.max_discount_amount,
-      max_uses: c.max_uses,
+      discount_value: String(c.discount_value),
+      min_order_amount: c.min_order_amount != null ? String(c.min_order_amount) : "",
+      max_discount_amount: c.max_discount_amount != null ? String(c.max_discount_amount) : "",
+      max_uses: c.max_uses != null ? String(c.max_uses) : "",
       is_active: c.is_active,
       starts_at: c.starts_at ? c.starts_at.slice(0, 16) : "",
       expires_at: c.expires_at ? c.expires_at.slice(0, 16) : "",
@@ -95,15 +95,21 @@ const AdminCoupons = () => {
       toast({ title: "Code required", variant: "destructive" });
       return;
     }
+    const discountValue = parseFloat(form.discount_value);
+    if (!Number.isFinite(discountValue) || discountValue <= 0) {
+      toast({ title: "Discount value must be greater than 0", variant: "destructive" });
+      return;
+    }
     setSaving(true);
     try {
       const payload = {
         ...form,
+        discount_value: discountValue,
         starts_at: form.starts_at || null,
         expires_at: form.expires_at || null,
-        min_order_amount: form.min_order_amount === "" || form.min_order_amount === null ? null : Number(form.min_order_amount),
-        max_discount_amount: form.max_discount_amount === "" || form.max_discount_amount === null ? null : Number(form.max_discount_amount),
-        max_uses: form.max_uses === "" || form.max_uses === null ? null : Number(form.max_uses),
+        min_order_amount: form.min_order_amount !== "" ? Number(form.min_order_amount) : null,
+        max_discount_amount: form.max_discount_amount !== "" ? Number(form.max_discount_amount) : null,
+        max_uses: form.max_uses !== "" ? Number(form.max_uses) : null,
       };
       const url = editingId ? `/api/admin/coupons/${editingId}` : "/api/admin/coupons";
       const method = editingId ? "PUT" : "POST";
@@ -227,11 +233,10 @@ const AdminCoupons = () => {
                     {form.discount_type === "percentage" ? "%" : "$"}
                   </span>
                   <Input
-                    type="number"
-                    step="0.01"
-                    min="0"
+                    inputMode="decimal"
                     value={form.discount_value}
-                    onChange={(e) => setForm({ ...form, discount_value: Number(e.target.value) })}
+                    onChange={(e) => setForm({ ...form, discount_value: e.target.value })}
+                    placeholder="e.g. 10"
                     className="pl-7 text-sm"
                   />
                 </div>
@@ -241,10 +246,9 @@ const AdminCoupons = () => {
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-xs">$</span>
                   <Input
-                    type="number"
-                    step="0.01"
-                    value={form.min_order_amount ?? ""}
-                    onChange={(e) => setForm({ ...form, min_order_amount: e.target.value ? Number(e.target.value) : null })}
+                    inputMode="decimal"
+                    value={form.min_order_amount}
+                    onChange={(e) => setForm({ ...form, min_order_amount: e.target.value })}
                     placeholder="No minimum"
                     className="pl-7 text-sm"
                   />
@@ -255,10 +259,9 @@ const AdminCoupons = () => {
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-xs">$</span>
                   <Input
-                    type="number"
-                    step="0.01"
-                    value={form.max_discount_amount ?? ""}
-                    onChange={(e) => setForm({ ...form, max_discount_amount: e.target.value ? Number(e.target.value) : null })}
+                    inputMode="decimal"
+                    value={form.max_discount_amount}
+                    onChange={(e) => setForm({ ...form, max_discount_amount: e.target.value })}
                     placeholder="No cap"
                     className="pl-7 text-sm"
                   />
@@ -267,10 +270,9 @@ const AdminCoupons = () => {
               <div className="space-y-1">
                 <Label className="text-xs">Max Uses</Label>
                 <Input
-                  type="number"
-                  min="1"
-                  value={form.max_uses ?? ""}
-                  onChange={(e) => setForm({ ...form, max_uses: e.target.value ? Number(e.target.value) : null })}
+                  inputMode="numeric"
+                  value={form.max_uses}
+                  onChange={(e) => setForm({ ...form, max_uses: e.target.value })}
                   placeholder="Unlimited"
                   className="text-sm"
                 />

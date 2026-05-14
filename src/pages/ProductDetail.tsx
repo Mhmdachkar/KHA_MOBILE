@@ -178,8 +178,8 @@ const ProductDetail = () => {
 
   // Helper function to format price (handles both number and string)
   const formatPrice = (price: number | string, isPreorder?: boolean): string => {
-    // Show "Pre-order" for preorder items with price 0 or "0.00"
-    if (isPreorder && (price === 0 || price === "0.00" || (typeof price === 'string' && parseFloat(price) === 0))) {
+    // Show "Pre-order" for preorder items with price 0
+    if (isPreorder && Number(price) === 0) {
       return "Pre-order";
     }
     if (typeof price === 'string') {
@@ -808,7 +808,7 @@ const ProductDetail = () => {
 
             <div className="flex flex-wrap items-center gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 w-full">
               <div className="flex flex-col">
-                {product.isPreorder && (displayPrice === 0 || displayPrice === "0.00" || (typeof displayPrice === 'string' && parseFloat(displayPrice) === 0)) ? (
+                {product.isPreorder && Number(displayPrice) === 0 ? (
                   <p className="text-elegant text-2xl sm:text-3xl font-bold text-primary">Pre-order</p>
                 ) : (
                   <p className="text-elegant text-2xl sm:text-3xl font-bold">${formatPrice(displayPrice, product.isPreorder)}</p>
@@ -955,7 +955,7 @@ const ProductDetail = () => {
                           {variant.ram} · {variant.storage}
                         </span>
                         <span className="text-xs sm:text-sm text-elegant font-medium">
-                          {product.isPreorder && (variant.price === 0 || variant.price === "0.00" || (typeof variant.price === 'string' && parseFloat(variant.price) === 0)) ? (
+                          {product.isPreorder && Number(variant.price) === 0 ? (
                             <span className="text-primary">Pre-order</span>
                           ) : (
                             `$${formatPrice(variant.price, product.isPreorder)}`
@@ -1467,7 +1467,7 @@ const ProductDetail = () => {
                         <h3 className="text-sm font-semibold text-elegant mb-1 line-clamp-2 min-h-[2.5rem]">
                           {product.name}
                         </h3>
-                        {product.isPreorder && (displayPrice === 0 || displayPrice === "0.00" || (typeof displayPrice === 'string' && parseFloat(displayPrice) === 0)) ? (
+                        {product.isPreorder && Number(displayPrice) === 0 ? (
                           <p className="text-lg font-bold text-primary mb-2">Pre-order</p>
                         ) : (
                           <p className="text-lg font-bold text-primary mb-2">${formatPrice(displayPrice, product.isPreorder)}</p>
@@ -1523,7 +1523,7 @@ const ProductDetail = () => {
                                 ))}
                               </div>
                               <p className="text-lg font-bold text-elegant">
-                                {item.isPreorder && (item.price === 0 || item.price === "0.00" || (typeof item.price === 'string' && parseFloat(item.price) === 0)) ? (
+                                {item.isPreorder && Number(item.price) === 0 ? (
                                   <span className="text-primary">Pre-order</span>
                                 ) : (
                                   `$${formatPrice(item.price, item.isPreorder)}`

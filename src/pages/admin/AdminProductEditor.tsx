@@ -50,7 +50,7 @@ interface FormState {
   stockQuantity: string;
 }
 
-const CATEGORIES = [
+const BASE_CATEGORIES = [
   "Smartphones", "Tablets", "Audio", "Computers", "Wearables",
   "Gaming", "Accessories", "Charging", "Electronics", "Other",
 ];
@@ -270,13 +270,24 @@ const AdminProductEditor = () => {
       setActiveTab("basics");
       return;
     }
-    const priceNum = Number(form.price);
-    if (form.price.trim() === "" || isNaN(priceNum) || priceNum < 0) {
-      toast({ variant: "destructive", title: "Valid price is required (must be 0 or greater)" });
+    const priceStr = form.price.trim();
+    const priceNum = parseFloat(priceStr);
+    console.log('[AdminProductEditor] Validating price:', { raw: form.price, str: priceStr, num: priceNum, isPreorder: form.isPreorder });
+    if (priceStr === "" || !Number.isFinite(priceNum) || priceNum < 0) {
+      console.error('[AdminProductEditor] Price validation failed:', { priceStr, priceNum });
+      toast({ variant: "destructive", title: "Valid price is required", description: `Enter a number ≥ 0 (got: "${priceStr || 'empty'}")` });
       setActiveTab("basics");
       return;
     }
-    if (form.compareAtPrice && Number(form.compareAtPrice) <= priceNum) {
+    if (form.isPreorder && priceNum === 0) {
+      console.error('[AdminProductEditor] Pre-order with zero price');
+      toast({ variant: "destructive", title: "Pre-order products cannot have a zero price" });
+      setActiveTab("basics");
+      return;
+    }
+    const compareAtStr = form.compareAtPrice.trim();
+    const compareAtNum = compareAtStr !== "" ? parseFloat(compareAtStr) : null;
+    if (compareAtNum !== null && (!Number.isFinite(compareAtNum) || compareAtNum <= priceNum)) {
       toast({ variant: "destructive", title: "'Compare At' price must be greater than sale price" });
       setActiveTab("basics");
       return;
@@ -300,8 +311,8 @@ const AdminProductEditor = () => {
         name: form.name.trim(),
         title: form.title.trim() || form.name.trim(),
         description: form.description,
-        price: Number(form.price),
-        compareAtPrice: form.compareAtPrice ? Number(form.compareAtPrice) : null,
+        price: priceNum,
+        compareAtPrice: compareAtNum,
         primaryImageUrl: form.primaryImageUrl.trim(),
         rating: Number(form.rating),
         category: form.category.trim(),
@@ -500,7 +511,7 @@ const AdminProductEditor = () => {
                       onChange={(e) => patch("category", e.target.value)}
                       className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     >
-                      {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
+                      {(BASE_CATEGORIES.includes(form.category) ? BASE_CATEGORIES : [...BASE_CATEGORIES, form.category]).map((c) => <option key={c}>{c}</option>)}
                     </select>
                   </div>
                   <div className="space-y-1.5">
@@ -518,7 +529,7 @@ const AdminProductEditor = () => {
                     <div className="relative">
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">$</span>
                       <Input
-                        type="number" step="0.01" min={0}
+                        inputMode="decimal"
                         className="pl-7"
                         value={form.price}
                         onChange={(e) => patch("price", e.target.value)}
@@ -539,7 +550,7 @@ const AdminProductEditor = () => {
                     <div className="relative">
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">$</span>
                       <Input
-                        type="number" step="0.01" min={0}
+                        inputMode="decimal"
                         className="pl-7"
                         value={form.compareAtPrice}
                         onChange={(e) => patch("compareAtPrice", e.target.value)}

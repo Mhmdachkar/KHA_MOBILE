@@ -14,6 +14,12 @@ import { useCart } from "@/context/CartContext";
 import { useAnalytics } from "@/context/AnalyticsContext";
 import { findStoreProductSplit } from "@/data/productLookup";
 import { useIsMobile } from "@/hooks/use-mobile";
+import {
+  submitOrder,
+  newIdempotencyKey,
+  type CheckoutType,
+  type OrderItemInput,
+} from "@/lib/ordersApi";
 
 // Import recharge images for display
 import recharge1_67 from "@/assets/recharges/1.67$.png";
@@ -225,6 +231,11 @@ const Checkout = () => {
 
   // Payment method state - default to whatsapp for existing flow
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("whatsapp");
+
+  // Idempotency key — generated once per checkout-page mount. Prevents
+  // duplicate orders if the user double-clicks or retries after a network blip.
+  // Reset on successful submit so a second order from the same tab is allowed.
+  const [idempotencyKey, setIdempotencyKey] = useState<string>(() => newIdempotencyKey());
 
   // Get available plan durations based on product brand
   const getAvailablePlanDurations = () => {
@@ -540,30 +551,137 @@ const Checkout = () => {
     });
   };
 
-  // Handle WhatsApp payment
-  const handleWhatsAppPayment = () => {
-    // Validate form based on checkout type
-    let isValid = true;
+  // Compute the checkout_type tag the backend expects (storefront has 4 modes
+  // but the server schema collapses gift cards under their own bucket).
+  const resolveCheckoutType = (): CheckoutType => {
+    if (isStreamingServiceCheckout) return "streaming";
+    if (isGiftCard) return "gift_card";
+    if (isRechargeCard) return "recharge";
+    return "product";
+  };
 
+  // Build the order_items array for the new POST /api/public/orders endpoint.
+  // The server re-prices DB-backed products, so unitPrice here is treated as a
+  // hint; it will be overridden when productId matches a row in `products`.
+  const buildOrderItems = (): OrderItemInput[] => {
     if (isStreamingServiceCheckout) {
-      // Streaming service checkout validation - only phone number required
-      const isPhoneValid = validatePhoneNumber(formData.phoneNumber);
-      isValid = isPhoneValid;
-    } else if (isRechargeCheckout) {
-      // Recharge/gift card checkout validation
-      const isPhoneValid = validatePhoneNumber(formData.phoneNumber);
-      // Only validate separate dollars for recharge cards, not gift cards
-      const isDollarsValid = isRechargeCard ? validateDollarsAmount(formData.dollarsAmount) : true;
-      isValid = isPhoneValid && isDollarsValid;
-    } else {
-      // Product checkout validation
-      const isNameValid = validateCustomerName(formData.customerName);
-      const isPhoneValid = validatePhoneNumber(formData.phoneNumber);
-      const isLocationValid = validateDeliveryLocation(formData.deliveryLocation);
-      isValid = isNameValid && isPhoneValid && isLocationValid;
+      const planLabel = requiresAccountType
+        ? `${formData.accountType} · ${streamingPlanDuration}`
+        : streamingPlanDuration;
+      return [
+        {
+          productId: null,
+          name: `${productName} (${planLabel})`,
+          image: productImage || "",
+          variantLabel: planLabel,
+          quantity: 1,
+          unitPrice: getStreamingPlanPrice(),
+        },
+      ];
     }
 
-    if (!isValid) {
+    if (isRechargeCheckout) {
+      const items: OrderItemInput[] = [
+        {
+          productId: null,
+          name: productName,
+          image: productImage || "",
+          variantLabel: productRegion ? `${productRegion}${productBrand ? ` · ${productBrand}` : ""}` : "",
+          quantity: 1,
+          unitPrice: productPrice,
+        },
+      ];
+      additionalCards.forEach((card) => {
+        items.push({
+          productId: null,
+          name: card.name,
+          quantity: 1,
+          unitPrice: card.price,
+        });
+      });
+      if (
+        isRechargeCard &&
+        formData.separateDollars &&
+        formData.dollarsAmount &&
+        parseFloat(formData.dollarsAmount) > 0
+      ) {
+        const dollarsEntered = parseFloat(formData.dollarsAmount);
+        items.push({
+          productId: null,
+          name: `Separate Dollars × ${dollarsEntered}`,
+          variantLabel: "$1.45 per dollar",
+          quantity: 1,
+          unitPrice: dollarsEntered * 1.45,
+        });
+      }
+      return items;
+    }
+
+    // Cart (product) checkout — server will re-price any item whose id is in the DB.
+    return cart.map((item) => ({
+      productId: typeof item.id === "number" ? item.id : null,
+      name: item.name,
+      image: (item as any).colorImage || item.image || "",
+      variantLabel: [item.variantLabel, (item as any).color, item.size]
+        .filter(Boolean)
+        .join(" · "),
+      quantity: item.quantity,
+      unitPrice: getPriceAsNumber(item.price),
+    }));
+  };
+
+  // Validate the form for the active flow. Returns true if OK.
+  const validateActiveFlow = (requireEmail: boolean): boolean => {
+    if (isStreamingServiceCheckout) {
+      return validatePhoneNumber(formData.phoneNumber);
+    }
+    if (isRechargeCheckout) {
+      const isPhoneValid = validatePhoneNumber(formData.phoneNumber);
+      const isDollarsValid = isRechargeCard
+        ? validateDollarsAmount(formData.dollarsAmount)
+        : true;
+      return isPhoneValid && isDollarsValid;
+    }
+    // Product checkout
+    const isNameValid = validateCustomerName(formData.customerName);
+    const isPhoneValid = validatePhoneNumber(formData.phoneNumber);
+    const isLocationValid = validateDeliveryLocation(formData.deliveryLocation);
+    const isEmailValid = requireEmail ? validateEmail(formData.email) : true;
+    return isNameValid && isPhoneValid && isLocationValid && isEmailValid;
+  };
+
+  // Persist the order to the backend, then act on the result. Shared by both
+  // the WhatsApp and Cash-on-Delivery flows so that:
+  //   • the order is in the DB before the customer sees a confirmation
+  //   • the admin email contains the real KHA-XXXXXX number
+  //   • coupon usage + stock are decremented atomically
+  //   • idempotencyKey prevents duplicates from double-clicks / retries
+  const persistOrder = async (paymentMethod: PaymentMethod) => {
+    const items = buildOrderItems();
+    const checkoutType = resolveCheckoutType();
+    const total = calculateTotal();
+    const shippingCost = checkoutType === "product" ? DELIVERY_FEE : 0;
+
+    return submitOrder({
+      checkoutType,
+      paymentMethod,
+      customer: {
+        name: formData.customerName || undefined,
+        email: formData.email || null,
+        phone: formData.phoneNumber,
+        shippingAddress:
+          checkoutType === "product" ? formData.deliveryLocation : null,
+      },
+      items,
+      shippingCost,
+      clientTotal: total,
+      idempotencyKey,
+    });
+  };
+
+  // Handle WhatsApp payment
+  const handleWhatsAppPayment = async () => {
+    if (!validateActiveFlow(false)) {
       toast({
         title: "Validation Error",
         description: "Please fix the errors before proceeding.",
@@ -573,127 +691,46 @@ const Checkout = () => {
     }
 
     setIsProcessing(true);
+    try {
+      const result = await persistOrder("whatsapp");
 
-    // Prepare WhatsApp message
-    const total = calculateTotal();
-    let message = `*New Order Request*\n\n`;
-
-    if (isStreamingServiceCheckout) {
-      // Streaming service checkout message
-      message += `• *Service:* ${productName}\n`;
-      if (productPrice > 0) {
-        message += `• *Service Price:* $${productPrice.toFixed(2)}\n`;
-      }
-      if (requiresAccountType && formData.accountType) {
-        message += `• *Account Type:* ${formData.accountType === "1 user" ? "1 User" : "Full Account"}\n`;
-      }
-      message += `• *Plan Duration:* ${streamingPlanDuration}\n`;
-      message += `\n• *Phone Number:* ${formData.phoneNumber}\n`;
-    } else if (isRechargeCheckout) {
-      // Recharge/gift card checkout message
-      message += `• *Product:* ${productName}\n`;
-      message += `• *Product Price:* $${productPrice.toFixed(2)}\n`;
-
-      if (productRegion !== "USA" && productRegionalPrice > 0) {
-        message += `• *Regional Price:* ${productRegionalCurrency} ${productRegionalPrice}\n`;
+      // Server returns a ready-built wa.me link with the real order number.
+      if (result.whatsappUrl) {
+        window.open(result.whatsappUrl, "_blank");
       }
 
-      // Add additional cards
-      if (additionalCards.length > 0) {
-        message += `\n• *Additional Cards:*\n`;
-        additionalCards.forEach((card) => {
-          message += `  - ${card.name} - $${card.price.toFixed(2)}\n`;
-        });
-      }
+      trackCheckoutComplete(result.order.orderNumber, result.order.total);
 
-      if (productRegion) {
-        message += `• *Region:* ${productRegion}\n`;
-      }
-      if (productBrand) {
-        message += `• *Brand:* ${productBrand}\n`;
-      }
-
-      message += `\n• *Phone Number:* ${formData.phoneNumber}\n`;
-
-      // Only include separate dollars for recharge cards, not gift cards
-      if (isRechargeCard && formData.separateDollars && formData.dollarsAmount) {
-        const dollarsEntered = parseFloat(formData.dollarsAmount);
-        const dollarsTotal = dollarsEntered * 1.45;
-        message += `• *Separate Dollars:* ${dollarsEntered} × $1.45 = $${dollarsTotal.toFixed(2)}\n`;
-        message += `  (Note: Each dollar added is calculated as $1.45)\n`;
-      }
-    } else {
-      // Product checkout message
-      message += `• *Customer Name:* ${formData.customerName}\n`;
-      message += `• *Phone Number:* ${formData.phoneNumber}\n`;
-      message += `• *Delivery Location:* ${formData.deliveryLocation}\n\n`;
-
-      message += `• *Order Items:*\n`;
-      cart.forEach((item) => {
-        let itemLabel = item.name;
-        if (item.variantLabel) {
-          itemLabel += ` - ${item.variantLabel}`;
-        }
-        if (item.color) {
-          itemLabel += ` (Color: ${item.color})`;
-        }
-        const itemPrice = getPriceAsNumber(item.price);
-        message += `  - ${itemLabel} (Qty: ${item.quantity}) - $${(itemPrice * item.quantity).toFixed(2)}\n`;
+      toast({
+        title: `Order ${result.order.orderNumber} placed`,
+        description: "Opening WhatsApp to confirm your order…",
       });
 
-      const subtotal = cart.reduce((sum, item) => {
-        const price = getPriceAsNumber(item.price);
-        return sum + (price * item.quantity);
-      }, 0);
-      message += `\n• *Subtotal:* $${subtotal.toFixed(2)}\n`;
-      message += `• *Delivery:* $${DELIVERY_FEE.toFixed(2)}\n`;
-    }
+      // Allow another order from the same tab.
+      setIdempotencyKey(newIdempotencyKey());
 
-    message += `\n*Total Amount:* $${total.toFixed(2)}\n`;
-    message += `\nPlease confirm this order. Thank you!`;
-
-    // Encode message for URL
-    const encodedMessage = encodeURIComponent(message);
-
-    // Replace with your WhatsApp business number (format: country code + number without +)
-    const whatsappNumber = "96181861811"; // WhatsApp business number for receiving orders
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
-
-    // Open WhatsApp
-    window.open(whatsappUrl, "_blank");
-
-    // Track checkout completion
-    const orderId = `ORDER_${Date.now()}`;
-    trackCheckoutComplete(orderId, total);
-
-    // Show success message
-    toast({
-      title: "Redirecting to WhatsApp",
-      description: "Opening WhatsApp to complete your payment...",
-    });
-
-    // Clear cart after successful checkout (only for cart checkout)
-    if (!isRechargeCheckout) {
-      setTimeout(() => {
-        clearCart();
-        setIsProcessing(false);
-      }, 2000);
-    } else {
-      setTimeout(() => {
-        setIsProcessing(false);
-      }, 2000);
+      if (!isRechargeCheckout) {
+        setTimeout(() => {
+          clearCart();
+          setIsProcessing(false);
+        }, 2000);
+      } else {
+        setTimeout(() => setIsProcessing(false), 2000);
+      }
+    } catch (err: any) {
+      console.error("[Checkout] WhatsApp order failed:", err);
+      toast({
+        variant: "destructive",
+        title: "Could not place order",
+        description: err?.message || "Please try again in a moment.",
+      });
+      setIsProcessing(false);
     }
   };
 
   // Handle Cash on Delivery payment
   const handleCashOnDeliveryPayment = async () => {
-    // Validate form
-    const isNameValid = validateCustomerName(formData.customerName);
-    const isEmailValid = validateEmail(formData.email);
-    const isPhoneValid = validatePhoneNumber(formData.phoneNumber);
-    const isLocationValid = validateDeliveryLocation(formData.deliveryLocation);
-
-    if (!isNameValid || !isEmailValid || !isPhoneValid || !isLocationValid) {
+    if (!validateActiveFlow(true)) {
       toast({
         title: "Validation Error",
         description: "Please fix the errors before proceeding.",
@@ -703,66 +740,32 @@ const Checkout = () => {
     }
 
     setIsProcessing(true);
-
     try {
-      // Prepare order data
-      const orderItems = cart.map(item => ({
-        name: item.name,
-        variantLabel: item.variantLabel,
-        color: (item as any).color,
-        quantity: item.quantity,
-        price: getPriceAsNumber(item.price)
-      }));
+      const result = await persistOrder("cash_on_delivery");
 
-      const subtotal = cart.reduce((sum, item) => {
-        const price = getPriceAsNumber(item.price);
-        return sum + (price * item.quantity);
-      }, 0);
+      trackCheckoutComplete(result.order.orderNumber, result.order.total);
 
-      const total = calculateTotal();
-
-      // Send to backend API
-      const response = await fetch('http://localhost:3001/api/send-order-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          paymentMethod: 'cash_on_delivery',
-          customerName: formData.customerName,
-          email: formData.email,
-          phoneNumber: formData.phoneNumber,
-          deliveryLocation: formData.deliveryLocation,
-          orderItems,
-          subtotal,
-          deliveryFee: DELIVERY_FEE,
-          total
-        }),
+      toast({
+        title: `Order ${result.order.orderNumber} placed`,
+        description:
+          "We'll contact you shortly to confirm delivery. A confirmation email is on its way.",
       });
 
-      const data = await response.json();
+      setIdempotencyKey(newIdempotencyKey());
 
-      if (data.success) {
-        toast({
-          title: "Order Placed Successfully!",
-          description: "We've received your order. You'll receive a confirmation email shortly.",
-        });
-
-        // Clear cart after successful checkout
-        setTimeout(() => {
-          clearCart();
-          setIsProcessing(false);
-          navigate('/');
-        }, 2000);
-      } else {
-        throw new Error(data.error || 'Failed to place order');
-      }
-    } catch (error) {
-      console.error('Error placing order:', error);
+      setTimeout(() => {
+        clearCart();
+        setIsProcessing(false);
+        navigate("/");
+      }, 2000);
+    } catch (err: any) {
+      console.error("[Checkout] COD order failed:", err);
       toast({
-        title: "Error",
-        description: "Failed to place your order. Please try again or contact support.",
         variant: "destructive",
+        title: "Could not place order",
+        description:
+          err?.message ||
+          "Failed to place your order. Please try again or contact support.",
       });
       setIsProcessing(false);
     }

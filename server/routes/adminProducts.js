@@ -115,11 +115,15 @@ adminProductsRouter.get('/products/:dbId', requirePool, requireAdmin, async (req
 function validateProductPayload(c) {
   const errors = [];
   if (!c.name) errors.push('name is required');
-  if (c.price == null || !Number.isFinite(Number(c.price)) || Number(c.price) < 0) {
-    errors.push('valid price is required');
+  const price = c.price;
+  if (price == null || !Number.isFinite(price) || price < 0) {
+    errors.push(`valid price is required (received: ${JSON.stringify(price)})`);
+  }
+  if (c.is_preorder && price === 0) {
+    errors.push('pre-order products cannot have a zero price');
   }
   if (!c.category) errors.push('category is required');
-  if (c.compare_at_price != null && Number(c.compare_at_price) <= Number(c.price)) {
+  if (c.compare_at_price != null && Number.isFinite(price) && c.compare_at_price <= price) {
     errors.push('compare_at_price must be greater than price when set');
   }
   return errors;
