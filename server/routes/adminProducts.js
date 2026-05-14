@@ -142,10 +142,10 @@ adminProductsRouter.post('/products', requirePool, requireAdmin, async (req, res
     const { rows } = await pool.query(
       `INSERT INTO products (
         legacy_override_id, name, title, description, price, compare_at_price, primary_image_url, rating,
-        category, brand, video_url, is_preorder, is_active, features, specifications, variants, colors,
+        category, brand, video_url, is_preorder, show_preorder_price, is_active, features, specifications, variants, colors,
         sizes, connectivity_options, secondary_categories, gallery_images, stock_quantity
       ) VALUES (
-        $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14::jsonb,$15::jsonb,$16::jsonb,$17::jsonb,$18::jsonb,$19::jsonb,$20::jsonb,$21::jsonb,$22
+        $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15::jsonb,$16::jsonb,$17::jsonb,$18::jsonb,$19::jsonb,$20::jsonb,$21::jsonb,$22::jsonb,$23
       ) RETURNING *`,
       [
         c.legacy_override_id,
@@ -160,6 +160,7 @@ adminProductsRouter.post('/products', requirePool, requireAdmin, async (req, res
         c.brand,
         c.video_url,
         c.is_preorder,
+        c.show_preorder_price,
         c.is_active,
         JSON.stringify(c.features),
         JSON.stringify(c.specifications),
@@ -184,7 +185,7 @@ adminProductsRouter.post('/products', requirePool, requireAdmin, async (req, res
     if (e.code === '42703') {
       return res.status(503).json({
         error:
-          'Database schema is missing a column the API expects (often compare_at_price or stock_quantity). In Supabase: run sql/005_add_discount.sql then sql/006_coupons_audit_stock.sql, or run sql/008_ensure_product_admin_columns.sql once.',
+          'Database schema is missing a column the API expects (often compare_at_price, stock_quantity, or show_preorder_price). Run sql/008_ensure_product_admin_columns.sql once, or sql/009_show_preorder_price.sql if only pre-order price visibility is missing.',
         code: e.code,
       });
     }
@@ -233,18 +234,19 @@ adminProductsRouter.put('/products/:dbId', requirePool, requireAdmin, async (req
         brand = $10,
         video_url = $11,
         is_preorder = $12,
-        is_active = $13,
-        features = $14::jsonb,
-        specifications = $15::jsonb,
-        variants = $16::jsonb,
-        colors = $17::jsonb,
-        sizes = $18::jsonb,
-        connectivity_options = $19::jsonb,
-        secondary_categories = $20::jsonb,
-        gallery_images = $21::jsonb,
-        stock_quantity = $22,
+        show_preorder_price = $13,
+        is_active = $14,
+        features = $15::jsonb,
+        specifications = $16::jsonb,
+        variants = $17::jsonb,
+        colors = $18::jsonb,
+        sizes = $19::jsonb,
+        connectivity_options = $20::jsonb,
+        secondary_categories = $21::jsonb,
+        gallery_images = $22::jsonb,
+        stock_quantity = $23,
         updated_at = NOW()
-      WHERE id = $23
+      WHERE id = $24
       RETURNING *`,
       [
         c.legacy_override_id,
@@ -259,6 +261,7 @@ adminProductsRouter.put('/products/:dbId', requirePool, requireAdmin, async (req
         c.brand,
         c.video_url,
         c.is_preorder,
+        c.show_preorder_price,
         c.is_active,
         JSON.stringify(c.features),
         JSON.stringify(c.specifications),
@@ -284,7 +287,7 @@ adminProductsRouter.put('/products/:dbId', requirePool, requireAdmin, async (req
     if (e.code === '42703') {
       return res.status(503).json({
         error:
-          'Database schema is missing a column the API expects. Run sql/008_ensure_product_admin_columns.sql (or 005 + 006) on your database.',
+          'Database schema is missing a column the API expects. Run sql/008_ensure_product_admin_columns.sql (includes show_preorder_price) or sql/009_show_preorder_price.sql on your database.',
         code: e.code,
       });
     }

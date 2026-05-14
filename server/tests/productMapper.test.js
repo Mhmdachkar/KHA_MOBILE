@@ -183,6 +183,26 @@ describe("bodyToRowColumns — flags and defaults", () => {
   it("maps legacyOverrideId", () => {
     expect(bodyToRowColumns({ name: "A", price: 10, category: "X", legacyOverrideId: 7 }).legacy_override_id).toBe(7);
   });
+
+  it("defaults show_preorder_price to true when not preorder", () => {
+    expect(bodyToRowColumns({ name: "A", price: 10, category: "X", isPreorder: false }).show_preorder_price).toBe(true);
+  });
+
+  it("defaults show_preorder_price to true when preorder and flag omitted", () => {
+    expect(bodyToRowColumns({ name: "A", price: 10, category: "X", isPreorder: true }).show_preorder_price).toBe(true);
+  });
+
+  it("maps showPreorderPrice false when preorder", () => {
+    expect(
+      bodyToRowColumns({
+        name: "A",
+        price: 10,
+        category: "X",
+        isPreorder: true,
+        showPreorderPrice: false,
+      }).show_preorder_price
+    ).toBe(false);
+  });
 });
 
 // ─── validateProductPayload (inline mirror of server logic) ─────────────────
@@ -281,6 +301,7 @@ const baseRow = {
   brand: null,
   video_url: null,
   is_preorder: false,
+  show_preorder_price: true,
   is_active: true,
   features: [],
   specifications: [],
@@ -324,6 +345,20 @@ describe("rowToPublicProduct", () => {
     const product = rowToPublicProduct(baseRow, fakeReq);
     expect(product.price).toBe(49.99);
     expect(typeof product.price).toBe("number");
+  });
+
+  it("maps showPreorderPrice from row when false", () => {
+    const row = { ...baseRow, is_preorder: true, show_preorder_price: false };
+    const product = rowToPublicProduct(row, fakeReq);
+    expect(product.isPreorder).toBe(true);
+    expect(product.showPreorderPrice).toBe(false);
+  });
+
+  it("defaults showPreorderPrice true when column missing", () => {
+    const row = { ...baseRow };
+    delete row.show_preorder_price;
+    const product = rowToPublicProduct(row, fakeReq);
+    expect(product.showPreorderPrice).toBe(true);
   });
 
   it("sets id from dbId when no legacy_override_id", () => {

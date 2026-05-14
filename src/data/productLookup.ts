@@ -24,6 +24,9 @@ export type ApiPublicProduct = {
   video?: string;
   isPreorder?: boolean;
   isActive?: boolean;
+  compareAtPrice?: number | null;
+  /** When pre-order: if false, storefront hides the numeric price. */
+  showPreorderPrice?: boolean;
   features: string[];
   specifications: Array<{ label: string; value: string }>;
   variants?: Product["variants"];
@@ -109,7 +112,9 @@ function mapApiToProduct(p: ApiPublicProduct): Product {
     secondaryCategories: p.secondaryCategories?.length ? p.secondaryCategories : undefined,
     video: p.video,
     isPreorder: p.isPreorder,
+    showPreorderPrice: p.showPreorderPrice !== false,
     isActive: p.isActive,
+    compareAtPrice: p.compareAtPrice ?? undefined,
   } as Product;
 }
 
@@ -135,7 +140,8 @@ function mapApiToGreenLion(p: ApiPublicProduct): GreenLionProduct {
     secondaryCategories: p.secondaryCategories?.length ? p.secondaryCategories : undefined,
     video: p.video,
     isPreorder: p.isPreorder,
-    isActive: p.isActive,
+    showPreorderPrice: p.showPreorderPrice !== false,
+    compareAtPrice: p.compareAtPrice ?? undefined,
   } as GreenLionProduct;
 }
 

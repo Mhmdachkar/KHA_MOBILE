@@ -1044,12 +1044,14 @@ const CategoryPage = () => {
                         name={product.name}
                         title={product.title}
                         price={product.price || 0}
+                        compareAtPrice={product.compareAtPrice}
                         image={product.image}
                         images={product.images || [product.image]}
                         rating={product.rating}
                         category={product.category}
                         colors={product.colors}
                         isPreorder={product.isPreorder}
+                        showPreorderPrice={product.showPreorderPrice}
                       />
                       {isSmartphoneCategory && product.variants?.length > 0 && (
                         <div className="flex flex-wrap gap-1.5">

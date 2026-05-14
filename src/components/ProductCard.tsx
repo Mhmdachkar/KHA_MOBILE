@@ -5,24 +5,44 @@ import { Link } from "react-router-dom";
 import { useFavorites } from "@/context/FavoritesContext";
 import { useCart } from "@/context/CartContext";
 import { resolveImageUrl } from "@/lib/imageUtils";
+import { hasRetailDiscount, retailDiscountPercent } from "@/lib/adminProductPricing";
 
 interface ProductCardProps {
   id: number;
   name: string;
   title?: string; // Optional title - if provided, will be used instead of name
   price: number | string;
+  /** List / was price when greater than `price` (shows discount). */
+  compareAtPrice?: number | null;
   image: string;
   images?: string[]; // Optional images array for hover switching
   rating?: number;
   category?: string;
   colors?: Array<{ name: string; image?: string; stock?: string }>;
   isPreorder?: boolean;
+  /** When pre-order: if false, storefront hides the price (default true). */
+  showPreorderPrice?: boolean;
 }
 
-const ProductCard = ({ id, name, title, price, image, images, rating = 4.5, category, colors, isPreorder = false }: ProductCardProps) => {
+const ProductCard = ({
+  id,
+  name,
+  title,
+  price,
+  compareAtPrice,
+  image,
+  images,
+  rating = 4.5,
+  category,
+  colors,
+  isPreorder = false,
+  showPreorderPrice = true,
+}: ProductCardProps) => {
   const { isFavorite, toggleFavorite } = useFavorites();
   const { addToCart } = useCart();
   const favorite = isFavorite(id);
+  const preorderHideNumeric =
+    Boolean(isPreorder) && (!showPreorderPrice || Number(price) === 0);
   // Standardized image sizing for all products - consistent display
   const imageFitClass = "object-contain p-3 sm:p-4 md:p-5";
 
@@ -168,8 +188,22 @@ const ProductCard = ({ id, name, title, price, image, images, rating = 4.5, cate
               ({rating})
             </span>
           </div>
-          {isPreorder && Number(price) === 0 ? (
+          {preorderHideNumeric ? (
             <p className="text-elegant text-xs sm:text-sm font-normal text-primary">Pre-order</p>
+          ) : hasRetailDiscount(compareAtPrice, price) && compareAtPrice != null ? (
+            <div className="flex flex-col gap-0.5">
+              <div className="flex flex-wrap items-center gap-1 sm:gap-1.5">
+                <span className="text-[9px] sm:text-[10px] text-muted-foreground line-through">
+                  ${Number(compareAtPrice).toFixed(2)}
+                </span>
+                <span className="text-[9px] sm:text-[10px] font-bold rounded-full bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 px-1.5 py-0">
+                  {retailDiscountPercent(Number(compareAtPrice), typeof price === "string" ? parseFloat(price) : price)}% OFF
+                </span>
+              </div>
+              <p className="text-elegant text-xs sm:text-sm font-normal bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                ${typeof price === "string" ? price : price.toFixed(2)}
+              </p>
+            </div>
           ) : (
             <p className="text-elegant text-xs sm:text-sm font-normal bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">${typeof price === "string" ? price : price.toFixed(2)}</p>
           )}

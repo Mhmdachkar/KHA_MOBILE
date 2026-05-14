@@ -99,6 +99,7 @@ export function rowToPublicProduct(row, req) {
     brand: row.brand || undefined,
     video: row.video_url || undefined,
     isPreorder: row.is_preorder,
+    showPreorderPrice: row.show_preorder_price !== false,
     isActive: row.is_active,
     features: row.features || [],
     specifications: row.specifications || [],
@@ -115,6 +116,15 @@ function finiteOrNull(v) {
   if (v === null || v === undefined || v === '') return null;
   const n = Number(v);
   return Number.isFinite(n) ? n : null;
+}
+
+/** When not pre-order, always true (ignored on storefront). When pre-order, default show price. */
+function preorderShowPriceFromBody(b) {
+  const pre = Boolean(b?.isPreorder ?? b?.is_preorder);
+  if (!pre) return true;
+  const v = b?.showPreorderPrice ?? b?.show_preorder_price;
+  if (v === false || v === 'false' || v === 0 || v === '0') return false;
+  return true;
 }
 
 export function bodyToRowColumns(body) {
@@ -152,6 +162,7 @@ export function bodyToRowColumns(body) {
     brand: b.brand ?? null,
     video_url: b.videoUrl ?? b.video_url ?? b.video ?? null,
     is_preorder: b.isPreorder ?? b.is_preorder ?? false,
+    show_preorder_price: preorderShowPriceFromBody(b),
     is_active: b.isActive ?? b.is_active ?? true,
     features: b.features ?? [],
     specifications: b.specifications ?? [],

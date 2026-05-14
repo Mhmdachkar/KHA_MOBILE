@@ -15,9 +15,17 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { useUnsavedChanges } from "@/hooks/useUnsavedChanges";
+import { computeCatalogSaveFromBasics, formPricesFromLoadedProduct } from "@/lib/adminProductPricing";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 interface Spec { label: string; value: string }
@@ -38,6 +46,8 @@ interface FormState {
   brand: string;
   videoUrl: string;
   isPreorder: boolean;
+  /** When pre-order: if false, storefront hides the dollar amount. */
+  showPreorderPrice: boolean;
   isActive: boolean;
   features: string[];
   specifications: Spec[];
@@ -68,7 +78,7 @@ type TabId = (typeof TABS)[number]["id"];
 const emptyForm = (): FormState => ({
   legacyOverrideId: "", name: "", title: "", description: "",
   price: "", compareAtPrice: "", primaryImageUrl: "", rating: "4.5", category: "Smartphones",
-  brand: "", videoUrl: "", isPreorder: false, isActive: true,
+  brand: "", videoUrl: "", isPreorder: false, showPreorderPrice: true, isActive: true,
   features: [""], specifications: [{ label: "", value: "" }],
   variants: [], colors: [], sizes: [], connectivityOptions: [], secondaryCategories: [], galleryImages: [],
   stockQuantity: "",
@@ -175,19 +185,24 @@ const AdminProductEditor = () => {
           image: p.image,
           legacyOverrideId: p.legacyOverrideId ?? null,
         });
+        const { price: priceField, compareAtPrice: compareField } = formPricesFromLoadedProduct({
+          price: Number(p.price),
+          compareAtPrice: p.compareAtPrice ?? null,
+        });
         const loaded: FormState = {
           legacyOverrideId: p.legacyOverrideId != null ? String(p.legacyOverrideId) : "",
           name: p.name || "",
           title: p.title || "",
           description: p.description || "",
-          price: String(p.price ?? ""),
-          compareAtPrice: p.compareAtPrice != null ? String(p.compareAtPrice) : "",
+          price: priceField,
+          compareAtPrice: compareField,
           primaryImageUrl: displayPrimary,
           rating: String(p.rating ?? "4.5"),
           category: p.category || "Smartphones",
           brand: p.brand || "",
           videoUrl: p.video || "",
           isPreorder: Boolean(p.isPreorder),
+          showPreorderPrice: p.showPreorderPrice !== false,
           isActive: p.isActive !== false,
           features: (p.features?.length ? p.features : [""]),
           specifications: (p.specifications?.length ? p.specifications : [{ label: "", value: "" }]),
@@ -265,41 +280,16 @@ const AdminProductEditor = () => {
 
   // ── Save ──
   const save = async () => {
-    if (!form.name.trim()) {
-      toast({ variant: "destructive", title: "Name is required" });
-      setActiveTab("basics");
-      return;
-    }
-    const priceStr = form.price.trim();
-    const priceNum = parseFloat(priceStr);
-    console.log('[AdminProductEditor] Validating price:', { raw: form.price, str: priceStr, num: priceNum, isPreorder: form.isPreorder });
-    if (priceStr === "" || !Number.isFinite(priceNum) || priceNum < 0) {
-      console.error('[AdminProductEditor] Price validation failed:', { priceStr, priceNum });
-      toast({ variant: "destructive", title: "Valid price is required", description: `Enter a number ≥ 0 (got: "${priceStr || 'empty'}")` });
-      setActiveTab("basics");
-      return;
-    }
-    if (form.isPreorder && priceNum === 0) {
-      console.error('[AdminProductEditor] Pre-order with zero price');
-      toast({ variant: "destructive", title: "Pre-order products cannot have a zero price" });
-      setActiveTab("basics");
-      return;
-    }
-    const compareAtStr = form.compareAtPrice.trim();
-    const compareAtNum = compareAtStr !== "" ? parseFloat(compareAtStr) : null;
-    if (compareAtNum !== null && (!Number.isFinite(compareAtNum) || compareAtNum <= priceNum)) {
-      toast({ variant: "destructive", title: "'Compare At' price must be greater than sale price" });
-      setActiveTab("basics");
-      return;
-    }
-    if (form.legacyOverrideId && (isNaN(Number(form.legacyOverrideId)) || Number(form.legacyOverrideId) < 0)) {
-      toast({ variant: "destructive", title: "Legacy Override ID must be a valid positive number" });
-      setActiveTab("basics");
-      return;
-    }
-    const ratingNum = Number(form.rating);
-    if (isNaN(ratingNum) || ratingNum < 0 || ratingNum > 5) {
-      toast({ variant: "destructive", title: "Rating must be between 0 and 5" });
+    const basics = computeCatalogSaveFromBasics({
+      name: form.name,
+      price: form.price,
+      compareAtPrice: form.compareAtPrice,
+      isPreorder: form.isPreorder,
+      legacyOverrideId: form.legacyOverrideId,
+      rating: form.rating,
+    });
+    if (!basics.ok) {
+      toast({ variant: "destructive", title: basics.message });
       setActiveTab("basics");
       return;
     }
@@ -311,14 +301,15 @@ const AdminProductEditor = () => {
         name: form.name.trim(),
         title: form.title.trim() || form.name.trim(),
         description: form.description,
-        price: priceNum,
-        compareAtPrice: compareAtNum,
+        price: basics.price,
+        compareAtPrice: basics.compareAtPrice,
         primaryImageUrl: form.primaryImageUrl.trim(),
         rating: Number(form.rating),
         category: form.category.trim(),
         brand: form.brand.trim() || undefined,
         videoUrl: form.videoUrl.trim() || undefined,
         isPreorder: form.isPreorder,
+        showPreorderPrice: form.showPreorderPrice,
         isActive: form.isActive,
         features: form.features.map((f) => f.trim()).filter(Boolean),
         specifications: form.specifications.filter((s) => s.label.trim()),
@@ -523,25 +514,12 @@ const AdminProductEditor = () => {
                     />
                   </div>
 
-                  {/* Pricing row */}
-                  <div className="space-y-1.5">
-                    <Label>Sale Price (USD) <span className="text-red-500">*</span></Label>
-                    <div className="relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">$</span>
-                      <Input
-                        inputMode="decimal"
-                        className="pl-7"
-                        value={form.price}
-                        onChange={(e) => patch("price", e.target.value)}
-                        placeholder="0.00"
-                      />
-                    </div>
-                  </div>
-                  <div className="space-y-1.5">
+                  {/* Pricing: list price (Compare at) is primary; sale is optional for a discount */}
+                  <div className="space-y-1.5 sm:col-span-2">
                     <div className="flex items-center gap-2">
-                      <Label>Compare At (was)</Label>
+                      <Label>Compare at (was) — list price (USD) <span className="text-red-500">*</span></Label>
                       {form.compareAtPrice && form.price &&
-                        Number(form.compareAtPrice) > Number(form.price) && (
+                        Number(form.compareAtPrice) > Number(form.price) && Number(form.price) > 0 && (
                         <span className="inline-flex items-center gap-1 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 text-[10px] font-bold px-2 py-0.5">
                           {Math.round((1 - Number(form.price) / Number(form.compareAtPrice)) * 100)}% OFF
                         </span>
@@ -554,10 +532,24 @@ const AdminProductEditor = () => {
                         className="pl-7"
                         value={form.compareAtPrice}
                         onChange={(e) => patch("compareAtPrice", e.target.value)}
-                        placeholder="Original price (optional)"
+                        placeholder="e.g. 999.00"
                       />
                     </div>
-                    <p className="text-xs text-muted-foreground">Leave blank if no discount applies.</p>
+                    <p className="text-xs text-muted-foreground">This is the main price customers see when there is no separate sale price.</p>
+                  </div>
+                  <div className="space-y-1.5 sm:col-span-2">
+                    <Label>Sale price (USD) <span className="text-xs font-normal text-muted-foreground">(optional)</span></Label>
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">$</span>
+                      <Input
+                        inputMode="decimal"
+                        className="pl-7"
+                        value={form.price}
+                        onChange={(e) => patch("price", e.target.value)}
+                        placeholder="Leave blank for list price only — or enter a lower on-sale price"
+                      />
+                    </div>
+                    <p className="text-xs text-muted-foreground">If set below list price, the storefront shows the discount (strikethrough + % off).</p>
                   </div>
 
                   <div className="space-y-1.5">
@@ -586,8 +578,34 @@ const AdminProductEditor = () => {
                       <p className="text-sm font-medium">Pre-order</p>
                       <p className="text-xs text-muted-foreground">Shows a pre-order badge and note on the product page.</p>
                     </div>
-                    <Switch checked={form.isPreorder} onCheckedChange={(v) => patch("isPreorder", v)} />
+                    <Switch
+                      checked={form.isPreorder}
+                      onCheckedChange={(v) => {
+                        patch("isPreorder", v);
+                        if (!v) patch("showPreorderPrice", true);
+                      }}
+                    />
                   </div>
+                  {form.isPreorder && (
+                    <div className="rounded-lg border px-4 py-3 space-y-2 bg-muted/10">
+                      <Label className="text-sm font-medium">Storefront price</Label>
+                      <p className="text-xs text-muted-foreground -mt-1">
+                        Choose whether customers see the price or only &quot;Pre-order&quot; (no dollar amount).
+                      </p>
+                      <Select
+                        value={form.showPreorderPrice ? "show" : "hide"}
+                        onValueChange={(v) => patch("showPreorderPrice", v === "show")}
+                      >
+                        <SelectTrigger className="w-full max-w-md touch-manipulation" style={{ touchAction: "manipulation" }}>
+                          <SelectValue placeholder="Price visibility" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="show">Show price on storefront</SelectItem>
+                          <SelectItem value="hide">Hide price (Pre-order text only)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
                 </div>
               </SectionCard>
 

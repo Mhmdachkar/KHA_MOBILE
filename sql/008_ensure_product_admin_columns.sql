@@ -12,3 +12,9 @@ COMMENT ON COLUMN products.compare_at_price IS
   'Original price before discount. When set and > price, storefront can show discount.';
 COMMENT ON COLUMN products.stock_quantity IS
   'Inventory count. NULL = not tracked; 0 = out of stock.';
+
+ALTER TABLE products
+  ADD COLUMN IF NOT EXISTS show_preorder_price BOOLEAN NOT NULL DEFAULT TRUE;
+
+COMMENT ON COLUMN products.show_preorder_price IS
+  'When is_preorder: if false, storefront hides the numeric price (shows Pre-order only).';

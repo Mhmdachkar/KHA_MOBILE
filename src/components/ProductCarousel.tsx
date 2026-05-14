@@ -132,12 +132,14 @@ const ProductCarousel = ({ title, products }: ProductCarouselProps) => {
               name={product.name}
               title={product.title}
               price={product.price}
+              compareAtPrice={product.compareAtPrice}
               image={product.image}
               images={product.images || [product.image]}
               rating={product.rating}
               category={product.category}
               colors={product.colors}
               isPreorder={product.isPreorder}
+              showPreorderPrice={product.showPreorderPrice}
             />
           </div>
         ))}

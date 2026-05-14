@@ -675,6 +675,10 @@ export interface Product {
   sizes?: Array<{ name: string; price: number; stock?: string; description?: string }>;
   connectivityOptions?: string[];
   isPreorder?: boolean;
+  /** When pre-order: if false, storefront hides the numeric price. */
+  showPreorderPrice?: boolean;
+  /** List / was price when greater than `price` (shows discount on storefront). */
+  compareAtPrice?: number | null;
   secondaryCategories?: string[]; // For cross-categorization (e.g., Audio products also appearing in their specific subcategory)
 }
 

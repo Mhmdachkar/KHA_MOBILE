@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Heart, ShoppingCart, Star, ChevronLeft, ChevronRight, CheckCircle2 } from "lucide-react";
 import { Link, useParams, useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { resolveImageUrl } from "@/lib/imageUtils";
+import { hasRetailDiscount, retailDiscountPercent } from "@/lib/adminProductPricing";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { useFavorites } from "@/context/FavoritesContext";
@@ -178,6 +179,17 @@ const ProductDetail = () => {
   }, [colorImage]);
 
   const displayPrice = selectedSizeData?.price ?? selectedVariant?.price ?? product.price;
+  const showRetailDiscount =
+    "compareAtPrice" in product &&
+    hasRetailDiscount(product.compareAtPrice, displayPrice);
+  const listCompareAt =
+    "compareAtPrice" in product && product.compareAtPrice != null
+      ? Number(product.compareAtPrice)
+      : NaN;
+  const showPriceWhenPreorder = product.showPreorderPrice !== false;
+  const preorderHideNumeric =
+    Boolean(product.isPreorder) &&
+    (!showPriceWhenPreorder || Number(displayPrice) === 0);
 
   // Helper function to format price (handles both number and string)
   const formatPrice = (price: number | string, isPreorder?: boolean): string => {
@@ -811,8 +823,22 @@ const ProductDetail = () => {
 
             <div className="flex flex-wrap items-center gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 w-full">
               <div className="flex flex-col">
-                {product.isPreorder && Number(displayPrice) === 0 ? (
+                {preorderHideNumeric ? (
                   <p className="text-elegant text-2xl sm:text-3xl font-bold text-primary">Pre-order</p>
+                ) : showRetailDiscount && Number.isFinite(listCompareAt) ? (
+                  <div className="flex flex-col gap-1">
+                    <div className="flex flex-wrap items-baseline gap-2">
+                      <span className="text-base sm:text-lg text-muted-foreground line-through">
+                        ${listCompareAt.toFixed(2)}
+                      </span>
+                      <span className="text-xs font-bold rounded-full bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 px-2 py-0.5">
+                        {retailDiscountPercent(listCompareAt, Number(displayPrice))}% OFF
+                      </span>
+                    </div>
+                    <p className="text-elegant text-2xl sm:text-3xl font-bold">
+                      ${formatPrice(displayPrice, product.isPreorder)}
+                    </p>
+                  </div>
                 ) : (
                   <p className="text-elegant text-2xl sm:text-3xl font-bold">${formatPrice(displayPrice, product.isPreorder)}</p>
                 )}
@@ -958,7 +984,7 @@ const ProductDetail = () => {
                           {variant.ram} · {variant.storage}
                         </span>
                         <span className="text-xs sm:text-sm text-elegant font-medium">
-                          {product.isPreorder && Number(variant.price) === 0 ? (
+                          {product.isPreorder && (!showPriceWhenPreorder || Number(variant.price) === 0) ? (
                             <span className="text-primary">Pre-order</span>
                           ) : (
                             `$${formatPrice(variant.price, product.isPreorder)}`
@@ -1215,12 +1241,14 @@ const ProductDetail = () => {
                       name={accessory.name}
                       title={accessory.title}
                       price={accessory.price}
+                      compareAtPrice={accessory.compareAtPrice}
                       image={accessory.image}
                       images={accessory.images}
                       rating={accessory.rating}
                       category={accessory.category}
                       colors={accessory.colors}
                       isPreorder={accessory.isPreorder}
+                      showPreorderPrice={accessory.showPreorderPrice}
                     />
                   </motion.div>
                 ))}
@@ -1470,8 +1498,20 @@ const ProductDetail = () => {
                         <h3 className="text-sm font-semibold text-elegant mb-1 line-clamp-2 min-h-[2.5rem]">
                           {product.name}
                         </h3>
-                        {product.isPreorder && Number(displayPrice) === 0 ? (
+                        {preorderHideNumeric ? (
                           <p className="text-lg font-bold text-primary mb-2">Pre-order</p>
+                        ) : showRetailDiscount && Number.isFinite(listCompareAt) ? (
+                          <div className="mb-2">
+                            <div className="flex flex-wrap items-baseline gap-2 mb-0.5">
+                              <span className="text-sm text-muted-foreground line-through">
+                                ${listCompareAt.toFixed(2)}
+                              </span>
+                              <span className="text-[10px] font-bold rounded-full bg-red-500/10 text-red-600 border border-red-500/20 px-1.5 py-0">
+                                {retailDiscountPercent(listCompareAt, Number(displayPrice))}% OFF
+                              </span>
+                            </div>
+                            <p className="text-lg font-bold text-primary">${formatPrice(displayPrice, product.isPreorder)}</p>
+                          </div>
                         ) : (
                           <p className="text-lg font-bold text-primary mb-2">${formatPrice(displayPrice, product.isPreorder)}</p>
                         )}
@@ -1526,7 +1566,7 @@ const ProductDetail = () => {
                                 ))}
                               </div>
                               <p className="text-lg font-bold text-elegant">
-                                {item.isPreorder && Number(item.price) === 0 ? (
+                                {item.isPreorder && (item.showPreorderPrice === false || Number(item.price) === 0) ? (
                                   <span className="text-primary">Pre-order</span>
                                 ) : (
                                   `$${formatPrice(item.price, item.isPreorder)}`
