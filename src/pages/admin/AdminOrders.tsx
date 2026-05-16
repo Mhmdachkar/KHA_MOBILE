@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { adminFetch, apiBase, getAdminToken } from "@/lib/adminApi";
 import { useToast } from "@/hooks/use-toast";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
 
 interface OrderItem {
   id: number;
@@ -81,6 +82,9 @@ const AdminOrders = () => {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [detailLoading, setDetailLoading] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState<{ open: boolean; order: Order | null }>({
+    open: false, order: null,
+  });
 
   const fetchOrders = useCallback(async () => {
     setLoading(true);
@@ -141,8 +145,7 @@ const AdminOrders = () => {
     }
   };
 
-  const deleteOrder = async (order: Order) => {
-    if (!window.confirm(`Delete order ${order.order_number}? This cannot be undone.`)) return;
+  const doDeleteOrder = async (order: Order) => {
     try {
       const res = await adminFetch(`/api/admin/orders/${order.id}`, { method: "DELETE" });
       if (!res.ok) throw new Error("Failed");
@@ -154,17 +157,31 @@ const AdminOrders = () => {
     }
   };
 
-  const exportCsv = () => {
+  const deleteOrder = (order: Order) => {
+    setConfirmDelete({ open: true, order });
+  };
+
+  const exportCsv = async () => {
     const params = new URLSearchParams();
     if (filterStatus) params.set("status", filterStatus);
     if (dateFrom) params.set("date_from", dateFrom);
     if (dateTo) params.set("date_to", dateTo);
     const token = getAdminToken();
-    const url = `${apiBase()}/api/admin/orders-export?${params}`;
-    const a = document.createElement("a");
-    a.href = url + (token ? `&token=${encodeURIComponent(token)}` : "");
-    a.download = "orders.csv";
-    a.click();
+    try {
+      const res = await fetch(`${apiBase()}/api/admin/orders-export?${params}`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
+      if (!res.ok) throw new Error("Export failed");
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "orders.csv";
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch {
+      toast({ title: "Error", description: "Failed to export CSV", variant: "destructive" });
+    }
   };
 
   const formatDate = (iso: string) =>
@@ -186,7 +203,7 @@ const AdminOrders = () => {
           </h1>
           <div className="flex items-center gap-2">
             <Badge variant="outline" className="text-xs">{total} orders</Badge>
-            <Button variant="outline" size="sm" onClick={exportCsv} className="gap-1.5">
+            <Button variant="outline" size="sm" onClick={() => void exportCsv()} className="gap-1.5">
               <Download className="h-3.5 w-3.5" /> CSV
             </Button>
           </div>
@@ -467,6 +484,14 @@ const AdminOrders = () => {
           </div>
         )}
       </div>
+      <ConfirmDialog
+        open={confirmDelete.open}
+        onOpenChange={(open) => setConfirmDelete((s) => ({ ...s, open }))}
+        title={`Delete order ${confirmDelete.order?.order_number}?`}
+        description="This order and all its items will be permanently removed. This action cannot be undone."
+        confirmLabel="Delete"
+        onConfirm={() => confirmDelete.order && doDeleteOrder(confirmDelete.order)}
+      />
     </div>
   );
 };

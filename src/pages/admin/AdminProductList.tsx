@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
 
 interface AdminProduct {
   dbId: number;
@@ -55,6 +56,9 @@ const AdminProductList = () => {
   const [bulkBusy, setBulkBusy] = useState(false);
   const [showCatPicker, setShowCatPicker] = useState(false);
   const [bulkCategory, setBulkCategory] = useState("Smartphones");
+  const [confirmState, setConfirmState] = useState<{ open: boolean; title: string; description: string; onConfirm: () => void }>({
+    open: false, title: "", description: "", onConfirm: () => {},
+  });
 
   const loadAdminProducts = useCallback(async () => {
     console.log('[AdminProductList] Loading admin products...');
@@ -157,8 +161,7 @@ const AdminProductList = () => {
     return ["All", ...cats.sort()];
   }, [products]);
 
-  const deleteProduct = async (dbId: number, name: string) => {
-    if (!confirm(`Delete "${name}"? This cannot be undone.`)) return;
+  const doDeleteProduct = async (dbId: number, name: string) => {
     console.log('[AdminProductList] Deleting product:', dbId, name);
     setDeleting(dbId);
     try {
@@ -208,11 +211,17 @@ const AdminProductList = () => {
     }
   };
 
-  const bulkAction = async (action: string, value?: string) => {
-    if (selected.size === 0) return;
+  const deleteProduct = (dbId: number, name: string) => {
+    setConfirmState({
+      open: true,
+      title: `Delete "${name}"?`,
+      description: "This product will be permanently removed. This action cannot be undone.",
+      onConfirm: () => doDeleteProduct(dbId, name),
+    });
+  };
+
+  const doBulkAction = async (action: string, value?: string) => {
     console.log('[AdminProductList] Bulk action:', action, 'on', selected.size, 'products');
-    const label = action === 'delete' ? `Delete ${selected.size} product(s)?` : `${action} ${selected.size} product(s)?`;
-    if (!confirm(label + ' This cannot be undone.')) return;
     setBulkBusy(true);
     try {
       const res = await adminFetch('/api/admin/products/bulk', {
@@ -238,6 +247,17 @@ const AdminProductList = () => {
     } finally {
       setBulkBusy(false);
     }
+  };
+
+  const bulkAction = (action: string, value?: string) => {
+    if (selected.size === 0) return;
+    const label = action === 'delete' ? `Delete ${selected.size} product(s)?` : `${action} ${selected.size} product(s)?`;
+    setConfirmState({
+      open: true,
+      title: label,
+      description: action === 'delete' ? "These products will be permanently removed. This cannot be undone." : "This will apply to all selected products.",
+      onConfirm: () => doBulkAction(action, value),
+    });
   };
 
   return (
@@ -625,6 +645,14 @@ const AdminProductList = () => {
           </div>
         </div>
       )}
+      <ConfirmDialog
+        open={confirmState.open}
+        onOpenChange={(open) => setConfirmState((s) => ({ ...s, open }))}
+        title={confirmState.title}
+        description={confirmState.description}
+        confirmLabel="Delete"
+        onConfirm={confirmState.onConfirm}
+      />
     </div>
   );
 };

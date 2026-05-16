@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { motion } from "framer-motion";
 import { Heart, ShoppingCart, Star, ChevronLeft, ChevronRight, CheckCircle2 } from "lucide-react";
 import { Link, useParams, useNavigate, useSearchParams, useLocation } from "react-router-dom";
@@ -64,25 +64,28 @@ const ProductDetail = () => {
   const variantOptions = useMemo(() => product?.variants || [], [product]);
   const [searchParams] = useSearchParams();
   const variantParam = searchParams.get("variant");
-  const [selectedVariantKey, setSelectedVariantKey] = useState<string | null>(null);
+  const [selectedVariantIndex, setSelectedVariantIndex] = useState<number>(-1);
   useEffect(() => {
     if (variantOptions.length === 0) {
-      setSelectedVariantKey(null);
+      setSelectedVariantIndex(-1);
       return;
     }
     if (variantParam) {
-      const matched = variantOptions.find((variant) => variant.key === variantParam);
-      if (matched) {
-        setSelectedVariantKey(matched.key);
+      const idx = variantOptions.findIndex((variant) => variant.key === variantParam);
+      if (idx !== -1) {
+        setSelectedVariantIndex(idx);
         return;
       }
     }
-    setSelectedVariantKey(variantOptions[0]?.key ?? null);
+    setSelectedVariantIndex(0);
   }, [variantOptions, variantParam]);
   const selectedVariant = useMemo(() => {
     if (variantOptions.length === 0) return null;
-    return variantOptions.find((variant) => variant.key === selectedVariantKey) || variantOptions[0];
-  }, [variantOptions, selectedVariantKey]);
+    if (selectedVariantIndex >= 0 && selectedVariantIndex < variantOptions.length) {
+      return variantOptions[selectedVariantIndex];
+    }
+    return variantOptions[0];
+  }, [variantOptions, selectedVariantIndex]);
 
   const productImages = useMemo(() => {
     let raw: string[];
@@ -97,7 +100,10 @@ const ProductDetail = () => {
   }, [greenLionProduct, regularProduct]);
 
   const colorOptions = useMemo(() => product?.colors || [], [product]);
-  const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [selectedColorIndex, setSelectedColorIndex] = useState<number>(-1);
+  const selectedColor = selectedColorIndex >= 0 && selectedColorIndex < colorOptions.length
+    ? colorOptions[selectedColorIndex].name
+    : null;
 
   // If product not found, redirect to products page
   useEffect(() => {
@@ -105,6 +111,67 @@ const ProductDetail = () => {
       navigate("/products");
     }
   }, [productId, product, navigate]);
+
+  useEffect(() => {
+    // Reset selectedColor when product changes
+    setSelectedColorIndex(-1);
+  }, [product?.id]);
+
+  useEffect(() => {
+    // Set default color when product has colors
+    if (colorOptions.length > 0 && selectedColorIndex < 0) {
+      setSelectedColorIndex(0);
+    }
+  }, [colorOptions, selectedColorIndex]);
+
+  const colorImage = useMemo(() => {
+    if (selectedColorIndex < 0 || !colorOptions.length) return null;
+    const color = colorOptions[selectedColorIndex];
+    return color?.image ? resolveImageUrl(color.image) : undefined;
+  }, [selectedColorIndex, colorOptions]);
+
+  // Size selection handling
+  const sizeOptions = useMemo(() => product?.sizes || [], [product]);
+  const [selectedSizeIndex, setSelectedSizeIndex] = useState<number>(-1);
+  const selectedSize = selectedSizeIndex >= 0 && selectedSizeIndex < sizeOptions.length
+    ? sizeOptions[selectedSizeIndex].name
+    : null;
+
+  useEffect(() => {
+    // Reset selectedSize when product changes
+    setSelectedSizeIndex(-1);
+  }, [product?.id]);
+
+  useEffect(() => {
+    // Set default size when product has sizes
+    if (sizeOptions.length > 0 && selectedSizeIndex < 0) {
+      setSelectedSizeIndex(0);
+    }
+  }, [sizeOptions, selectedSizeIndex]);
+
+  const selectedSizeData = useMemo(() => {
+    if (selectedSizeIndex < 0 || !sizeOptions.length) return null;
+    return sizeOptions[selectedSizeIndex];
+  }, [selectedSizeIndex, sizeOptions]);
+
+  // Track if user manually clicked an image (to prevent color sync from overriding)
+  const manualImageSelectionRef = useRef(false);
+
+  // When color changes from COLOR BUTTON click, update selectedImage
+  // But don't interfere if user manually clicked an image thumbnail
+  useEffect(() => {
+    // Only sync if this was a deliberate color change, not from clicking an image
+    if (!manualImageSelectionRef.current && colorImage && productImages.length > 0) {
+      const index = productImages.findIndex(img => img === colorImage);
+      if (index !== -1) {
+        setSelectedImage(index);
+      }
+    }
+    // Reset the manual flag after color sync attempt
+    if (manualImageSelectionRef.current) {
+      manualImageSelectionRef.current = false;
+    }
+  }, [colorImage, productImages]);
 
   if (!product) {
     return (
@@ -119,64 +186,6 @@ const ProductDetail = () => {
       </div>
     );
   }
-
-  useEffect(() => {
-    // Reset selectedColor when product changes
-    setSelectedColor(null);
-  }, [product.id]);
-
-  useEffect(() => {
-    // Set default color when product has colors
-    if (colorOptions.length > 0 && !selectedColor) {
-      setSelectedColor(colorOptions[0].name);
-    }
-  }, [colorOptions, selectedColor]);
-
-  const colorImage = useMemo(() => {
-    if (!selectedColor || !colorOptions.length) return null;
-    const color = colorOptions.find(c => c.name === selectedColor);
-    return color?.image ? resolveImageUrl(color.image) : undefined;
-  }, [selectedColor, colorOptions]);
-
-  // Size selection handling
-  const sizeOptions = useMemo(() => product.sizes || [], [product]);
-  const [selectedSize, setSelectedSize] = useState<string | null>(null);
-
-  useEffect(() => {
-    // Reset selectedSize when product changes
-    setSelectedSize(null);
-  }, [product.id]);
-
-  useEffect(() => {
-    // Set default size when product has sizes
-    if (sizeOptions.length > 0 && !selectedSize) {
-      setSelectedSize(sizeOptions[0].name);
-    }
-  }, [sizeOptions, selectedSize]);
-
-  const selectedSizeData = useMemo(() => {
-    if (!selectedSize || !sizeOptions.length) return null;
-    return sizeOptions.find(size => size.name === selectedSize);
-  }, [selectedSize, sizeOptions]);
-
-  // Track if user manually clicked an image (to prevent color sync from overriding)
-  const [manualImageSelection, setManualImageSelection] = useState(false);
-
-  // When color changes from COLOR BUTTON click, update selectedImage
-  // But don't interfere if user manually clicked an image thumbnail
-  useEffect(() => {
-    // Only sync if this was a deliberate color change, not from clicking an image
-    if (!manualImageSelection && colorImage && productImages.length > 0) {
-      const index = productImages.findIndex(img => img === colorImage);
-      if (index !== -1) {
-        setSelectedImage(index);
-      }
-    }
-    // Reset the manual flag after color sync attempt
-    if (manualImageSelection) {
-      setManualImageSelection(false);
-    }
-  }, [colorImage]);
 
   const displayPrice = selectedSizeData?.price ?? selectedVariant?.price ?? product.price;
   const showRetailDiscount =
@@ -670,15 +679,15 @@ const ProductDetail = () => {
                       e.preventDefault();
                       e.stopPropagation();
                       // Mark this as a manual selection
-                      setManualImageSelection(true);
+                      manualImageSelectionRef.current = true;
                       setSelectedImage(index);
 
                       // Sync color selection when clicking on images
                       if (colorOptions.length > 0) {
                         // Try to find which color this image corresponds to
-                        const matchingColor = colorOptions.find(color => color.image === image);
-                        if (matchingColor) {
-                          setSelectedColor(matchingColor.name);
+                        const matchingColorIdx = colorOptions.findIndex(color => color.image === image);
+                        if (matchingColorIdx !== -1) {
+                          setSelectedColorIndex(matchingColorIdx);
                         }
                       }
                     }}
@@ -907,11 +916,11 @@ const ProductDetail = () => {
               <div className="mb-6">
                 <h4 className="text-elegant text-sm sm:text-base mb-3 font-medium">Select Color</h4>
                 <div className="flex flex-wrap gap-3">
-                  {colorOptions.map((color) => (
+                  {colorOptions.map((color, colorIdx) => (
                     <button
-                      key={color.name}
+                      key={color.name || `color-${colorIdx}`}
                       onClick={() => {
-                        setSelectedColor(color.name);
+                        setSelectedColorIndex(colorIdx);
 
                         // Sync image selection when clicking on colors
                         if (color.image && productImages.length > 0) {
@@ -922,7 +931,7 @@ const ProductDetail = () => {
                         }
                       }}
                       style={{ touchAction: 'manipulation', minHeight: '44px' }}
-                      className={`px-4 py-2 rounded-full text-xs sm:text-sm border transition-all ${selectedColor === color.name
+                      className={`px-4 py-2 rounded-full text-xs sm:text-sm border transition-all ${colorIdx === selectedColorIndex
                         ? "border-primary bg-primary/5 text-primary ring-1 ring-primary/20 font-medium"
                         : "border-border hover:border-primary/50 text-muted-foreground"
                         }`}
@@ -938,12 +947,12 @@ const ProductDetail = () => {
               <div className="mb-6">
                 <h4 className="text-elegant text-sm sm:text-base mb-3 font-medium">Select Size</h4>
                 <div className="flex flex-wrap gap-3">
-                  {sizeOptions.map((size) => (
+                  {sizeOptions.map((size, sizeIdx) => (
                     <button
-                      key={size.name}
-                      onClick={() => setSelectedSize(size.name)}
+                      key={size.name || `size-${sizeIdx}`}
+                      onClick={() => setSelectedSizeIndex(sizeIdx)}
                       style={{ touchAction: 'manipulation', minHeight: '44px' }}
-                      className={`px-4 py-2 rounded-full text-xs sm:text-sm border transition-all ${selectedSize === size.name
+                      className={`px-4 py-2 rounded-full text-xs sm:text-sm border transition-all ${sizeIdx === selectedSizeIndex
                         ? "border-primary bg-primary/5 text-primary ring-1 ring-primary/20 font-medium"
                         : "border-border hover:border-primary/50 text-muted-foreground"
                         }`}
@@ -967,12 +976,12 @@ const ProductDetail = () => {
               <div className="mb-6 sm:mb-8">
                 <h4 className="text-elegant text-sm sm:text-base mb-3 sm:mb-4 font-medium">Choose your configuration</h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
-                  {variantOptions.map((variant) => {
-                    const isActive = selectedVariant?.key === variant.key;
+                  {variantOptions.map((variant, variantIndex) => {
+                    const isActive = variantIndex === selectedVariantIndex;
                     return (
                       <button
-                        key={variant.key}
-                        onClick={() => setSelectedVariantKey(variant.key)}
+                        key={variant.key || `variant-${variantIndex}`}
+                        onClick={() => setSelectedVariantIndex(variantIndex)}
                         style={{ touchAction: 'manipulation', minHeight: '80px' }}
                         className={`text-left border rounded-sm p-3 sm:p-4 flex flex-col gap-1.5 sm:gap-2 transition-all duration-300 ${isActive
                           ? "border-primary bg-primary/5 shadow-sm ring-1 ring-primary/20"

@@ -29,9 +29,9 @@ import { computeCatalogSaveFromBasics, formPricesFromLoadedProduct } from "@/lib
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 interface Spec { label: string; value: string }
-interface Variant { key: string; label: string; ram: string; storage: string; price: number; description: string }
-interface ColorOption { name: string; price: number | ""; stock: string; image: string }
-interface SizeOption { name: string; price: number | ""; stock: string; description: string }
+interface Variant { key: string; label: string; ram: string; storage: string; price: number | string; description: string }
+interface ColorOption { name: string; price: number | string; stock: string; image: string }
+interface SizeOption { name: string; price: number | string; stock: string; description: string }
 
 interface FormState {
   legacyOverrideId: string;
@@ -294,6 +294,38 @@ const AdminProductEditor = () => {
       return;
     }
 
+    // Validate variant/color/size uniqueness
+    if (form.variants.length > 0) {
+      const emptyKeys = form.variants.filter(v => !v.key.trim());
+      if (emptyKeys.length > 0) {
+        toast({ variant: "destructive", title: `${emptyKeys.length} variant(s) missing a key — each variant needs a unique key` });
+        setActiveTab("options");
+        return;
+      }
+      const keys = form.variants.map(v => v.key.trim());
+      if (new Set(keys).size !== keys.length) {
+        toast({ variant: "destructive", title: "Variant keys must be unique — found duplicates" });
+        setActiveTab("options");
+        return;
+      }
+    }
+    if (form.colors.length > 0) {
+      const names = form.colors.map(c => c.name.trim()).filter(Boolean);
+      if (new Set(names).size !== names.length) {
+        toast({ variant: "destructive", title: "Color names must be unique — found duplicates" });
+        setActiveTab("options");
+        return;
+      }
+    }
+    if (form.sizes.length > 0) {
+      const names = form.sizes.map(s => s.name.trim()).filter(Boolean);
+      if (new Set(names).size !== names.length) {
+        toast({ variant: "destructive", title: "Size names must be unique — found duplicates" });
+        setActiveTab("options");
+        return;
+      }
+    }
+
     /** When Basics sale price changes, keep variant/size rows that still matched the old sale in sync so ProductDetail (which prefers variant price) still shows discounts. */
     const prevBasics = computeCatalogSaveFromBasics({
       name: savedForm.name,
@@ -340,7 +372,7 @@ const AdminProductEditor = () => {
         isActive: form.isActive,
         features: form.features.map((f) => f.trim()).filter(Boolean),
         specifications: form.specifications.filter((s) => s.label.trim()),
-        variants: variantsOut,
+        variants: variantsOut.map((v) => ({ ...v, price: v.price === "" ? 0 : Number(v.price) })),
         colors: form.colors.map((c) => ({ ...c, price: c.price === "" ? undefined : Number(c.price) })),
         sizes: sizesOut.map((s) => ({ ...s, price: s.price === "" ? undefined : Number(s.price) })),
         connectivityOptions: form.connectivityOptions.filter(Boolean),
@@ -912,9 +944,9 @@ const AdminProductEditor = () => {
                           <Label className="text-xs">Price (USD)</Label>
                           <div className="relative">
                             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-xs">$</span>
-                            <Input type="number" step="0.01" className="pl-6 text-sm" value={v.price} onChange={(e) => {
-                              const n = [...form.variants]; n[i] = { ...v, price: Number(e.target.value) }; patch("variants", n);
-                            }} />
+                            <Input inputMode="decimal" className="pl-6 text-sm" value={v.price} onChange={(e) => {
+                              const n = [...form.variants]; n[i] = { ...v, price: e.target.value }; patch("variants", n);
+                            }} placeholder="0.00" />
                           </div>
                         </div>
                         <div className="space-y-1">
@@ -947,7 +979,7 @@ const AdminProductEditor = () => {
                   <Button
                     variant="outline" size="sm" type="button"
                     className="w-full border-dashed text-muted-foreground hover:text-foreground"
-                    onClick={() => patch("variants", [...form.variants, { key: "", label: "", ram: "", storage: "", price: 0, description: "" }])}
+                    onClick={() => patch("variants", [...form.variants, { key: `variant-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`, label: "", ram: "", storage: "", price: 0, description: "" }])}
                   >
                     <Plus className="h-3.5 w-3.5 mr-1.5" />Add Variant
                   </Button>
@@ -995,9 +1027,9 @@ const AdminProductEditor = () => {
                           <Label className="text-xs">Price Override (optional)</Label>
                           <div className="relative">
                             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-xs">$</span>
-                            <Input type="number" step="0.01" className="pl-6 text-sm"
-                              value={c.price === "" ? "" : c.price}
-                              onChange={(e) => { const n = [...form.colors]; n[i] = { ...c, price: e.target.value === "" ? "" : Number(e.target.value) }; patch("colors", n); }}
+                            <Input inputMode="decimal" className="pl-6 text-sm"
+                              value={c.price}
+                              onChange={(e) => { const n = [...form.colors]; n[i] = { ...c, price: e.target.value }; patch("colors", n); }}
                               placeholder="Leave blank = base price"
                             />
                           </div>
@@ -1050,8 +1082,8 @@ const AdminProductEditor = () => {
                         </div>
                         <div className="space-y-1">
                           <Label className="text-xs">Price</Label>
-                          <Input type="number" step="0.01" value={s.price === "" ? "" : s.price}
-                            onChange={(e) => { const n = [...form.sizes]; n[i] = { ...s, price: e.target.value === "" ? "" : Number(e.target.value) }; patch("sizes", n); }}
+                          <Input inputMode="decimal" value={s.price === "" ? "" : s.price}
+                            onChange={(e) => { const n = [...form.sizes]; n[i] = { ...s, price: e.target.value }; patch("sizes", n); }}
                             className="text-sm" />
                         </div>
                         <div className="space-y-1">

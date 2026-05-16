@@ -20,8 +20,6 @@ export function requireAdmin(req, res, next) {
 
   if (header?.startsWith('Bearer ')) {
     token = header.slice(7);
-  } else if (req.query?.token) {
-    token = req.query.token;
   }
 
   if (!token) {

@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { adminFetch, apiBase, getAdminToken } from "@/lib/adminApi";
 import { useToast } from "@/hooks/use-toast";
 import { resolveImageUrl } from "@/lib/imageUtils";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
 
 interface MediaFile {
   name: string;
@@ -30,6 +31,9 @@ const AdminMediaLibrary = () => {
   const [search, setSearch] = useState("");
   const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState<MediaFile | null>(null);
+  const [confirmDelete, setConfirmDelete] = useState<{ open: boolean; file: MediaFile | null }>({
+    open: false, file: null,
+  });
 
   const fetchFiles = useCallback(async () => {
     setLoading(true);
@@ -90,8 +94,7 @@ const AdminMediaLibrary = () => {
     input.click();
   };
 
-  const deleteFile = async (f: MediaFile) => {
-    if (!window.confirm(`Delete "${f.name}"?`)) return;
+  const doDeleteFile = async (f: MediaFile) => {
     try {
       const res = await adminFetch(`/api/admin/media/${encodeURIComponent(f.name)}`, { method: "DELETE" });
       if (!res.ok) throw new Error("Failed");
@@ -101,6 +104,10 @@ const AdminMediaLibrary = () => {
     } catch {
       toast({ title: "Error", description: "Failed to delete file", variant: "destructive" });
     }
+  };
+
+  const deleteFile = (f: MediaFile) => {
+    setConfirmDelete({ open: true, file: f });
   };
 
   const copyUrl = (url: string) => {
@@ -244,6 +251,14 @@ const AdminMediaLibrary = () => {
           </div>
         </div>
       )}
+      <ConfirmDialog
+        open={confirmDelete.open}
+        onOpenChange={(open) => setConfirmDelete((s) => ({ ...s, open }))}
+        title={`Delete "${confirmDelete.file?.name}"?`}
+        description="This file will be permanently removed. This action cannot be undone."
+        confirmLabel="Delete"
+        onConfirm={() => confirmDelete.file && doDeleteFile(confirmDelete.file)}
+      />
     </div>
   );
 };

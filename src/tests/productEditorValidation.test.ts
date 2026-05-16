@@ -199,3 +199,84 @@ describe("legacyOverrideId validation", () => {
     ).toMatch(/legacy/i);
   });
 });
+
+// ─── Variant / Color / Size uniqueness (Bug 1+2 admin-side fix) ─────────────
+
+/**
+ * These mirror the validation logic added to AdminProductEditor.save().
+ * The actual save() function uses toast() and early-returns; here we replicate
+ * the pure validation checks so they can be unit-tested independently.
+ */
+
+function validateVariants(variants: { key: string }[]): string | null {
+  if (variants.length === 0) return null;
+  const emptyKeys = variants.filter(v => !v.key.trim());
+  if (emptyKeys.length > 0) return `${emptyKeys.length} variant(s) missing a key`;
+  const keys = variants.map(v => v.key.trim());
+  if (new Set(keys).size !== keys.length) return "Variant keys must be unique";
+  return null;
+}
+
+function validateColorNames(colors: { name: string }[]): string | null {
+  if (colors.length === 0) return null;
+  const names = colors.map(c => c.name.trim()).filter(Boolean);
+  if (new Set(names).size !== names.length) return "Color names must be unique";
+  return null;
+}
+
+function validateSizeNames(sizes: { name: string }[]): string | null {
+  if (sizes.length === 0) return null;
+  const names = sizes.map(s => s.name.trim()).filter(Boolean);
+  if (new Set(names).size !== names.length) return "Size names must be unique";
+  return null;
+}
+
+describe("Variant key uniqueness", () => {
+  it("passes with unique keys", () => {
+    expect(validateVariants([{ key: "a" }, { key: "b" }])).toBeNull();
+  });
+
+  it("fails with empty key", () => {
+    expect(validateVariants([{ key: "" }, { key: "b" }])).toMatch(/missing/i);
+  });
+
+  it("fails with duplicate keys", () => {
+    expect(validateVariants([{ key: "x" }, { key: "x" }])).toMatch(/unique/i);
+  });
+
+  it("passes with single variant", () => {
+    expect(validateVariants([{ key: "only" }])).toBeNull();
+  });
+
+  it("passes with no variants", () => {
+    expect(validateVariants([])).toBeNull();
+  });
+});
+
+describe("Color name uniqueness", () => {
+  it("passes with unique names", () => {
+    expect(validateColorNames([{ name: "Red" }, { name: "Blue" }])).toBeNull();
+  });
+
+  it("fails with duplicate names", () => {
+    expect(validateColorNames([{ name: "Black" }, { name: "Black" }])).toMatch(/unique/i);
+  });
+
+  it("passes with no colors", () => {
+    expect(validateColorNames([])).toBeNull();
+  });
+});
+
+describe("Size name uniqueness", () => {
+  it("passes with unique names", () => {
+    expect(validateSizeNames([{ name: "S" }, { name: "M" }])).toBeNull();
+  });
+
+  it("fails with duplicate names", () => {
+    expect(validateSizeNames([{ name: "L" }, { name: "L" }])).toMatch(/unique/i);
+  });
+
+  it("passes with no sizes", () => {
+    expect(validateSizeNames([])).toBeNull();
+  });
+});

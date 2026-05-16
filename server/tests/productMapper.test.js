@@ -221,6 +221,31 @@ function validateProductPayload(c) {
   if (c.compare_at_price != null && Number.isFinite(price) && c.compare_at_price <= price) {
     errors.push("compare_at_price must be greater than price when set");
   }
+  // Variant key uniqueness
+  if (Array.isArray(c.variants) && c.variants.length > 0) {
+    const emptyKeys = c.variants.filter(v => !(v.key || '').trim());
+    if (emptyKeys.length > 0) {
+      errors.push(`all variant keys must be non-empty (${emptyKeys.length} variant(s) missing key)`);
+    }
+    const realKeys = c.variants.map(v => (v.key || '').trim()).filter(Boolean);
+    if (new Set(realKeys).size !== realKeys.length) {
+      errors.push('variant keys must be unique');
+    }
+  }
+  // Color name uniqueness
+  if (Array.isArray(c.colors) && c.colors.length > 0) {
+    const names = c.colors.map(cl => (cl.name || '').trim()).filter(Boolean);
+    if (new Set(names).size !== names.length) {
+      errors.push('color names must be unique');
+    }
+  }
+  // Size name uniqueness
+  if (Array.isArray(c.sizes) && c.sizes.length > 0) {
+    const names = c.sizes.map(s => (s.name || '').trim()).filter(Boolean);
+    if (new Set(names).size !== names.length) {
+      errors.push('size names must be unique');
+    }
+  }
   return errors;
 }
 
@@ -277,6 +302,55 @@ describe("validateProductPayload (server BUG 2 fix)", () => {
   it("passes when compare_at_price is null", () => {
     const c = bodyToRowColumns({ name: "A", price: 100, category: "X" });
     expect(validateProductPayload(c)).toEqual([]);
+  });
+});
+
+// ─── validateProductPayload — variant/color/size uniqueness (Bug 6 fix) ──────
+
+describe("validateProductPayload — variant/color/size uniqueness", () => {
+  const base = { name: "A", price: 10, category: "X", is_preorder: false, compare_at_price: null };
+
+  it("passes with unique variant keys", () => {
+    const c = { ...base, variants: [{ key: "a" }, { key: "b" }] };
+    expect(validateProductPayload(c)).toEqual([]);
+  });
+
+  it("fails when variant keys are empty", () => {
+    const c = { ...base, variants: [{ key: "" }, { key: "b" }] };
+    const errors = validateProductPayload(c);
+    expect(errors.some(e => e.includes("non-empty"))).toBe(true);
+  });
+
+  it("fails when variant keys are duplicated", () => {
+    const c = { ...base, variants: [{ key: "x" }, { key: "x" }] };
+    const errors = validateProductPayload(c);
+    expect(errors).toContain("variant keys must be unique");
+  });
+
+  it("passes with unique color names", () => {
+    const c = { ...base, colors: [{ name: "Red" }, { name: "Blue" }] };
+    expect(validateProductPayload(c)).toEqual([]);
+  });
+
+  it("fails when color names are duplicated", () => {
+    const c = { ...base, colors: [{ name: "Black" }, { name: "Black" }] };
+    const errors = validateProductPayload(c);
+    expect(errors).toContain("color names must be unique");
+  });
+
+  it("passes with unique size names", () => {
+    const c = { ...base, sizes: [{ name: "S" }, { name: "M" }] };
+    expect(validateProductPayload(c)).toEqual([]);
+  });
+
+  it("fails when size names are duplicated", () => {
+    const c = { ...base, sizes: [{ name: "L" }, { name: "L" }] };
+    const errors = validateProductPayload(c);
+    expect(errors).toContain("size names must be unique");
+  });
+
+  it("passes when no variants/colors/sizes", () => {
+    expect(validateProductPayload(base)).toEqual([]);
   });
 });
 

@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { adminFetch } from "@/lib/adminApi";
 import { useToast } from "@/hooks/use-toast";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
 
 interface Coupon {
   id: number;
@@ -48,6 +49,9 @@ const AdminCoupons = () => {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [form, setForm] = useState(emptyCoupon);
   const [saving, setSaving] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState<{ open: boolean; coupon: Coupon | null }>({
+    open: false, coupon: null,
+  });
 
   const fetchCoupons = useCallback(async () => {
     setLoading(true);
@@ -100,6 +104,18 @@ const AdminCoupons = () => {
       toast({ title: "Discount value must be greater than 0", variant: "destructive" });
       return;
     }
+    if (form.min_order_amount !== "" && !Number.isFinite(parseFloat(form.min_order_amount))) {
+      toast({ title: "Min order amount must be a valid number", variant: "destructive" });
+      return;
+    }
+    if (form.max_discount_amount !== "" && !Number.isFinite(parseFloat(form.max_discount_amount))) {
+      toast({ title: "Max discount amount must be a valid number", variant: "destructive" });
+      return;
+    }
+    if (form.max_uses !== "" && !Number.isFinite(parseFloat(form.max_uses))) {
+      toast({ title: "Max uses must be a valid number", variant: "destructive" });
+      return;
+    }
     setSaving(true);
     try {
       const payload = {
@@ -107,9 +123,9 @@ const AdminCoupons = () => {
         discount_value: discountValue,
         starts_at: form.starts_at || null,
         expires_at: form.expires_at || null,
-        min_order_amount: form.min_order_amount !== "" ? Number(form.min_order_amount) : null,
-        max_discount_amount: form.max_discount_amount !== "" ? Number(form.max_discount_amount) : null,
-        max_uses: form.max_uses !== "" ? Number(form.max_uses) : null,
+        min_order_amount: form.min_order_amount !== "" ? parseFloat(form.min_order_amount) : null,
+        max_discount_amount: form.max_discount_amount !== "" ? parseFloat(form.max_discount_amount) : null,
+        max_uses: form.max_uses !== "" ? parseInt(form.max_uses, 10) : null,
       };
       const url = editingId ? `/api/admin/coupons/${editingId}` : "/api/admin/coupons";
       const method = editingId ? "PUT" : "POST";
@@ -128,9 +144,8 @@ const AdminCoupons = () => {
 
   const toggleActive = async (c: Coupon) => {
     try {
-      const res = await adminFetch(`/api/admin/coupons/${c.id}`, {
-        method: "PUT",
-        body: JSON.stringify({ is_active: !c.is_active }),
+      const res = await adminFetch(`/api/admin/coupons/${c.id}/toggle`, {
+        method: "PATCH",
       });
       if (!res.ok) throw new Error("Failed");
       void fetchCoupons();
@@ -139,8 +154,7 @@ const AdminCoupons = () => {
     }
   };
 
-  const deleteCoupon = async (c: Coupon) => {
-    if (!window.confirm(`Delete coupon "${c.code}"?`)) return;
+  const doDeleteCoupon = async (c: Coupon) => {
     try {
       const res = await adminFetch(`/api/admin/coupons/${c.id}`, { method: "DELETE" });
       if (!res.ok) throw new Error("Failed");
@@ -149,6 +163,10 @@ const AdminCoupons = () => {
     } catch {
       toast({ title: "Error", description: "Failed to delete coupon", variant: "destructive" });
     }
+  };
+
+  const deleteCoupon = (c: Coupon) => {
+    setConfirmDelete({ open: true, coupon: c });
   };
 
   const copyCode = (code: string) => {
@@ -400,6 +418,14 @@ const AdminCoupons = () => {
           </div>
         )}
       </div>
+      <ConfirmDialog
+        open={confirmDelete.open}
+        onOpenChange={(open) => setConfirmDelete((s) => ({ ...s, open }))}
+        title={`Delete coupon "${confirmDelete.coupon?.code}"?`}
+        description="This coupon will be permanently removed. This action cannot be undone."
+        confirmLabel="Delete"
+        onConfirm={() => confirmDelete.coupon && doDeleteCoupon(confirmDelete.coupon)}
+      />
     </div>
   );
 };

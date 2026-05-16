@@ -126,6 +126,32 @@ function validateProductPayload(c) {
   if (c.compare_at_price != null && Number.isFinite(price) && c.compare_at_price <= price) {
     errors.push('compare_at_price must be greater than price when set');
   }
+  // Variant key uniqueness
+  if (Array.isArray(c.variants) && c.variants.length > 0) {
+    const keys = c.variants.map((v, i) => (v.key || '').trim() || `__empty_${i}`);
+    const emptyKeys = c.variants.filter(v => !(v.key || '').trim());
+    if (emptyKeys.length > 0) {
+      errors.push(`all variant keys must be non-empty (${emptyKeys.length} variant(s) missing key)`);
+    }
+    const realKeys = c.variants.map(v => (v.key || '').trim()).filter(Boolean);
+    if (new Set(realKeys).size !== realKeys.length) {
+      errors.push('variant keys must be unique');
+    }
+  }
+  // Color name uniqueness
+  if (Array.isArray(c.colors) && c.colors.length > 0) {
+    const names = c.colors.map(cl => (cl.name || '').trim()).filter(Boolean);
+    if (new Set(names).size !== names.length) {
+      errors.push('color names must be unique');
+    }
+  }
+  // Size name uniqueness
+  if (Array.isArray(c.sizes) && c.sizes.length > 0) {
+    const names = c.sizes.map(s => (s.name || '').trim()).filter(Boolean);
+    if (new Set(names).size !== names.length) {
+      errors.push('size names must be unique');
+    }
+  }
   return errors;
 }
 

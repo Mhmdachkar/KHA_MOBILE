@@ -79,37 +79,44 @@ adminCouponsRouter.post('/coupons', requirePool, requireAdmin, async (req, res) 
   }
 });
 
-// Update coupon
+// Update coupon (full replacement — no COALESCE, fields are set directly)
 adminCouponsRouter.put('/coupons/:id', requirePool, requireAdmin, async (req, res) => {
   try {
     const id = Number(req.params.id);
     if (!Number.isFinite(id)) return res.status(400).json({ error: 'Invalid id' });
     const b = req.body || {};
 
+    // Require code and discount_value on full update
+    const code = (b.code || '').trim().toUpperCase();
+    if (!code) return res.status(400).json({ error: 'Coupon code is required' });
+    if (b.discount_value == null || Number(b.discount_value) <= 0) {
+      return res.status(400).json({ error: 'discount_value must be > 0' });
+    }
+
     const { rows } = await pool.query(
       `UPDATE coupons SET
-        code = COALESCE($1, code),
-        description = COALESCE($2, description),
-        discount_type = COALESCE($3, discount_type),
-        discount_value = COALESCE($4, discount_value),
+        code = $1,
+        description = $2,
+        discount_type = $3,
+        discount_value = $4,
         min_order_amount = $5,
         max_discount_amount = $6,
         max_uses = $7,
-        is_active = COALESCE($8, is_active),
+        is_active = $8,
         starts_at = $9,
         expires_at = $10,
         updated_at = NOW()
       WHERE id = $11
       RETURNING *`,
       [
-        b.code ? b.code.trim().toUpperCase() : null,
-        b.description,
-        b.discount_type,
-        b.discount_value != null ? Number(b.discount_value) : null,
-        b.min_order_amount != null ? Number(b.min_order_amount) : null,
-        b.max_discount_amount != null ? Number(b.max_discount_amount) : null,
-        b.max_uses != null ? Number(b.max_uses) : null,
-        b.is_active,
+        code,
+        b.description ?? '',
+        b.discount_type || 'percentage',
+        Number(b.discount_value),
+        b.min_order_amount != null && b.min_order_amount !== '' ? Number(b.min_order_amount) : null,
+        b.max_discount_amount != null && b.max_discount_amount !== '' ? Number(b.max_discount_amount) : null,
+        b.max_uses != null && b.max_uses !== '' ? Number(b.max_uses) : null,
+        b.is_active !== false,
         b.starts_at || null,
         b.expires_at || null,
         id,
@@ -125,6 +132,26 @@ adminCouponsRouter.put('/coupons/:id', requirePool, requireAdmin, async (req, re
       return res.status(409).json({ error: 'A coupon with this code already exists' });
     }
     res.status(500).json({ error: 'Failed to update coupon' });
+  }
+});
+
+// Toggle coupon active status (dedicated endpoint — no full body required)
+adminCouponsRouter.patch('/coupons/:id/toggle', requirePool, requireAdmin, async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    if (!Number.isFinite(id)) return res.status(400).json({ error: 'Invalid id' });
+
+    const { rows } = await pool.query(
+      `UPDATE coupons SET is_active = NOT is_active, updated_at = NOW() WHERE id = $1 RETURNING *`,
+      [id]
+    );
+    if (!rows[0]) return res.status(404).json({ error: 'Not found' });
+
+    await logAudit(req.admin, 'toggle', 'coupon', id, { is_active: rows[0].is_active });
+    res.json({ coupon: rows[0] });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'Failed to toggle coupon' });
   }
 });
 
