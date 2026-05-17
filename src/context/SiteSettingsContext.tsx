@@ -89,6 +89,26 @@ export interface SiteSettings {
   trending_sections: TrendingSection[];
   brand_showcase: BrandEntry[];
   homepage_categories: HomepageCategory[];
+  /** USD shipping for product checkout (authoritative on server at order create). */
+  delivery_fee: number;
+  /** Digits only, no + (e.g. 96181861811). Used for wa.me links. */
+  whatsapp_number: string;
+}
+
+function parseDeliveryFee(raw: unknown): number | undefined {
+  if (typeof raw === "number" && Number.isFinite(raw)) return raw;
+  if (typeof raw === "string") {
+    const n = parseFloat(raw);
+    if (Number.isFinite(n) && n >= 0) return n;
+  }
+  return undefined;
+}
+
+function parseWhatsappNumber(raw: unknown): string | undefined {
+  if (typeof raw === "string" && raw.trim()) {
+    return raw.replace(/\D/g, "");
+  }
+  return undefined;
 }
 
 // ─── Defaults ─────────────────────────────────────────────────────────────────
@@ -191,6 +211,8 @@ const DEFAULT_SETTINGS: SiteSettings = {
     { name: "Electronics", icon: "Cpu", linkTo: "/electronics", enabled: true },
     { name: "iPhone Cases", icon: "Smartphone", linkTo: "/category/iPhone Cases", enabled: true },
   ],
+  delivery_fee: 4,
+  whatsapp_number: "96181861811",
 };
 
 // ─── Context ──────────────────────────────────────────────────────────────────
@@ -220,6 +242,8 @@ const ALL_KEYS = [
   "trending_sections",
   "brand_showcase",
   "homepage_categories",
+  "delivery_fee",
+  "whatsapp_number",
 ];
 
 export const SiteSettingsProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -236,6 +260,8 @@ export const SiteSettingsProvider: React.FC<{ children: React.ReactNode }> = ({
       );
       if (!res.ok) return;
       const data = await res.json();
+      const deliveryFee = parseDeliveryFee(data.delivery_fee);
+      const whatsappNumber = parseWhatsappNumber(data.whatsapp_number);
       setSettings((prev) => ({
         ...prev,
         ...(data.announcements ? { announcements: data.announcements } : {}),
@@ -258,6 +284,8 @@ export const SiteSettingsProvider: React.FC<{ children: React.ReactNode }> = ({
         ...(data.homepage_categories
           ? { homepage_categories: data.homepage_categories }
           : {}),
+        ...(deliveryFee != null ? { delivery_fee: deliveryFee } : {}),
+        ...(whatsappNumber ? { whatsapp_number: whatsappNumber } : {}),
       }));
     } catch {
       // keep defaults if API unreachable

@@ -274,6 +274,7 @@ See `specs/PRD_TRIAGE.md` — P0 JWT, rate limit, admin active check, order stat
 
 | Document | Contents |
 |----------|----------|
+| `STOREFRONT_RECENT_WORK_AND_NEW_CHAT_PROMPT.md` | **Latest session log** (Passes 3–6), admin→storefront pipeline, verification checklist, **copy-paste audit prompt** for new chats |
 | `STOREFRONT_COMMERCE.md` | Short architecture reference |
 | `STOREFRONT_COMMERCE_STATUS.md` | Fixed/Open checklist table |
 | `UX_FIXES_SUMMARY.md` | Original 5 UX bugs + Phase 2 note |
@@ -284,7 +285,7 @@ See `specs/PRD_TRIAGE.md` — P0 JWT, rate limit, admin active check, order stat
 
 ## 13. Instructions for the next agent
 
-1. **Read this file first**, then skim `STOREFRONT_COMMERCE.md` and `STOREFRONT_COMMERCE_STATUS.md`.
+1. **Read this file first**, then skim `STOREFRONT_RECENT_WORK_AND_NEW_CHAT_PROMPT.md` (latest work + admin audit prompt), `STOREFRONT_COMMERCE.md`, and `STOREFRONT_COMMERCE_STATUS.md`.
 2. **Before fixing a “bug”**, grep the codebase — it may already be fixed in Phase 1/2.
 3. **Do not** add parallel catalog merges on listing pages; extend `catalogProduct` / `catalogFilters` / `CatalogContext` instead.
 4. **Do not** trust client cart totals at checkout — server validates; surface errors clearly.

@@ -1,5 +1,6 @@
 import type { Product } from "@/data/products";
 import type { GreenLionProduct } from "@/data/greenLionProducts";
+import { normalizeStorefrontVariants } from "@/lib/catalogProduct";
 import { getProductById, getProductsByCategory } from "@/data/products";
 import {
   getGreenLionProductById,
@@ -106,7 +107,7 @@ function mapApiToProduct(p: ApiPublicProduct): Product {
     description: p.description,
     features: p.features || [],
     specifications: p.specifications || [],
-    variants: p.variants?.length ? p.variants : undefined,
+    variants: normalizeStorefrontVariants(p.variants),
     colors: p.colors?.length ? p.colors : undefined,
     sizes: p.sizes?.length ? p.sizes : undefined,
     connectivityOptions: p.connectivityOptions?.length ? p.connectivityOptions : undefined,
@@ -137,7 +138,7 @@ function mapApiToGreenLion(p: ApiPublicProduct): GreenLionProduct {
     features: p.features || [],
     specifications: p.specifications || [],
     colors: p.colors?.length ? p.colors : undefined,
-    variants: p.variants?.length ? p.variants : undefined,
+    variants: normalizeStorefrontVariants(p.variants),
     connectivityOptions: p.connectivityOptions?.length ? p.connectivityOptions : undefined,
     secondaryCategories: p.secondaryCategories?.length ? p.secondaryCategories : undefined,
     video: p.video,

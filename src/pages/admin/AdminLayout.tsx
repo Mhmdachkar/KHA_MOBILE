@@ -4,7 +4,7 @@ import {
   Package, BarChart3, LogOut, Store, Menu, X, ChevronRight,
   ShieldCheck, Layout, Ticket, Image, ScrollText, ShoppingBag,
 } from "lucide-react";
-import { getAdminToken, setAdminToken, siteUrl } from "@/lib/adminApi";
+import { adminFetch, getAdminToken, setAdminToken, siteUrl } from "@/lib/adminApi";
 import { useCatalog } from "@/context/CatalogContext";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -29,6 +29,7 @@ const AdminLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
   const { allProducts, catalogLoaded } = useCatalog();
 
   const stats = catalogLoaded
@@ -37,8 +38,25 @@ const AdminLayout = () => {
 
   useEffect(() => {
     if (!getAdminToken()) {
+      setAuthChecked(false);
       navigate("/admin/login", { state: { from: location.pathname }, replace: true });
+      return;
     }
+    let cancelled = false;
+    void (async () => {
+      const res = await adminFetch("/api/admin/me");
+      if (cancelled) return;
+      if (!res.ok) {
+        setAdminToken(null);
+        setAuthChecked(false);
+        navigate("/admin/login", { state: { from: location.pathname }, replace: true });
+        return;
+      }
+      setAuthChecked(true);
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, [navigate, location.pathname]);
 
   useEffect(() => {
@@ -50,7 +68,7 @@ const AdminLayout = () => {
     navigate("/admin/login", { replace: true });
   };
 
-  if (!getAdminToken()) return null;
+  if (!getAdminToken() || !authChecked) return null;
 
   const sidebarContent = (
     <div className="flex flex-col h-full">

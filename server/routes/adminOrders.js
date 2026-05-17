@@ -109,6 +109,15 @@ adminOrdersRouter.get('/orders/:id', requirePool, requireAdmin, async (req, res)
 const VALID_STATUSES = ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled'];
 const VALID_PAYMENT = ['unpaid', 'paid', 'refunded'];
 
+/** Forward-only lifecycle; any non-terminal status may move to cancelled. */
+const ORDER_STATUS_TRANSITIONS = {
+  pending: ['confirmed', 'cancelled'],
+  confirmed: ['shipped', 'cancelled'],
+  shipped: ['delivered', 'cancelled'],
+  delivered: ['cancelled'],
+  cancelled: [],
+};
+
 adminOrdersRouter.put('/orders/:id', requirePool, requireAdmin, async (req, res) => {
   try {
     const id = Number(req.params.id);
@@ -119,9 +128,24 @@ adminOrdersRouter.put('/orders/:id', requirePool, requireAdmin, async (req, res)
     const params = [];
     let idx = 1;
 
+    const { rows: existingRows } = await pool.query(
+      'SELECT status FROM orders WHERE id = $1',
+      [id]
+    );
+    if (!existingRows[0]) return res.status(404).json({ error: 'Order not found' });
+    const currentStatus = existingRows[0].status;
+
     if (b.status) {
       if (!VALID_STATUSES.includes(b.status)) {
         return res.status(400).json({ error: `Invalid status. Must be one of: ${VALID_STATUSES.join(', ')}` });
+      }
+      if (b.status !== currentStatus) {
+        const allowed = ORDER_STATUS_TRANSITIONS[currentStatus] || [];
+        if (!allowed.includes(b.status)) {
+          return res.status(400).json({
+            error: `Cannot change order status from "${currentStatus}" to "${b.status}"`,
+          });
+        }
       }
       sets.push(`status = $${idx++}`);
       params.push(b.status);
@@ -147,7 +171,7 @@ adminOrdersRouter.put('/orders/:id', requirePool, requireAdmin, async (req, res)
       `UPDATE orders SET ${sets.join(', ')} WHERE id = $${idx} RETURNING *`,
       params
     );
-    if (!rows[0]) return res.status(404).json({ error: 'Order not found' });
+    if (!rows[0]) return res.status(404).json({ error: 'Order not found' }); // race: deleted after SELECT
 
     await logAudit(req.admin, 'update', 'order', id, {
       status: b.status, payment_status: b.payment_status,

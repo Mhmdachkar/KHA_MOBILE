@@ -71,9 +71,16 @@ function expandMediaUrlForPublicClient(url, req) {
   return s;
 }
 
+function coerceJsonArray(arr) {
+  if (Array.isArray(arr)) return arr;
+  if (arr && typeof arr === 'object') return Object.values(arr);
+  return [];
+}
+
 function expandJsonbImages(arr, req) {
-  if (!Array.isArray(arr)) return [];
-  return arr.map((item) => {
+  const list = coerceJsonArray(arr);
+  if (!list.length) return [];
+  return list.map((item) => {
     if (item == null || typeof item !== 'object') return item;
     const copy = { ...item };
     if (copy.image) copy.image = expandMediaUrlForPublicClient(copy.image, req);
@@ -113,9 +120,9 @@ export function rowToPublicProduct(row, req) {
     isActive: row.is_active,
     features: row.features || [],
     specifications: row.specifications || [],
-    variants: expandJsonbImages(row.variants, req),
-    colors: expandJsonbImages(row.colors, req),
-    sizes: expandJsonbImages(row.sizes, req),
+    variants: expandJsonbImages(coerceJsonArray(row.variants), req),
+    colors: expandJsonbImages(coerceJsonArray(row.colors), req),
+    sizes: expandJsonbImages(coerceJsonArray(row.sizes), req),
     connectivityOptions: row.connectivity_options || [],
     secondaryCategories: row.secondary_categories || [],
     stockQuantity: row.stock_quantity != null ? Number(row.stock_quantity) : null,

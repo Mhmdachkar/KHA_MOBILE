@@ -22,6 +22,7 @@ import {
 } from "@/lib/ordersApi";
 import { validateCouponCode } from "@/lib/couponApi";
 import { useCatalog } from "@/context/CatalogContext";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 import { formatMoney, resolveSalePrice } from "@/lib/storefrontPricing";
 import {
   RECHARGE_CATALOG,
@@ -70,6 +71,7 @@ const Checkout = () => {
   const { toast } = useToast();
   const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
   const { storefrontProducts, refreshCatalog } = useCatalog();
+  const { settings: siteSettings } = useSiteSettings();
   const { trackCheckoutStart, trackCheckoutComplete, trackRemoveFromCart } = useAnalytics();
   const isMobile = useIsMobile();
   const [couponInput, setCouponInput] = useState("");
@@ -418,8 +420,7 @@ const Checkout = () => {
     setAdditionalCards(prev => prev.filter(c => c.id !== cardId));
   };
 
-  // Delivery fee constant
-  const DELIVERY_FEE = 4.00;
+  const deliveryFee = siteSettings.delivery_fee;
 
   const getStreamingPlanPrice = () => {
     const brandPricing = STREAMING_PRICING[productBrand];
@@ -545,7 +546,7 @@ const Checkout = () => {
     } else {
       const subtotal = getCartSubtotal();
       const discount = appliedCoupon?.discount ?? 0;
-      return Math.max(0, subtotal - discount) + DELIVERY_FEE;
+      return Math.max(0, subtotal - discount) + deliveryFee;
     }
   };
 
@@ -672,7 +673,7 @@ const Checkout = () => {
     const items = buildOrderItems();
     const checkoutType = resolveCheckoutType();
     const total = calculateTotal();
-    const shippingCost = checkoutType === "product" ? DELIVERY_FEE : 0;
+    const shippingCost = checkoutType === "product" ? deliveryFee : 0;
 
     return submitOrder({
       checkoutType,
@@ -757,7 +758,7 @@ const Checkout = () => {
       toast({
         title: `Order ${result.order.orderNumber} placed`,
         description:
-          "We'll contact you shortly to confirm delivery. A confirmation email is on its way.",
+          "We'll contact you shortly to confirm delivery and payment.",
       });
 
       setIdempotencyKey(newIdempotencyKey());
@@ -1058,7 +1059,7 @@ const Checkout = () => {
                     </div>
                     <motion.div className="flex items-center justify-between text-sm">
                       <span className="text-muted-foreground">Delivery</span>
-                      <span className="font-medium">{formatMoney(DELIVERY_FEE)}</span>
+                      <span className="font-medium">{formatMoney(deliveryFee)}</span>
                     </motion.div>
                     <div className="pt-2 space-y-2">
                       <Label className="text-xs text-muted-foreground">Promo code</Label>

@@ -14,10 +14,12 @@ import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { useCatalog } from "@/context/CatalogContext";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 import { formatMoney } from "@/lib/storefrontPricing";
 
 const Header = () => {
   const { storefrontProducts } = useCatalog();
+  const { settings: siteSettings } = useSiteSettings();
   const { favorites } = useFavorites();
   const { getTotalItems, toggleCart } = useCart();
   const { trackSearch } = useAnalytics();
@@ -204,7 +206,7 @@ const Header = () => {
 
     // Encode and send via WhatsApp
     const encodedMessage = encodeURIComponent(message);
-    const whatsappNumber = "96181861811";
+    const whatsappNumber = siteSettings.whatsapp_number;
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
     window.open(whatsappUrl, "_blank");

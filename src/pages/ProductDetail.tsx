@@ -13,7 +13,7 @@ import { useCart } from "@/context/CartContext";
 import { useAnalytics } from "@/context/AnalyticsContext";
 import { useCatalog } from "@/context/CatalogContext";
 import { filterByCategoryPage } from "@/lib/catalogFilters";
-import type { StorefrontProduct } from "@/lib/catalogProduct";
+import { getStorefrontProductById, type StorefrontProduct } from "@/lib/catalogProduct";
 import { findStoreProductSplit } from "@/data/productLookup";
 import ProductCard from "@/components/ProductCard";
 import ProductCarousel from "@/components/ProductCarousel";
@@ -45,7 +45,26 @@ const ProductDetail = () => {
     : { regularProduct: null, greenLionProduct: null };
   const regularProduct = reg;
   const greenLionProduct = gl;
-  const product = regularProduct || greenLionProduct;
+  const splitProduct = regularProduct || greenLionProduct;
+
+  const catalogRow = useMemo(
+    () => (productId != null ? getStorefrontProductById(storefrontProducts, productId) : undefined),
+    [storefrontProducts, productId]
+  );
+
+  const product = useMemo(() => {
+    if (!splitProduct) return null;
+    if (!catalogRow) return splitProduct;
+    return {
+      ...splitProduct,
+      variants: catalogRow.variants ?? splitProduct.variants,
+      colors: catalogRow.colors ?? splitProduct.colors,
+      sizes: catalogRow.sizes ?? splitProduct.sizes,
+      compareAtPrice:
+        catalogRow.compareAtPrice != null ? catalogRow.compareAtPrice : splitProduct.compareAtPrice,
+      stockQuantity: catalogRow.stockQuantity ?? (splitProduct as { stockQuantity?: number | null }).stockQuantity,
+    };
+  }, [splitProduct, catalogRow]);
 
   // Track product view
   useEffect(() => {
@@ -63,31 +82,38 @@ const ProductDetail = () => {
   }, [id]);
 
   // All hooks must be called unconditionally (Rules of Hooks)
-  const variantOptions = useMemo(() => product?.variants || [], [product]);
+  const variantOptions = useMemo(() => catalogRow?.variants ?? [], [catalogRow]);
   const [searchParams] = useSearchParams();
   const variantParam = searchParams.get("variant");
-  const [selectedVariantIndex, setSelectedVariantIndex] = useState<number>(-1);
+  const [selectedVariantKey, setSelectedVariantKey] = useState<string | null>(null);
+
+  useEffect(() => {
+    setSelectedVariantKey(null);
+  }, [product?.id]);
+
   useEffect(() => {
     if (variantOptions.length === 0) {
-      setSelectedVariantIndex(-1);
+      setSelectedVariantKey(null);
       return;
     }
-    if (variantParam) {
-      const idx = variantOptions.findIndex((variant) => variant.key === variantParam);
-      if (idx !== -1) {
-        setSelectedVariantIndex(idx);
-        return;
-      }
+    if (variantParam && variantOptions.some((v) => v.key === variantParam)) {
+      setSelectedVariantKey(variantParam);
+      return;
     }
-    setSelectedVariantIndex(0);
+    setSelectedVariantKey((prev) => {
+      if (prev && variantOptions.some((v) => v.key === prev)) return prev;
+      return variantOptions[0].key;
+    });
   }, [variantOptions, variantParam]);
+
   const selectedVariant = useMemo(() => {
     if (variantOptions.length === 0) return null;
-    if (selectedVariantIndex >= 0 && selectedVariantIndex < variantOptions.length) {
-      return variantOptions[selectedVariantIndex];
+    if (selectedVariantKey) {
+      const match = variantOptions.find((v) => v.key === selectedVariantKey);
+      if (match) return match;
     }
     return variantOptions[0];
-  }, [variantOptions, selectedVariantIndex]);
+  }, [variantOptions, selectedVariantKey]);
 
   const productImages = useMemo(() => {
     let raw: string[];
@@ -101,7 +127,10 @@ const ProductDetail = () => {
     return raw.map(resolveImageUrl);
   }, [greenLionProduct, regularProduct]);
 
-  const colorOptions = useMemo(() => product?.colors || [], [product]);
+  const colorOptions = useMemo(
+    () => catalogRow?.colors ?? product?.colors ?? [],
+    [catalogRow, product]
+  );
   const [selectedColorIndex, setSelectedColorIndex] = useState<number>(-1);
   const selectedColor = selectedColorIndex >= 0 && selectedColorIndex < colorOptions.length
     ? colorOptions[selectedColorIndex].name
@@ -120,11 +149,11 @@ const ProductDetail = () => {
   }, [product?.id]);
 
   useEffect(() => {
-    // Set default color when product has colors
-    if (colorOptions.length > 0 && selectedColorIndex < 0) {
+    // Auto-pick color only when color is the primary option (not storage listed as variants)
+    if (colorOptions.length > 0 && selectedColorIndex < 0 && variantOptions.length === 0) {
       setSelectedColorIndex(0);
     }
-  }, [colorOptions, selectedColorIndex]);
+  }, [colorOptions, selectedColorIndex, variantOptions.length]);
 
   const colorImage = useMemo(() => {
     if (selectedColorIndex < 0 || !colorOptions.length) return null;
@@ -133,7 +162,10 @@ const ProductDetail = () => {
   }, [selectedColorIndex, colorOptions]);
 
   // Size selection handling
-  const sizeOptions = useMemo(() => product?.sizes || [], [product]);
+  const sizeOptions = useMemo(
+    () => catalogRow?.sizes ?? product?.sizes ?? [],
+    [catalogRow, product]
+  );
   const [selectedSizeIndex, setSelectedSizeIndex] = useState<number>(-1);
   const selectedSize = selectedSizeIndex >= 0 && selectedSizeIndex < sizeOptions.length
     ? sizeOptions[selectedSizeIndex].name
@@ -836,7 +868,7 @@ const ProductDetail = () => {
                   <div className="flex flex-col gap-1">
                     <div className="flex flex-wrap items-baseline gap-2">
                       <span className="text-base sm:text-lg text-muted-foreground line-through">
-                        ${listCompareAt.toFixed(2)}
+                        {formatMoney(listCompareAt)}
                       </span>
                       <span className="text-xs font-bold rounded-full bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 px-2 py-0.5">
                         {pdpPricing.discountPercent}% OFF
@@ -977,11 +1009,11 @@ const ProductDetail = () => {
                 <h4 className="text-elegant text-sm sm:text-base mb-3 sm:mb-4 font-medium">Choose your configuration</h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
                   {variantOptions.map((variant, variantIndex) => {
-                    const isActive = variantIndex === selectedVariantIndex;
+                    const isActive = variant.key === selectedVariant?.key;
                     return (
                       <button
-                        key={variant.key || `variant-${variantIndex}`}
-                        onClick={() => setSelectedVariantIndex(variantIndex)}
+                        key={variant.key}
+                        onClick={() => setSelectedVariantKey(variant.key)}
                         style={{ touchAction: 'manipulation', minHeight: '80px' }}
                         className={`relative text-left rounded-sm p-3 sm:p-4 flex flex-col gap-1.5 sm:gap-2 transition-all duration-300 ${isActive
                           ? "border-2 border-primary bg-primary/10 shadow-md ring-2 ring-primary/30"

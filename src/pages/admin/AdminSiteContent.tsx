@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import {
   Megaphone, Layout, Star, Heart, Save, Plus, Trash2,
   RefreshCw, ChevronRight, Search, Package, AlertCircle,
-  TrendingUp, Store, Grid3X3,
+  TrendingUp, Store, Grid3X3, Truck,
 } from "lucide-react";
 import { adminFetch } from "@/lib/adminApi";
 import { useSiteSettings, SiteSettings } from "@/context/SiteSettingsContext";
@@ -27,6 +27,7 @@ const TABS = [
   { id: "trending",         label: "Trending Sections",   icon: TrendingUp },
   { id: "brands",           label: "Shop by Brand",       icon: Store },
   { id: "categories",       label: "Categories",          icon: Grid3X3 },
+  { id: "commerce",         label: "Commerce",          icon: Truck },
 ] as const;
 type TabId = (typeof TABS)[number]["id"];
 
@@ -138,6 +139,8 @@ const AdminSiteContent = () => {
   const [trendingSections, setTrendingSections] = useState(liveSettings.trending_sections || []);
   const [brands, setBrands] = useState(liveSettings.brand_showcase || []);
   const [categories, setCategories] = useState(liveSettings.homepage_categories || []);
+  const [deliveryFee, setDeliveryFee] = useState(String(liveSettings.delivery_fee));
+  const [whatsappNumber, setWhatsappNumber] = useState(liveSettings.whatsapp_number);
 
   // Sync drafts only on initial load (not after saves, to avoid overwriting unsaved edits)
   const initialLoadRef = useRef(true);
@@ -152,6 +155,8 @@ const AdminSiteContent = () => {
     setTrendingSections(liveSettings.trending_sections || []);
     setBrands(liveSettings.brand_showcase || []);
     setCategories(liveSettings.homepage_categories || []);
+    setDeliveryFee(String(liveSettings.delivery_fee));
+    setWhatsappNumber(liveSettings.whatsapp_number);
   }, [liveSettings]);
 
   const saveSetting = useCallback(async (key: string, value: unknown) => {
@@ -931,6 +936,78 @@ const AdminSiteContent = () => {
     </div>
   );
 
+  const CommerceTab = (
+    <div className="space-y-5">
+      <p className="text-sm text-muted-foreground">
+        Checkout shipping and WhatsApp contact for product requests. Values must match what customers see at checkout and on order submission.
+      </p>
+      <SectionCard title="Storefront commerce">
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field label="Delivery fee (USD)" hint="Shown on checkout and applied when orders are created.">
+            <Input
+              type="number"
+              min={0}
+              step={0.01}
+              value={deliveryFee}
+              onChange={(e) => setDeliveryFee(e.target.value)}
+            />
+          </Field>
+          <Field label="WhatsApp number" hint="Digits only, country code included (e.g. 96181861811).">
+            <Input
+              value={whatsappNumber}
+              onChange={(e) => setWhatsappNumber(e.target.value.replace(/\D/g, ""))}
+              placeholder="96181861811"
+            />
+          </Field>
+        </div>
+      </SectionCard>
+      <div className="flex justify-end">
+        <Button
+          onClick={async () => {
+            const fee = parseFloat(deliveryFee);
+            if (!Number.isFinite(fee) || fee < 0) {
+              toast({ title: "Invalid delivery fee", variant: "destructive" });
+              return;
+            }
+            if (!whatsappNumber.trim()) {
+              toast({ title: "WhatsApp number is required", variant: "destructive" });
+              return;
+            }
+            setSaving(true);
+            try {
+              const feeRes = await adminFetch("/api/admin/settings/delivery_fee", {
+                method: "PUT",
+                body: JSON.stringify({ value: fee }),
+                headers: { "Content-Type": "application/json" },
+              });
+              if (!feeRes.ok) throw new Error(await feeRes.text());
+              const waRes = await adminFetch("/api/admin/settings/whatsapp_number", {
+                method: "PUT",
+                body: JSON.stringify({ value: whatsappNumber.trim() }),
+                headers: { "Content-Type": "application/json" },
+              });
+              if (!waRes.ok) throw new Error(await waRes.text());
+              toast({ title: "Saved!", description: "Commerce settings updated on the live site." });
+              refreshLive();
+            } catch (err: unknown) {
+              toast({
+                title: "Save failed",
+                description: err instanceof Error ? err.message : "Unknown error",
+                variant: "destructive",
+              });
+            } finally {
+              setSaving(false);
+            }
+          }}
+          disabled={saving}
+          className="w-full sm:w-auto"
+        >
+          <Save className="h-4 w-4 mr-2" /> Save Commerce Settings
+        </Button>
+      </div>
+    </div>
+  );
+
   const tabContent: Record<TabId, React.ReactNode> = {
     announcements:    AnnouncementsTab,
     hero:             HeroTab,
@@ -940,6 +1017,7 @@ const AdminSiteContent = () => {
     trending:         TrendingTab,
     brands:           BrandsTab,
     categories:       CategoriesTab,
+    commerce:         CommerceTab,
   };
 
   return (
@@ -954,8 +1032,8 @@ const AdminSiteContent = () => {
             </h1>
             <Badge variant="outline" className="gap-1.5 shrink-0 text-xs">
               <Package className="h-3 w-3" />
-              <span className="hidden xs:inline">8 sections</span>
-              <span className="xs:hidden">8</span>
+              <span className="hidden xs:inline">9 sections</span>
+              <span className="xs:hidden">9</span>
             </Badge>
           </div>
           <p className="text-xs sm:text-sm text-muted-foreground">

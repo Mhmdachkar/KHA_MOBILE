@@ -73,6 +73,62 @@ function normalizeImages(image: string, images?: string[]): string[] {
   return image ? [image] : [];
 }
 
+/** JSONB may be stored as an object; coerce to array for admin/API rows. */
+export function coerceVariantArray(raw: unknown): StorefrontVariant[] {
+  if (Array.isArray(raw)) return raw as StorefrontVariant[];
+  if (raw && typeof raw === "object") return Object.values(raw) as StorefrontVariant[];
+  return [];
+}
+
+function slugKeyPart(s: string): string {
+  return s
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 48);
+}
+
+/** Ensure unique variant keys and numeric prices (fixes admin rows with duplicate/empty keys). */
+export function normalizeStorefrontVariants(
+  raw: unknown
+): StorefrontVariant[] | undefined {
+  const list = coerceVariantArray(raw);
+  if (!list.length) return undefined;
+
+  const seen = new Set<string>();
+  const out: StorefrontVariant[] = [];
+
+  list.forEach((item, i) => {
+    if (!item || typeof item !== "object") return;
+    const label =
+      String(item.label ?? "").trim() ||
+      [item.storage, item.ram].filter(Boolean).join(" · ").trim() ||
+      `Configuration ${i + 1}`;
+
+    let key = String(item.key ?? "").trim();
+    if (!key) key = slugKeyPart(label) || `variant-${i}`;
+    let uniqueKey = key;
+    let suffix = 0;
+    while (seen.has(uniqueKey)) {
+      suffix += 1;
+      uniqueKey = `${key}-${suffix}`;
+    }
+    seen.add(uniqueKey);
+
+    const price =
+      typeof item.price === "string" ? Number.parseFloat(item.price) : Number(item.price);
+
+    out.push({
+      ...item,
+      key: uniqueKey,
+      label,
+      price: Number.isFinite(price) ? price : 0,
+    });
+  });
+
+  return out.length ? out : undefined;
+}
+
 function fromRegular(p: Product): StorefrontProduct {
   const images = normalizeImages(p.image, p.images);
   const base = {
@@ -88,7 +144,7 @@ function fromRegular(p: Product): StorefrontProduct {
     rating: p.rating ?? 4.5,
     category: p.category,
     brand: p.brand,
-    variants: p.variants,
+    variants: normalizeStorefrontVariants(p.variants),
     colors: p.colors,
     sizes: p.sizes,
     isPreorder: p.isPreorder,
@@ -118,7 +174,7 @@ function fromGreenLion(g: GreenLionProduct): StorefrontProduct {
     rating: g.rating ?? 4.5,
     category: g.category,
     brand: g.brand || "Green Lion",
-    variants: g.variants,
+    variants: normalizeStorefrontVariants(g.variants),
     colors: g.colors,
     sizes: g.sizes,
     isPreorder: g.isPreorder,
@@ -131,6 +187,14 @@ function fromGreenLion(g: GreenLionProduct): StorefrontProduct {
     ...base,
     displayPrice: resolveSalePrice(base),
   };
+}
+
+/** Storefront row for a product id (same source as grids/carousels). */
+export function getStorefrontProductById(
+  catalog: StorefrontProduct[],
+  id: number
+): StorefrontProduct | undefined {
+  return catalog.find((p) => p.id === id);
 }
 
 /** Build full storefront catalog (call after registerPublicApiProducts). */

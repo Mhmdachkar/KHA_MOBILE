@@ -2,6 +2,8 @@
  * Unified rules for adding products to cart from any storefront surface.
  */
 
+import { normalizeStorefrontVariants } from "@/lib/catalogProduct";
+
 export type AddToCartSurface = "grid" | "carousel" | "featured" | "pdp";
 
 export interface ColorOption {
@@ -59,7 +61,7 @@ export function getAddToCartAction(
     }
   }
 
-  const hasVariants = (product.variants?.length ?? 0) > 0;
+  const hasVariants = (normalizeStorefrontVariants(product.variants)?.length ?? 0) > 0;
   const hasSizes = (product.sizes?.length ?? 0) > 0;
   const multiColor = hasMultipleColors(product.colors);
 
@@ -77,7 +79,7 @@ export type PickerStep = "variant" | "size" | "color";
 
 export function getPickerSteps(product: AddToCartProductShape): PickerStep[] {
   const steps: PickerStep[] = [];
-  if ((product.variants?.length ?? 0) > 0) steps.push("variant");
+  if ((normalizeStorefrontVariants(product.variants)?.length ?? 0) > 0) steps.push("variant");
   if ((product.sizes?.length ?? 0) > 0) steps.push("size");
   if (hasMultipleColors(product.colors)) steps.push("color");
   return steps;

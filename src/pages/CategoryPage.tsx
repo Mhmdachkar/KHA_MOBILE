@@ -474,9 +474,9 @@ const CategoryPage = () => {
                       />
                       {isSmartphoneCategory && product.variants?.length > 0 && (
                         <div className="flex flex-wrap gap-1.5">
-                          {product.variants.map((variant: any) => (
+                          {product.variants.map((variant, vi) => (
                             <button
-                              key={variant.key}
+                              key={`${product.id}-${variant.key}-${vi}`}
                               onClick={(e) => {
                                 e.stopPropagation();
                                 navigate(`/product/${product.id}?variant=${encodeURIComponent(variant.key)}`);

@@ -288,4 +288,192 @@ export function sortRecommendationProducts(products: StorefrontProduct[]): Store
   return sortCategoryProducts(products, "rating", "");
 }
 
+/** Exclude audio/gaming/wearable items mis-tagged as accessories (legacy Green Lion rows). */
+export function isExcludedFromAccessoriesPage(product: StorefrontProduct): boolean {
+  if (matchesStorefrontCategory(product, "Audio")) return true;
+  if (matchesStorefrontCategory(product, "Gaming")) return true;
+  if (matchesStorefrontCategory(product, "Wearables")) return true;
+
+  const nameLower = product.name?.toLowerCase() ?? "";
+  const isAudioByName =
+    nameLower.includes("earbud") ||
+    nameLower.includes("headphone") ||
+    nameLower.includes("speaker") ||
+    nameLower.includes("neckband") ||
+    nameLower.includes("river") ||
+    nameLower.includes("manchester") ||
+    nameLower.includes("porto") ||
+    nameLower.includes("jupiter") ||
+    nameLower.includes("rhythm") ||
+    nameLower.includes("echo") ||
+    nameLower.includes("sevilla");
+  const isGamingByName = nameLower.includes("gaming");
+  const isWearableByName =
+    nameLower.includes("watch") ||
+    nameLower.includes("smartwatch") ||
+    nameLower.includes("track fit") ||
+    (nameLower.includes("ultimate") &&
+      (nameLower.includes("46mm") || nameLower.includes("41"))) ||
+    nameLower.includes("active 49");
+
+  return isAudioByName || isGamingByName || isWearableByName;
+}
+
+/** Base pool for `/accessories` — unified catalog, no page-local merges. */
+export function filterAccessoriesPageProducts(products: StorefrontProduct[]): StorefrontProduct[] {
+  return products.filter((p) => {
+    if (isExcludedFromAccessoriesPage(p)) return false;
+    return (
+      matchesStorefrontCategory(p, "Accessories") ||
+      matchesStorefrontCategory(p, "Charging") ||
+      matchesStorefrontCategory(p, "iPhone Cases")
+    );
+  });
+}
+
+function matchesLaptopAccessories(nameLower: string): boolean {
+  return (
+    nameLower.includes("laptop sleeve") ||
+    nameLower.includes("laptop bag") ||
+    nameLower.includes("orbit sleeve") ||
+    nameLower.includes("sigma laptop") ||
+    nameLower.includes("sandisk cruzer blade") ||
+    nameLower.includes("cruzer blade") ||
+    nameLower.includes("mini metal usb") ||
+    nameLower.includes("philips usb 3.2") ||
+    nameLower.includes("usb flash drive") ||
+    nameLower.includes("flash drive")
+  );
+}
+
+function matchesBags(nameLower: string): boolean {
+  const laptop = matchesLaptopAccessories(nameLower);
+  return (
+    !laptop &&
+    (nameLower.includes("dopp") ||
+      nameLower.includes("toiletry") ||
+      nameLower.includes("wash bag") ||
+      nameLower.includes("travel bag") ||
+      nameLower.includes("gym bag") ||
+      (nameLower.includes("pouch") && !nameLower.includes("laptop")) ||
+      (nameLower.includes("kit") && !nameLower.includes("kitchen")) ||
+      nameLower.includes("organizer") ||
+      nameLower.includes("elegant pouch"))
+  );
+}
+
+function matchesHairGrooming(nameLower: string): boolean {
+  return (
+    nameLower.includes("hair dryer") ||
+    nameLower.includes("blow wave") ||
+    nameLower.includes("silkwave") ||
+    nameLower.includes("straightener") ||
+    nameLower.includes("beard trimmer") ||
+    nameLower.includes("one blade") ||
+    nameLower.includes("hair clipper") ||
+    nameLower.includes("clip pro") ||
+    nameLower.includes("pro trim duo") ||
+    nameLower.includes("trim duo") ||
+    nameLower.includes("pirates hair trimmer") ||
+    nameLower.includes("pirates trimmer")
+  );
+}
+
+function matchesLedLights(nameLower: string): boolean {
+  return (
+    nameLower.includes("glam shine makeup mirror") ||
+    nameLower.includes("makeup mirror") ||
+    (nameLower.includes("rgb") && nameLower.includes("mj33")) ||
+    nameLower.includes("mj33 ring") ||
+    nameLower.includes("ring led light") ||
+    nameLower.includes("rl-19 led soft") ||
+    nameLower.includes("rl19 led soft") ||
+    nameLower.includes("rl-19 led soft light strip")
+  );
+}
+
+function matchesStands(nameLower: string): boolean {
+  return (
+    (nameLower.includes("magselfie") ||
+      nameLower.includes("selfie stick") ||
+      nameLower.includes("tripod") ||
+      (nameLower.includes("m5") &&
+        (nameLower.includes("foldable") || nameLower.includes("holder"))) ||
+      nameLower.includes("kakusiga folding") ||
+      nameLower.includes("foneng foldable desktop") ||
+      nameLower.includes("m6-rotating") ||
+      nameLower.includes("rotating stand")) &&
+    !nameLower.includes("makeup mirror") &&
+    !nameLower.includes("ring led") &&
+    !nameLower.includes("mj33") &&
+    !nameLower.includes("rl-19 led soft") &&
+    !nameLower.includes("rl19 led soft") &&
+    !nameLower.includes("led table lamp")
+  );
+}
+
+function matchesAdvancedAccessories(nameLower: string): boolean {
+  return (
+    nameLower.includes("new york gimbal") ||
+    nameLower.includes("gimbal smart face") ||
+    nameLower.includes("bedside clock") ||
+    nameLower.includes("mini massage gun")
+  );
+}
+
+/** Accessories page sub-tabs (charging, stands, bags, …). Pass `"all"` to match everything. */
+export function matchesAccessoriesSubTab(product: StorefrontProduct, subTab: string): boolean {
+  if (subTab === "all") return true;
+
+  const category = product.category?.toLowerCase() ?? "";
+  const selectedCat = subTab.toLowerCase();
+  const nameLower = product.name?.toLowerCase() ?? "";
+
+  if (selectedCat === "laptop accessories") {
+    return matchesLaptopAccessories(nameLower);
+  }
+  if (selectedCat === "bags") {
+    if (nameLower.includes("kitchen")) return false;
+    return matchesBags(nameLower);
+  }
+  if (selectedCat === "hair & grooming" || selectedCat === "grooming") {
+    return matchesHairGrooming(nameLower);
+  }
+  if (selectedCat === "led lights") {
+    return matchesLedLights(nameLower) && !nameLower.includes("led table lamp");
+  }
+  if (selectedCat === "stands") {
+    return matchesStands(nameLower) || nameLower.includes("led table lamp");
+  }
+  if (selectedCat === "advanced accessories") {
+    return matchesAdvancedAccessories(nameLower);
+  }
+  if (selectedCat === "charging") {
+    const hasChargingSecondary = (product.secondaryCategories ?? []).some((cat) =>
+      eqCategory(cat, "Charging")
+    );
+    return (
+      category === "charging" ||
+      hasChargingSecondary ||
+      matchesStorefrontCategory(product, "Charging") ||
+      nameLower.includes("charger") ||
+      nameLower.includes("charging") ||
+      nameLower.includes("power bank") ||
+      nameLower.includes("adapter") ||
+      nameLower.includes("cable") ||
+      nameLower.includes("usb") ||
+      nameLower.includes("type-c") ||
+      nameLower.includes("lightning") ||
+      nameLower.includes("dock") ||
+      nameLower.includes("magsafe")
+    );
+  }
+
+  return category === selectedCat;
+}
+
+export function sortAccessoriesPageProducts(products: StorefrontProduct[]): StorefrontProduct[] {
+  return sortRecommendationProducts(products);
+}
+
 export { CATEGORY_PATH_MAP };

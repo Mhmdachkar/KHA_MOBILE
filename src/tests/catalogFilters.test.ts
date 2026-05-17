@@ -3,6 +3,9 @@ import {
   resolveCategoryFromPath,
   matchesStorefrontCategory,
   filterByCategoryPage,
+  filterAccessoriesPageProducts,
+  isExcludedFromAccessoriesPage,
+  matchesAccessoriesSubTab,
 } from "@/lib/catalogFilters";
 import type { StorefrontProduct } from "@/lib/catalogProduct";
 
@@ -46,5 +49,30 @@ describe("catalogFilters", () => {
       category: "Phone Accessories",
     });
     expect(matchesStorefrontCategory(charger, "Charging")).toBe(true);
+  });
+
+  it("filters accessories page excluding audio mis-tags", () => {
+    const catalog: StorefrontProduct[] = [
+      row({ id: 1, name: "Silicone Case", category: "Accessories" }),
+      row({
+        id: 5002,
+        name: "Green Lion Earbuds Pro",
+        category: "Accessories",
+        secondaryCategories: ["Audio"],
+      }),
+    ];
+    const accessories = filterAccessoriesPageProducts(catalog);
+    expect(accessories.map((p) => p.id)).toEqual([1]);
+    expect(isExcludedFromAccessoriesPage(catalog[1])).toBe(true);
+  });
+
+  it("matches accessories charging sub-tab", () => {
+    const cable = row({
+      id: 3,
+      name: "USB-C Fast Cable",
+      category: "Phone Accessories",
+    });
+    expect(matchesAccessoriesSubTab(cable, "charging")).toBe(true);
+    expect(matchesAccessoriesSubTab(cable, "bags")).toBe(false);
   });
 });

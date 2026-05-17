@@ -6,6 +6,7 @@ import { useFavorites } from "@/context/FavoritesContext";
 import { useCart } from "@/context/CartContext";
 import { resolveImageUrl } from "@/lib/imageUtils";
 import { formatMoney, getCardPricePresentation } from "@/lib/storefrontPricing";
+import { normalizeStorefrontVariants } from "@/lib/catalogProduct";
 import {
   getAddToCartAction,
   getPickerSteps,
@@ -73,10 +74,15 @@ const ProductCard = ({
   const [pickedColor, setPickedColor] = useState<{ name: string; image?: string } | null>(null);
   const pickerRef = useRef<HTMLDivElement>(null);
 
+  const normalizedVariants = useMemo(
+    () => normalizeStorefrontVariants(variants) ?? [],
+    [variants]
+  );
+
   const priceInput = {
     price,
     compareAtPrice,
-    variants,
+    variants: normalizedVariants.length ? normalizedVariants : undefined,
     sizes,
   };
   const cardPricing = getCardPricePresentation(priceInput);
@@ -85,7 +91,7 @@ const ProductCard = ({
 
   const productShape = {
     id,
-    variants,
+    variants: normalizedVariants.length ? normalizedVariants : undefined,
     sizes,
     colors,
     isPreorder,
@@ -314,7 +320,7 @@ const ProductCard = ({
             </div>
             <div className="flex-1 overflow-y-auto px-2.5 pb-2.5 space-y-1.5">
               {currentStepId === "variant" &&
-                variants?.map((variant) => (
+                normalizedVariants.map((variant) => (
                   <button
                     key={variant.key}
                     type="button"
