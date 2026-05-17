@@ -1,3 +1,5 @@
+import { normalizeStorefrontCategory, normalizeSecondaryCategories } from './storefrontCategories.js';
+
 /**
  * Map DB row <-> API JSON (camelCase for frontend).
  * Storefront `id` uses legacy_override_id when set so /product/:id URLs stay stable.
@@ -112,7 +114,7 @@ export function rowToPublicProduct(row, req) {
     image: primary,
     images: images.length > 0 ? images : [primary],
     rating: Number(row.rating),
-    category: row.category,
+    category: normalizeStorefrontCategory(row.category),
     brand: row.brand || undefined,
     video: row.video_url || undefined,
     isPreorder: row.is_preorder,
@@ -124,7 +126,7 @@ export function rowToPublicProduct(row, req) {
     colors: expandJsonbImages(coerceJsonArray(row.colors), req),
     sizes: expandJsonbImages(coerceJsonArray(row.sizes), req),
     connectivityOptions: row.connectivity_options || [],
-    secondaryCategories: row.secondary_categories || [],
+    secondaryCategories: normalizeSecondaryCategories(row.secondary_categories),
     stockQuantity: row.stock_quantity != null ? Number(row.stock_quantity) : null,
   };
 }
@@ -175,7 +177,7 @@ export function bodyToRowColumns(body) {
       : finiteOrNull(b.compare_at_price ?? null),
     primary_image_url,
     rating,
-    category: b.category,
+    category: normalizeStorefrontCategory(b.category),
     brand: b.brand ?? null,
     video_url: b.videoUrl ?? b.video_url ?? b.video ?? null,
     is_preorder: b.isPreorder ?? b.is_preorder ?? false,
@@ -187,7 +189,9 @@ export function bodyToRowColumns(body) {
     colors: b.colors ?? [],
     sizes: b.sizes ?? [],
     connectivity_options: b.connectivityOptions ?? b.connectivity_options ?? [],
-    secondary_categories: b.secondaryCategories ?? b.secondary_categories ?? [],
+    secondary_categories: normalizeSecondaryCategories(
+      b.secondaryCategories ?? b.secondary_categories ?? []
+    ),
     gallery_images,
     stock_quantity:
       b.stockQuantity != null && b.stockQuantity !== ''

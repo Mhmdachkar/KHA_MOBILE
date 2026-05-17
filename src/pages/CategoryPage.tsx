@@ -1,8 +1,9 @@
 import { useState, useMemo, useEffect } from "react";
 import { useCatalog } from "@/context/CatalogContext";
 import { motion } from "framer-motion";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Grid3x3, List, Filter, Check } from "lucide-react";
-import { useLocation, Link, useNavigate } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import Header from "@/components/Header";
 import ProductCard from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
@@ -99,10 +100,11 @@ const categoryQuotes: Record<string, { title: string; subtitle: string }> = {
   }
 };
 
+const GRID_SKELETON_COUNT = 10;
+
 const CategoryPage = () => {
-  const { storefrontProducts } = useCatalog();
+  const { storefrontProducts, catalogLoaded, refreshCatalog } = useCatalog();
   const location = useLocation();
-  const navigate = useNavigate();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [sortBy, setSortBy] = useState<string>("default");
   const [showFilters, setShowFilters] = useState(false);
@@ -115,9 +117,11 @@ const CategoryPage = () => {
     document.body.scrollTop = 0;
   }, [location.pathname]);
 
-  const categoryDisplayName = resolveCategoryFromPath(location.pathname);
+  useEffect(() => {
+    void refreshCatalog();
+  }, [location.pathname, refreshCatalog]);
 
-  const isSmartphoneCategory = categoryDisplayName === "Smartphones";
+  const categoryDisplayName = resolveCategoryFromPath(location.pathname);
 
   const categoryProducts = useMemo(
     () => filterByCategoryPage(storefrontProducts, categoryDisplayName),
@@ -433,27 +437,42 @@ const CategoryPage = () => {
             </div>
 
             {/* Products */}
-            {filteredAndSortedProducts.length > 0 ? (
-              <div
-                className={`grid gap-2 sm:gap-3 md:gap-4 lg:gap-6 ${viewMode === "grid"
-                  ? "grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
-                  : "grid-cols-1"
-                  }`}
+            {!catalogLoaded ? (
+              <motion.div
+                className={`grid gap-2 sm:gap-3 md:gap-4 lg:gap-6 ${
+                  viewMode === "grid"
+                    ? "grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+                    : "grid-cols-1"
+                }`}
               >
-                {filteredAndSortedProducts.map((product, index) => {
+                {Array.from({ length: GRID_SKELETON_COUNT }).map((_, i) => (
+                  <div key={i} className="space-y-2">
+                    <Skeleton className="aspect-square w-full rounded-sm" />
+                    <Skeleton className="h-3 w-2/3" />
+                    <Skeleton className="h-4 w-1/2" />
+                  </div>
+                ))}
+              </motion.div>
+            ) : filteredAndSortedProducts.length > 0 ? (
+              <motion.div
+                key={location.pathname}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.25 }}
+                className={`grid gap-2 sm:gap-3 md:gap-4 lg:gap-6 overflow-visible ${
+                  viewMode === "grid"
+                    ? "grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+                    : "grid-cols-1"
+                }`}
+              >
+                {filteredAndSortedProducts.map((product) => {
                   // Ensure product has all required fields
                   if (!product || !product.id || !product.name || !product.image) {
                     console.warn("Invalid product:", product);
                     return null;
                   }
                   return (
-                    <motion.div
-                      key={product.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.05 }}
-                      className="space-y-2"
-                    >
+                    <div key={product.id} className="relative min-w-0">
                       <ProductCard
                         id={product.id}
                         name={product.name}
@@ -472,27 +491,10 @@ const CategoryPage = () => {
                         stockQuantity={product.stockQuantity}
                         surface="grid"
                       />
-                      {isSmartphoneCategory && product.variants?.length > 0 && (
-                        <div className="flex flex-wrap gap-1.5">
-                          {product.variants.map((variant, vi) => (
-                            <button
-                              key={`${product.id}-${variant.key}-${vi}`}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                navigate(`/product/${product.id}?variant=${encodeURIComponent(variant.key)}`);
-                              }}
-                              style={{ touchAction: 'manipulation' }}
-                              className="px-2.5 py-1 rounded-full text-[11px] border border-border hover:border-primary/60 hover:text-primary transition"
-                            >
-                              {variant.label}
-                            </button>
-                          ))}
-                        </div>
-                      )}
-                    </motion.div>
+                    </div>
                   );
                 })}
-              </div>
+              </motion.div>
             ) : (
               <div className="text-center py-12 sm:py-16">
                 <p className="text-muted-foreground text-lg mb-4">

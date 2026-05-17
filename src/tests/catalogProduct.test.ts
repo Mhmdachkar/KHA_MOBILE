@@ -25,4 +25,12 @@ describe("normalizeStorefrontVariants", () => {
     expect(normalizeStorefrontVariants([])).toBeUndefined();
     expect(coerceVariantArray(null)).toEqual([]);
   });
+
+  it("parses string prices from admin JSONB", () => {
+    const out = normalizeStorefrontVariants([
+      { key: "128", label: "128GB", price: "899.99" as unknown as number },
+    ]);
+    expect(out).toHaveLength(1);
+    expect(out![0].price).toBe(899.99);
+  });
 });

@@ -5,6 +5,10 @@
 
 import type { StorefrontProduct } from "@/lib/catalogProduct";
 import { isGreenLionProduct } from "@/lib/catalogProduct";
+import {
+  canonicalCategoryFromPathSegment,
+  normalizeStorefrontCategory,
+} from "@/lib/storefrontCategories";
 
 const CATEGORY_PATH_MAP: Record<string, string> = {
   "/smartphones": "Smartphones",
@@ -17,6 +21,10 @@ const CATEGORY_PATH_MAP: Record<string, string> = {
   "/iphone%20cases": "iPhone Cases",
   "/iphonecases": "iPhone Cases",
   "/electronics": "Electronics",
+  "/accessories": "Accessories",
+  "/iphone cases": "iPhone Cases",
+  "/iphone%20cases": "iPhone Cases",
+  "/iphonecases": "iPhone Cases",
 };
 
 export function resolveCategoryFromPath(pathname: string): string {
@@ -28,15 +36,7 @@ export function resolveCategoryFromPath(pathname: string): string {
 
   const categoryMatch = normalizedPath.match(/^\/category\/(.+)$/);
   if (categoryMatch) {
-    const categoryParam = decodeURIComponent(categoryMatch[1]).toLowerCase();
-    if (
-      categoryParam === "iphone cases" ||
-      categoryParam === "iphone%20cases" ||
-      categoryParam === "iphonecases"
-    ) {
-      return "iPhone Cases";
-    }
-    return categoryParam.charAt(0).toUpperCase() + categoryParam.slice(1);
+    return canonicalCategoryFromPathSegment(categoryMatch[1]);
   }
 
   return "Category";
@@ -75,35 +75,40 @@ function isSonyProduct(product: StorefrontProduct): boolean {
 }
 
 function eqCategory(a: string | undefined, b: string): boolean {
-  return (a ?? "").toLowerCase() === b.toLowerCase();
+  return normalizeStorefrontCategory(a).toLowerCase() === normalizeStorefrontCategory(b).toLowerCase();
 }
 
 function hasSecondary(product: StorefrontProduct, category: string): boolean {
-  return (product.secondaryCategories ?? []).some((s) => eqCategory(s, category));
+  const target = normalizeStorefrontCategory(category);
+  return (product.secondaryCategories ?? []).some((s) => eqCategory(s, target));
 }
 
 /** Match product to a category label (category pages + home recommendation tabs). */
 export function matchesStorefrontCategory(product: StorefrontProduct, category: string): boolean {
   const nameLower = product.name?.toLowerCase() ?? "";
-  const productCategory = product.category?.toLowerCase() ?? "";
+  const rawCategoryLower = (product.category ?? "").toLowerCase();
+  const productCategory = normalizeStorefrontCategory(product.category).toLowerCase();
+  const pageCategory = normalizeStorefrontCategory(category);
 
-  if (category === "Charging") {
+  if (pageCategory === "Charging") {
+    const chargingNameMatch =
+      nameLower.includes("charg") ||
+      nameLower.includes("power bank") ||
+      nameLower.includes("adapter") ||
+      nameLower.includes("ups") ||
+      nameLower.includes("battery") ||
+      nameLower.includes("charger") ||
+      nameLower.includes("cable") ||
+      nameLower.includes("dock") ||
+      nameLower.includes("magsafe");
     return (
       eqCategory(product.category, "Charging") ||
-      (productCategory === "phone accessories" &&
-        (nameLower.includes("charg") ||
-          nameLower.includes("power bank") ||
-          nameLower.includes("adapter") ||
-          nameLower.includes("ups") ||
-          nameLower.includes("battery") ||
-          nameLower.includes("charger") ||
-          nameLower.includes("cable") ||
-          nameLower.includes("dock") ||
-          nameLower.includes("magsafe")))
+      ((rawCategoryLower === "phone accessories" || productCategory === "accessories") &&
+        chargingNameMatch)
     );
   }
 
-  if (category === "Audio") {
+  if (pageCategory === "Audio") {
     return (
       eqCategory(product.category, "Audio") ||
       hasSecondary(product, "Audio") ||
@@ -119,7 +124,7 @@ export function matchesStorefrontCategory(product: StorefrontProduct, category: 
     );
   }
 
-  if (category === "Gaming") {
+  if (pageCategory === "Gaming") {
     return (
       eqCategory(product.category, "Gaming") ||
       productCategory === "gaming consoles" ||
@@ -132,7 +137,7 @@ export function matchesStorefrontCategory(product: StorefrontProduct, category: 
     );
   }
 
-  if (category === "Accessories") {
+  if (pageCategory === "Accessories") {
     if (matchesStorefrontCategory(product, "Charging")) return false;
     if (matchesStorefrontCategory(product, "Audio")) return false;
     if (matchesStorefrontCategory(product, "Gaming")) return false;
@@ -152,11 +157,11 @@ export function matchesStorefrontCategory(product: StorefrontProduct, category: 
     );
   }
 
-  if (eqCategory(product.category, category) || hasSecondary(product, category)) {
+  if (eqCategory(product.category, pageCategory) || hasSecondary(product, pageCategory)) {
     return true;
   }
 
-  if (category === "iPhone Cases") {
+  if (pageCategory === "iPhone Cases") {
     return eqCategory(product.category, "iPhone Cases") || productCategory === "iphone cases";
   }
 

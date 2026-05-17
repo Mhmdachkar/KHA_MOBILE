@@ -5,7 +5,7 @@ import {
   ShieldCheck, Layout, Ticket, Image, ScrollText, ShoppingBag,
 } from "lucide-react";
 import { adminFetch, getAdminToken, setAdminToken, siteUrl } from "@/lib/adminApi";
-import { useCatalog } from "@/context/CatalogContext";
+import type { AdminProductStats } from "@/types/adminAnalytics";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -30,11 +30,8 @@ const AdminLayout = () => {
   const location = useLocation();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [authChecked, setAuthChecked] = useState(false);
-  const { allProducts, catalogLoaded } = useCatalog();
-
-  const stats = catalogLoaded
-    ? { total: allProducts.length, active: allProducts.filter((p: any) => p.isActive !== false).length }
-    : null;
+  const [productStats, setProductStats] = useState<AdminProductStats | null>(null);
+  const [orderTotal, setOrderTotal] = useState<number | null>(null);
 
   useEffect(() => {
     if (!getAdminToken()) {
@@ -58,6 +55,35 @@ const AdminLayout = () => {
       cancelled = true;
     };
   }, [navigate, location.pathname]);
+
+  useEffect(() => {
+    if (!authChecked) return;
+    let cancelled = false;
+    void (async () => {
+      try {
+        const [productsRes, ordersRes] = await Promise.all([
+          adminFetch("/api/admin/products/stats"),
+          adminFetch("/api/admin/order-stats"),
+        ]);
+        if (cancelled) return;
+        if (productsRes.ok) {
+          setProductStats((await productsRes.json()) as AdminProductStats);
+        }
+        if (ordersRes.ok) {
+          const data = await ordersRes.json();
+          setOrderTotal(typeof data.total === "number" ? data.total : null);
+        }
+      } catch {
+        if (!cancelled) {
+          setProductStats(null);
+          setOrderTotal(null);
+        }
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [authChecked, location.pathname]);
 
   useEffect(() => {
     setDrawerOpen(false);
@@ -84,17 +110,22 @@ const AdminLayout = () => {
       </div>
 
       {/* Stats cards */}
-      {stats && (
+      {productStats && (
         <div className="px-4 pt-4 pb-2 grid grid-cols-2 gap-2">
           <div className="rounded-xl bg-white/8 px-3 py-2.5">
-            <p className="text-[10px] text-white/50 uppercase tracking-widest mb-0.5">Total</p>
-            <p className="text-xl font-bold text-white">{stats.total}</p>
+            <p className="text-[10px] text-white/50 uppercase tracking-widest mb-0.5">Products</p>
+            <p className="text-xl font-bold text-white">{productStats.total}</p>
           </div>
           <div className="rounded-xl bg-emerald-500/15 px-3 py-2.5">
             <p className="text-[10px] text-emerald-300/70 uppercase tracking-widest mb-0.5">Active</p>
-            <p className="text-xl font-bold text-emerald-300">{stats.active}</p>
+            <p className="text-xl font-bold text-emerald-300">{productStats.active}</p>
           </div>
         </div>
+      )}
+      {orderTotal != null && (
+        <p className="px-4 pb-2 text-[10px] text-white/40">
+          {orderTotal.toLocaleString()} order{orderTotal === 1 ? "" : "s"} in database
+        </p>
       )}
 
       {/* Navigation */}

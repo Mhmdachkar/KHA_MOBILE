@@ -12,6 +12,7 @@ import { adminCouponsRouter } from './routes/adminCoupons.js';
 import { adminAuditRouter } from './routes/adminAudit.js';
 import { adminMediaRouter } from './routes/adminMedia.js';
 import { adminOrdersRouter } from './routes/adminOrders.js';
+import { adminAnalyticsRouter } from './routes/adminAnalytics.js';
 import { publicCatalogRouter } from './routes/publicCatalog.js';
 import { publicSettingsRouter } from './routes/publicSettings.js';
 import { publicCouponsRouter } from './routes/publicCoupons.js';
@@ -74,6 +75,7 @@ adminRouter.use(adminCouponsRouter);
 adminRouter.use(adminAuditRouter);
 adminRouter.use(adminMediaRouter);
 adminRouter.use(adminOrdersRouter);
+adminRouter.use(adminAnalyticsRouter);
 app.use('/api/admin', adminRouter);
 
 app.use('/api/public', publicCatalogRouter);

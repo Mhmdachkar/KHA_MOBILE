@@ -292,6 +292,10 @@ const AdminSiteContent = () => {
         </div>
       </SectionCard>
       <SectionCard title="Trust Stats (3 numbers shown below the CTAs)">
+        <p className="text-sm text-muted-foreground mb-4">
+          Marketing copy for the homepage hero — not calculated from orders, reviews, or analytics.
+          Edit the values below to match what you want shoppers to see.
+        </p>
         <div className="grid grid-cols-3 gap-4">
           {([1, 2, 3] as const).map((n) => {
             const vKey = `stat${n}_value` as keyof typeof hero;

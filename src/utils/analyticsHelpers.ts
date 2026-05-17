@@ -451,3 +451,72 @@ export const formatDuration = (milliseconds: number): string => {
 export const formatCurrency = (amount: number): string => {
   return `$${amount.toFixed(2)}`;
 };
+
+/** Previous period of equal length immediately before [start, end]. */
+export const getPreviousPeriodRange = (
+  start: number,
+  end: number
+): { start: number; end: number } | null => {
+  if (start <= 0) return null;
+  const duration = end - start;
+  return { start: start - duration, end: start };
+};
+
+export const computeTrendPercent = (current: number, previous: number): number | null => {
+  if (previous === 0) return current > 0 ? 100 : null;
+  return ((current - previous) / previous) * 100;
+};
+
+export interface SessionMetricTrends {
+  visitors: number | null;
+  pageViews: number | null;
+  conversionRate: number | null;
+  revenue: number | null;
+}
+
+export const calculateSessionMetricTrends = (
+  sessions: VisitorSession[],
+  start: number,
+  end: number
+): SessionMetricTrends => {
+  const current = calculateAnalyticsSummary(sessions, start, end);
+  const prevRange = getPreviousPeriodRange(start, end);
+  if (!prevRange) {
+    return { visitors: null, pageViews: null, conversionRate: null, revenue: null };
+  }
+  const previous = calculateAnalyticsSummary(sessions, prevRange.start, prevRange.end);
+  return {
+    visitors: computeTrendPercent(current.totalVisitors, previous.totalVisitors),
+    pageViews: computeTrendPercent(current.totalPageViews, previous.totalPageViews),
+    conversionRate: computeTrendPercent(current.conversionRate, previous.conversionRate),
+    revenue: computeTrendPercent(current.totalRevenue, previous.totalRevenue),
+  };
+};
+
+/** Export filtered sessions as CSV (browser download). */
+export const exportSessionsCsv = (sessions: VisitorSession[], filename = 'analytics-sessions.csv'): void => {
+  const header = ['sessionId', 'startTime', 'lastActivity', 'pageViews', 'bounced', 'referrer', 'device'];
+  const rows = sessions.map((s) => [
+    s.sessionId,
+    new Date(s.startTime).toISOString(),
+    new Date(s.lastActivity).toISOString(),
+    String(s.pages.length),
+    s.bounced ? 'yes' : 'no',
+    s.referrer || '',
+    s.device?.type || '',
+  ]);
+
+  const escape = (v: string) => {
+    const needsQuote = /[",\n]/.test(v);
+    return needsQuote ? `"${v.replace(/"/g, '""')}"` : v;
+  };
+
+  const csv = [header, ...rows].map((row) => row.map(escape).join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+};

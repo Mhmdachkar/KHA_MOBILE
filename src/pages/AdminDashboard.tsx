@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import {
   TrendingUp,
@@ -52,17 +52,25 @@ import {
   getAllSessions,
   calculateAnalyticsSummary,
   calculateConversionFunnel,
+  calculateSessionMetricTrends,
   getRealtimeStats,
   formatDuration,
   formatCurrency,
+  exportSessionsCsv,
 } from '@/utils/analyticsHelpers';
 import { AnalyticsSummary } from '@/types/analytics';
+import type { AdminAnalyticsSummary } from '@/types/adminAnalytics';
+import { adminFetch } from '@/lib/adminApi';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Info } from 'lucide-react';
 
 const AdminDashboard = () => {
   const [dateRange, setDateRange] = useState<'today' | '7days' | '30days' | 'all'>('7days');
   const [isLoading, setIsLoading] = useState(false);
   const [analytics, setAnalytics] = useState<AnalyticsSummary | null>(null);
   const [realtimeStats, setRealtimeStats] = useState(getRealtimeStats());
+  const [dbSummary, setDbSummary] = useState<AdminAnalyticsSummary | null>(null);
+  const [dbLoading, setDbLoading] = useState(false);
 
   // Calculate date range
   const getDateRange = () => {
@@ -94,6 +102,42 @@ const AdminDashboard = () => {
   useEffect(() => {
     loadAnalytics();
   }, [dateRange]);
+
+  useEffect(() => {
+    let cancelled = false;
+    setDbLoading(true);
+    void (async () => {
+      try {
+        const res = await adminFetch(`/api/admin/analytics/summary?range=${dateRange}`);
+        if (cancelled) return;
+        if (res.ok) {
+          setDbSummary((await res.json()) as AdminAnalyticsSummary);
+        } else {
+          setDbSummary(null);
+        }
+      } catch {
+        if (!cancelled) setDbSummary(null);
+      } finally {
+        if (!cancelled) setDbLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [dateRange]);
+
+  const sessionTrends = useMemo(() => {
+    const sessions = getAllSessions();
+    const { start, end } = getDateRange();
+    return calculateSessionMetricTrends(sessions, start, end);
+  }, [analytics, dateRange]);
+
+  const handleDownloadSessions = () => {
+    const sessions = getAllSessions();
+    const { start, end } = getDateRange();
+    const filtered = sessions.filter((s) => s.startTime >= start && s.startTime <= end);
+    exportSessionsCsv(filtered, `browser-sessions-${dateRange}.csv`);
+  };
 
   // Refresh realtime stats every 10 seconds
   useEffect(() => {
@@ -149,10 +193,15 @@ const AdminDashboard = () => {
                   <SelectItem value="all">All time</SelectItem>
                 </SelectContent>
               </Select>
-              <Button variant="outline" size="icon" onClick={loadAnalytics}>
+              <Button variant="outline" size="icon" onClick={loadAnalytics} aria-label="Refresh session analytics">
                 <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
               </Button>
-              <Button variant="outline" size="icon">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={handleDownloadSessions}
+                aria-label="Download browser session data as CSV"
+              >
                 <Download className="h-4 w-4" />
               </Button>
             </div>
@@ -161,6 +210,60 @@ const AdminDashboard = () => {
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        <Alert className="mb-6 border-primary/30 bg-primary/5">
+          <Info className="h-4 w-4" />
+          <AlertTitle>Two data sources</AlertTitle>
+          <AlertDescription>
+            <strong>Store orders</strong> below come from your database (all devices).{' '}
+            <strong>Browser sessions</strong> charts use analytics saved in this browser only — they are not
+            connected to the orders table and will differ across devices.
+          </AlertDescription>
+        </Alert>
+
+        <section className="mb-8">
+          <h2 className="text-lg font-semibold mb-1">Store orders (database)</h2>
+          <p className="text-sm text-muted-foreground mb-4">
+            Revenue and order counts from orders in your database
+            {dbLoading ? ' — loading…' : ''}.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <MetricCard
+              title="Orders"
+              value={dbSummary ? dbSummary.orderCount.toLocaleString() : '—'}
+              icon={ShoppingCart}
+              trend={dbSummary?.trends.orderCount ?? null}
+              color="bg-emerald-500"
+            />
+            <MetricCard
+              title="Revenue"
+              value={dbSummary ? formatCurrency(dbSummary.revenue) : '—'}
+              icon={DollarSign}
+              trend={dbSummary?.trends.revenue ?? null}
+              color="bg-orange-500"
+            />
+            <MetricCard
+              title="Avg. order value"
+              value={dbSummary ? formatCurrency(dbSummary.averageOrderValue) : '—'}
+              icon={TrendingUp}
+              trend={dbSummary?.trends.averageOrderValue ?? null}
+              color="bg-blue-500"
+            />
+            <MetricCard
+              title="Pending orders"
+              value={dbSummary ? String(dbSummary.ordersByStatus.pending ?? 0) : '—'}
+              icon={Clock}
+              color="bg-violet-500"
+            />
+          </div>
+        </section>
+
+        <section className="mb-6">
+          <h2 className="text-lg font-semibold mb-1">Browser sessions (this device)</h2>
+          <p className="text-sm text-muted-foreground mb-4">
+            Visitor behavior tracked locally when customers browse the storefront on this browser.
+          </p>
+        </section>
+
         {/* Real-time Stats Banner */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -185,34 +288,34 @@ const AdminDashboard = () => {
           </div>
         </motion.div>
 
-        {/* Key Metrics */}
+        {/* Session key metrics */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
           <MetricCard
             title="Total Visitors"
             value={analytics.totalVisitors.toLocaleString()}
             icon={Users}
-            trend={12.5}
+            trend={sessionTrends.visitors}
             color="bg-blue-500"
           />
           <MetricCard
             title="Page Views"
             value={analytics.totalPageViews.toLocaleString()}
             icon={Eye}
-            trend={8.3}
+            trend={sessionTrends.pageViews}
             color="bg-purple-500"
           />
           <MetricCard
             title="Conversion Rate"
             value={`${analytics.conversionRate.toFixed(1)}%`}
             icon={ShoppingCart}
-            trend={-2.1}
+            trend={sessionTrends.conversionRate}
             color="bg-green-500"
           />
           <MetricCard
-            title="Total Revenue"
+            title="Session Revenue"
             value={formatCurrency(analytics.totalRevenue)}
             icon={DollarSign}
-            trend={15.8}
+            trend={sessionTrends.revenue}
             color="bg-orange-500"
           />
         </div>
@@ -627,10 +730,11 @@ const MetricCard = ({
   title: string;
   value: string;
   icon: any;
-  trend: number;
+  trend?: number | null;
   color: string;
 }) => {
-  const isPositive = trend > 0;
+  const showTrend = trend != null && Number.isFinite(trend);
+  const isPositive = showTrend && trend > 0;
 
   return (
     <motion.div
@@ -645,10 +749,16 @@ const MetricCard = ({
             <div className={`p-3 rounded-lg ${color} bg-opacity-10`}>
               <Icon className={`h-6 w-6 ${color.replace('bg-', 'text-')}`} />
             </div>
-            <div className={`flex items-center gap-1 text-sm font-medium ${isPositive ? 'text-green-600' : 'text-red-600'}`}>
-              {isPositive ? <ArrowUp className="h-4 w-4" /> : <ArrowDown className="h-4 w-4" />}
-              {Math.abs(trend)}%
-            </div>
+            {showTrend ? (
+              <div
+                className={`flex items-center gap-1 text-sm font-medium ${isPositive ? 'text-green-600' : 'text-red-600'}`}
+              >
+                {isPositive ? <ArrowUp className="h-4 w-4" /> : <ArrowDown className="h-4 w-4" />}
+                {Math.abs(trend).toFixed(1)}%
+              </div>
+            ) : (
+              <span className="text-xs text-muted-foreground">vs prior period</span>
+            )}
           </div>
           <div className="text-2xl sm:text-3xl font-bold mb-1">{value}</div>
           <div className="text-sm text-muted-foreground">{title}</div>

@@ -23,6 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { CANONICAL_STOREFRONT_CATEGORIES } from "@/lib/storefrontCategories";
 import { cn } from "@/lib/utils";
 import { useUnsavedChanges } from "@/hooks/useUnsavedChanges";
 import { computeCatalogSaveFromBasics, formPricesFromLoadedProduct } from "@/lib/adminProductPricing";
@@ -60,10 +61,7 @@ interface FormState {
   stockQuantity: string;
 }
 
-const BASE_CATEGORIES = [
-  "Smartphones", "Tablets", "Audio", "Computers", "Wearables",
-  "Gaming", "Accessories", "Charging", "Electronics", "Other",
-];
+const BASE_CATEGORIES = [...CANONICAL_STOREFRONT_CATEGORIES];
 
 const TABS = [
   { id: "basics", label: "Basics", icon: Package },
@@ -352,6 +350,18 @@ const AdminProductEditor = () => {
     }
     const formSynced = { ...form, variants: variantsOut, sizes: sizesOut };
 
+    if (
+      form.category.trim() === "Smartphones" &&
+      form.variants.length === 0 &&
+      form.colors.length === 0
+    ) {
+      toast({
+        title: "Tip: add variants & colors",
+        description:
+          "Smartphones without storage variants or colors won't show the quick-add picker on the shop grid.",
+      });
+    }
+
     setSaving(true);
     try {
       const legacy = form.legacyOverrideId === "" ? null : Number(form.legacyOverrideId);
@@ -364,7 +374,7 @@ const AdminProductEditor = () => {
         compareAtPrice: basics.compareAtPrice,
         primaryImageUrl: form.primaryImageUrl.trim(),
         rating: Number(form.rating),
-        category: form.category.trim(),
+        category: form.category.trim(), // normalized on server; must match CANONICAL_STOREFRONT_CATEGORIES
         brand: form.brand.trim() || undefined,
         videoUrl: form.videoUrl.trim() || undefined,
         isPreorder: form.isPreorder,

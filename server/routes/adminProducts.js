@@ -53,6 +53,29 @@ adminProductsRouter.post('/upload', requirePool, requireAdmin, upload.single('fi
   }
 });
 
+adminProductsRouter.get('/products/stats', requirePool, requireAdmin, async (_req, res) => {
+  try {
+    const { rows } = await pool.query(
+      `SELECT
+         COUNT(*)::int AS total,
+         COUNT(*) FILTER (WHERE COALESCE(is_active, true) = true)::int AS active,
+         COUNT(*) FILTER (WHERE COALESCE(is_active, true) = false)::int AS inactive,
+         COUNT(*) FILTER (WHERE is_preorder = true)::int AS preorder
+       FROM products`
+    );
+    const row = rows[0] || { total: 0, active: 0, inactive: 0, preorder: 0 };
+    res.json({
+      total: row.total,
+      active: row.active,
+      inactive: row.inactive,
+      preorder: row.preorder,
+    });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'Failed to load product stats' });
+  }
+});
+
 adminProductsRouter.get('/products', requirePool, requireAdmin, async (req, res) => {
   try {
     const page = Math.max(1, parseInt(req.query.page) || 1);

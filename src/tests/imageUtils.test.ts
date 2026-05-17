@@ -58,19 +58,20 @@ describe("resolveImageUrl — no VITE_API_URL", () => {
     expect(resolveImageUrl(url)).toBe(url);
   });
 
-  it("leaves full https /uploads/ URL intact (no rewrite without VITE_API_URL)", () => {
+  it("rewrites full https /uploads/ URL to local API base (dev default)", () => {
     const url = "https://api.render.com/uploads/image.jpg";
-    expect(resolveImageUrl(url)).toBe(url);
+    expect(resolveImageUrl(url)).toBe("http://localhost:3001/uploads/image.jpg");
   });
 
-  it("leaves full http /uploads/ URL intact", () => {
+  it("rewrites full http /uploads/ URL to local API base", () => {
     const url = "http://api.render.com/uploads/image.jpg";
-    expect(resolveImageUrl(url)).toBe(url);
+    expect(resolveImageUrl(url)).toBe("http://localhost:3001/uploads/image.jpg");
   });
 
-  it("returns /uploads/ relative path as-is", () => {
-    const url = "/uploads/photo.png";
-    expect(resolveImageUrl(url)).toBe(url);
+  it("rewrites /uploads/ relative path to local API base", () => {
+    expect(resolveImageUrl("/uploads/photo.png")).toBe(
+      "http://localhost:3001/uploads/photo.png"
+    );
   });
 
   it("passes through root-relative non-upload paths", () => {

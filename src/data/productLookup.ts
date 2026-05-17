@@ -1,6 +1,10 @@
 import type { Product } from "@/data/products";
 import type { GreenLionProduct } from "@/data/greenLionProducts";
 import { normalizeStorefrontVariants } from "@/lib/catalogProduct";
+import {
+  normalizeStorefrontCategory,
+  normalizeSecondaryCategories,
+} from "@/lib/storefrontCategories";
 import { getProductById, getProductsByCategory } from "@/data/products";
 import {
   getGreenLionProductById,
@@ -102,7 +106,7 @@ function mapApiToProduct(p: ApiPublicProduct): Product {
     image: p.image,
     images: rawImgs.length > 1 ? rawImgs : rawImgs.length === 1 ? [rawImgs[0]] : undefined,
     rating: p.rating,
-    category: p.category,
+    category: normalizeStorefrontCategory(p.category),
     brand: p.brand,
     description: p.description,
     features: p.features || [],
@@ -111,7 +115,9 @@ function mapApiToProduct(p: ApiPublicProduct): Product {
     colors: p.colors?.length ? p.colors : undefined,
     sizes: p.sizes?.length ? p.sizes : undefined,
     connectivityOptions: p.connectivityOptions?.length ? p.connectivityOptions : undefined,
-    secondaryCategories: p.secondaryCategories?.length ? p.secondaryCategories : undefined,
+    secondaryCategories: p.secondaryCategories?.length
+      ? normalizeSecondaryCategories(p.secondaryCategories)
+      : undefined,
     video: p.video,
     isPreorder: p.isPreorder,
     showPreorderPrice: p.showPreorderPrice !== false,
@@ -132,7 +138,7 @@ function mapApiToGreenLion(p: ApiPublicProduct): GreenLionProduct {
     price: typeof p.price === "number" ? p.price : Number(p.price),
     images: rawImgs,
     rating: p.rating,
-    category: p.category,
+    category: normalizeStorefrontCategory(p.category),
     brand: p.brand || "Green Lion",
     description: p.description,
     features: p.features || [],

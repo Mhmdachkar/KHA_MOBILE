@@ -84,3 +84,34 @@ export function getPickerSteps(product: AddToCartProductShape): PickerStep[] {
   if (hasMultipleColors(product.colors)) steps.push("color");
   return steps;
 }
+
+/** Category grids show storage/color pickers on the card itself. */
+export function showsInlineCardOptions(
+  product: AddToCartProductShape,
+  surface: AddToCartSurface
+): boolean {
+  return surface === "grid" && getPickerSteps(product).length > 0;
+}
+
+export function isCardSelectionComplete(
+  product: AddToCartProductShape,
+  picked: {
+    variant: VariantOption | null;
+    size: SizeOption | null;
+    color: ColorOption | null;
+  }
+): boolean {
+  for (const step of getPickerSteps(product)) {
+    if (step === "variant" && !picked.variant) return false;
+    if (step === "size" && !picked.size) return false;
+    if (step === "color" && !picked.color) return false;
+  }
+  return true;
+}
+
+export function shortStorageLabel(variant: { label: string; storage?: string }): string {
+  if (variant.storage?.trim()) return variant.storage.trim();
+  const match = variant.label.match(/\d+\s*GB/i);
+  if (match) return match[0].replace(/\s+/g, "").toUpperCase();
+  return variant.label.length > 14 ? `${variant.label.slice(0, 12)}…` : variant.label;
+}
