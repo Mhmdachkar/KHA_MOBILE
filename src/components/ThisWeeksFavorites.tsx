@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
+import { formatMoney } from "@/lib/storefrontPricing";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { ShoppingCart, Star, TrendingUp, Zap, ArrowRight, Heart } from "lucide-react";
@@ -51,15 +52,22 @@ const FeaturedProductCard = ({
   const favoritesContext = useFavorites();
   const { toast } = useToast();
   const favorite = favoritesContext.isFavorite(product.id);
+  const sellPrice = product?.displayPrice ?? product?.price ?? 0;
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+
+    // Products with variants must be configured on the detail page
+    if (product.variants && product.variants.length > 0) {
+      navigate(`/product/${product.id}`);
+      return;
+    }
     
     addToCart({
       id: product.id,
       name: product.name,
-      price: product.price,
+      price: sellPrice,
       image: product.image || product.images?.[0],
       quantity: 1,
     });
@@ -80,7 +88,7 @@ const FeaturedProductCard = ({
       const params = new URLSearchParams({
         id: product.id.toString(),
         name: product.name,
-        price: product.price.toString(),
+        price: String(sellPrice),
         image: product.image || product.images?.[0],
         category: product.category
       });
@@ -96,7 +104,7 @@ const FeaturedProductCard = ({
     favoritesContext.toggleFavorite({
       id: product.id,
       name: product.name,
-      price: product.price,
+      price: sellPrice,
       image: product.image || product.images?.[0],
       rating: product.rating,
       category: product.category,
@@ -179,7 +187,7 @@ const FeaturedProductCard = ({
           {/* Price */}
           <div className="flex items-center gap-2 mb-4">
             <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              ${product.price.toFixed(2)}
+              {formatMoney(sellPrice)}
             </span>
           </div>
 
@@ -213,21 +221,18 @@ const FeaturedProductCard = ({
 };
 
 const ThisWeeksFavorites = () => {
-  const { catalogTick } = useCatalog();
+  const { storefrontProducts } = useCatalog();
   const { settings } = useSiteSettings();
+
+  const catalogById = useMemo(
+    () => new Map(storefrontProducts.map((p) => [p.id, p])),
+    [storefrontProducts]
+  );
 
   const FEATURED_PRODUCTS =
     settings.weekly_favorites.length > 0
       ? settings.weekly_favorites
       : STATIC_FEATURED_PRODUCTS;
-
-  // Helper function to get display price (uses first variant price if variants exist, otherwise base price)
-  const getDisplayPrice = (product: any): number => {
-    if (product?.variants && product.variants.length > 0) {
-      return product.variants[0].price;
-    }
-    return product?.price || 0;
-  };
 
   const featuredProductsData = useMemo(
     () =>
@@ -239,15 +244,20 @@ const ThisWeeksFavorites = () => {
             product.images = [product.image];
           }
         } else {
-          const { regularProduct, greenLionProduct } = findStoreProductSplit(item.id);
-          product = regularProduct || greenLionProduct;
-        }
-
-        if (product) {
-          product = {
-            ...product,
-            price: getDisplayPrice(product),
-          };
+          product = catalogById.get(item.id);
+          if (!product) {
+            const { regularProduct, greenLionProduct } = findStoreProductSplit(item.id);
+            const fallback = regularProduct || greenLionProduct;
+            if (fallback) {
+              product = catalogById.get(fallback.id) ?? {
+                ...fallback,
+                displayPrice:
+                  typeof fallback.price === "number"
+                    ? fallback.price
+                    : Number.parseFloat(String(fallback.price)) || 0,
+              };
+            }
+          }
         }
 
         return {
@@ -257,7 +267,7 @@ const ThisWeeksFavorites = () => {
           isTrending: index % 3 === 1,
         };
       }).filter((item) => item.product),
-    [catalogTick, settings.weekly_favorites]
+    [catalogById, settings.weekly_favorites]
   );
 
   return (

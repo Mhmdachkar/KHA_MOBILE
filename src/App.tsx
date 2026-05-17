@@ -22,6 +22,7 @@ import StreamingServiceDetail from "./pages/StreamingServiceDetail";
 import Accessories from "./pages/Accessories";
 import CategoryPage from "./pages/CategoryPage";
 import Checkout from "./pages/Checkout";
+import OrderLookup from "./pages/OrderLookup";
 import Favorites from "./pages/Favorites";
 import Services from "./pages/Services";
 import AboutUs from "./pages/AboutUs";
@@ -86,9 +87,9 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
+    <CatalogProvider>
     <FavoritesProvider>
       <CartProvider>
-        <CatalogProvider>
         <SiteSettingsProvider>
         <BrowserRouter>
           <AnalyticsProvider>
@@ -130,6 +131,7 @@ const App = () => (
                 <Route path="/services" element={<Services />} />
                 <Route path="/about" element={<AboutUs />} />
                 <Route path="/checkout" element={<Checkout />} />
+                <Route path="/order-lookup" element={<OrderLookup />} />
                 <Route path="/favorites" element={<Favorites />} />
                 <Route path="/product/:id" element={<ProductDetail />} />
                 <Route path="/instagram-generator" element={<InstagramGenerator />} />
@@ -149,9 +151,9 @@ const App = () => (
           </AnalyticsProvider>
         </BrowserRouter>
         </SiteSettingsProvider>
-        </CatalogProvider>
       </CartProvider>
     </FavoritesProvider>
+    </CatalogProvider>
   </QueryClientProvider>
 );
 

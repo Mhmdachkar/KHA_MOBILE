@@ -71,6 +71,16 @@ function expandMediaUrlForPublicClient(url, req) {
   return s;
 }
 
+function expandJsonbImages(arr, req) {
+  if (!Array.isArray(arr)) return [];
+  return arr.map((item) => {
+    if (item == null || typeof item !== 'object') return item;
+    const copy = { ...item };
+    if (copy.image) copy.image = expandMediaUrlForPublicClient(copy.image, req);
+    return copy;
+  });
+}
+
 function normalizeGallery(primary, gallery) {
   const g = Array.isArray(gallery) ? gallery : [];
   const merged = [primary, ...g].filter(Boolean);
@@ -103,9 +113,9 @@ export function rowToPublicProduct(row, req) {
     isActive: row.is_active,
     features: row.features || [],
     specifications: row.specifications || [],
-    variants: row.variants || [],
-    colors: row.colors || [],
-    sizes: row.sizes || [],
+    variants: expandJsonbImages(row.variants, req),
+    colors: expandJsonbImages(row.colors, req),
+    sizes: expandJsonbImages(row.sizes, req),
     connectivityOptions: row.connectivity_options || [],
     secondaryCategories: row.secondary_categories || [],
     stockQuantity: row.stock_quantity != null ? Number(row.stock_quantity) : null,

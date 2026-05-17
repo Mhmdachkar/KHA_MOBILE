@@ -133,16 +133,25 @@ publicOrdersRouter.get('/orders/:orderNumber', requirePool, async (req, res) => 
     if (!/^KHA-\d+$/i.test(orderNumber)) {
       return res.status(400).json({ error: 'Invalid order number' });
     }
+    const phoneQuery = String(req.query.phone || '').trim();
     const { rows } = await pool.query(
       `SELECT order_number, status, payment_status, payment_method,
               subtotal, discount, shipping_cost, total, coupon_code,
-              customer_name, created_at
+              customer_name, customer_phone, created_at
          FROM orders
         WHERE UPPER(order_number) = UPPER($1)`,
       [orderNumber]
     );
     if (!rows[0]) return res.status(404).json({ error: 'Order not found' });
-    res.json({ order: rows[0] });
+    if (phoneQuery) {
+      const stored = String(rows[0].customer_phone || '').replace(/\D/g, '');
+      const provided = phoneQuery.replace(/\D/g, '');
+      if (!stored || !provided || stored !== provided) {
+        return res.status(404).json({ error: 'Order not found' });
+      }
+    }
+    const { customer_phone: _phone, ...order } = rows[0];
+    res.json({ order });
   } catch (e) {
     console.error('[publicOrders] read error:', e);
     res.status(500).json({ error: 'Failed to load order' });

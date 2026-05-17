@@ -27,6 +27,7 @@ export type ApiPublicProduct = {
   compareAtPrice?: number | null;
   /** When pre-order: if false, storefront hides the numeric price. */
   showPreorderPrice?: boolean;
+  stockQuantity?: number | null;
   features: string[];
   specifications: Array<{ label: string; value: string }>;
   variants?: Product["variants"];
@@ -115,6 +116,7 @@ function mapApiToProduct(p: ApiPublicProduct): Product {
     showPreorderPrice: p.showPreorderPrice !== false,
     isActive: p.isActive,
     compareAtPrice: p.compareAtPrice ?? undefined,
+    stockQuantity: p.stockQuantity ?? null,
   } as Product;
 }
 
@@ -142,6 +144,7 @@ function mapApiToGreenLion(p: ApiPublicProduct): GreenLionProduct {
     isPreorder: p.isPreorder,
     showPreorderPrice: p.showPreorderPrice !== false,
     compareAtPrice: p.compareAtPrice ?? undefined,
+    stockQuantity: p.stockQuantity ?? null,
   } as GreenLionProduct;
 }
 

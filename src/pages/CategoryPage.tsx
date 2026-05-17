@@ -23,10 +23,12 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import {
-  getProductsByCategoryMerged,
-  getGreenLionProductsByCategoryMerged,
-  getAllGreenLionProductsMerged,
-} from "@/data/productLookup";
+  resolveCategoryFromPath,
+  filterByCategoryPage,
+  sortCategoryProducts,
+  inferProductBrand,
+  CATEGORY_PATH_MAP,
+} from "@/lib/catalogFilters";
 
 // Import brand logos
 import appleLogo from "@/assets/logo's/apple logo.png";
@@ -97,61 +99,8 @@ const categoryQuotes: Record<string, { title: string; subtitle: string }> = {
   }
 };
 
-// Mock products data - in a real app, this would come from an API
-const mockProducts = {
-  Computers: [
-    {
-      id: 11,
-      name: "MacBook Pro 16",
-      price: 2499,
-      image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500&h=500&fit=crop",
-      rating: 4.9,
-      category: "Computers"
-    },
-    {
-      id: 12,
-      name: "Dell XPS 15",
-      price: 1899,
-      image: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=500&h=500&fit=crop",
-      rating: 4.7,
-      category: "Computers"
-    },
-    {
-      id: 13,
-      name: "Lenovo ThinkPad X1",
-      price: 1799,
-      image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500&h=500&fit=crop",
-      rating: 4.6,
-      category: "Computers"
-    },
-    {
-      id: 14,
-      name: "HP Spectre x360",
-      price: 1699,
-      image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500&h=500&fit=crop",
-      rating: 4.8,
-      category: "Computers"
-    },
-  ],
-  Wearables: [],
-};
-
-// Category mapping - maps URL paths to category names (normalized to lowercase and decoded)
-const categoryMap: Record<string, string> = {
-  "/smartphones": "Smartphones",
-  "/audio": "Audio",
-  "/computers": "Computers",
-  "/wearables": "Wearables",
-  "/gaming": "Gaming",
-  "/tablets": "Tablets",
-  "/iphone cases": "iPhone Cases",
-  "/iphone%20cases": "iPhone Cases",
-  "/iphonecases": "iPhone Cases",
-  "/electronics": "Electronics",
-};
-
 const CategoryPage = () => {
-  const { catalogTick } = useCatalog();
+  const { storefrontProducts } = useCatalog();
   const location = useLocation();
   const navigate = useNavigate();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
@@ -166,380 +115,34 @@ const CategoryPage = () => {
     document.body.scrollTop = 0;
   }, [location.pathname]);
 
-  // Get category display name from pathname
-  // Handle both direct routes (/audio) and dynamic routes (/category/audio)
-  const getCategoryFromPath = (pathname: string): string => {
-    const normalizedPath = decodeURIComponent(pathname).toLowerCase();
+  const categoryDisplayName = resolveCategoryFromPath(location.pathname);
 
-    // Check direct route first
-    if (categoryMap[normalizedPath]) {
-      return categoryMap[normalizedPath];
-    }
-
-    // Check dynamic route (/category/:categoryName)
-    const categoryMatch = normalizedPath.match(/^\/category\/(.+)$/);
-    if (categoryMatch) {
-      const categoryParam = decodeURIComponent(categoryMatch[1]).toLowerCase();
-      if (categoryParam === "iphone cases" || categoryParam === "iphone%20cases" || categoryParam === "iphonecases") {
-        return "iPhone Cases";
-      }
-      // Capitalize first letter for category name
-      return categoryParam.charAt(0).toUpperCase() + categoryParam.slice(1);
-    }
-
-    return "Category";
-  };
-
-  const categoryDisplayName = getCategoryFromPath(location.pathname);
   const isSmartphoneCategory = categoryDisplayName === "Smartphones";
 
-  // Helper function to get display price (uses first variant price if variants exist, otherwise base price)
-  const getDisplayPrice = (product: any): number | string => {
-    if (product.variants && product.variants.length > 0) {
-      return product.variants[0].price;
-    }
-    return product.price || 0; // Allow price 0 for preorder items
-  };
+  const categoryProducts = useMemo(
+    () => filterByCategoryPage(storefrontProducts, categoryDisplayName),
+    [storefrontProducts, categoryDisplayName]
+  );
 
-  // Get products for this category
-  const categoryProducts = useMemo(() => {
-    let products: any[] = [];
+  // Filter and sort products
+  const filteredAndSortedProducts = useMemo(() => {
+    let filtered = [...categoryProducts];
 
-    try {
-      // Get mock products if they exist
-      if (mockProducts[categoryDisplayName as keyof typeof mockProducts]) {
-        const mock = mockProducts[categoryDisplayName as keyof typeof mockProducts];
-        if (Array.isArray(mock) && mock.length > 0) {
-          products = [...mock];
-        }
-      }
-
-      // Get real products from data file based on category
-      if (categoryDisplayName === "Audio") {
-        const audioProducts = getProductsByCategoryMerged("Audio");
-        if (Array.isArray(audioProducts) && audioProducts.length > 0) {
-          products = [...products, ...audioProducts.map(p => ({
-            ...p,
-            images: [p.image],
-            price: getDisplayPrice(p)
-          }))];
-        }
-        // Add Green Lion audio products
-        const greenLionAudio = getGreenLionProductsByCategoryMerged("Audio");
-        if (Array.isArray(greenLionAudio) && greenLionAudio.length > 0) {
-          products = [...products, ...greenLionAudio.map(p => ({
-            id: p.id,
-            name: p.name,
-            price: getDisplayPrice(p),
-            image: p.images[0],
-            images: p.images,
-            rating: p.rating,
-            category: p.category
-          }))];
-        }
-        // Sort Audio products: Apple products first (with priority order), then Green Lion (by price), then others by price
-        products.sort((a, b) => {
-          const aIsGreenLion = a.id >= 5000;
-          const bIsGreenLion = b.id >= 5000;
-          const aIsApple = a.brand === "Apple" || (typeof a.name === "string" && a.name.toLowerCase().includes("apple"));
-          const bIsApple = b.brand === "Apple" || (typeof b.name === "string" && b.name.toLowerCase().includes("apple"));
-
-          // Apple products FIRST - use priority order, then by price
-          if (aIsApple && !bIsApple) return -1;
-          if (!aIsApple && bIsApple) return 1;
-
-          // Within Apple products, use priority order first
-          if (aIsApple && bIsApple) {
-            const airPodsPriority: Record<number, number> = {
-              127: 1, // Apple AirPods Pro 3 - $287
-              129: 2, // Apple AirPods Pro (2nd Generation) with USB-C - $215
-              128: 3, // Apple AirPods 4 (Original) - $150
-            };
-
-            const aPriority = airPodsPriority[a.id] || 999;
-            const bPriority = airPodsPriority[b.id] || 999;
-
-            // If both are in priority list, sort by priority order
-            if (aPriority !== 999 && bPriority !== 999) {
-              return aPriority - bPriority;
-            }
-            // If only one is in priority list, prioritize it
-            if (aPriority !== 999 && bPriority === 999) return -1;
-            if (aPriority === 999 && bPriority !== 999) return 1;
-
-            // If neither is in priority list, sort by price (highest to lowest)
-            return b.price - a.price;
-          }
-
-          // Green Lion second - sort by price (highest to lowest) within Green Lion
-          if (aIsGreenLion && !bIsGreenLion) return -1;
-          if (!aIsGreenLion && bIsGreenLion) return 1;
-          if (aIsGreenLion && bIsGreenLion) {
-            return b.price - a.price; // Highest price first within Green Lion
-          }
-
-          // For non-Apple, non-Green Lion products: sort by price (highest to lowest)
-          return b.price - a.price;
-        });
-      } else if (categoryDisplayName === "Gaming") {
-        const gamingProducts = getProductsByCategoryMerged("Gaming");
-        if (Array.isArray(gamingProducts) && gamingProducts.length > 0) {
-          products = [...products, ...gamingProducts.map(p => ({
-            ...p,
-            images: p.images && p.images.length > 0 ? p.images : [p.image],
-            price: getDisplayPrice(p),
-            brand: p.brand,
-            description: p.description,
-            features: p.features,
-            isPreorder: p.isPreorder
-          }))];
-        }
-        // Add Green Lion gaming products if any
-        const greenLionGaming = getAllGreenLionProductsMerged().filter(p =>
-          p.secondaryCategories?.includes("Gaming") || p.name.toLowerCase().includes("gaming")
-        );
-        if (greenLionGaming.length > 0) {
-          products = [...products, ...greenLionGaming.map(p => ({
-            id: p.id,
-            name: p.name,
-            title: p.title,
-            price: getDisplayPrice(p),
-            image: p.images[0],
-            images: p.images,
-            rating: p.rating,
-            category: p.category,
-            brand: p.brand,
-            description: p.description,
-            features: p.features,
-            isPreorder: p.isPreorder
-          }))];
-        }
-        // Sort Gaming products: Sony/PlayStation first, then by price (highest to lowest)
-        products.sort((a, b) => {
-          const aIsSony = a.brand === "Sony" || (typeof a.name === "string" && a.name.toLowerCase().includes("playstation") || a.name.toLowerCase().includes("sony"));
-          const bIsSony = b.brand === "Sony" || (typeof b.name === "string" && b.name.toLowerCase().includes("playstation") || b.name.toLowerCase().includes("sony"));
-
-          // Sony products first
-          if (aIsSony && !bIsSony) return -1;
-          if (!aIsSony && bIsSony) return 1;
-
-          // Sort by price (highest to lowest), but keep price 0 items visible
-          return b.price - a.price;
-        });
-      } else if (categoryDisplayName === "Smartphones") {
-        const smartphones = getProductsByCategoryMerged("Smartphones");
-        if (Array.isArray(smartphones) && smartphones.length > 0) {
-          products = [
-            ...products,
-            ...smartphones.map(p => ({
-              ...p,
-              images: p.images && p.images.length > 0 ? p.images : [p.image],
-              price: getDisplayPrice(p)
-            }))
-          ];
-        }
-        // Sort Smartphones: Apple products first, then by price (highest to lowest)
-        products.sort((a, b) => {
-          const aIsApple = a.brand === "Apple" || (typeof a.name === "string" && a.name.toLowerCase().includes("apple") || a.name.toLowerCase().includes("iphone"));
-          const bIsApple = b.brand === "Apple" || (typeof b.name === "string" && b.name.toLowerCase().includes("apple") || b.name.toLowerCase().includes("iphone"));
-
-          // Apple products first
-          if (aIsApple && !bIsApple) return -1;
-          if (!aIsApple && bIsApple) return 1;
-
-          // Sort by price (highest to lowest)
-          return b.price - a.price;
-        });
-      } else if (categoryDisplayName === "Wearables") {
-        const wearables = getProductsByCategoryMerged("Wearables");
-        if (Array.isArray(wearables) && wearables.length > 0) {
-          products = [...products, ...wearables.map(p => ({
-            ...p,
-            images: [p.image],
-            price: getDisplayPrice(p)
-          }))];
-        }
-        // Add Green Lion smartwatches
-        const greenLionWearables = getGreenLionProductsByCategoryMerged("Wearables");
-        if (Array.isArray(greenLionWearables) && greenLionWearables.length > 0) {
-          products = [...products, ...greenLionWearables.map(p => ({
-            id: p.id,
-            name: p.name,
-            price: getDisplayPrice(p),
-            image: p.images[0],
-            images: p.images,
-            rating: p.rating,
-            category: p.category
-          }))];
-        }
-        // Sort Wearables products: Apple products first (with priority order), then Green Lion (by price), then others by price
-        products.sort((a, b) => {
-          const aIsGreenLion = a.id >= 5000;
-          const bIsGreenLion = b.id >= 5000;
-          const aIsApple = a.brand === "Apple" || (typeof a.name === "string" && a.name.toLowerCase().includes("apple"));
-          const bIsApple = b.brand === "Apple" || (typeof b.name === "string" && b.name.toLowerCase().includes("apple"));
-
-          // Apple products FIRST - use priority order, then by price
-          if (aIsApple && !bIsApple) return -1;
-          if (!aIsApple && bIsApple) return 1;
-
-          // Within Apple products, use priority order first
-          if (aIsApple && bIsApple) {
-            const appleWatchPriority: Record<number, number> = {
-              208: 1, // Apple Watch Series 11 42mm - $415
-              207: 2, // Apple Watch Series 10 46mm - $370
-              205: 3, // Apple Watch SE (2nd generation) 40mm - $285
-              206: 4, // Apple Watch SE (2nd generation) 44mm - $265
-            };
-
-            const aPriority = appleWatchPriority[a.id] || 999;
-            const bPriority = appleWatchPriority[b.id] || 999;
-
-            // If both are in priority list, sort by priority order
-            if (aPriority !== 999 && bPriority !== 999) {
-              return aPriority - bPriority;
-            }
-            // If only one is in priority list, prioritize it
-            if (aPriority !== 999 && bPriority === 999) return -1;
-            if (aPriority === 999 && bPriority !== 999) return 1;
-
-            // If neither is in priority list, sort by price (highest to lowest)
-            return b.price - a.price;
-          }
-
-          // Green Lion second - sort by price (highest to lowest) within Green Lion
-          if (aIsGreenLion && !bIsGreenLion) return -1;
-          if (!aIsGreenLion && bIsGreenLion) return 1;
-          if (aIsGreenLion && bIsGreenLion) {
-            return b.price - a.price; // Highest price first within Green Lion
-          }
-
-          // For non-Apple, non-Green Lion products: sort by price (highest to lowest)
-          return b.price - a.price;
-        });
-      } else if (categoryDisplayName === "Tablets") {
-        const tablets = getProductsByCategoryMerged("Tablets");
-        if (Array.isArray(tablets) && tablets.length > 0) {
-          products = [
-            ...products,
-            ...tablets.map(p => ({
-              ...p,
-              images: p.images && p.images.length > 0 ? p.images : [p.image],
-              price: getDisplayPrice(p)
-            }))
-          ];
-        }
-        // Sort Tablets: Apple products first, then by price (highest to lowest)
-        products.sort((a, b) => {
-          const aIsApple = a.brand === "Apple" || (typeof a.name === "string" && a.name.toLowerCase().includes("apple") || a.name.toLowerCase().includes("ipad"));
-          const bIsApple = b.brand === "Apple" || (typeof b.name === "string" && b.name.toLowerCase().includes("apple") || b.name.toLowerCase().includes("ipad"));
-
-          // Apple products first
-          if (aIsApple && !bIsApple) return -1;
-          if (!aIsApple && bIsApple) return 1;
-
-          // Sort by price (highest to lowest)
-          return b.price - a.price;
-        });
-      } else if (categoryDisplayName === "iPhone Cases" || categoryDisplayName === "IPhone Cases" || categoryDisplayName.toLowerCase() === "iphone cases" || categoryDisplayName === "Iphone cases") {
-        const cases = getProductsByCategoryMerged("iPhone Cases");
-        if (Array.isArray(cases) && cases.length > 0) {
-          products = [
-            ...products,
-            ...cases.map(p => ({
-              ...p,
-              images: p.images && p.images.length > 0 ? p.images : [p.image],
-              price: getDisplayPrice(p),
-              brand: p.brand,
-              description: p.description,
-              features: p.features,
-              isPreorder: p.isPreorder
-            }))
-          ];
-        }
-        // Sort iPhone Cases: Apple products first, then by price (highest to lowest)
-        products.sort((a, b) => {
-          const aIsApple = a.brand === "Apple" || (typeof a.name === "string" && a.name.toLowerCase().includes("apple"));
-          const bIsApple = b.brand === "Apple" || (typeof b.name === "string" && b.name.toLowerCase().includes("apple"));
-
-          // Apple products first
-          if (aIsApple && !bIsApple) return -1;
-          if (!aIsApple && bIsApple) return 1;
-
-          // Sort by price (highest to lowest), but keep price 0 items visible
-          return b.price - a.price;
-        });
-      } else {
-        // Default loading for other categories (like Electronics)
-        const otherProducts = getProductsByCategoryMerged(categoryDisplayName);
-        if (Array.isArray(otherProducts) && otherProducts.length > 0) {
-          products = [
-            ...products,
-            ...otherProducts.map(p => ({
-              ...p,
-              images: p.images && p.images.length > 0 ? p.images : [p.image],
-              price: getDisplayPrice(p)
-            }))
-          ];
-        }
-        // Add Green Lion products for this category (including secondary categories)
-        const greenLionCategory = getGreenLionProductsByCategoryMerged(categoryDisplayName);
-        if (Array.isArray(greenLionCategory) && greenLionCategory.length > 0) {
-          products = [...products, ...greenLionCategory.map(p => ({
-            id: p.id,
-            name: p.name,
-            title: p.title,
-            price: getDisplayPrice(p),
-            image: p.images[0],
-            images: p.images,
-            rating: p.rating,
-            category: p.category,
-            brand: p.brand,
-            description: p.description,
-            features: p.features,
-            isPreorder: p.isPreorder
-          }))];
-        }
-        // General sort by price
-        products.sort((a, b) => b.price - a.price);
-      }
-    } catch (error) {
-      console.error("Error fetching products for category:", categoryDisplayName, error);
+    if (selectedSmartphoneBrand !== "All") {
+      filtered = filtered.filter(
+        (product) => inferProductBrand(product) === selectedSmartphoneBrand
+      );
     }
 
-    return products;
-  }, [categoryDisplayName, catalogTick]);
+    const mode =
+      sortBy === "default"
+        ? "default"
+        : (sortBy as "price-low" | "price-high" | "rating" | "name");
 
-  // Helper function to check if product is Green Lion
-  const isGreenLionProduct = (product: any) => {
-    return product.id >= 5000 || product.brand === "Green Lion" || product.name?.startsWith("Green Lion");
-  };
-
-  // Helper function to check if product is Apple
-  const isAppleProduct = (product: any) => {
-    if (!product) return false;
-    if (product.brand === "Apple") return true;
-    const name = typeof product.name === "string" ? product.name.toLowerCase() : "";
-    return name.includes("apple") || name.startsWith("iphone") || name.startsWith("ipad") || name.startsWith("airpods") || name.includes("apple watch");
-  };
-
-  const inferProductBrand = (product: any): string | undefined => {
-    if (!product) return undefined;
-    if (product.brand) return product.brand;
-    const name = typeof product.name === "string" ? product.name.toLowerCase() : "";
-    if (name.startsWith("smart")) return "Smart";
-    if (name.includes("samsung")) return "Samsung";
-    if (name.includes("apple")) return "Apple";
-    if (name.includes("green lion")) return "Green Lion";
-    if (name.includes("xiaomi") || name.includes("redmi") || name.includes("poco")) return "Xiaomi";
-    if (name.includes("sony") || name.includes("playstation") || name.includes("ps5") || name.includes("ps4")) return "Sony";
-    if (name.includes("ea sports") || name.includes("fifa") || name.includes("fc ")) return "EA SPORTS";
-    return undefined;
-  };
+    return sortCategoryProducts(filtered, mode, categoryDisplayName);
+  }, [categoryProducts, sortBy, categoryDisplayName, selectedSmartphoneBrand]);
 
   const smartphoneBrandOptions = useMemo(() => {
-    // Apply this to all categories, not just Smartphones
-    // Count products per brand
     const brandCounts = new Map<string, number>();
     categoryProducts.forEach((product) => {
       const brand = inferProductBrand(product);
@@ -547,7 +150,6 @@ const CategoryPage = () => {
         brandCounts.set(brand, (brandCounts.get(brand) || 0) + 1);
       }
     });
-    // Sort by product count (descending), then alphabetically for ties
     return Array.from(brandCounts.keys()).sort((a, b) => {
       const countDiff = (brandCounts.get(b) || 0) - (brandCounts.get(a) || 0);
       if (countDiff !== 0) return countDiff;
@@ -556,7 +158,6 @@ const CategoryPage = () => {
   }, [categoryProducts]);
 
   useEffect(() => {
-    // Auto-select Sony brand when entering Gaming category
     if (categoryDisplayName === "Gaming") {
       setSelectedSmartphoneBrand("Sony");
     } else {
@@ -564,167 +165,8 @@ const CategoryPage = () => {
     }
   }, [categoryDisplayName]);
 
-  // Filter and sort products
-  const filteredAndSortedProducts = useMemo(() => {
-    let filtered = [...categoryProducts];
-
-    if (selectedSmartphoneBrand !== "All") {
-      filtered = filtered.filter(product => {
-        const brand = inferProductBrand(product);
-        return brand === selectedSmartphoneBrand;
-      });
-    }
-
-    // Always sort to put Green Lion products first, then Apple products, then others (unless user selects a specific sort)
-    if (sortBy === "default") {
-      filtered.sort((a, b) => {
-        const aIsGreenLion = isGreenLionProduct(a);
-        const bIsGreenLion = isGreenLionProduct(b);
-        const aIsApple = isAppleProduct(a);
-        const bIsApple = isAppleProduct(b);
-
-        // Apple products FIRST - use priority order for specific categories, then by price
-        if (aIsApple && !bIsApple) return -1;
-        if (!aIsApple && bIsApple) return 1;
-
-        // Green Lion products second (after Apple) - sort by price (highest to lowest) within Green Lion
-        if (aIsGreenLion && !bIsGreenLion) return -1;
-        if (!aIsGreenLion && bIsGreenLion) return 1;
-        if (aIsGreenLion && bIsGreenLion) {
-          return b.price - a.price; // Highest price first within Green Lion
-        }
-
-        // For Wearables: prioritize specific Apple Watch models first within Apple products
-        if (categoryDisplayName === "Wearables" && aIsApple && bIsApple) {
-          // Priority order for Apple Watches
-          const appleWatchPriority: Record<number, number> = {
-            208: 1, // Apple Watch Series 11 42mm - $415
-            207: 2, // Apple Watch Series 10 46mm - $370
-            205: 3, // Apple Watch SE (2nd generation) 40mm - $285
-            206: 4, // Apple Watch SE (2nd generation) 44mm - $265
-          };
-
-          const aPriority = appleWatchPriority[a.id] || 999;
-          const bPriority = appleWatchPriority[b.id] || 999;
-
-          // If both are in priority list, sort by priority order
-          if (aPriority !== 999 && bPriority !== 999) {
-            return aPriority - bPriority;
-          }
-          // If only one is in priority list, prioritize it
-          if (aPriority !== 999 && bPriority === 999) return -1;
-          if (aPriority === 999 && bPriority !== 999) return 1;
-
-          // If neither is in priority list, sort by price (highest to lowest)
-          return b.price - a.price;
-        }
-
-        // For Audio: prioritize specific Apple AirPods models first within Apple products
-        if (categoryDisplayName === "Audio" && aIsApple && bIsApple) {
-          // Priority order for Apple AirPods
-          const airPodsPriority: Record<number, number> = {
-            127: 1, // Apple AirPods Pro 3 - $287
-            129: 2, // Apple AirPods Pro (2nd Generation) with USB-C - $215
-            128: 3, // Apple AirPods 4 (Original) - $150
-          };
-
-          const aPriority = airPodsPriority[a.id] || 999;
-          const bPriority = airPodsPriority[b.id] || 999;
-
-          // If both are in priority list, sort by priority order
-          if (aPriority !== 999 && bPriority !== 999) {
-            return aPriority - bPriority;
-          }
-          // If only one is in priority list, prioritize it
-          if (aPriority !== 999 && bPriority === 999) return -1;
-          if (aPriority === 999 && bPriority !== 999) return 1;
-
-          // If neither is in priority list, sort by price (highest to lowest)
-          return b.price - a.price;
-        }
-
-        // Sort by price (highest to lowest) for all categories and all product types
-        return b.price - a.price;
-      });
-    } else {
-      // User-selected sort
-      switch (sortBy) {
-        case "price-low":
-          filtered.sort((a, b) => {
-            const aIsGreenLion = isGreenLionProduct(a);
-            const bIsGreenLion = isGreenLionProduct(b);
-
-            // Green Lion products first, then by price
-            if (aIsGreenLion && !bIsGreenLion) return -1;
-            if (!aIsGreenLion && bIsGreenLion) return 1;
-
-            return a.price - b.price;
-          });
-          break;
-        case "price-high":
-          filtered.sort((a, b) => {
-            const aIsGreenLion = isGreenLionProduct(a);
-            const bIsGreenLion = isGreenLionProduct(b);
-
-            // Green Lion products first, then by price
-            if (aIsGreenLion && !bIsGreenLion) return -1;
-            if (!aIsGreenLion && bIsGreenLion) return 1;
-
-            return b.price - a.price;
-          });
-          break;
-        case "rating":
-          filtered.sort((a, b) => {
-            const aIsGreenLion = isGreenLionProduct(a);
-            const bIsGreenLion = isGreenLionProduct(b);
-
-            // Green Lion products first, then by rating
-            if (aIsGreenLion && !bIsGreenLion) return -1;
-            if (!aIsGreenLion && bIsGreenLion) return 1;
-
-            return (b.rating || 0) - (a.rating || 0);
-          });
-          break;
-        case "name":
-          filtered.sort((a, b) => {
-            const aIsGreenLion = isGreenLionProduct(a);
-            const bIsGreenLion = isGreenLionProduct(b);
-
-            // Green Lion products first, then by name
-            if (aIsGreenLion && !bIsGreenLion) return -1;
-            if (!aIsGreenLion && bIsGreenLion) return 1;
-
-            return a.name.localeCompare(b.name);
-          });
-          break;
-        default:
-          // Default: Green Lion first, then by rating
-          filtered.sort((a, b) => {
-            const aIsGreenLion = isGreenLionProduct(a);
-            const bIsGreenLion = isGreenLionProduct(b);
-
-            if (aIsGreenLion && !bIsGreenLion) return -1;
-            if (!aIsGreenLion && bIsGreenLion) return 1;
-
-            return (b.rating || 0) - (a.rating || 0);
-          });
-          break;
-      }
-    }
-
-    return filtered;
-  }, [categoryProducts, sortBy, isSmartphoneCategory, categoryDisplayName, selectedSmartphoneBrand]);
-
-  // Debug: Log category information (remove in production)
-  useEffect(() => {
-    console.log("CategoryPage - pathname:", location.pathname);
-    console.log("CategoryPage - categoryDisplayName:", categoryDisplayName);
-    console.log("CategoryPage - categoryProducts:", categoryProducts.length);
-    console.log("CategoryPage - filteredAndSortedProducts:", filteredAndSortedProducts.length);
-  }, [location.pathname, categoryDisplayName, categoryProducts, filteredAndSortedProducts]);
-
   // Only redirect if category is truly not found (not in map and not a valid dynamic route)
-  const isCategoryNotFound = !categoryMap[location.pathname] &&
+  const isCategoryNotFound = !CATEGORY_PATH_MAP[location.pathname.toLowerCase()] &&
     categoryDisplayName === "Category" &&
     !location.pathname.match(/^\/category\//);
 
@@ -738,33 +180,6 @@ const CategoryPage = () => {
             <Button>Back to Home</Button>
           </Link>
         </div>
-
-        {isSmartphoneCategory && smartphoneBrandOptions.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-6"
-          >
-            <p className="text-sm font-medium text-muted-foreground mb-3">Filter by brand</p>
-            <div className="flex flex-wrap gap-2">
-              {["All", ...smartphoneBrandOptions].map((brand) => {
-                const isActive = selectedSmartphoneBrand === brand;
-                return (
-                  <button
-                    key={brand}
-                    onClick={() => setSelectedSmartphoneBrand(brand)}
-                    className={`px-3 py-1.5 rounded-full text-xs sm:text-sm border transition-all ${isActive
-                      ? "border-primary bg-primary/10 text-primary shadow-sm"
-                      : "border-border hover:border-primary/40"
-                      }`}
-                  >
-                    {brand}
-                  </button>
-                );
-              })}
-            </div>
-          </motion.div>
-        )}
       </div>
     );
   }
@@ -1043,15 +458,19 @@ const CategoryPage = () => {
                         id={product.id}
                         name={product.name}
                         title={product.title}
-                        price={product.price || 0}
+                        price={product.displayPrice ?? product.price ?? 0}
                         compareAtPrice={product.compareAtPrice}
                         image={product.image}
                         images={product.images || [product.image]}
                         rating={product.rating}
                         category={product.category}
                         colors={product.colors}
+                        variants={product.variants}
+                        sizes={product.sizes}
                         isPreorder={product.isPreorder}
                         showPreorderPrice={product.showPreorderPrice}
+                        stockQuantity={product.stockQuantity}
+                        surface="grid"
                       />
                       {isSmartphoneCategory && product.variants?.length > 0 && (
                         <div className="flex flex-wrap gap-1.5">

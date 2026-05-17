@@ -8,6 +8,7 @@ import { useCart } from "@/context/CartContext";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import { formatMoney } from "@/lib/storefrontPricing";
 
 const Favorites = () => {
   const { favorites, removeFromFavorites, toggleFavorite } = useFavorites();
@@ -148,7 +149,7 @@ const Favorites = () => {
                 <span className="text-xs sm:text-sm text-muted-foreground">Total Value:</span>
               </div>
               <span className="text-base sm:text-lg md:text-xl font-bold text-elegant bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                ${totalPrice.toFixed(2)}
+                {formatMoney(totalPrice)}
               </span>
             </div>
             <div className="hidden sm:block h-6 w-px bg-border" />
@@ -204,7 +205,7 @@ const Favorites = () => {
                   </h3>
                   <div className="flex items-center justify-between">
                     <p className="text-elegant text-sm sm:text-base font-normal bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                      ${product.price.toFixed(2)}
+                      {formatMoney(product.price)}
                     </p>
                   </div>
                 </div>
@@ -261,7 +262,7 @@ const Favorites = () => {
           <div className="w-full sm:w-auto text-center sm:text-left">
             <p className="text-xs sm:text-sm text-muted-foreground mb-1">Total Value</p>
             <p className="text-2xl sm:text-3xl font-bold text-elegant bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              ${totalPrice.toFixed(2)}
+              {formatMoney(totalPrice)}
             </p>
           </div>
 

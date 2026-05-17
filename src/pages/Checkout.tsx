@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import { Phone, DollarSign, ShoppingBag, MessageCircle, ArrowLeft, Check, Plus, X, Minus, Trash2, MapPin, Banknote, Mail } from "lucide-react";
@@ -20,101 +20,28 @@ import {
   type CheckoutType,
   type OrderItemInput,
 } from "@/lib/ordersApi";
+import { validateCouponCode } from "@/lib/couponApi";
+import { useCatalog } from "@/context/CatalogContext";
+import { formatMoney, resolveSalePrice } from "@/lib/storefrontPricing";
+import {
+  RECHARGE_CATALOG,
+  TOUCH_RECHARGE_CARDS,
+  DAYS_RECHARGE_CARDS,
+  ALFA_RECHARGE_CARDS,
+  ALFA_GIFT_CARDS,
+} from "@/data/rechargeCatalog";
 
-// Import recharge images for display
-import recharge1_67 from "@/assets/recharges/1.67$.png";
-import recharge3_79 from "@/assets/recharges/3.79$.png";
-import recharge4_50 from "@/assets/recharges/4.50$.png";
-import recharge7_58 from "@/assets/recharges/7.58$.png";
-import recharge10 from "@/assets/recharges/10$.png";
-import recharge15_15 from "@/assets/recharges/15.15$.png";
-import recharge22_73 from "@/assets/recharges/22.73$.png";
-import recharge77_28 from "@/assets/recharges/77.28$.png";
-import rechargeStart4_50 from "@/assets/recharges/start4.50$.png";
-import rechargeSmart7_50 from "@/assets/recharges/smart7.50$.png";
-import rechargeSuper13_50 from "@/assets/recharges/super13.50$.png";
+const RECHARGE_IMAGES: Record<string, string> = Object.fromEntries(
+  RECHARGE_CATALOG.map((c) => {
+    const key = c.name.match(/\$([\d.]+)/)?.[1] || String(c.id);
+    return [key, c.image];
+  })
+);
 
-// Import days recharge images
-import recharge30days from "@/assets/recharges/days/30days.png";
-import recharge60days from "@/assets/recharges/days/60days.png";
-import recharge90days from "@/assets/recharges/days/90days.png";
-import recharge180days from "@/assets/recharges/days/180days.png";
-import recharge360days from "@/assets/recharges/days/360days.png";
-
-// Import Alfa recharge images
-import alfa3_03 from "@/assets/recharges/alfa/3.03$.png";
-import alfa4_50 from "@/assets/recharges/alfa/4.50$.png";
-import alfa7_58 from "@/assets/recharges/alfa/7.58$.png";
-import alfa10_00 from "@/assets/recharges/alfa/10.00$.png";
-import alfa15_15 from "@/assets/recharges/alfa/15.15$.png";
-import alfa22_73 from "@/assets/recharges/alfa/22.73$.png";
-import alfa77_28 from "@/assets/recharges/alfa/77.28$.png";
-
-// Import Alfa gift (data) images
-import alfa1GB from "@/assets/recharges/alfa/1GB.png";
-import alfa7GB from "@/assets/recharges/alfa/7GB.png";
-import alfa22GB from "@/assets/recharges/alfa/22GB.png";
-import alfa44GB from "@/assets/recharges/alfa/44GB.png";
-import alfa77GB from "@/assets/recharges/alfa/77GB.png";
-
-// Recharge cards mapping
-const RECHARGE_IMAGES: { [key: string]: string } = {
-  "1.67": recharge1_67,
-  "3.79": recharge3_79,
-  "4.50": recharge4_50,
-  "7.58": recharge7_58,
-  "10": recharge10,
-  "15.15": recharge15_15,
-  "22.73": recharge22_73,
-  "77.28": recharge77_28,
-  "start4.50": rechargeStart4_50,
-  "smart7.50": rechargeSmart7_50,
-  "super13.50": rechargeSuper13_50,
-};
-
-// Additional Cards for the dropdown (Touch Cards)
-const ADDITIONAL_TOUCH_CARDS = [
-  { id: 1, name: "Touch $1.67 Card", price: 1.67, image: recharge1_67 },
-  { id: 2, name: "Touch $3.79 Card", price: 3.79, image: recharge3_79 },
-  { id: 3, name: "Touch $4.50 Card", price: 4.50, image: recharge4_50 },
-  { id: 4, name: "Touch Start $4.50 Card", price: 4.50, image: rechargeStart4_50 },
-  { id: 5, name: "Touch $7.58 Card", price: 7.58, image: recharge7_58 },
-  { id: 6, name: "Touch Smart $7.50 Card", price: 7.50, image: rechargeSmart7_50 },
-  { id: 7, name: "Touch $10 Card", price: 10, image: recharge10 },
-  { id: 8, name: "Touch Super $13.50 Card", price: 20, image: rechargeSuper13_50 },
-  { id: 9, name: "Touch $15.15 Card", price: 15.15, image: recharge15_15 },
-  { id: 10, name: "Touch $22.73 Card", price: 22.73, image: recharge22_73 },
-  { id: 11, name: "Touch $77.28 Card", price: 77.28, image: recharge77_28 },
-];
-
-// Additional Days Cards for the dropdown
-const ADDITIONAL_DAYS_CARDS = [
-  { id: 12, name: "30 Days Card", price: 2.8, image: recharge30days },
-  { id: 13, name: "60 Days Card", price: 5.6, image: recharge60days },
-  { id: 14, name: "90 Days Card", price: 8.4, image: recharge90days },
-  { id: 15, name: "180 Days Card", price: 16.8, image: recharge180days },
-  { id: 16, name: "360 Days Card", price: 33.6, image: recharge360days },
-];
-
-// Additional Alfa Cards for the dropdown (same pricing as Touch Cards)
-const ADDITIONAL_ALFA_CARDS = [
-  { id: 17, name: "Alfa $3.03 Card", price: 5, image: alfa3_03 },
-  { id: 18, name: "Alfa $4.50 Card", price: 7, image: alfa4_50 },
-  { id: 19, name: "Alfa $7.58 Card", price: 10, image: alfa7_58 },
-  { id: 20, name: "Alfa $10 Card", price: 15, image: alfa10_00 },
-  { id: 21, name: "Alfa $15.15 Card", price: 20, image: alfa15_15 },
-  { id: 22, name: "Alfa $22.73 Card", price: 30, image: alfa22_73 },
-  { id: 23, name: "Alfa $77.28 Card", price: 100, image: alfa77_28 },
-];
-
-// Additional Alfa Gift Cards for the dropdown
-const ADDITIONAL_ALFA_GIFT_CARDS = [
-  { id: 24, name: "Alfa Gift 1GB", price: 6, image: alfa1GB },
-  { id: 25, name: "Alfa Gift 7GB", price: 13, image: alfa7GB },
-  { id: 26, name: "Alfa Gift 22GB", price: 20, image: alfa22GB },
-  { id: 27, name: "Alfa Gift 44GB", price: 27, image: alfa44GB },
-  { id: 28, name: "Alfa Gift 77GB", price: 40, image: alfa77GB },
-];
+const ADDITIONAL_TOUCH_CARDS = TOUCH_RECHARGE_CARDS;
+const ADDITIONAL_DAYS_CARDS = DAYS_RECHARGE_CARDS;
+const ADDITIONAL_ALFA_CARDS = ALFA_RECHARGE_CARDS;
+const ADDITIONAL_ALFA_GIFT_CARDS = ALFA_GIFT_CARDS;
 
 type PaymentMethod = "whatsapp" | "cash_on_delivery";
 
@@ -142,8 +69,14 @@ const Checkout = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
+  const { storefrontProducts, refreshCatalog } = useCatalog();
   const { trackCheckoutStart, trackCheckoutComplete, trackRemoveFromCart } = useAnalytics();
   const isMobile = useIsMobile();
+  const [couponInput, setCouponInput] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<{ code: string; discount: number } | null>(null);
+  const [couponError, setCouponError] = useState<string | null>(null);
+  const [couponLoading, setCouponLoading] = useState(false);
+  const priceDriftWarnedRef = useRef(false);
 
   // Check if this is a recharge/gift card checkout (has URL params) or cart checkout
   const isRechargeCheckout = searchParams.has("name") || searchParams.has("price");
@@ -216,7 +149,12 @@ const Checkout = () => {
       return productImage;
     }
     const priceKey = productPrice.toString();
-    return RECHARGE_IMAGES[priceKey] || recharge10;
+    return (
+      RECHARGE_IMAGES[priceKey] ||
+      RECHARGE_CATALOG.find((c) => c.price === productPrice)?.image ||
+      RECHARGE_CATALOG[0]?.image ||
+      ""
+    );
   };
 
   const [formData, setFormData] = useState<CheckoutFormData>({
@@ -506,6 +444,83 @@ const Checkout = () => {
     return price;
   };
 
+  const getCartSubtotal = () =>
+    cart.reduce((sum, item) => sum + getPriceAsNumber(item.price) * item.quantity, 0);
+
+  useEffect(() => {
+    if (
+      priceDriftWarnedRef.current ||
+      isRechargeCheckout ||
+      cart.length === 0 ||
+      storefrontProducts.length === 0
+    ) {
+      return;
+    }
+    const byId = new Map(storefrontProducts.map((p) => [p.id, p]));
+    const staleCount = cart.filter((item) => {
+      const catalogProduct = byId.get(item.id);
+      if (!catalogProduct) return false;
+      const latest = resolveSalePrice(catalogProduct);
+      const cartPrice = getPriceAsNumber(item.price);
+      return Math.abs(latest - cartPrice) > 0.01;
+    }).length;
+    if (staleCount > 0) {
+      priceDriftWarnedRef.current = true;
+      toast({
+        title: "Prices updated",
+        description: `${staleCount} item(s) may have new prices. Review your total before paying.`,
+      });
+    }
+  }, [storefrontProducts, cart, isRechargeCheckout, toast]);
+
+  const handleOrderError = async (err: unknown) => {
+    const e = err as Error & { code?: string };
+    const code = e?.code;
+    if (code === "PRICE_MISMATCH" || code === "OUT_OF_STOCK" || code === "COUPON_INVALID") {
+      await refreshCatalog();
+    }
+    const title =
+      code === "OUT_OF_STOCK"
+        ? "Item unavailable"
+        : code === "PRICE_MISMATCH"
+          ? "Total changed"
+          : code === "COUPON_INVALID"
+            ? "Coupon invalid"
+            : "Could not place order";
+    toast({
+      variant: "destructive",
+      title,
+      description:
+        e?.message ||
+        "Please review your cart and try again, or contact us on WhatsApp.",
+    });
+  };
+
+  const applyCoupon = async () => {
+    setCouponError(null);
+    const code = couponInput.trim();
+    if (!code) {
+      setCouponError("Enter a coupon code");
+      return;
+    }
+    setCouponLoading(true);
+    try {
+      const subtotal = getCartSubtotal();
+      const result = await validateCouponCode(code, subtotal);
+      if (!result.valid || result.discount == null) {
+        setAppliedCoupon(null);
+        setCouponError(result.error || "Invalid coupon");
+        return;
+      }
+      setAppliedCoupon({ code: result.coupon?.code || code.toUpperCase(), discount: result.discount });
+      toast({ title: "Coupon applied", description: `You save ${formatMoney(result.discount)}` });
+    } catch {
+      setCouponError("Could not validate coupon");
+    } finally {
+      setCouponLoading(false);
+    }
+  };
+
   // Calculate total
   const calculateTotal = (): number => {
     if (isStreamingServiceCheckout) {
@@ -528,12 +543,9 @@ const Checkout = () => {
       }
       return total;
     } else {
-      // Cart checkout - includes delivery fee for physical products
-      const subtotal = cart.reduce((sum, item) => {
-        const price = getPriceAsNumber(item.price);
-        return sum + (price * item.quantity);
-      }, 0);
-      return subtotal + DELIVERY_FEE;
+      const subtotal = getCartSubtotal();
+      const discount = appliedCoupon?.discount ?? 0;
+      return Math.max(0, subtotal - discount) + DELIVERY_FEE;
     }
   };
 
@@ -673,6 +685,7 @@ const Checkout = () => {
           checkoutType === "product" ? formData.deliveryLocation : null,
       },
       items,
+      couponCode: checkoutType === "product" ? appliedCoupon?.code ?? null : null,
       shippingCost,
       clientTotal: total,
       idempotencyKey,
@@ -717,13 +730,9 @@ const Checkout = () => {
       } else {
         setTimeout(() => setIsProcessing(false), 2000);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("[Checkout] WhatsApp order failed:", err);
-      toast({
-        variant: "destructive",
-        title: "Could not place order",
-        description: err?.message || "Please try again in a moment.",
-      });
+      await handleOrderError(err);
       setIsProcessing(false);
     }
   };
@@ -758,15 +767,9 @@ const Checkout = () => {
         setIsProcessing(false);
         navigate("/");
       }, 2000);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("[Checkout] COD order failed:", err);
-      toast({
-        variant: "destructive",
-        title: "Could not place order",
-        description:
-          err?.message ||
-          "Failed to place your order. Please try again or contact support.",
-      });
+      await handleOrderError(err);
       setIsProcessing(false);
     }
   };
@@ -790,6 +793,12 @@ const Checkout = () => {
             <ArrowLeft className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
             {isRechargeCheckout ? "Back to Cards" : "Back to Cart"}
           </Button>
+          <Link
+            to="/order-lookup"
+            className="ml-4 text-xs sm:text-sm text-muted-foreground hover:text-primary underline-offset-4 hover:underline"
+          >
+            Track an order
+          </Link>
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12">
@@ -840,7 +849,7 @@ const Checkout = () => {
                         {isStreamingServiceCheckout ? (
                           <>
                             <p className="text-elegant text-lg sm:text-xl font-medium">
-                              ${getStreamingPlanPrice().toFixed(2)}
+                              {formatMoney(getStreamingPlanPrice())}
                             </p>
                             <p className="text-[11px] sm:text-xs text-muted-foreground">
                               {streamingPlanDuration.charAt(0).toUpperCase() + streamingPlanDuration.slice(1)}
@@ -848,7 +857,7 @@ const Checkout = () => {
                           </>
                         ) : (
                           <>
-                            <p className="text-elegant text-lg sm:text-xl font-medium">${productPrice.toFixed(2)}</p>
+                            <p className="text-elegant text-lg sm:text-xl font-medium">{formatMoney(productPrice)}</p>
                             {productRegion !== "USA" && productRegionalPrice > 0 && (
                               <p className="text-xs sm:text-sm text-muted-foreground">
                                 {productRegionalCurrency} {productRegionalPrice}
@@ -867,7 +876,7 @@ const Checkout = () => {
                     {getCartItemsWithDetails().map((item) => {
                       // Use color image if available, otherwise use regular image
                       const displayImage = (item as any).colorImage || item.image;
-                      const uniqueKey = `${item.id}-${item.variantKey || "base"}-${(item as any).color || "no-color"}`;
+                      const uniqueKey = `${item.id}-${item.variantKey || "base"}-${(item as any).color || "no-color"}-${item.size || "no-size"}`;
 
                       return (
                         <motion.div
@@ -906,6 +915,11 @@ const Checkout = () => {
                                 Color: {(item as any).color}
                               </p>
                             )}
+                            {item.size && (
+                              <p className="text-[10px] sm:text-xs text-muted-foreground mb-1">
+                                Size: {item.size}
+                              </p>
+                            )}
                             {item.category && (
                               <p className="text-[10px] sm:text-xs text-muted-foreground mb-1 sm:mb-2">{item.category}</p>
                             )}
@@ -914,7 +928,7 @@ const Checkout = () => {
                                 <motion.button
                                   whileHover={{ scale: 1.1 }}
                                   whileTap={{ scale: 0.9 }}
-                                  onClick={() => updateQuantity(item.id, item.quantity - 1, item.variantKey, (item as any).color)}
+                                  onClick={() => updateQuantity(item.id, item.quantity - 1, item.variantKey, (item as any).color, item.size)}
                                   className="h-6 w-6 sm:h-7 sm:w-7 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
                                 >
                                   <Minus className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
@@ -925,7 +939,7 @@ const Checkout = () => {
                                 <motion.button
                                   whileHover={{ scale: 1.1 }}
                                   whileTap={{ scale: 0.9 }}
-                                  onClick={() => updateQuantity(item.id, item.quantity + 1, item.variantKey, (item as any).color)}
+                                  onClick={() => updateQuantity(item.id, item.quantity + 1, item.variantKey, (item as any).color, item.size)}
                                   className="h-6 w-6 sm:h-7 sm:w-7 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
                                 >
                                   <Plus className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
@@ -933,10 +947,10 @@ const Checkout = () => {
                               </div>
                               <div className="text-left sm:text-right">
                                 <p className="text-base sm:text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                                  ${(getPriceAsNumber(item.price) * item.quantity).toFixed(2)}
+                                  {formatMoney(getPriceAsNumber(item.price) * item.quantity)}
                                 </p>
                                 <p className="text-[10px] sm:text-xs text-muted-foreground">
-                                  ${getPriceAsNumber(item.price).toFixed(2)} each
+                                  {formatMoney(getPriceAsNumber(item.price))} each
                                 </p>
                               </div>
                             </div>
@@ -946,7 +960,7 @@ const Checkout = () => {
                           <motion.button
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
-                            onClick={() => removeFromCart(item.id, item.variantKey, (item as any).color)}
+                            onClick={() => removeFromCart(item.id, item.variantKey, (item as any).color, item.size)}
                             className="h-6 w-6 sm:h-8 sm:w-8 rounded-full hover:bg-destructive hover:text-destructive-foreground transition-all flex items-center justify-center self-start"
                           >
                             <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
@@ -977,7 +991,7 @@ const Checkout = () => {
                         <p className="text-sm font-medium">{card.name}</p>
                       </div>
                       <div className="flex items-center gap-2">
-                        <p className="text-sm font-medium">${card.price.toFixed(2)}</p>
+                        <p className="text-sm font-medium">{formatMoney(card.price)}</p>
                         <Button
                           variant="ghost"
                           size="sm"
@@ -1005,7 +1019,7 @@ const Checkout = () => {
                       <p className="text-sm">Separate Dollars</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-lg font-medium">${(parseFloat(formData.dollarsAmount) * 1.45).toFixed(2)}</p>
+                      <p className="text-lg font-medium">{formatMoney(parseFloat(formData.dollarsAmount) * 1.45)}</p>
                       <p className="text-xs text-muted-foreground">({formData.dollarsAmount} × $1.45)</p>
                     </div>
                   </div>
@@ -1021,7 +1035,7 @@ const Checkout = () => {
                   <>
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-muted-foreground">Plan Price</span>
-                      <span className="font-medium">${getStreamingPlanPrice().toFixed(2)}</span>
+                      <span className="font-medium">{formatMoney(getStreamingPlanPrice())}</span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-muted-foreground">Duration</span>
@@ -1034,29 +1048,66 @@ const Checkout = () => {
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-muted-foreground">Subtotal</span>
                       <span className="font-medium">
-                        ${cart.reduce((sum, item) => {
-                          const price = getPriceAsNumber(item.price);
-                          return sum + (price * item.quantity);
-                        }, 0).toFixed(2)}
+                        {formatMoney(
+                          cart.reduce((sum, item) => {
+                            const price = getPriceAsNumber(item.price);
+                            return sum + price * item.quantity;
+                          }, 0)
+                        )}
                       </span>
                     </div>
-                    <div className="flex items-center justify-between text-sm">
+                    <motion.div className="flex items-center justify-between text-sm">
                       <span className="text-muted-foreground">Delivery</span>
-                      <span className="font-medium">${DELIVERY_FEE.toFixed(2)}</span>
+                      <span className="font-medium">{formatMoney(DELIVERY_FEE)}</span>
+                    </motion.div>
+                    <div className="pt-2 space-y-2">
+                      <Label className="text-xs text-muted-foreground">Promo code</Label>
+                      <div className="flex gap-2">
+                        <Input
+                          value={couponInput}
+                          onChange={(e) => {
+                            setCouponInput(e.target.value);
+                            setCouponError(null);
+                          }}
+                          placeholder="SAVE10"
+                          className="text-sm"
+                        />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          disabled={couponLoading}
+                          onClick={() => void applyCoupon()}
+                        >
+                          Apply
+                        </Button>
+                      </div>
+                      {couponError && <p className="text-xs text-destructive">{couponError}</p>}
+                      {appliedCoupon && (
+                        <p className="text-xs text-green-600">
+                          {appliedCoupon.code} applied (−{formatMoney(appliedCoupon.discount)})
+                        </p>
+                      )}
                     </div>
+                    {appliedCoupon && (
+                      <div className="flex items-center justify-between text-sm text-green-600">
+                        <span>Discount</span>
+                        <span>−{formatMoney(appliedCoupon.discount)}</span>
+                      </div>
+                    )}
                   </>
                 )}
                 {isRechargeCard && formData.separateDollars && formData.dollarsAmount && (
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-muted-foreground">Additional Dollars ({formData.dollarsAmount} × $1.45)</span>
-                    <span className="font-medium">${(parseFloat(formData.dollarsAmount) * 1.45).toFixed(2)}</span>
+                    <span className="font-medium">{formatMoney(parseFloat(formData.dollarsAmount) * 1.45)}</span>
                   </div>
                 )}
                 <div className="h-px bg-border" />
                 <div className="flex items-center justify-between pt-2">
                   <p className="text-elegant text-xl">Total</p>
                   <p className="text-elegant text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                    ${calculateTotal().toFixed(2)}
+                    {formatMoney(calculateTotal())}
                   </p>
                 </div>
               </div>
@@ -1441,7 +1492,7 @@ const Checkout = () => {
                             value={card.id.toString()}
                             disabled={additionalCards.some(c => c.id === card.id)}
                           >
-                            {card.name} - ${card.price.toFixed(2)}
+                            {card.name} - {formatMoney(card.price)}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -1545,12 +1596,12 @@ const Checkout = () => {
                         {paymentMethod === "whatsapp" ? (
                           <>
                             <MessageCircle className="mr-2 h-5 w-5" />
-                            Pay with WhatsApp - ${calculateTotal().toFixed(2)}
+                            Pay with WhatsApp - {formatMoney(calculateTotal())}
                           </>
                         ) : (
                           <>
                             <Banknote className="mr-2 h-5 w-5" />
-                            Place Order (Cash on Delivery) - ${calculateTotal().toFixed(2)}
+                            Place Order (Cash on Delivery) - {formatMoney(calculateTotal())}
                           </>
                         )}
                       </>

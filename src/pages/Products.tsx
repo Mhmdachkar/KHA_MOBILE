@@ -22,14 +22,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import type { Product } from "@/data/products";
-import type { GreenLionProduct } from "@/data/greenLionProducts";
-import { phoneAccessories, wearablesProducts, smartphoneProducts, tabletProducts, iphoneCases, gamingConsoles, electronicsProducts } from "@/data/products";
-import { getAllGreenLionProductsMerged, eachApiCatalogProduct } from "@/data/productLookup";
 import { useCatalog } from "@/context/CatalogContext";
+import { isGreenLionProduct, type StorefrontProduct } from "@/lib/catalogProduct";
+import { isOutOfStock } from "@/lib/addToCartPolicy";
 
 const Products = () => {
-  const { catalogTick } = useCatalog();
+  const { storefrontProducts } = useCatalog();
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
@@ -37,6 +35,9 @@ const Products = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState(searchParams.get("search") || "");
+  const [filterInStock, setFilterInStock] = useState(true);
+  const [filterOutOfStock, setFilterOutOfStock] = useState(false);
+  const [minRating, setMinRating] = useState<number | null>(null);
 
   // Get brand from URL params if present
   useEffect(() => {
@@ -53,97 +54,7 @@ const Products = () => {
     document.body.scrollTop = 0;
   }, [location.pathname, location.search]);
 
-  const allProducts = useMemo(() => {
-    const getDisplayPrice = (product: any): number | string => {
-      if (product.variants && product.variants.length > 0) {
-        return product.variants[0].price;
-      }
-      return product.price;
-    };
-
-    const base = [
-      ...phoneAccessories.map((p) => ({
-        ...p,
-        images: [p.image],
-        price: getDisplayPrice(p),
-      })),
-      ...wearablesProducts.map((p) => ({
-        ...p,
-        images: [p.image],
-        price: getDisplayPrice(p),
-      })),
-      ...smartphoneProducts.map((p) => ({
-        ...p,
-        images: p.images && p.images.length > 0 ? p.images : [p.image],
-        price: getDisplayPrice(p),
-      })),
-      ...tabletProducts.map((p) => ({
-        ...p,
-        images: p.images && p.images.length > 0 ? p.images : [p.image],
-        price: getDisplayPrice(p),
-      })),
-      ...iphoneCases.map((p) => ({
-        ...p,
-        images: p.images && p.images.length > 0 ? p.images : [p.image],
-        price: getDisplayPrice(p),
-      })),
-      ...gamingConsoles.map((p) => ({
-        ...p,
-        images: p.images && p.images.length > 0 ? p.images : [p.image],
-        price: getDisplayPrice(p),
-      })),
-      ...electronicsProducts.map((p) => ({
-        ...p,
-        images: p.images && p.images.length > 0 ? p.images : [p.image],
-        price: getDisplayPrice(p),
-      })),
-      ...getAllGreenLionProductsMerged().map((p) => ({
-        id: p.id,
-        name: p.name,
-        price: getDisplayPrice(p),
-        image: p.images[0],
-        images: p.images,
-        rating: p.rating,
-        category: p.category,
-        brand: p.brand,
-        description: p.description,
-        title: p.title,
-        isPreorder: p.isPreorder,
-        colors: p.colors,
-        secondaryCategories: p.secondaryCategories,
-      })),
-    ] as any[];
-
-    const m = new Map<number, any>(base.map((p) => [p.id, p]));
-    eachApiCatalogProduct((id, hit) => {
-      if (hit.kind === "green") {
-        const g = hit.product as GreenLionProduct;
-        m.set(id, {
-          id: g.id,
-          name: g.name,
-          price: getDisplayPrice(g),
-          image: g.images[0],
-          images: g.images,
-          rating: g.rating,
-          category: g.category,
-          brand: g.brand,
-          description: g.description,
-          title: g.title,
-          isPreorder: g.isPreorder,
-          colors: g.colors,
-          secondaryCategories: g.secondaryCategories,
-        });
-      } else {
-        const r = hit.product as Product;
-        m.set(id, {
-          ...r,
-          images: r.images && r.images.length > 0 ? r.images : [r.image],
-          price: getDisplayPrice(r),
-        });
-      }
-    });
-    return Array.from(m.values());
-  }, [catalogTick]);
+  const allProducts = storefrontProducts;
 
   // Get unique categories from real products
   const categories = useMemo(() => {
@@ -270,13 +181,19 @@ const Products = () => {
           return productBrand !== null && productBrand === selectedBrand;
         }));
 
+      const oos =
+        isOutOfStock(product.stockQuantity) ||
+        Boolean(
+          product.colors?.length &&
+            product.colors.every((c) => String(c.stock || "").toLowerCase() === "out of stock")
+        );
+      if (filterInStock && !filterOutOfStock && oos) return false;
+      if (filterOutOfStock && !filterInStock && !oos) return false;
+
+      if (minRating != null && (product.rating ?? 0) < minRating) return false;
+
       return categoryMatch && brandMatch;
     });
-
-    // Helper function to check if product is Green Lion
-    const isGreenLionProduct = (product: any) => {
-      return product.id >= 5000 || product.brand === "Green Lion" || product.name?.startsWith("Green Lion");
-    };
 
     // Sort products - Always put Green Lion products first
     switch (sortBy) {
@@ -289,9 +206,7 @@ const Products = () => {
           if (aIsGreenLion && !bIsGreenLion) return -1;
           if (!aIsGreenLion && bIsGreenLion) return 1;
 
-          const aPrice = typeof a.price === 'string' ? parseFloat(a.price) : a.price;
-          const bPrice = typeof b.price === 'string' ? parseFloat(b.price) : b.price;
-          return aPrice - bPrice;
+          return a.displayPrice - b.displayPrice;
         });
         break;
       case "price-high":
@@ -303,9 +218,7 @@ const Products = () => {
           if (aIsGreenLion && !bIsGreenLion) return -1;
           if (!aIsGreenLion && bIsGreenLion) return 1;
 
-          const aPrice = typeof a.price === 'string' ? parseFloat(a.price) : a.price;
-          const bPrice = typeof b.price === 'string' ? parseFloat(b.price) : b.price;
-          return bPrice - aPrice;
+          return b.displayPrice - a.displayPrice;
         });
         break;
       case "rating":
@@ -342,21 +255,16 @@ const Products = () => {
           if (aIsGreenLion && !bIsGreenLion) return -1;
           if (!aIsGreenLion && bIsGreenLion) return 1;
 
-          return b.id - a.id;
+          return (b.dbId ?? b.id) - (a.dbId ?? a.id);
         });
         break;
       default:
-        // Default: Sort by price (highest to lowest) - pure price sort
-        filtered.sort((a, b) => {
-          const aPrice = typeof a.price === 'string' ? parseFloat(a.price) : a.price;
-          const bPrice = typeof b.price === 'string' ? parseFloat(b.price) : b.price;
-          return bPrice - aPrice;
-        });
+        filtered.sort((a, b) => b.displayPrice - a.displayPrice);
         break;
     }
 
     return filtered;
-  }, [allProducts, sortBy, selectedCategories, selectedBrands, searchQuery]);
+  }, [allProducts, sortBy, selectedCategories, selectedBrands, searchQuery, filterInStock, filterOutOfStock, minRating]);
 
   const handleCategoryToggle = (category: string) => {
     setSelectedCategories(prev =>
@@ -370,6 +278,9 @@ const Products = () => {
     setSelectedCategories([]);
     setSelectedBrands([]);
     setSortBy("default");
+    setFilterInStock(true);
+    setFilterOutOfStock(false);
+    setMinRating(null);
   };
 
   const handleBrandToggle = (brand: string) => {
@@ -494,7 +405,11 @@ const Products = () => {
                   <h4 className="text-elegant text-sm mb-3">Availability</h4>
                   <div className="space-y-2">
                     <div className="flex items-center space-x-2">
-                      <Checkbox id="mobile-in-stock" defaultChecked />
+                      <Checkbox
+                        id="mobile-in-stock"
+                        checked={filterInStock}
+                        onCheckedChange={(v) => setFilterInStock(v === true)}
+                      />
                       <Label
                         htmlFor="mobile-in-stock"
                         className="text-sm font-light cursor-pointer"
@@ -503,7 +418,11 @@ const Products = () => {
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <Checkbox id="mobile-out-of-stock" />
+                      <Checkbox
+                        id="mobile-out-of-stock"
+                        checked={filterOutOfStock}
+                        onCheckedChange={(v) => setFilterOutOfStock(v === true)}
+                      />
                       <Label
                         htmlFor="mobile-out-of-stock"
                         className="text-sm font-light cursor-pointer"
@@ -520,7 +439,11 @@ const Products = () => {
                   <div className="space-y-3">
                     {[5, 4, 3, 2].map((rating) => (
                       <div key={rating} className="flex items-center space-x-2">
-                        <Checkbox id={`mobile-rating-${rating}`} />
+                        <Checkbox
+                          id={`mobile-rating-${rating}`}
+                          checked={minRating === rating}
+                          onCheckedChange={(v) => setMinRating(v === true ? rating : null)}
+                        />
                         <Label
                           htmlFor={`mobile-rating-${rating}`}
                           className="text-sm font-light cursor-pointer flex items-center gap-1"
@@ -628,7 +551,11 @@ const Products = () => {
                 <h3 className="text-elegant text-xs sm:text-sm mb-3 sm:mb-4">Availability</h3>
                 <div className="space-y-2 sm:space-y-3">
                   <div className="flex items-center space-x-2">
-                    <Checkbox id="in-stock" defaultChecked />
+                    <Checkbox
+                      id="in-stock"
+                      checked={filterInStock}
+                      onCheckedChange={(v) => setFilterInStock(v === true)}
+                    />
                     <Label
                       htmlFor="in-stock"
                       className="text-sm font-light cursor-pointer"
@@ -637,7 +564,11 @@ const Products = () => {
                     </Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <Checkbox id="out-of-stock" />
+                    <Checkbox
+                      id="out-of-stock"
+                      checked={filterOutOfStock}
+                      onCheckedChange={(v) => setFilterOutOfStock(v === true)}
+                    />
                     <Label
                       htmlFor="out-of-stock"
                       className="text-sm font-light cursor-pointer"
@@ -654,7 +585,11 @@ const Products = () => {
                 <div className="space-y-3">
                   {[5, 4, 3, 2].map((rating) => (
                     <div key={rating} className="flex items-center space-x-2">
-                      <Checkbox id={`rating-${rating}`} />
+                      <Checkbox
+                        id={`rating-${rating}`}
+                        checked={minRating === rating}
+                        onCheckedChange={(v) => setMinRating(v === true ? rating : null)}
+                      />
                       <Label
                         htmlFor={`rating-${rating}`}
                         className="text-sm font-light cursor-pointer flex items-center gap-1"
@@ -686,7 +621,7 @@ const Products = () => {
                     <SelectValue placeholder="Sort by" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="default">Popular</SelectItem>
+                    <SelectItem value="default">Price: High to Low</SelectItem>
                     <SelectItem value="price-low">Price: Low to High</SelectItem>
                     <SelectItem value="price-high">Price: High to Low</SelectItem>
                     <SelectItem value="rating">Highest Rated</SelectItem>
@@ -727,15 +662,19 @@ const Products = () => {
                       id={product.id}
                       name={product.name}
                       title={product.title}
-                      price={product.price}
+                      price={product.displayPrice}
                       compareAtPrice={product.compareAtPrice}
                       image={product.image}
                       images={product.images || [product.image]}
                       rating={product.rating}
                       category={product.category}
                       colors={product.colors}
+                      variants={product.variants}
+                      sizes={product.sizes}
                       isPreorder={product.isPreorder}
                       showPreorderPrice={product.showPreorderPrice}
+                      stockQuantity={product.stockQuantity}
+                      surface="grid"
                     />
                   </motion.div>
                 ))}

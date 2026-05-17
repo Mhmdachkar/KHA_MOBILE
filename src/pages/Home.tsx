@@ -11,6 +11,7 @@ import NewArrivalShowcase from "@/components/NewArrivalShowcase";
 import WhyShopWithUs from "@/components/WhyShopWithUs";
 import BrandShowcase from "@/components/BrandShowcase";
 import ThisWeeksFavorites from "@/components/ThisWeeksFavorites";
+import RecentlyViewed from "@/components/RecentlyViewed";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import heroProduct from "@/assets/Gemini_Generated_Image_3qc0nc3qc0nc3qc0.png";
@@ -1105,6 +1106,8 @@ const Home = () => {
       {/* This Week's Favorites - Sales-Focused Product Showcase */}
       <ThisWeeksFavorites />
 
+      <RecentlyViewed />
+
       {/* Why Shop With Us Section */}
       <WhyShopWithUs />
 
@@ -1134,6 +1137,7 @@ const Home = () => {
                 <li><a href="#" className="hover:underline">Shipping Info</a></li>
                 <li><a href="#" className="hover:underline">Returns</a></li>
                 <li><a href="#" className="hover:underline">FAQ</a></li>
+                <li><a href="/order-lookup" className="hover:underline">Track Order</a></li>
               </ul>
             </div>
             <div>

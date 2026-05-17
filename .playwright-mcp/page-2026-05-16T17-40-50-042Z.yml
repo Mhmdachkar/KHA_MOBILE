@@ -1,0 +1,745 @@
+- generic [ref=e2]:
+  - region "Notifications (F8)":
+    - list
+  - region "Notifications alt+T"
+  - generic [ref=e3]:
+    - generic [ref=e7] [cursor=pointer]:
+      - img [ref=e9]
+      - generic [ref=e11]: 🎉 10% OFF Premium Gaming Accessories
+    - banner [ref=e13]:
+      - generic [ref=e15]:
+        - link "KHA_MOBILE Logo KHA_MOBILE" [ref=e16] [cursor=pointer]:
+          - /url: /
+          - img "KHA_MOBILE Logo" [ref=e18]
+          - generic [ref=e19]: KHA_MOBILE
+        - navigation [ref=e20]:
+          - link "Home" [ref=e21] [cursor=pointer]:
+            - /url: /
+            - text: Home
+          - link "Products" [ref=e22] [cursor=pointer]:
+            - /url: /products
+            - text: Products
+          - link "Recharges" [ref=e23] [cursor=pointer]:
+            - /url: /recharges
+            - text: Recharges
+          - link "Gift Cards" [ref=e24] [cursor=pointer]:
+            - /url: /gift-cards
+            - text: Gift Cards
+          - link "Services" [ref=e25] [cursor=pointer]:
+            - /url: /services
+            - text: Services
+          - link "About Us" [ref=e26] [cursor=pointer]:
+            - /url: /about
+            - text: About Us
+        - generic [ref=e27]:
+          - button "Request a product" [ref=e28] [cursor=pointer]:
+            - img [ref=e30]
+          - button "Search products" [ref=e33] [cursor=pointer]:
+            - img [ref=e34]
+          - link [ref=e37] [cursor=pointer]:
+            - /url: /favorites
+            - button [ref=e38]:
+              - img [ref=e39]
+          - button [ref=e41] [cursor=pointer]:
+            - img [ref=e42]
+    - generic [ref=e46]:
+      - generic [ref=e47]:
+        - link "Home" [ref=e48] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e49]: /
+        - generic [ref=e50]: Audio
+      - generic [ref=e51]:
+        - heading "Audio" [level=1] [ref=e52]
+        - paragraph [ref=e53]: 29 products available
+      - generic [ref=e59]:
+        - heading "\"Music is the soundtrack of your life. Play it loud.\"" [level=2] [ref=e60]
+        - paragraph [ref=e62]: Immerse yourself in crystal clear sound.
+      - generic [ref=e63]:
+        - complementary [ref=e64]:
+          - generic [ref=e66]:
+            - generic [ref=e67]:
+              - heading "Filters" [level=2] [ref=e68]
+              - button "Clear All" [ref=e69] [cursor=pointer]
+            - generic [ref=e70]:
+              - generic [ref=e71]: Sort By
+              - combobox [ref=e72] [cursor=pointer]:
+                - generic: Default
+                - img [ref=e73]
+            - generic [ref=e75]:
+              - generic [ref=e76]: Brands
+              - generic [ref=e77]:
+                - button "All Brands" [ref=e78] [cursor=pointer]:
+                  - generic [ref=e79]: All Brands
+                - button "Green Lion Green Lion" [ref=e80] [cursor=pointer]:
+                  - img "Green Lion" [ref=e82]
+                  - generic [ref=e83]: Green Lion
+                - button "J JBL" [ref=e84] [cursor=pointer]:
+                  - generic [ref=e86]: J
+                  - generic [ref=e87]: JBL
+                - button "Xiaomi Xiaomi" [ref=e88] [cursor=pointer]:
+                  - img "Xiaomi" [ref=e90]
+                  - generic [ref=e91]: Xiaomi
+                - button "Apple Apple" [ref=e92] [cursor=pointer]:
+                  - img "Apple" [ref=e94]
+                  - generic [ref=e95]: Apple
+                - button "Samsung Samsung" [ref=e96] [cursor=pointer]:
+                  - img "Samsung" [ref=e98]
+                  - generic [ref=e99]: Samsung
+                - button "Foneng Foneng" [ref=e100] [cursor=pointer]:
+                  - img "Foneng" [ref=e102]
+                  - generic [ref=e103]: Foneng
+                - button "G Generic" [ref=e104] [cursor=pointer]:
+                  - generic [ref=e106]: G
+                  - generic [ref=e107]: Generic
+                - button "Y YESIDO" [ref=e108] [cursor=pointer]:
+                  - generic [ref=e110]: "Y"
+                  - generic [ref=e111]: YESIDO
+        - generic [ref=e112]:
+          - generic [ref=e113]:
+            - paragraph [ref=e114]: Showing 29 of 29 products
+            - generic [ref=e115]:
+              - button "Grid" [ref=e116] [cursor=pointer]:
+                - img
+                - text: Grid
+              - button "List" [ref=e117] [cursor=pointer]:
+                - img
+                - text: List
+          - generic [ref=e118]:
+            - generic [ref=e120]:
+              - link "Apple AirPods Pro 3 Apple AirPods Pro 3 - Alternate view Audio Apple AirPods Pro 3 - White (AAP3-WT) (5) $287.00" [ref=e121] [cursor=pointer]:
+                - /url: /product/127
+                - generic [ref=e122]:
+                  - img "Apple AirPods Pro 3" [ref=e123]
+                  - img "Apple AirPods Pro 3 - Alternate view" [ref=e124]
+                - generic [ref=e125]:
+                  - paragraph [ref=e126]: Audio
+                  - heading "Apple AirPods Pro 3 - White (AAP3-WT)" [level=3] [ref=e127]
+                  - generic [ref=e128]:
+                    - img [ref=e129]
+                    - img [ref=e131]
+                    - img [ref=e133]
+                    - img [ref=e135]
+                    - img [ref=e137]
+                    - generic [ref=e139]: (5)
+                  - paragraph [ref=e140]: $287.00
+              - generic [ref=e141]:
+                - button "Add to favorites" [ref=e142] [cursor=pointer]:
+                  - img [ref=e143]
+                - button "Add to cart" [ref=e145] [cursor=pointer]:
+                  - img [ref=e146]
+            - generic [ref=e151]:
+              - link "Apple AirPods Pro (2nd Generation) with USB-C Apple AirPods Pro (2nd Generation) with USB-C - Alternate view Audio Apple AirPods Pro (2nd Generation) - USB-C Charging (5) $215.00" [ref=e152] [cursor=pointer]:
+                - /url: /product/129
+                - generic [ref=e153]:
+                  - img "Apple AirPods Pro (2nd Generation) with USB-C" [ref=e154]
+                  - img "Apple AirPods Pro (2nd Generation) with USB-C - Alternate view" [ref=e155]
+                - generic [ref=e156]:
+                  - paragraph [ref=e157]: Audio
+                  - heading "Apple AirPods Pro (2nd Generation) - USB-C Charging" [level=3] [ref=e158]
+                  - generic [ref=e159]:
+                    - img [ref=e160]
+                    - img [ref=e162]
+                    - img [ref=e164]
+                    - img [ref=e166]
+                    - img [ref=e168]
+                    - generic [ref=e170]: (5)
+                  - paragraph [ref=e171]: $215.00
+              - generic [ref=e172]:
+                - button "Add to favorites" [ref=e173] [cursor=pointer]:
+                  - img [ref=e174]
+                - button "Add to cart" [ref=e176] [cursor=pointer]:
+                  - img [ref=e177]
+            - generic [ref=e182]:
+              - link "Apple AirPods 4 (Original) Apple AirPods 4 (Original) - Alternate view Audio Apple AirPods 4 (Original) - Official (4.9) From $150.00" [ref=e183] [cursor=pointer]:
+                - /url: /product/128
+                - generic [ref=e184]:
+                  - img "Apple AirPods 4 (Original)" [ref=e185]
+                  - img "Apple AirPods 4 (Original) - Alternate view" [ref=e186]
+                - generic [ref=e187]:
+                  - paragraph [ref=e188]: Audio
+                  - heading "Apple AirPods 4 (Original) - Official" [level=3] [ref=e189]
+                  - generic [ref=e190]:
+                    - img [ref=e191]
+                    - img [ref=e193]
+                    - img [ref=e195]
+                    - img [ref=e197]
+                    - img [ref=e199]
+                    - generic [ref=e201]: (4.9)
+                  - paragraph [ref=e202]: From $150.00
+              - generic [ref=e203]:
+                - button "Add to favorites" [ref=e204] [cursor=pointer]:
+                  - img [ref=e205]
+                - button "Add to cart" [ref=e207] [cursor=pointer]:
+                  - img [ref=e208]
+            - generic [ref=e213]:
+              - link "Apple AirPods 4 (Copy A) Audio Apple AirPods 4 (Copy A) - Redesigned Sound Experience with H2 Chip (4.9) $20.00" [ref=e214] [cursor=pointer]:
+                - /url: /product/111
+                - img "Apple AirPods 4 (Copy A)" [ref=e216]
+                - generic [ref=e217]:
+                  - paragraph [ref=e218]: Audio
+                  - heading "Apple AirPods 4 (Copy A) - Redesigned Sound Experience with H2 Chip" [level=3] [ref=e219]
+                  - generic [ref=e220]:
+                    - img [ref=e221]
+                    - img [ref=e223]
+                    - img [ref=e225]
+                    - img [ref=e227]
+                    - img [ref=e229]
+                    - generic [ref=e231]: (4.9)
+                  - paragraph [ref=e232]: $20.00
+              - generic [ref=e233]:
+                - button "Add to favorites" [ref=e234] [cursor=pointer]:
+                  - img [ref=e235]
+                - button "Add to cart" [ref=e237] [cursor=pointer]:
+                  - img [ref=e238]
+            - generic [ref=e243]:
+              - link "Apple AirPods Audio Apple AirPods (4.9) $10.00" [ref=e244] [cursor=pointer]:
+                - /url: /product/106
+                - img "Apple AirPods" [ref=e246]
+                - generic [ref=e247]:
+                  - paragraph [ref=e248]: Audio
+                  - heading "Apple AirPods" [level=3] [ref=e249]
+                  - generic [ref=e250]:
+                    - img [ref=e251]
+                    - img [ref=e253]
+                    - img [ref=e255]
+                    - img [ref=e257]
+                    - img [ref=e259]
+                    - generic [ref=e261]: (4.9)
+                  - paragraph [ref=e262]: $10.00
+              - generic [ref=e263]:
+                - button "Add to favorites" [ref=e264] [cursor=pointer]:
+                  - img [ref=e265]
+                - button "Add to cart" [ref=e267] [cursor=pointer]:
+                  - img [ref=e268]
+            - generic [ref=e273]:
+              - link "Green Lion Jupiter Bluetooth Speaker with Table Lamp Green Lion Jupiter Bluetooth Speaker with Table Lamp - Alternate view Accessories Green Lion Jupiter Speaker - 15W Wireless Charging, RGB Lights, Bluetooth (4.8) $59.99" [ref=e274] [cursor=pointer]:
+                - /url: /product/5028
+                - generic [ref=e275]:
+                  - img "Green Lion Jupiter Bluetooth Speaker with Table Lamp" [ref=e276]
+                  - img "Green Lion Jupiter Bluetooth Speaker with Table Lamp - Alternate view" [ref=e277]
+                - generic [ref=e278]:
+                  - paragraph [ref=e279]: Accessories
+                  - heading "Green Lion Jupiter Speaker - 15W Wireless Charging, RGB Lights, Bluetooth" [level=3] [ref=e280]
+                  - generic [ref=e281]:
+                    - img [ref=e282]
+                    - img [ref=e284]
+                    - img [ref=e286]
+                    - img [ref=e288]
+                    - img [ref=e290]
+                    - generic [ref=e292]: (4.8)
+                  - paragraph [ref=e293]: $59.99
+              - generic [ref=e294]:
+                - button "Add to favorites" [ref=e295] [cursor=pointer]:
+                  - img [ref=e296]
+                - button "Add to cart" [ref=e298] [cursor=pointer]:
+                  - img [ref=e299]
+            - generic [ref=e304]:
+              - link "Green Lion Porto Wireless Speaker Green Lion Porto Wireless Speaker - Alternate view Accessories Green Lion Porto Speaker - IPX6 Waterproof, 8W Output, RGB Light, Extra Bass (4.7) $44.99" [ref=e305] [cursor=pointer]:
+                - /url: /product/5029
+                - generic [ref=e306]:
+                  - img "Green Lion Porto Wireless Speaker" [ref=e307]
+                  - img "Green Lion Porto Wireless Speaker - Alternate view" [ref=e308]
+                - generic [ref=e309]:
+                  - paragraph [ref=e310]: Accessories
+                  - heading "Green Lion Porto Speaker - IPX6 Waterproof, 8W Output, RGB Light, Extra Bass" [level=3] [ref=e311]
+                  - generic [ref=e312]:
+                    - img [ref=e313]
+                    - img [ref=e315]
+                    - img [ref=e317]
+                    - img [ref=e319]
+                    - img [ref=e321]
+                    - generic [ref=e323]: (4.7)
+                  - paragraph [ref=e324]: $44.99
+              - generic [ref=e325]:
+                - button "Add to favorites" [ref=e326] [cursor=pointer]:
+                  - img [ref=e327]
+                - button "Add to cart" [ref=e329] [cursor=pointer]:
+                  - img [ref=e330]
+            - generic [ref=e335]:
+              - link "Green Lion Rhythm X50 ANC Wireless Headphone Green Lion Rhythm X50 ANC Wireless Headphone - Alternate view Accessories Green Lion Rhythm X50 ANC - Bluetooth 6.0, 30-50 Hours Playtime, Metal Body (4.9) $40.00 2 colors available" [ref=e336] [cursor=pointer]:
+                - /url: /product/5027
+                - generic [ref=e337]:
+                  - img "Green Lion Rhythm X50 ANC Wireless Headphone" [ref=e338]
+                  - img "Green Lion Rhythm X50 ANC Wireless Headphone - Alternate view" [ref=e339]
+                - generic [ref=e340]:
+                  - paragraph [ref=e341]: Accessories
+                  - heading "Green Lion Rhythm X50 ANC - Bluetooth 6.0, 30-50 Hours Playtime, Metal Body" [level=3] [ref=e342]
+                  - generic [ref=e343]:
+                    - img [ref=e344]
+                    - img [ref=e346]
+                    - img [ref=e348]
+                    - img [ref=e350]
+                    - img [ref=e352]
+                    - generic [ref=e354]: (4.9)
+                  - paragraph [ref=e355]: $40.00
+                  - paragraph [ref=e356]: 2 colors available
+              - generic [ref=e357]:
+                - button "Add to favorites" [ref=e358] [cursor=pointer]:
+                  - img [ref=e359]
+                - button "Add to cart" [ref=e361] [cursor=pointer]:
+                  - img [ref=e362]
+            - generic [ref=e367]:
+              - link "Green Lion River True Wireless Earbuds Green Lion River True Wireless Earbuds - Alternate view Accessories Green Lion River TWS Earbuds - ANC+ENC, Bluetooth 5.4, 6-7 Hours Playtime (4.8) $35.00 3 colors available" [ref=e368] [cursor=pointer]:
+                - /url: /product/5025
+                - generic [ref=e369]:
+                  - img "Green Lion River True Wireless Earbuds" [ref=e370]
+                  - img "Green Lion River True Wireless Earbuds - Alternate view" [ref=e371]
+                - generic [ref=e372]:
+                  - paragraph [ref=e373]: Accessories
+                  - heading "Green Lion River TWS Earbuds - ANC+ENC, Bluetooth 5.4, 6-7 Hours Playtime" [level=3] [ref=e374]
+                  - generic [ref=e375]:
+                    - img [ref=e376]
+                    - img [ref=e378]
+                    - img [ref=e380]
+                    - img [ref=e382]
+                    - img [ref=e384]
+                    - generic [ref=e386]: (4.8)
+                  - paragraph [ref=e387]: $35.00
+                  - paragraph [ref=e388]: 3 colors available
+              - generic [ref=e389]:
+                - button "Add to favorites" [ref=e390] [cursor=pointer]:
+                  - img [ref=e391]
+                - button "Add to cart" [ref=e393] [cursor=pointer]:
+                  - img [ref=e394]
+            - generic [ref=e399]:
+              - link "Green Lion ECHO ANC Zero Sound. Zero Noise Headphone Green Lion ECHO ANC Zero Sound. Zero Noise Headphone - Alternate view Accessories Green Lion ECHO ANC Headphone - 36 Hours Playtime, 40mm Driver, AUX Support (4.8) $28.00 2 colors available" [ref=e400] [cursor=pointer]:
+                - /url: /product/5026
+                - generic [ref=e401]:
+                  - img "Green Lion ECHO ANC Zero Sound. Zero Noise Headphone" [ref=e402]
+                  - img "Green Lion ECHO ANC Zero Sound. Zero Noise Headphone - Alternate view" [ref=e403]
+                - generic [ref=e404]:
+                  - paragraph [ref=e405]: Accessories
+                  - heading "Green Lion ECHO ANC Headphone - 36 Hours Playtime, 40mm Driver, AUX Support" [level=3] [ref=e406]
+                  - generic [ref=e407]:
+                    - img [ref=e408]
+                    - img [ref=e410]
+                    - img [ref=e412]
+                    - img [ref=e414]
+                    - img [ref=e416]
+                    - generic [ref=e418]: (4.8)
+                  - paragraph [ref=e419]: $28.00
+                  - paragraph [ref=e420]: 2 colors available
+              - generic [ref=e421]:
+                - button "Add to favorites" [ref=e422] [cursor=pointer]:
+                  - img [ref=e423]
+                - button "Add to cart" [ref=e425] [cursor=pointer]:
+                  - img [ref=e426]
+            - generic [ref=e431]:
+              - link "Green Lion Sevilla Wireless Neckband Green Lion Sevilla Wireless Neckband - Alternate view Accessories Green Lion Sevilla Wireless Neckband - Bluetooth 5.4, 21 Hours Playtime (4.6) $20.00" [ref=e432] [cursor=pointer]:
+                - /url: /product/5023
+                - generic [ref=e433]:
+                  - img "Green Lion Sevilla Wireless Neckband" [ref=e434]
+                  - img "Green Lion Sevilla Wireless Neckband - Alternate view" [ref=e435]
+                - generic [ref=e436]:
+                  - paragraph [ref=e437]: Accessories
+                  - heading "Green Lion Sevilla Wireless Neckband - Bluetooth 5.4, 21 Hours Playtime" [level=3] [ref=e438]
+                  - generic [ref=e439]:
+                    - img [ref=e440]
+                    - img [ref=e442]
+                    - img [ref=e444]
+                    - img [ref=e446]
+                    - img [ref=e448]
+                    - generic [ref=e450]: (4.6)
+                  - paragraph [ref=e451]: $20.00
+              - generic [ref=e452]:
+                - button "Add to favorites" [ref=e453] [cursor=pointer]:
+                  - img [ref=e454]
+                - button "Add to cart" [ref=e456] [cursor=pointer]:
+                  - img [ref=e457]
+            - generic [ref=e462]:
+              - link "Green Lion Manchester True Wireless Earbuds Green Lion Manchester True Wireless Earbuds - Alternate view Accessories Green Lion Manchester TWS Earbuds - Bluetooth 5.4, IPX3 Waterproof (4.7) $20.00 2 colors available" [ref=e463] [cursor=pointer]:
+                - /url: /product/5024
+                - generic [ref=e464]:
+                  - img "Green Lion Manchester True Wireless Earbuds" [ref=e465]
+                  - img "Green Lion Manchester True Wireless Earbuds - Alternate view" [ref=e466]
+                - generic [ref=e467]:
+                  - paragraph [ref=e468]: Accessories
+                  - heading "Green Lion Manchester TWS Earbuds - Bluetooth 5.4, IPX3 Waterproof" [level=3] [ref=e469]
+                  - generic [ref=e470]:
+                    - img [ref=e471]
+                    - img [ref=e473]
+                    - img [ref=e475]
+                    - img [ref=e477]
+                    - img [ref=e479]
+                    - generic [ref=e481]: (4.7)
+                  - paragraph [ref=e482]: $20.00
+                  - paragraph [ref=e483]: 2 colors available
+              - generic [ref=e484]:
+                - button "Add to favorites" [ref=e485] [cursor=pointer]:
+                  - img [ref=e486]
+                - button "Add to cart" [ref=e488] [cursor=pointer]:
+                  - img [ref=e489]
+            - generic [ref=e494]:
+              - link "JBL PartyBox Club 120 JBL PartyBox Club 120 - Alternate view Audio JBL PartyBox Club 120 Portable Speaker with Lights (4.9) $370.00 2 colors available" [ref=e495] [cursor=pointer]:
+                - /url: /product/144
+                - generic [ref=e496]:
+                  - img "JBL PartyBox Club 120" [ref=e497]
+                  - img "JBL PartyBox Club 120 - Alternate view" [ref=e498]
+                - generic [ref=e499]:
+                  - paragraph [ref=e500]: Audio
+                  - heading "JBL PartyBox Club 120 Portable Speaker with Lights" [level=3] [ref=e501]
+                  - generic [ref=e502]:
+                    - img [ref=e503]
+                    - img [ref=e505]
+                    - img [ref=e507]
+                    - img [ref=e509]
+                    - img [ref=e511]
+                    - generic [ref=e513]: (4.9)
+                  - paragraph [ref=e514]: $370.00
+                  - paragraph [ref=e515]: 2 colors available
+              - generic [ref=e516]:
+                - button "Add to favorites" [ref=e517] [cursor=pointer]:
+                  - img [ref=e518]
+                - button "Add to cart" [ref=e520] [cursor=pointer]:
+                  - img [ref=e521]
+            - generic [ref=e526]:
+              - link "Xiaomi Redmi Buds 5 Xiaomi Redmi Buds 5 - Alternate view Accessories Xiaomi Redmi Buds 5 - 46dB ANC, 40H Battery, Independent Rear Chamber (4.8) $95.00 3 colors available" [ref=e527] [cursor=pointer]:
+                - /url: /product/154
+                - generic [ref=e528]:
+                  - img "Xiaomi Redmi Buds 5" [ref=e529]
+                  - img "Xiaomi Redmi Buds 5 - Alternate view" [ref=e530]
+                - generic [ref=e531]:
+                  - paragraph [ref=e532]: Accessories
+                  - heading "Xiaomi Redmi Buds 5 - 46dB ANC, 40H Battery, Independent Rear Chamber" [level=3] [ref=e533]
+                  - generic [ref=e534]:
+                    - img [ref=e535]
+                    - img [ref=e537]
+                    - img [ref=e539]
+                    - img [ref=e541]
+                    - img [ref=e543]
+                    - generic [ref=e545]: (4.8)
+                  - paragraph [ref=e546]: $95.00
+                  - paragraph [ref=e547]: 3 colors available
+              - generic [ref=e548]:
+                - button "Add to favorites" [ref=e549] [cursor=pointer]:
+                  - img [ref=e550]
+                - button "Add to cart" [ref=e552] [cursor=pointer]:
+                  - img [ref=e553]
+            - generic [ref=e558]:
+              - link "JBL Go 4 Ultra-Portable Bluetooth Speaker JBL Go 4 Ultra-Portable Bluetooth Speaker - Alternate view Audio JBL Go 4 Ultra-Portable Waterproof Bluetooth Speaker (4.9) $60.00 4 colors available" [ref=e559] [cursor=pointer]:
+                - /url: /product/143
+                - generic [ref=e560]:
+                  - img "JBL Go 4 Ultra-Portable Bluetooth Speaker" [ref=e561]
+                  - img "JBL Go 4 Ultra-Portable Bluetooth Speaker - Alternate view" [ref=e562]
+                - generic [ref=e563]:
+                  - paragraph [ref=e564]: Audio
+                  - heading "JBL Go 4 Ultra-Portable Waterproof Bluetooth Speaker" [level=3] [ref=e565]
+                  - generic [ref=e566]:
+                    - img [ref=e567]
+                    - img [ref=e569]
+                    - img [ref=e571]
+                    - img [ref=e573]
+                    - img [ref=e575]
+                    - generic [ref=e577]: (4.9)
+                  - paragraph [ref=e578]: $60.00
+                  - paragraph [ref=e579]: 4 colors available
+              - generic [ref=e580]:
+                - button "Add to favorites" [ref=e581] [cursor=pointer]:
+                  - img [ref=e582]
+                - button "Add to cart" [ref=e584] [cursor=pointer]:
+                  - img [ref=e585]
+            - generic [ref=e590]:
+              - link "JBL Tune 720BT Wireless Headphones JBL Tune 720BT Wireless Headphones - Alternate view Audio JBL Tune 720BT Wireless Over-Ear Headphones (4.8) $57.00 3 colors available" [ref=e591] [cursor=pointer]:
+                - /url: /product/142
+                - generic [ref=e592]:
+                  - img "JBL Tune 720BT Wireless Headphones" [ref=e593]
+                  - img "JBL Tune 720BT Wireless Headphones - Alternate view" [ref=e594]
+                - generic [ref=e595]:
+                  - paragraph [ref=e596]: Audio
+                  - heading "JBL Tune 720BT Wireless Over-Ear Headphones" [level=3] [ref=e597]
+                  - generic [ref=e598]:
+                    - img [ref=e599]
+                    - img [ref=e601]
+                    - img [ref=e603]
+                    - img [ref=e605]
+                    - img [ref=e607]
+                    - generic [ref=e609]: (4.8)
+                  - paragraph [ref=e610]: $57.00
+                  - paragraph [ref=e611]: 3 colors available
+              - generic [ref=e612]:
+                - button "Add to favorites" [ref=e613] [cursor=pointer]:
+                  - img [ref=e614]
+                - button "Add to cart" [ref=e616] [cursor=pointer]:
+                  - img [ref=e617]
+            - generic [ref=e622]:
+              - link "JBL Tune 520BT Wireless Headphones JBL Tune 520BT Wireless Headphones - Alternate view Audio JBL Tune 520BT Wireless On-Ear Headphones (4.7) $45.00 1 color available" [ref=e623] [cursor=pointer]:
+                - /url: /product/141
+                - generic [ref=e624]:
+                  - img "JBL Tune 520BT Wireless Headphones" [ref=e625]
+                  - img "JBL Tune 520BT Wireless Headphones - Alternate view" [ref=e626]
+                - generic [ref=e627]:
+                  - paragraph [ref=e628]: Audio
+                  - heading "JBL Tune 520BT Wireless On-Ear Headphones" [level=3] [ref=e629]
+                  - generic [ref=e630]:
+                    - img [ref=e631]
+                    - img [ref=e633]
+                    - img [ref=e635]
+                    - img [ref=e637]
+                    - img [ref=e639]
+                    - generic [ref=e641]: (4.7)
+                  - paragraph [ref=e642]: $45.00
+                  - paragraph [ref=e643]: 1 color available
+              - generic [ref=e644]:
+                - button "Add to favorites" [ref=e645] [cursor=pointer]:
+                  - img [ref=e646]
+                - button "Add to cart" [ref=e648] [cursor=pointer]:
+                  - img [ref=e649]
+            - generic [ref=e654]:
+              - link "Redmi Buds 6 Lite Redmi Buds 6 Lite - Alternate view Accessories Redmi Buds 6 Lite - 40dB ANC, 12.4mm Titanium Driver, 38H Battery (4.7) $30.00 3 colors available" [ref=e655] [cursor=pointer]:
+                - /url: /product/153
+                - generic [ref=e656]:
+                  - img "Redmi Buds 6 Lite" [ref=e657]
+                  - img "Redmi Buds 6 Lite - Alternate view" [ref=e658]
+                - generic [ref=e659]:
+                  - paragraph [ref=e660]: Accessories
+                  - heading "Redmi Buds 6 Lite - 40dB ANC, 12.4mm Titanium Driver, 38H Battery" [level=3] [ref=e661]
+                  - generic [ref=e662]:
+                    - img [ref=e663]
+                    - img [ref=e665]
+                    - img [ref=e667]
+                    - img [ref=e669]
+                    - img [ref=e671]
+                    - generic [ref=e673]: (4.7)
+                  - paragraph [ref=e674]: $30.00
+                  - paragraph [ref=e675]: 3 colors available
+              - generic [ref=e676]:
+                - button "Add to favorites" [ref=e677] [cursor=pointer]:
+                  - img [ref=e678]
+                - button "Add to cart" [ref=e680] [cursor=pointer]:
+                  - img [ref=e681]
+            - generic [ref=e686]:
+              - link "YESIDO Wired Gaming Headset EK05 YESIDO Wired Gaming Headset EK05 - Alternate view Audio YESIDO Wired Gaming Headset EK05 - Professional Gaming Audio (4.7) $25.00" [ref=e687] [cursor=pointer]:
+                - /url: /product/124
+                - generic [ref=e688]:
+                  - img "YESIDO Wired Gaming Headset EK05" [ref=e689]
+                  - img "YESIDO Wired Gaming Headset EK05 - Alternate view" [ref=e690]
+                - generic [ref=e691]:
+                  - paragraph [ref=e692]: Audio
+                  - heading "YESIDO Wired Gaming Headset EK05 - Professional Gaming Audio" [level=3] [ref=e693]
+                  - generic [ref=e694]:
+                    - img [ref=e695]
+                    - img [ref=e697]
+                    - img [ref=e699]
+                    - img [ref=e701]
+                    - img [ref=e703]
+                    - generic [ref=e705]: (4.7)
+                  - paragraph [ref=e706]: $25.00
+              - generic [ref=e707]:
+                - button "Add to favorites" [ref=e708] [cursor=pointer]:
+                  - img [ref=e709]
+                - button "Add to cart" [ref=e711] [cursor=pointer]:
+                  - img [ref=e712]
+            - generic [ref=e717]:
+              - link "Xiaomi Redmi Buds 6 Active Xiaomi Redmi Buds 6 Active - Alternate view Accessories XIAOMI Redmi Buds 6 Active - 14.2mm Driver, 30H Battery, Dual-Mic ENC (4.6) $25.00 4 colors available" [ref=e718] [cursor=pointer]:
+                - /url: /product/152
+                - generic [ref=e719]:
+                  - img "Xiaomi Redmi Buds 6 Active" [ref=e720]
+                  - img "Xiaomi Redmi Buds 6 Active - Alternate view" [ref=e721]
+                - generic [ref=e722]:
+                  - paragraph [ref=e723]: Accessories
+                  - heading "XIAOMI Redmi Buds 6 Active - 14.2mm Driver, 30H Battery, Dual-Mic ENC" [level=3] [ref=e724]
+                  - generic [ref=e725]:
+                    - img [ref=e726]
+                    - img [ref=e728]
+                    - img [ref=e730]
+                    - img [ref=e732]
+                    - img [ref=e734]
+                    - generic [ref=e736]: (4.6)
+                  - paragraph [ref=e737]: $25.00
+                  - paragraph [ref=e738]: 4 colors available
+              - generic [ref=e739]:
+                - button "Add to favorites" [ref=e740] [cursor=pointer]:
+                  - img [ref=e741]
+                - button "Add to cart" [ref=e743] [cursor=pointer]:
+                  - img [ref=e744]
+            - generic [ref=e749]:
+              - link "Xiaomi Redmi Buds 6 Play Xiaomi Redmi Buds 6 Play - Alternate view Accessories Xiaomi Redmi Buds 6 Play - Bluetooth 5.4, 36H Battery, Bean-Shaped Earbuds (4.5) $20.00 4 colors available" [ref=e750] [cursor=pointer]:
+                - /url: /product/151
+                - generic [ref=e751]:
+                  - img "Xiaomi Redmi Buds 6 Play" [ref=e752]
+                  - img "Xiaomi Redmi Buds 6 Play - Alternate view" [ref=e753]
+                - generic [ref=e754]:
+                  - paragraph [ref=e755]: Accessories
+                  - heading "Xiaomi Redmi Buds 6 Play - Bluetooth 5.4, 36H Battery, Bean-Shaped Earbuds" [level=3] [ref=e756]
+                  - generic [ref=e757]:
+                    - img [ref=e758]
+                    - img [ref=e760]
+                    - img [ref=e762]
+                    - img [ref=e764]
+                    - img [ref=e766]
+                    - generic [ref=e768]: (4.5)
+                  - paragraph [ref=e769]: $20.00
+                  - paragraph [ref=e770]: 4 colors available
+              - generic [ref=e771]:
+                - button "Add to favorites" [ref=e772] [cursor=pointer]:
+                  - img [ref=e773]
+                - button "Add to cart" [ref=e775] [cursor=pointer]:
+                  - img [ref=e776]
+            - generic [ref=e781]:
+              - link "3 Inch Waterproof Bluetooth Speaker 3 Inch Waterproof Bluetooth Speaker - Alternate view Audio 3 Inch Portable Waterproof Bluetooth Speaker (4.6) $18.00 4 colors available" [ref=e782] [cursor=pointer]:
+                - /url: /product/120
+                - generic [ref=e783]:
+                  - img "3 Inch Waterproof Bluetooth Speaker" [ref=e784]
+                  - img "3 Inch Waterproof Bluetooth Speaker - Alternate view" [ref=e785]
+                - generic [ref=e786]:
+                  - paragraph [ref=e787]: Audio
+                  - heading "3 Inch Portable Waterproof Bluetooth Speaker" [level=3] [ref=e788]
+                  - generic [ref=e789]:
+                    - img [ref=e790]
+                    - img [ref=e792]
+                    - img [ref=e794]
+                    - img [ref=e796]
+                    - img [ref=e798]
+                    - generic [ref=e800]: (4.6)
+                  - paragraph [ref=e801]: $18.00
+                  - paragraph [ref=e802]: 4 colors available
+              - generic [ref=e803]:
+                - button "Add to favorites" [ref=e804] [cursor=pointer]:
+                  - img [ref=e805]
+                - button "Add to cart" [ref=e807] [cursor=pointer]:
+                  - img [ref=e808]
+            - generic [ref=e813]:
+              - link "JBL Tune 903BT V5.3 Wireless Headphone Audio JBL Tune 903BT V5.3 Wireless Over-Ear Headphone (4.7) $16.00" [ref=e814] [cursor=pointer]:
+                - /url: /product/110
+                - img "JBL Tune 903BT V5.3 Wireless Headphone" [ref=e816]
+                - generic [ref=e817]:
+                  - paragraph [ref=e818]: Audio
+                  - heading "JBL Tune 903BT V5.3 Wireless Over-Ear Headphone" [level=3] [ref=e819]
+                  - generic [ref=e820]:
+                    - img [ref=e821]
+                    - img [ref=e823]
+                    - img [ref=e825]
+                    - img [ref=e827]
+                    - img [ref=e829]
+                    - generic [ref=e831]: (4.7)
+                  - paragraph [ref=e832]: $16.00
+              - generic [ref=e833]:
+                - button "Add to favorites" [ref=e834] [cursor=pointer]:
+                  - img [ref=e835]
+                - button "Add to cart" [ref=e837] [cursor=pointer]:
+                  - img [ref=e838]
+            - generic [ref=e843]:
+              - link "Galaxy Buds6 Pro (White) Audio Galaxy Buds6 Pro Wireless Earbuds (White) (4.7) $15.00" [ref=e844] [cursor=pointer]:
+                - /url: /product/107
+                - img "Galaxy Buds6 Pro (White)" [ref=e846]
+                - generic [ref=e847]:
+                  - paragraph [ref=e848]: Audio
+                  - heading "Galaxy Buds6 Pro Wireless Earbuds (White)" [level=3] [ref=e849]
+                  - generic [ref=e850]:
+                    - img [ref=e851]
+                    - img [ref=e853]
+                    - img [ref=e855]
+                    - img [ref=e857]
+                    - img [ref=e859]
+                    - generic [ref=e861]: (4.7)
+                  - paragraph [ref=e862]: $15.00
+              - generic [ref=e863]:
+                - button "Add to favorites" [ref=e864] [cursor=pointer]:
+                  - img [ref=e865]
+                - button "Add to cart" [ref=e867] [cursor=pointer]:
+                  - img [ref=e868]
+            - generic [ref=e873]:
+              - link "Galaxy Buds6 Pro (Black) Audio Galaxy Buds6 Pro Wireless Earbuds (Black) (4.7) $15.00" [ref=e874] [cursor=pointer]:
+                - /url: /product/108
+                - img "Galaxy Buds6 Pro (Black)" [ref=e876]
+                - generic [ref=e877]:
+                  - paragraph [ref=e878]: Audio
+                  - heading "Galaxy Buds6 Pro Wireless Earbuds (Black)" [level=3] [ref=e879]
+                  - generic [ref=e880]:
+                    - img [ref=e881]
+                    - img [ref=e883]
+                    - img [ref=e885]
+                    - img [ref=e887]
+                    - img [ref=e889]
+                    - generic [ref=e891]: (4.7)
+                  - paragraph [ref=e892]: $15.00
+              - generic [ref=e893]:
+                - button "Add to favorites" [ref=e894] [cursor=pointer]:
+                  - img [ref=e895]
+                - button "Add to cart" [ref=e897] [cursor=pointer]:
+                  - img [ref=e898]
+            - generic [ref=e903]:
+              - link "Mi In-Ear Earphones Basic Mi In-Ear Earphones Basic - Alternate view Accessories Mi In-Ear Earphones Basic - 3.5mm Jack with Mic - Black (4.5) $15.00" [ref=e904] [cursor=pointer]:
+                - /url: /product/139
+                - generic [ref=e905]:
+                  - img "Mi In-Ear Earphones Basic" [ref=e906]
+                  - img "Mi In-Ear Earphones Basic - Alternate view" [ref=e907]
+                - generic [ref=e908]:
+                  - paragraph [ref=e909]: Accessories
+                  - heading "Mi In-Ear Earphones Basic - 3.5mm Jack with Mic - Black" [level=3] [ref=e910]
+                  - generic [ref=e911]:
+                    - img [ref=e912]
+                    - img [ref=e914]
+                    - img [ref=e916]
+                    - img [ref=e918]
+                    - img [ref=e920]
+                    - generic [ref=e922]: (4.5)
+                  - paragraph [ref=e923]: $15.00
+              - generic [ref=e924]:
+                - button "Add to favorites" [ref=e925] [cursor=pointer]:
+                  - img [ref=e926]
+                - button "Add to cart" [ref=e928] [cursor=pointer]:
+                  - img [ref=e929]
+            - generic [ref=e934]:
+              - link "Xiaomi Type-C Earphones Accessories Xiaomi Type-C Earphones - High-Resolution Digital Audio (4.6) $15.00" [ref=e935] [cursor=pointer]:
+                - /url: /product/259
+                - img "Xiaomi Type-C Earphones" [ref=e937]
+                - generic [ref=e938]:
+                  - paragraph [ref=e939]: Accessories
+                  - heading "Xiaomi Type-C Earphones - High-Resolution Digital Audio" [level=3] [ref=e940]
+                  - generic [ref=e941]:
+                    - img [ref=e942]
+                    - img [ref=e944]
+                    - img [ref=e946]
+                    - img [ref=e948]
+                    - img [ref=e950]
+                    - generic [ref=e952]: (4.6)
+                  - paragraph [ref=e953]: $15.00
+              - generic [ref=e954]:
+                - button "Add to favorites" [ref=e955] [cursor=pointer]:
+                  - img [ref=e956]
+                - button "Add to cart" [ref=e958] [cursor=pointer]:
+                  - img [ref=e959]
+            - generic [ref=e964]:
+              - link "JBL TUNE110 Earphones JBL TUNE110 Earphones - Alternate view Audio JBL TUNE110 In-Ear Headphones with Pure Bass Sound (4.5) $10.00 3 colors available" [ref=e965] [cursor=pointer]:
+                - /url: /product/140
+                - generic [ref=e966]:
+                  - img "JBL TUNE110 Earphones" [ref=e967]
+                  - img "JBL TUNE110 Earphones - Alternate view" [ref=e968]
+                - generic [ref=e969]:
+                  - paragraph [ref=e970]: Audio
+                  - heading "JBL TUNE110 In-Ear Headphones with Pure Bass Sound" [level=3] [ref=e971]
+                  - generic [ref=e972]:
+                    - img [ref=e973]
+                    - img [ref=e975]
+                    - img [ref=e977]
+                    - img [ref=e979]
+                    - img [ref=e981]
+                    - generic [ref=e983]: (4.5)
+                  - paragraph [ref=e984]: $10.00
+                  - paragraph [ref=e985]: 3 colors available
+              - generic [ref=e986]:
+                - button "Add to favorites" [ref=e987] [cursor=pointer]:
+                  - img [ref=e988]
+                - button "Add to cart" [ref=e990] [cursor=pointer]:
+                  - img [ref=e991]
+            - generic [ref=e996]:
+              - link "Foneng 3.5mm AUX Audio Cable Audio Foneng 3.5mm AUX Audio Cable - High Quality (4.5) $8.00" [ref=e997] [cursor=pointer]:
+                - /url: /product/115
+                - img "Foneng 3.5mm AUX Audio Cable" [ref=e999]
+                - generic [ref=e1000]:
+                  - paragraph [ref=e1001]: Audio
+                  - heading "Foneng 3.5mm AUX Audio Cable - High Quality" [level=3] [ref=e1002]
+                  - generic [ref=e1003]:
+                    - img [ref=e1004]
+                    - img [ref=e1006]
+                    - img [ref=e1008]
+                    - img [ref=e1010]
+                    - img [ref=e1012]
+                    - generic [ref=e1014]: (4.5)
+                  - paragraph [ref=e1015]: $8.00
+              - generic [ref=e1016]:
+                - button "Add to favorites" [ref=e1017] [cursor=pointer]:
+                  - img [ref=e1018]
+                - button "Add to cart" [ref=e1020] [cursor=pointer]:
+                  - img [ref=e1021]

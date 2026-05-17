@@ -2,14 +2,16 @@ import { motion } from "framer-motion";
 import { Battery, Smartphone, Zap, Gamepad2, Headphones } from "lucide-react";
 import ProductCard from "./ProductCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-import { phoneAccessories, wearablesProducts, smartphoneProducts, tabletProducts, iphoneCases, gamingConsoles } from "@/data/products";
-import { getAllGreenLionProductsMerged } from "@/data/productLookup";
 import { useState, useRef, useEffect, useMemo } from "react";
 import { useCatalog } from "@/context/CatalogContext";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  filterByCategoryPage,
+  sortRecommendationProducts,
+} from "@/lib/catalogFilters";
+import type { StorefrontProduct } from "@/lib/catalogProduct";
 
-// Horizontal Scroll Container Component
-const HorizontalScrollContainer = ({ products }: { products: any[] }) => {
+const HorizontalScrollContainer = ({ products }: { products: StorefrontProduct[] }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
@@ -71,11 +73,10 @@ const HorizontalScrollContainer = ({ products }: { products: any[] }) => {
 
   return (
     <div className="relative group">
-      {/* Left Arrow - Hidden on mobile, visible on hover for desktop */}
       {showLeftArrow && (
         <button
           onClick={() => scroll("left")}
-          style={{ touchAction: 'manipulation' }}
+          style={{ touchAction: "manipulation" }}
           className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 lg:h-12 lg:w-12 bg-background/90 backdrop-blur border border-border rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-background"
           aria-label="Scroll left"
         >
@@ -83,11 +84,10 @@ const HorizontalScrollContainer = ({ products }: { products: any[] }) => {
         </button>
       )}
 
-      {/* Right Arrow - Hidden on mobile, visible on hover for desktop */}
       {showRightArrow && (
         <button
           onClick={() => scroll("right")}
-          style={{ touchAction: 'manipulation' }}
+          style={{ touchAction: "manipulation" }}
           className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 lg:h-12 lg:w-12 bg-background/90 backdrop-blur border border-border rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-background"
           aria-label="Scroll right"
         >
@@ -95,35 +95,38 @@ const HorizontalScrollContainer = ({ products }: { products: any[] }) => {
         </button>
       )}
 
-      {/* Scrollable Container - Touch-friendly on mobile */}
       <div
         ref={scrollRef}
         className="flex gap-3 sm:gap-4 md:gap-6 overflow-x-auto scrollbar-hide scroll-smooth px-4 sm:px-0 snap-x snap-mandatory"
-        style={{ 
-          scrollbarWidth: "none", 
-          msOverflowStyle: "none", 
+        style={{
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
           WebkitOverflowScrolling: "touch",
           willChange: "scroll-position",
-          transform: "translateZ(0)"
+          transform: "translateZ(0)",
         }}
       >
         {products.map((product) => (
-          <div key={product.id} className="flex-none w-[200px] sm:w-[240px] md:w-64 snap-start">
+          <motion.div key={product.id} className="flex-none w-[200px] sm:w-[240px] md:w-64 snap-start">
             <ProductCard
               id={product.id}
               name={product.name}
               title={product.title}
-              price={product.price}
+              price={product.displayPrice}
               compareAtPrice={product.compareAtPrice}
               image={product.image}
               images={product.images || [product.image]}
               rating={product.rating}
               category={product.category}
               colors={product.colors}
+              variants={product.variants}
+              sizes={product.sizes}
               isPreorder={product.isPreorder}
               showPreorderPrice={product.showPreorderPrice}
+              stockQuantity={product.stockQuantity}
+              surface="carousel"
             />
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>
@@ -131,201 +134,21 @@ const HorizontalScrollContainer = ({ products }: { products: any[] }) => {
 };
 
 const PersonalizedRecommendations = () => {
-  const { catalogTick } = useCatalog();
+  const { storefrontProducts } = useCatalog();
 
-  // Helper function to check if product is Green Lion
-  const isGreenLionProduct = (product: any) => {
-    return product.id >= 5000 || product.brand === "Green Lion" || product.name?.startsWith("Green Lion");
-  };
+  const productsForTab = (category: string) =>
+    sortRecommendationProducts(filterByCategoryPage(storefrontProducts, category));
 
-  // Helper function to determine if a product matches a category
-  const matchesCategory = (product: any, category: string): boolean => {
-    const nameLower = product.name?.toLowerCase() || "";
-    const productCategory = product.category?.toLowerCase() || "";
-    
-    if (category === "Charging") {
-      return productCategory === "charging" ||
-             productCategory === "phone accessories" && (
-               nameLower.includes("charg") ||
-               nameLower.includes("power bank") ||
-               nameLower.includes("adapter") ||
-               nameLower.includes("ups") ||
-               nameLower.includes("battery") ||
-               nameLower.includes("charger") ||
-               nameLower.includes("cable") ||
-               nameLower.includes("dock") ||
-               nameLower.includes("magsafe")
-             );
-    }
-    
-    if (category === "Audio") {
-      return productCategory === "audio" ||
-             nameLower.includes("headphone") ||
-             nameLower.includes("earbud") ||
-             nameLower.includes("speaker") ||
-             nameLower.includes("airpod") ||
-             nameLower.includes("buds") ||
-             nameLower.includes("neckband") ||
-             nameLower.includes("audio");
-    }
-    
-    if (category === "Gaming") {
-      return productCategory === "gaming" ||
-             productCategory === "gaming consoles" ||
-             nameLower.includes("gaming") ||
-             nameLower.includes("ps4") ||
-             nameLower.includes("ps5") ||
-             nameLower.includes("controller") ||
-             nameLower.includes("console");
-    }
-    
-    if (category === "Accessories") {
-      // Accessories: everything that's not charging, audio, or gaming
-      const isCharging = matchesCategory(product, "Charging");
-      const isAudio = matchesCategory(product, "Audio");
-      const isGaming = matchesCategory(product, "Gaming");
-      
-      return !isCharging && !isAudio && !isGaming && (
-        productCategory === "accessories" ||
-        productCategory === "phone accessories" ||
-        productCategory === "iphone cases" ||
-        nameLower.includes("case") ||
-        nameLower.includes("cover") ||
-        nameLower.includes("stand") ||
-        nameLower.includes("holder") ||
-        nameLower.includes("protector") ||
-        nameLower.includes("dopp") ||
-        nameLower.includes("led") ||
-        nameLower.includes("usb") ||
-        nameLower.includes("flash")
-      );
-    }
-    
-    return false;
-  };
-
-  // Helper function to get and sort products by category (Green Lion first)
-  const getProductsForCategory = (category: string) => {
-    // Get ALL products from all sources
-    const allRegularProducts = [
-      ...phoneAccessories,
-      ...wearablesProducts,
-      ...smartphoneProducts,
-      ...tabletProducts,
-      ...iphoneCases,
-      ...gamingConsoles
-    ];
-
-    // Helper function to get display price (uses first variant price if variants exist, otherwise base price)
-    const getDisplayPrice = (product: any): number => {
-      if (product.variants && product.variants.length > 0) {
-        return product.variants[0].price;
-      }
-      return product.price;
-    };
-
-    // Filter regular products by category
-    const regularProducts = allRegularProducts
-      .filter(p => matchesCategory(p, category))
-      .map(p => ({
-        id: p.id,
-        name: p.name,
-        price: getDisplayPrice(p),
-        image: p.image,
-        images: p.images || [p.image],
-        rating: p.rating,
-        category: p.category,
-        brand: p.brand || "Other",
-        colors: p.colors,
-        isPreorder: p.isPreorder,
-      }));
-
-    // Get Green Lion products for this category
-    const greenLionCategoryProducts = getAllGreenLionProductsMerged()
-      .filter(p => {
-        const nameLower = p.name.toLowerCase();
-        const primaryMatch = p.category === category;
-        const secondaryMatch = p.secondaryCategories?.includes(category);
-        
-        // Category-specific matching
-        if (category === "Charging") {
-          return primaryMatch || secondaryMatch || 
-                 nameLower.includes("charg") || 
-                 nameLower.includes("power bank") ||
-                 nameLower.includes("ups") ||
-                 nameLower.includes("battery") ||
-                 nameLower.includes("charger");
-        }
-        
-        if (category === "Audio") {
-          return primaryMatch || 
-                 secondaryMatch ||
-                 p.secondaryCategories?.includes("Audio") ||
-                 p.secondaryCategories?.includes("Headphones") ||
-                 p.secondaryCategories?.includes("Earbuds") ||
-                 nameLower.includes("speaker") ||
-                 nameLower.includes("earbud") ||
-                 nameLower.includes("headphone") ||
-                 nameLower.includes("neckband") ||
-                 nameLower.includes("river") ||
-                 nameLower.includes("manchester") ||
-                 nameLower.includes("porto") ||
-                 nameLower.includes("jupiter") ||
-                 nameLower.includes("rhythm") ||
-                 nameLower.includes("echo") ||
-                 nameLower.includes("sevilla");
-        }
-        
-        if (category === "Gaming") {
-          return primaryMatch || 
-                 secondaryMatch ||
-                 p.secondaryCategories?.includes("Gaming") ||
-                 nameLower.includes("gaming");
-        }
-        
-        if (category === "Accessories") {
-          // Accessories category includes all Green Lion products that aren't charging/audio/gaming
-          const isCharging = nameLower.includes("charg") || nameLower.includes("power bank") || nameLower.includes("battery");
-          const isAudio = nameLower.includes("speaker") || nameLower.includes("earbud") || nameLower.includes("headphone");
-          const isGaming = nameLower.includes("gaming");
-          return !isCharging && !isAudio && !isGaming;
-        }
-        
-        return primaryMatch || secondaryMatch;
-      })
-      .map(p => ({
-        id: p.id,
-        name: p.name,
-        price: getDisplayPrice(p),
-        image: p.images[0],
-        images: p.images,
-        rating: p.rating,
-        category: p.category,
-        brand: p.brand,
-        colors: p.colors,
-        isPreorder: p.isPreorder,
-      }));
-
-    // Combine and sort: Green Lion products first, then others
-    const allProducts = [...greenLionCategoryProducts, ...regularProducts];
-    
-    return allProducts.sort((a, b) => {
-      const aIsGreenLion = isGreenLionProduct(a);
-      const bIsGreenLion = isGreenLionProduct(b);
-      
-      // Green Lion products first
-      if (aIsGreenLion && !bIsGreenLion) return -1;
-      if (!aIsGreenLion && bIsGreenLion) return 1;
-      
-      // Within same type, sort by rating (high to low)
-      return (b.rating || 0) - (a.rating || 0);
-    });
-  };
-
-  const chargingProducts = useMemo(() => getProductsForCategory("Charging"), [catalogTick]);
-  const gamingProducts = useMemo(() => getProductsForCategory("Gaming"), [catalogTick]);
-  const accessoriesProducts = useMemo(() => getProductsForCategory("Accessories"), [catalogTick]);
-  const audioProducts = useMemo(() => getProductsForCategory("Audio"), [catalogTick]);
+  const chargingProducts = useMemo(
+    () => productsForTab("Charging"),
+    [storefrontProducts]
+  );
+  const gamingProducts = useMemo(() => productsForTab("Gaming"), [storefrontProducts]);
+  const accessoriesProducts = useMemo(
+    () => productsForTab("Accessories"),
+    [storefrontProducts]
+  );
+  const audioProducts = useMemo(() => productsForTab("Audio"), [storefrontProducts]);
 
   return (
     <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-background relative">
@@ -336,8 +159,8 @@ const PersonalizedRecommendations = () => {
         transition={{ duration: 1, ease: "easeOut" }}
         className="absolute top-10 right-10 sm:top-20 sm:right-20 w-48 h-48 sm:w-96 sm:h-96 bg-primary/5 rounded-full blur-3xl"
       />
-      
-      <div className="container mx-auto px-4 sm:px-6 relative z-10">
+
+      <motion.div className="container mx-auto px-4 sm:px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -419,7 +242,7 @@ const PersonalizedRecommendations = () => {
             </motion.div>
           </TabsContent>
         </Tabs>
-      </div>
+      </motion.div>
     </section>
   );
 };

@@ -1,18 +1,2 @@
-import { useMemo } from "react";
-import CategoryPage from "./CategoryPage";
-import { buildSmartphonesProducts } from "@/data/allProducts";
-import { useCatalog } from "@/context/CatalogContext";
-
-const Smartphones = () => {
-  const { catalogTick } = useCatalog();
-  const products = useMemo(() => buildSmartphonesProducts(), [catalogTick]);
-  return (
-    <CategoryPage
-      categoryName="Smartphones"
-      products={products}
-      description="Discover the latest smartphones with cutting-edge technology, powerful processors, and stunning displays."
-    />
-  );
-};
-
-export default Smartphones;
+/** Routes in App.tsx use CategoryPage + storefrontProducts; this file is a stable import alias. */
+export { default } from "./CategoryPage";

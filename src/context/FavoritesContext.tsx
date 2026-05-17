@@ -1,4 +1,7 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, useMemo, ReactNode } from "react";
+import { useCatalog } from "@/context/CatalogContext";
+import { findStoreProductSplit } from "@/data/productLookup";
+import { resolveSalePrice } from "@/lib/storefrontPricing";
 
 export interface FavoriteProduct {
   id: number;
@@ -10,6 +13,7 @@ export interface FavoriteProduct {
 }
 
 interface FavoritesContextType {
+  favoriteIds: number[];
   favorites: FavoriteProduct[];
   addToFavorites: (product: FavoriteProduct) => void;
   removeFromFavorites: (id: number) => void;
@@ -19,67 +23,89 @@ interface FavoritesContextType {
 
 const FavoritesContext = createContext<FavoritesContextType | undefined>(undefined);
 
-// localStorage key for favorites - device-specific storage
-const FAVORITES_STORAGE_KEY = "kha_mobile_favorites";
+const FAVORITES_STORAGE_KEY = "kha_mobile_favorite_ids";
 
-export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
-  const [favorites, setFavorites] = useState<FavoriteProduct[]>(() => {
-    // Load from localStorage on mount - device-specific storage
-    try {
-      if (typeof window !== "undefined") {
-        const saved = localStorage.getItem(FAVORITES_STORAGE_KEY);
-        if (saved) {
-          return JSON.parse(saved);
+function loadFavoriteIds(): number[] {
+  try {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem(FAVORITES_STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.every((x) => typeof x === "number")) {
+          return parsed;
+        }
+        if (Array.isArray(parsed) && parsed[0]?.id != null) {
+          return parsed.map((p: { id: number }) => Number(p.id)).filter(Number.isFinite);
         }
       }
-    } catch (error) {
-      console.error("Error loading favorites from localStorage:", error);
     }
-    return [];
-  });
+  } catch {
+    /* ignore */
+  }
+  return [];
+}
 
-  // Save to localStorage whenever favorites change - persists across page refreshes on the same device
+function resolveFavorite(id: number): FavoriteProduct | null {
+  const { regularProduct, greenLionProduct } = findStoreProductSplit(id);
+  const p = regularProduct || greenLionProduct;
+  if (!p) return null;
+  const image =
+    "image" in p && p.image
+      ? String(p.image)
+      : "images" in p && p.images?.[0]
+        ? String(p.images[0])
+        : "";
+  return {
+    id: p.id,
+    name: p.name,
+    price: resolveSalePrice(p),
+    image,
+    rating: p.rating,
+    category: p.category,
+  };
+}
+
+export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
+  const { catalogTick } = useCatalog();
+  const [favoriteIds, setFavoriteIds] = useState<number[]>(() => loadFavoriteIds());
+
   useEffect(() => {
     try {
       if (typeof window !== "undefined") {
-        localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites));
+        localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favoriteIds));
       }
-    } catch (error) {
-      console.error("Error saving favorites to localStorage:", error);
-      // If localStorage is full or disabled, we continue without saving
-      // The favorites will still work in the current session
+    } catch {
+      /* ignore */
     }
-  }, [favorites]);
+  }, [favoriteIds]);
+
+  const favorites = useMemo(
+    () =>
+      favoriteIds
+        .map((id) => resolveFavorite(id))
+        .filter((p): p is FavoriteProduct => p != null),
+    [favoriteIds, catalogTick]
+  );
 
   const addToFavorites = (product: FavoriteProduct) => {
-    setFavorites((prev) => {
-      // Check if product already exists
-      if (prev.some((item) => item.id === product.id)) {
-        return prev;
-      }
-      return [...prev, product];
-    });
+    setFavoriteIds((prev) => (prev.includes(product.id) ? prev : [...prev, product.id]));
   };
 
   const removeFromFavorites = (id: number) => {
-    setFavorites((prev) => prev.filter((item) => item.id !== id));
+    setFavoriteIds((prev) => prev.filter((item) => item !== id));
   };
 
-  const isFavorite = (id: number) => {
-    return favorites.some((item) => item.id === id);
-  };
+  const isFavorite = (id: number) => favoriteIds.includes(id);
 
   const toggleFavorite = (product: FavoriteProduct) => {
-    if (isFavorite(product.id)) {
-      removeFromFavorites(product.id);
-    } else {
-      addToFavorites(product);
-    }
+    if (isFavorite(product.id)) removeFromFavorites(product.id);
+    else addToFavorites(product);
   };
 
   return (
     <FavoritesContext.Provider
       value={{
+        favoriteIds,
         favorites,
         addToFavorites,
         removeFromFavorites,
@@ -99,4 +125,3 @@ export const useFavorites = () => {
   }
   return context;
 };
-

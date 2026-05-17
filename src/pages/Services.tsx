@@ -510,6 +510,7 @@ const Services = () => {
               <h4 className="text-elegant text-sm mb-4">Support</h4>
               <ul className="space-y-2 text-sm font-light">
                 <li><a href="#contact" className="hover:underline">Contact Us</a></li>
+                <li><Link to="/order-lookup" className="hover:underline">Track Order</Link></li>
                 <li><a href="#" className="hover:underline">Shipping Info</a></li>
                 <li><a href="#" className="hover:underline">Returns</a></li>
                 <li><a href="#" className="hover:underline">FAQ</a></li>

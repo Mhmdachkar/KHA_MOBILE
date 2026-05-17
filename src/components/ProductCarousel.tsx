@@ -6,13 +6,18 @@ interface Product {
   id: number;
   name: string;
   price: number | string;
+  compareAtPrice?: number | null;
   image: string;
   images?: string[];
   rating?: number;
   category?: string;
   colors?: Array<{ name: string; image?: string; stock?: string }>;
+  variants?: Array<{ key: string; label: string; price: number }>;
+  sizes?: Array<{ name: string; price?: number | string | null }>;
   title?: string;
   isPreorder?: boolean;
+  showPreorderPrice?: boolean;
+  stockQuantity?: number | null;
 }
 
 interface ProductCarouselProps {
@@ -138,8 +143,12 @@ const ProductCarousel = ({ title, products }: ProductCarouselProps) => {
               rating={product.rating}
               category={product.category}
               colors={product.colors}
+              variants={product.variants}
+              sizes={product.sizes}
               isPreorder={product.isPreorder}
               showPreorderPrice={product.showPreorderPrice}
+              stockQuantity={product.stockQuantity}
+              surface="carousel"
             />
           </div>
         ))}

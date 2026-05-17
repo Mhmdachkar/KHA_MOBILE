@@ -1,0 +1,302 @@
+- generic [ref=e2]:
+  - region "Notifications (F8)":
+    - list
+  - region "Notifications alt+T"
+  - generic [ref=e3]:
+    - generic [ref=e7] [cursor=pointer]:
+      - img [ref=e9]
+      - generic [ref=e11]: 🎉 10% OFF Premium Gaming Accessories
+    - banner [ref=e13]:
+      - generic [ref=e15]:
+        - link "KHA_MOBILE Logo KHA_MOBILE" [ref=e16] [cursor=pointer]:
+          - /url: /
+          - img "KHA_MOBILE Logo" [ref=e18]
+          - generic [ref=e19]: KHA_MOBILE
+        - generic [ref=e20]:
+          - button "Request a product" [ref=e21] [cursor=pointer]:
+            - img [ref=e23]
+          - button [ref=e26] [cursor=pointer]:
+            - img [ref=e27]
+          - button "Search products" [ref=e28] [cursor=pointer]:
+            - img [ref=e29]
+          - link [ref=e32] [cursor=pointer]:
+            - /url: /favorites
+            - button [ref=e33]:
+              - img [ref=e34]
+          - button [ref=e36] [cursor=pointer]:
+            - img [ref=e37]
+    - generic [ref=e41]:
+      - generic [ref=e42]:
+        - link "Home" [ref=e43] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e44]: /
+        - link "Products" [ref=e45] [cursor=pointer]:
+          - /url: /products
+        - generic [ref=e46]: /
+        - generic [ref=e47]: Green Lion Hand Grip Strengthener
+      - generic [ref=e48]:
+        - generic [ref=e49]:
+          - generic [ref=e50]:
+            - img "Green Lion Hand Grip Strengthener" [ref=e53] [cursor=pointer]
+            - button "Previous image" [ref=e54] [cursor=pointer]:
+              - img [ref=e55]
+            - button "Next image" [ref=e57] [cursor=pointer]:
+              - img [ref=e58]
+          - generic [ref=e60]:
+            - button "View image 1" [ref=e61] [cursor=pointer]:
+              - img "Green Lion Hand Grip Strengthener - View 1" [ref=e62]
+            - button "View image 2" [ref=e63] [cursor=pointer]:
+              - img "Green Lion Hand Grip Strengthener - View 2" [ref=e64]
+          - generic [ref=e65]:
+            - generic [ref=e66]:
+              - button "Add to Cart" [ref=e67] [cursor=pointer]:
+                - img
+                - text: Add to Cart
+              - button "Buy Now" [ref=e68] [cursor=pointer]
+            - button "Add to Wishlist" [ref=e69] [cursor=pointer]:
+              - img [ref=e70]
+              - generic [ref=e72]: Add to Wishlist
+        - generic [ref=e73]:
+          - heading "Green Lion Hand Grip Strengthener - Adjustable 5-60 Kg" [level=1] [ref=e75]
+          - paragraph [ref=e76]: Accessories
+          - generic [ref=e77]:
+            - generic [ref=e78]:
+              - img [ref=e79]
+              - img [ref=e81]
+              - img [ref=e83]
+              - img [ref=e85]
+              - img [ref=e87]
+            - generic [ref=e89]: (4.7 rating)
+          - generic [ref=e90]:
+            - paragraph [ref=e92]: $12.00
+            - generic [ref=e93]: In Stock
+          - generic [ref=e94]:
+            - heading "Description" [level=3] [ref=e95]
+            - paragraph [ref=e96]: Perfect for athletes and musicians, this ergonomic hand grip strengthener helps strengthen hands, wrists, and forearms with adjustable resistance from 5-60 Kg.
+            - generic [ref=e97]:
+              - heading "Key Features" [level=4] [ref=e98]
+              - list [ref=e99]:
+                - listitem [ref=e100]:
+                  - img [ref=e101]
+                  - generic [ref=e104]: Perfect For Athletes, Musicians, Strengthen Hands, Wrists and Forearms
+                - listitem [ref=e105]:
+                  - img [ref=e106]
+                  - generic [ref=e109]: "Material: ABS & Steel Spring"
+                - listitem [ref=e110]:
+                  - img [ref=e111]
+                  - generic [ref=e114]: Built-In Mechanical Counter
+                - listitem [ref=e115]:
+                  - img [ref=e116]
+                  - generic [ref=e119]: "Range: 5-60 Kg (Adjustable)"
+                - listitem [ref=e120]:
+                  - img [ref=e121]
+                  - generic [ref=e124]: Ergonomic Non-Slip Grip
+                - listitem [ref=e125]:
+                  - img [ref=e126]
+                  - generic [ref=e129]: Adjustable Resistance
+              - button "Show more features" [ref=e131] [cursor=pointer]
+          - generic [ref=e132]:
+            - heading "Technical Specifications" [level=3] [ref=e133]
+            - generic [ref=e134]:
+              - generic [ref=e135]:
+                - paragraph [ref=e136]: Material
+                - paragraph [ref=e137]: ABS & Steel Spring
+              - generic [ref=e138]:
+                - paragraph [ref=e139]: Resistance Range
+                - paragraph [ref=e140]: 5-60 Kg (Adjustable)
+              - generic [ref=e141]:
+                - paragraph [ref=e142]: Counter
+                - paragraph [ref=e143]: Built-in Mechanical Counter
+              - generic [ref=e144]:
+                - paragraph [ref=e145]: Grip
+                - paragraph [ref=e146]: Ergonomic Non-Slip
+              - generic [ref=e147]:
+                - paragraph [ref=e148]: Design
+                - paragraph [ref=e149]: Portable & Durable
+      - generic [ref=e151]:
+        - heading "You May Also Like" [level=2] [ref=e152]
+        - generic [ref=e153]:
+          - generic [ref=e155]:
+            - link "Green Lion M6-Rotating Stand Green Lion M6-Rotating Stand - Alternate view Accessories Green Lion M6-Rotating Stand (4.6) $12.00" [ref=e156] [cursor=pointer]:
+              - /url: /product/5017
+              - generic [ref=e157]:
+                - img "Green Lion M6-Rotating Stand" [ref=e158]
+                - img "Green Lion M6-Rotating Stand - Alternate view" [ref=e159]
+              - generic [ref=e160]:
+                - paragraph [ref=e161]: Accessories
+                - heading "Green Lion M6-Rotating Stand" [level=3] [ref=e162]
+                - generic [ref=e163]:
+                  - img [ref=e164]
+                  - img [ref=e166]
+                  - img [ref=e168]
+                  - img [ref=e170]
+                  - img [ref=e172]
+                  - generic [ref=e174]: (4.6)
+                - paragraph [ref=e175]: $12.00
+            - generic [ref=e176]:
+              - button "Add to favorites" [ref=e177] [cursor=pointer]:
+                - img [ref=e178]
+              - button "Add to cart" [ref=e180] [cursor=pointer]:
+                - img [ref=e181]
+          - generic [ref=e186]:
+            - link "Green Lion M5-Foldable Phone & Tablet Holder Green Lion M5-Foldable Phone & Tablet Holder - Alternate view Accessories Green Lion M5-Foldable Phone & Tablet Holder (4.7) $12.00" [ref=e187] [cursor=pointer]:
+              - /url: /product/5018
+              - generic [ref=e188]:
+                - img "Green Lion M5-Foldable Phone & Tablet Holder" [ref=e189]
+                - img "Green Lion M5-Foldable Phone & Tablet Holder - Alternate view" [ref=e190]
+              - generic [ref=e191]:
+                - paragraph [ref=e192]: Accessories
+                - heading "Green Lion M5-Foldable Phone & Tablet Holder" [level=3] [ref=e193]
+                - generic [ref=e194]:
+                  - img [ref=e195]
+                  - img [ref=e197]
+                  - img [ref=e199]
+                  - img [ref=e201]
+                  - img [ref=e203]
+                  - generic [ref=e205]: (4.7)
+                - paragraph [ref=e206]: $12.00
+            - generic [ref=e207]:
+              - button "Add to favorites" [ref=e208] [cursor=pointer]:
+                - img [ref=e209]
+              - button "Add to cart" [ref=e211] [cursor=pointer]:
+                - img [ref=e212]
+          - generic [ref=e217]:
+            - link "Green Lion Digital Luggage Scale Max 50KG Green Lion Digital Luggage Scale Max 50KG - Alternate view Accessories Green Lion Digital Luggage Scale Max 50KG (4.7) $15.00" [ref=e218] [cursor=pointer]:
+              - /url: /product/5011
+              - generic [ref=e219]:
+                - img "Green Lion Digital Luggage Scale Max 50KG" [ref=e220]
+                - img "Green Lion Digital Luggage Scale Max 50KG - Alternate view" [ref=e221]
+              - generic [ref=e222]:
+                - paragraph [ref=e223]: Accessories
+                - heading "Green Lion Digital Luggage Scale Max 50KG" [level=3] [ref=e224]
+                - generic [ref=e225]:
+                  - img [ref=e226]
+                  - img [ref=e228]
+                  - img [ref=e230]
+                  - img [ref=e232]
+                  - img [ref=e234]
+                  - generic [ref=e236]: (4.7)
+                - paragraph [ref=e237]: $15.00
+            - generic [ref=e238]:
+              - button "Add to favorites" [ref=e239] [cursor=pointer]:
+                - img [ref=e240]
+              - button "Add to cart" [ref=e242] [cursor=pointer]:
+                - img [ref=e243]
+          - generic [ref=e248]:
+            - link "Green Lion Elegant Pouch Green Lion Elegant Pouch - Alternate view Accessories Green Lion Elegant Pouch (4.7) $20.00" [ref=e249] [cursor=pointer]:
+              - /url: /product/5013
+              - generic [ref=e250]:
+                - img "Green Lion Elegant Pouch" [ref=e251]
+                - img "Green Lion Elegant Pouch - Alternate view" [ref=e252]
+              - generic [ref=e253]:
+                - paragraph [ref=e254]: Accessories
+                - heading "Green Lion Elegant Pouch" [level=3] [ref=e255]
+                - generic [ref=e256]:
+                  - img [ref=e257]
+                  - img [ref=e259]
+                  - img [ref=e261]
+                  - img [ref=e263]
+                  - img [ref=e265]
+                  - generic [ref=e267]: (4.7)
+                - paragraph [ref=e268]: $20.00
+            - generic [ref=e269]:
+              - button "Add to favorites" [ref=e270] [cursor=pointer]:
+                - img [ref=e271]
+              - button "Add to cart" [ref=e273] [cursor=pointer]:
+                - img [ref=e274]
+          - generic [ref=e279]:
+            - link "Green Lion Sevilla Wireless Neckband Green Lion Sevilla Wireless Neckband - Alternate view Accessories Green Lion Sevilla Wireless Neckband (4.6) $20.00" [ref=e280] [cursor=pointer]:
+              - /url: /product/5023
+              - generic [ref=e281]:
+                - img "Green Lion Sevilla Wireless Neckband" [ref=e282]
+                - img "Green Lion Sevilla Wireless Neckband - Alternate view" [ref=e283]
+              - generic [ref=e284]:
+                - paragraph [ref=e285]: Accessories
+                - heading "Green Lion Sevilla Wireless Neckband" [level=3] [ref=e286]
+                - generic [ref=e287]:
+                  - img [ref=e288]
+                  - img [ref=e290]
+                  - img [ref=e292]
+                  - img [ref=e294]
+                  - img [ref=e296]
+                  - generic [ref=e298]: (4.6)
+                - paragraph [ref=e299]: $20.00
+            - generic [ref=e300]:
+              - button "Add to favorites" [ref=e301] [cursor=pointer]:
+                - img [ref=e302]
+              - button "Add to cart" [ref=e304] [cursor=pointer]:
+                - img [ref=e305]
+          - generic [ref=e310]:
+            - link "Green Lion Manchester True Wireless Earbuds Green Lion Manchester True Wireless Earbuds - Alternate view Accessories Green Lion Manchester True Wireless Earbuds (4.7) $20.00 2 colors available" [ref=e311] [cursor=pointer]:
+              - /url: /product/5024
+              - generic [ref=e312]:
+                - img "Green Lion Manchester True Wireless Earbuds" [ref=e313]
+                - img "Green Lion Manchester True Wireless Earbuds - Alternate view" [ref=e314]
+              - generic [ref=e315]:
+                - paragraph [ref=e316]: Accessories
+                - heading "Green Lion Manchester True Wireless Earbuds" [level=3] [ref=e317]
+                - generic [ref=e318]:
+                  - img [ref=e319]
+                  - img [ref=e321]
+                  - img [ref=e323]
+                  - img [ref=e325]
+                  - img [ref=e327]
+                  - generic [ref=e329]: (4.7)
+                - paragraph [ref=e330]: $20.00
+                - paragraph [ref=e331]: 2 colors available
+            - generic [ref=e332]:
+              - button "Add to favorites" [ref=e333] [cursor=pointer]:
+                - img [ref=e334]
+              - button "Add to cart" [ref=e336] [cursor=pointer]:
+                - img [ref=e337]
+          - generic [ref=e342]:
+            - link "Green Lion Mini Massage Gun Pro 800mAh Green Lion Mini Massage Gun Pro 800mAh - Alternate view Accessories Green Lion Mini Massage Gun Pro 800mAh (4.8) $50.00" [ref=e343] [cursor=pointer]:
+              - /url: /product/5002
+              - generic [ref=e344]:
+                - img "Green Lion Mini Massage Gun Pro 800mAh" [ref=e345]
+                - img "Green Lion Mini Massage Gun Pro 800mAh - Alternate view" [ref=e346]
+              - generic [ref=e347]:
+                - paragraph [ref=e348]: Accessories
+                - heading "Green Lion Mini Massage Gun Pro 800mAh" [level=3] [ref=e349]
+                - generic [ref=e350]:
+                  - img [ref=e351]
+                  - img [ref=e353]
+                  - img [ref=e355]
+                  - img [ref=e357]
+                  - img [ref=e359]
+                  - generic [ref=e361]: (4.8)
+                - paragraph [ref=e362]: $50.00
+            - generic [ref=e363]:
+              - button "Add to favorites" [ref=e364] [cursor=pointer]:
+                - img [ref=e365]
+              - button "Add to cart" [ref=e367] [cursor=pointer]:
+                - img [ref=e368]
+          - generic [ref=e373]:
+            - link "Green Lion Pro Trim Duo Hair Clipper Green Lion Pro Trim Duo Hair Clipper - Alternate view Accessories Green Lion Pro Trim Duo Hair Clipper (4.9) $55.00" [ref=e374] [cursor=pointer]:
+              - /url: /product/5003
+              - generic [ref=e375]:
+                - img "Green Lion Pro Trim Duo Hair Clipper" [ref=e376]
+                - img "Green Lion Pro Trim Duo Hair Clipper - Alternate view" [ref=e377]
+              - generic [ref=e378]:
+                - paragraph [ref=e379]: Accessories
+                - heading "Green Lion Pro Trim Duo Hair Clipper" [level=3] [ref=e380]
+                - generic [ref=e381]:
+                  - img [ref=e382]
+                  - img [ref=e384]
+                  - img [ref=e386]
+                  - img [ref=e388]
+                  - img [ref=e390]
+                  - generic [ref=e392]: (4.9)
+                - paragraph [ref=e393]: $55.00
+            - generic [ref=e394]:
+              - button "Add to favorites" [ref=e395] [cursor=pointer]:
+                - img [ref=e396]
+              - button "Add to cart" [ref=e398] [cursor=pointer]:
+                - img [ref=e399]
+    - generic [ref=e404]:
+      - generic [ref=e405]:
+        - paragraph [ref=e406]: Green Lion Hand Grip Strengthener
+        - paragraph
+      - button "Add to cart" [ref=e407] [cursor=pointer]:
+        - img
+        - text: Add to cart

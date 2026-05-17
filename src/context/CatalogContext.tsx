@@ -3,32 +3,8 @@ import { apiBase } from "@/lib/adminApi";
 import { 
   registerPublicApiProducts, 
   type ApiPublicProduct,
-  getProductsByCategoryMerged,
-  getAllGreenLionProductsMerged,
-  getProductFromApiById,
-  eachApiCatalogProduct
 } from "@/data/productLookup";
-import { 
-  phoneAccessories, 
-  wearablesProducts, 
-  smartphoneProducts, 
-  tabletProducts, 
-  iphoneCases, 
-  gamingConsoles, 
-  electronicsProducts 
-} from "@/data/products";
-
-type CatalogProduct = {
-  id: number;
-  name: string;
-  price: number | string;
-  image: string;
-  images?: string[];
-  category: string;
-  brand?: string;
-  rating: number;
-  [key: string]: any;
-};
+import { buildStorefrontCatalog, type StorefrontProduct } from "@/lib/catalogProduct";
 
 type CatalogContextValue = {
   catalogLoaded: boolean;
@@ -38,7 +14,9 @@ type CatalogContextValue = {
   refreshCatalog: () => Promise<void>;
   refresh: () => Promise<void>;
   lastError: string | null;
-  allProducts: CatalogProduct[];
+  /** @deprecated Use storefrontProducts — kept for gradual migration */
+  allProducts: StorefrontProduct[];
+  storefrontProducts: StorefrontProduct[];
 };
 
 const CatalogContext = createContext<CatalogContextValue | undefined>(undefined);
@@ -81,45 +59,10 @@ export function CatalogProvider({ children }: { children: React.ReactNode }) {
     void refreshCatalog();
   }, [refreshCatalog]);
 
-  // Get all products merged from static files + API
-  const allProducts = useMemo<CatalogProduct[]>(() => {
-    // Merge all static products with API overrides
-    const staticProducts = [
-      ...phoneAccessories,
-      ...wearablesProducts,
-      ...smartphoneProducts,
-      ...tabletProducts,
-      ...iphoneCases,
-      ...gamingConsoles,
-      ...electronicsProducts,
-    ];
-
-    // Get Green Lion products with API overrides
-    const greenLionProducts = getAllGreenLionProductsMerged();
-
-    // Merge static products with API data (similar to Green Lion merge)
-    const mergedStatic = staticProducts.map((p) => {
-      const override = getProductFromApiById(p.id);
-      return override || p;
-    });
-
-    // Combine all and ensure unique IDs
-    const allMerged = [...mergedStatic, ...greenLionProducts];
-    const uniqueMap = new Map<number, CatalogProduct>();
-    
-    for (const product of allMerged) {
-      uniqueMap.set(product.id, product as CatalogProduct);
-    }
-
-    // Add API-only products that don't have static counterparts
-    eachApiCatalogProduct((storefrontId, hit) => {
-      if (!uniqueMap.has(storefrontId)) {
-        uniqueMap.set(storefrontId, hit.product as CatalogProduct);
-      }
-    });
-
-    return Array.from(uniqueMap.values());
-  }, [catalogTick]); // Recompute when catalog updates
+  const storefrontProducts = useMemo(
+    () => buildStorefrontCatalog(),
+    [catalogTick]
+  );
 
   const value = useMemo(
     () => ({ 
@@ -129,9 +72,10 @@ export function CatalogProvider({ children }: { children: React.ReactNode }) {
       refreshCatalog, 
       refresh: refreshCatalog,
       lastError,
-      allProducts 
+      allProducts: storefrontProducts,
+      storefrontProducts,
     }),
-    [catalogLoaded, loading, catalogTick, refreshCatalog, lastError, allProducts]
+    [catalogLoaded, loading, catalogTick, refreshCatalog, lastError, storefrontProducts]
   );
 
   return <CatalogContext.Provider value={value}>{children}</CatalogContext.Provider>;

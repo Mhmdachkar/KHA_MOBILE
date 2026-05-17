@@ -3,20 +3,13 @@ import { useEffect, useRef } from "react";
 import { X, Plus, Minus, Trash2, ShoppingBag, ArrowRight } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { Link } from "react-router-dom";
+import { formatMoney } from "@/lib/storefrontPricing";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 
 const CartDashboard = () => {
   const { cart, isOpen, closeCart, removeFromCart, updateQuantity, getTotalItems, getTotalPrice } = useCart();
   const cartItemsContainerRef = useRef<HTMLDivElement>(null);
-
-  // Helper function to format price (handles both number and string)
-  const formatPrice = (price: number | string): string => {
-    if (typeof price === 'string') {
-      return price;
-    }
-    return price.toFixed(2);
-  };
 
   // CRITICAL: Force scroll to top IMMEDIATELY when cart opens - before any animation
   useEffect(() => {
@@ -291,7 +284,7 @@ const CartDashboard = () => {
                 {cart.map((item, index) => {
                   // Use color image if available, otherwise use regular image
                   const displayImage = item.colorImage || item.image;
-                  const uniqueKey = `${item.id}-${item.variantKey || "base"}-${item.color || "no-color"}`;
+                  const uniqueKey = `${item.id}-${item.variantKey || "base"}-${item.color || "no-color"}-${item.size || "no-size"}`;
 
                   return (
                     <motion.div
@@ -325,11 +318,16 @@ const CartDashboard = () => {
                             Color: {item.color}
                           </p>
                         )}
+                        {item.size && (
+                          <p className="text-[10px] sm:text-xs text-muted-foreground mb-1">
+                            Size: {item.size}
+                          </p>
+                        )}
                         {item.category && (
                           <p className="text-xs text-muted-foreground mb-1">{item.category}</p>
                         )}
                         <p className="text-base sm:text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                          ${formatPrice(item.price)}
+                          {formatMoney(item.price)}
                         </p>
                       </div>
 
@@ -338,7 +336,7 @@ const CartDashboard = () => {
                         <motion.button
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
-                          onClick={() => removeFromCart(item.id, item.variantKey, item.color)}
+                          onClick={() => removeFromCart(item.id, item.variantKey, item.color, item.size)}
                           className="h-6 w-6 rounded-full hover:bg-destructive hover:text-destructive-foreground transition-all duration-300 flex items-center justify-center"
                         >
                           <Trash2 className="h-3 w-3" />
@@ -348,7 +346,7 @@ const CartDashboard = () => {
                           <motion.button
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
-                            onClick={() => updateQuantity(item.id, item.quantity - 1, item.variantKey, item.color)}
+                            onClick={() => updateQuantity(item.id, item.quantity - 1, item.variantKey, item.color, item.size)}
                             className="h-8 w-8 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all duration-300"
                           >
                             <Minus className="h-3 w-3" />
@@ -361,7 +359,7 @@ const CartDashboard = () => {
                           <motion.button
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
-                            onClick={() => updateQuantity(item.id, item.quantity + 1, item.variantKey, item.color)}
+                            onClick={() => updateQuantity(item.id, item.quantity + 1, item.variantKey, item.color, item.size)}
                             className="h-8 w-8 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all duration-300"
                           >
                             <Plus className="h-3 w-3" />
@@ -381,17 +379,17 @@ const CartDashboard = () => {
                 <div className="space-y-2 sm:space-y-2.5 md:space-y-3 mb-3 sm:mb-4 md:mb-5">
                   <div className="flex items-center justify-between text-sm sm:text-base md:text-lg">
                     <span className="text-muted-foreground">Subtotal</span>
-                    <span className="font-medium">${getTotalPrice().toFixed(2)}</span>
+                    <span className="font-medium">{formatMoney(getTotalPrice())}</span>
                   </div>
                   <div className="flex items-center justify-between text-sm sm:text-base md:text-lg">
                     <span className="text-muted-foreground">Delivery</span>
-                    <span className="font-medium">$4.00</span>
+                    <span className="font-medium">{formatMoney(4)}</span>
                   </div>
                   <div className="h-px bg-border" />
                   <div className="flex items-center justify-between text-base sm:text-lg md:text-xl font-bold">
                     <span className="text-elegant">Total</span>
                     <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                      ${(getTotalPrice() + 4.00).toFixed(2)}
+                      {formatMoney(getTotalPrice() + 4)}
                     </span>
                   </div>
                 </div>
@@ -410,6 +408,13 @@ const CartDashboard = () => {
                       Proceed to Checkout
                       <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
                     </Button>
+                  </Link>
+                  <Link
+                    to="/order-lookup"
+                    onClick={closeCart}
+                    className="block text-center text-xs text-muted-foreground hover:text-primary underline pt-1"
+                  >
+                    Track your order
                   </Link>
                 </div>
               </div>

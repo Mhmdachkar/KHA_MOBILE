@@ -13,14 +13,11 @@ import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { useToast } from "@/hooks/use-toast";
-import type { Product } from "@/data/products";
-import type { GreenLionProduct } from "@/data/greenLionProducts";
-import { phoneAccessories, wearablesProducts, smartphoneProducts, tabletProducts, iphoneCases, gamingConsoles, electronicsProducts } from "@/data/products";
-import { getAllGreenLionProductsMerged, eachApiCatalogProduct } from "@/data/productLookup";
 import { useCatalog } from "@/context/CatalogContext";
+import { formatMoney } from "@/lib/storefrontPricing";
 
 const Header = () => {
-  const { catalogTick } = useCatalog();
+  const { storefrontProducts } = useCatalog();
   const { favorites } = useFavorites();
   const { getTotalItems, toggleCart } = useCart();
   const { trackSearch } = useAnalytics();
@@ -45,70 +42,6 @@ const Header = () => {
   const lastScrollY = useRef(0);
   const { toast } = useToast();
 
-  const allProducts = useMemo(() => {
-    const regularProducts = [
-      ...phoneAccessories,
-      ...wearablesProducts,
-      ...smartphoneProducts,
-      ...tabletProducts,
-      ...iphoneCases,
-      ...gamingConsoles,
-      ...electronicsProducts,
-    ];
-
-    const mappedGreenLionProducts = getAllGreenLionProductsMerged().map((p) => ({
-      id: p.id,
-      name: p.name,
-      title: p.title,
-      price: p.price,
-      image: p.images[0],
-      images: p.images,
-      rating: p.rating,
-      category: p.category,
-      brand: p.brand,
-      description: p.description,
-      features: p.features || [],
-      specifications: p.specifications || [],
-      variants: p.variants,
-      colors: p.colors,
-      connectivityOptions: p.connectivityOptions,
-      isPreorder: p.isPreorder,
-    }));
-
-    const base = [...regularProducts, ...mappedGreenLionProducts];
-    const m = new Map<number, (typeof base)[number]>(base.map((p) => [p.id, p]));
-    eachApiCatalogProduct((id, hit) => {
-      if (hit.kind === "green") {
-        const g = hit.product as GreenLionProduct;
-        m.set(id, {
-          id: g.id,
-          name: g.name,
-          title: g.title,
-          price: g.price,
-          image: g.images[0],
-          images: g.images,
-          rating: g.rating,
-          category: g.category,
-          brand: g.brand,
-          description: g.description,
-          features: g.features || [],
-          specifications: g.specifications || [],
-          variants: g.variants,
-          colors: g.colors,
-          connectivityOptions: g.connectivityOptions,
-          isPreorder: g.isPreorder,
-        });
-      } else {
-        const r = hit.product as Product;
-        m.set(id, {
-          ...r,
-          images: r.images && r.images.length > 0 ? r.images : [r.image],
-        });
-      }
-    });
-    return Array.from(m.values());
-  }, [catalogTick]);
-
   // Filter products based on search query (case-insensitive)
   const searchResults = useMemo(() => {
     if (!searchQuery.trim()) return [];
@@ -118,7 +51,7 @@ const Header = () => {
     // Split query into words for better matching
     const queryWords = normalizedQuery.split(/\s+/).filter(word => word.length > 0);
 
-    return allProducts.filter((product) => {
+    return storefrontProducts.filter((product) => {
       // Normalize all product fields to lowercase for case-insensitive comparison
       const normalizedName = product.name.toLowerCase();
       const normalizedTitle = (product.title || "").toLowerCase();
@@ -146,7 +79,7 @@ const Header = () => {
 
       return allWordsMatch || exactPhraseMatch;
     }).slice(0, 10); // Limit to 10 results
-  }, [searchQuery, allProducts]);
+  }, [searchQuery, storefrontProducts]);
 
   const handleSearchClick = () => {
     setSearchOpen(true);
@@ -629,7 +562,7 @@ const Header = () => {
                         {product.category}
                       </p>
                       <p className="text-sm font-semibold text-primary mt-1">
-                        ${typeof product.price === 'number' ? product.price.toFixed(2) : product.price}
+                        {formatMoney(product.displayPrice)}
                       </p>
                     </div>
                   </motion.button>

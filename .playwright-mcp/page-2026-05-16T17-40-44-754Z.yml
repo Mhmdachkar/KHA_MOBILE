@@ -1,0 +1,57 @@
+- generic [ref=e2]:
+  - region "Notifications (F8)":
+    - list
+  - region "Notifications alt+T"
+  - generic [ref=e3]:
+    - generic [ref=e7] [cursor=pointer]:
+      - img [ref=e9]
+      - generic [ref=e11]: 🎉 10% OFF Premium Gaming Accessories
+    - banner [ref=e13]:
+      - generic [ref=e15]:
+        - link "KHA_MOBILE Logo KHA_MOBILE" [ref=e16] [cursor=pointer]:
+          - /url: /
+          - img "KHA_MOBILE Logo" [ref=e18]
+          - generic [ref=e19]: KHA_MOBILE
+        - navigation [ref=e20]:
+          - link "Home" [ref=e21] [cursor=pointer]:
+            - /url: /
+            - text: Home
+          - link "Products" [ref=e22] [cursor=pointer]:
+            - /url: /products
+            - text: Products
+          - link "Recharges" [ref=e23] [cursor=pointer]:
+            - /url: /recharges
+            - text: Recharges
+          - link "Gift Cards" [ref=e24] [cursor=pointer]:
+            - /url: /gift-cards
+            - text: Gift Cards
+          - link "Services" [ref=e25] [cursor=pointer]:
+            - /url: /services
+            - text: Services
+          - link "About Us" [ref=e26] [cursor=pointer]:
+            - /url: /about
+            - text: About Us
+        - generic [ref=e27]:
+          - button "Request a product" [ref=e28] [cursor=pointer]:
+            - img [ref=e30]
+          - button "Search products" [ref=e33] [cursor=pointer]:
+            - img [ref=e34]
+          - link [ref=e37] [cursor=pointer]:
+            - /url: /favorites
+            - button [ref=e38]:
+              - img [ref=e39]
+          - button [ref=e41] [cursor=pointer]:
+            - img [ref=e42]
+    - generic [ref=e46]:
+      - heading "Track your order" [level=1] [ref=e47]
+      - paragraph [ref=e48]: Enter your order number (e.g. KHA-10042) and the phone number used at checkout.
+      - generic [ref=e49]:
+        - generic [ref=e50]:
+          - text: Order number
+          - textbox "Order number" [ref=e51]:
+            - /placeholder: KHA-12345
+        - generic [ref=e52]:
+          - text: Phone number
+          - textbox "Phone number" [ref=e53]:
+            - /placeholder: 03 123 456
+        - button "Find order" [disabled]
