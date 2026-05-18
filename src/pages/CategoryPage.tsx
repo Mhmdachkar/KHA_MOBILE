@@ -162,11 +162,7 @@ const CategoryPage = () => {
   }, [categoryProducts]);
 
   useEffect(() => {
-    if (categoryDisplayName === "Gaming") {
-      setSelectedSmartphoneBrand("Sony");
-    } else {
-      setSelectedSmartphoneBrand("All");
-    }
+    setSelectedSmartphoneBrand("All");
   }, [categoryDisplayName]);
 
   // Only redirect if category is truly not found (not in map and not a valid dynamic route)
@@ -475,6 +471,7 @@ const CategoryPage = () => {
                     <div key={product.id} className="relative min-w-0">
                       <ProductCard
                         id={product.id}
+                        dbId={product.dbId}
                         name={product.name}
                         title={product.title}
                         price={product.displayPrice ?? product.price ?? 0}

@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import ProductCard from "./ProductCard";
 
 interface Product {
@@ -23,9 +24,10 @@ interface Product {
 interface ProductCarouselProps {
   title: string;
   products: Product[];
+  viewAllLink?: string;
 }
 
-const ProductCarousel = ({ title, products }: ProductCarouselProps) => {
+const ProductCarousel = ({ title, products, viewAllLink }: ProductCarouselProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
@@ -92,29 +94,39 @@ const ProductCarousel = ({ title, products }: ProductCarouselProps) => {
 
   return (
     <div className="relative group w-full overflow-hidden">
-      <h2 className="text-elegant text-xl sm:text-2xl mb-4 sm:mb-6 md:mb-8 px-4 sm:px-0 break-words">{title}</h2>
+      <div className="flex items-center justify-between mb-4 sm:mb-6 md:mb-8 px-4 sm:px-0">
+        <h2 className="text-elegant text-xl sm:text-2xl break-words">{title}</h2>
+        {viewAllLink && (
+          <Link
+            to={viewAllLink}
+            className="hidden sm:inline-flex items-center gap-1 text-xs font-medium text-primary hover:text-primary/80 transition-colors shrink-0 ml-4"
+          >
+            View All <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+        )}
+      </div>
 
-      {/* Left Arrow - Hidden on mobile, visible on hover for desktop */}
+      {/* Left Arrow */}
       {showLeftArrow && (
         <button
           onClick={() => scroll("left")}
           style={{ touchAction: 'manipulation' }}
-          className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 lg:h-12 lg:w-12 bg-background/90 backdrop-blur border border-border rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-background"
+          className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 lg:h-11 lg:w-11 bg-background/95 backdrop-blur border border-border/60 rounded-full items-center justify-center shadow-md hover:shadow-lg hover:border-primary/40 transition-all"
           aria-label="Scroll left"
         >
-          <ChevronLeft className="h-4 w-4 lg:h-5 lg:w-5" />
+          <ChevronLeft className="h-4 w-4" />
         </button>
       )}
 
-      {/* Right Arrow - Hidden on mobile, visible on hover for desktop */}
+      {/* Right Arrow */}
       {showRightArrow && (
         <button
           onClick={() => scroll("right")}
           style={{ touchAction: 'manipulation' }}
-          className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 lg:h-12 lg:w-12 bg-background/90 backdrop-blur border border-border rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-background"
+          className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 lg:h-11 lg:w-11 bg-background/95 backdrop-blur border border-border/60 rounded-full items-center justify-center shadow-md hover:shadow-lg hover:border-primary/40 transition-all"
           aria-label="Scroll right"
         >
-          <ChevronRight className="h-4 w-4 lg:h-5 lg:w-5" />
+          <ChevronRight className="h-4 w-4" />
         </button>
       )}
 

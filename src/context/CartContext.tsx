@@ -2,6 +2,8 @@ import { createContext, useContext, useState, useEffect, ReactNode } from "react
 
 export interface CartProduct {
   id: number;
+  /** DB primary key when the cart line maps to an admin product row. */
+  dbId?: number;
   name: string;
   price: number | string;
   image: string;

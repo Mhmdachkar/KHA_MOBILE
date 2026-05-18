@@ -63,7 +63,7 @@ const ProductCardInlineOptions = ({
 
   return (
     <div
-      className="px-2.5 sm:px-3 pb-3 pt-2 border-t border-primary/20 bg-muted/30 space-y-2.5 sm:space-y-2"
+      className="px-3 sm:px-4 pb-4 pt-3 border-t border-border/60 bg-card space-y-3 sm:space-y-2"
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -99,7 +99,7 @@ const ProductCardInlineOptions = ({
                 onClick={() => onSelectVariant(v)}
                 className={cn(
                   touchBtn,
-                  "min-h-[40px] sm:min-h-0 sm:min-w-[2.75rem] px-2.5 py-2 sm:py-1 rounded-lg sm:rounded-md text-[11px] font-semibold border",
+                  "min-h-[40px] sm:min-h-0 sm:min-w-[2.75rem] px-2.5 py-2 sm:py-1 rounded-lg text-[11px] font-semibold border",
                   selectedVariant?.key === v.key
                     ? "border-primary bg-primary text-primary-foreground shadow-sm"
                     : "border-border bg-background hover:border-primary/50 active:bg-muted/50 text-foreground"
@@ -125,7 +125,7 @@ const ProductCardInlineOptions = ({
                 onClick={() => onSelectSize(s)}
                 className={cn(
                   touchBtn,
-                  "min-h-[40px] sm:min-h-0 px-2.5 py-2 sm:py-1 rounded-lg sm:rounded-md text-[11px] font-semibold border",
+                  "min-h-[40px] sm:min-h-0 px-2.5 py-2 sm:py-1 rounded-lg text-[11px] font-semibold border",
                   selectedSize?.name === s.name
                     ? "border-primary bg-primary text-primary-foreground shadow-sm"
                     : "border-border bg-background hover:border-primary/50 active:bg-muted/50"
@@ -192,7 +192,7 @@ const ProductCardInlineOptions = ({
           type="button"
           size="sm"
           className={cn(
-            "w-full sm:w-auto h-11 sm:h-8 min-h-[44px] sm:min-h-0 text-sm sm:text-[11px] px-4",
+            "w-full sm:w-auto h-10 sm:h-8 min-h-[44px] sm:min-h-0 text-sm sm:text-[11px] px-4 rounded-lg",
             touchBtn
           )}
           onClick={onConfirm}

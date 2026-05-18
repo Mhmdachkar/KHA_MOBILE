@@ -8,6 +8,7 @@ import {
   eachApiCatalogProduct,
   getAllGreenLionProductsMerged,
   getProductFromApiById,
+  isStorefrontIdSuppressed,
 } from "@/data/productLookup";
 import {
   phoneAccessories,
@@ -210,12 +211,16 @@ export function buildStorefrontCatalog(): StorefrontProduct[] {
   ];
 
   const greenLion = getAllGreenLionProductsMerged();
-  const mergedStatic = staticProducts.map((p) => {
-    const override = getProductFromApiById(p.id);
-    return fromRegular(override || p);
-  });
+  const mergedStatic = staticProducts
+    .filter((p) => !isStorefrontIdSuppressed(p.id))
+    .map((p) => {
+      const override = getProductFromApiById(p.id);
+      return fromRegular(override || p);
+    });
 
-  const mergedGreen = greenLion.map((g) => fromGreenLion(g));
+  const mergedGreen = greenLion
+    .filter((g) => !isStorefrontIdSuppressed(g.id))
+    .map((g) => fromGreenLion(g));
 
   const uniqueMap = new Map<number, StorefrontProduct>();
   for (const p of [...mergedStatic, ...mergedGreen]) {

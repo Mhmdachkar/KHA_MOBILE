@@ -45,6 +45,16 @@ export type ApiPublicProduct = {
 export type ApiHit = { kind: "regular" | "green"; product: Product | GreenLionProduct };
 
 const apiByStorefrontId = new Map<number, ApiHit>();
+let suppressedStorefrontIds = new Set<number>();
+
+/** Inactive DB rows with legacy_override_id — hide matching static catalog entries. */
+export function registerSuppressedStorefrontIds(ids: number[]) {
+  suppressedStorefrontIds = new Set(ids.filter((id) => Number.isFinite(id)));
+}
+
+export function isStorefrontIdSuppressed(id: number): boolean {
+  return suppressedStorefrontIds.has(id);
+}
 
 /** Seed SQL uses placehold.co URLs; keep real photos from the bundled static catalog until admin replaces them. */
 export function isSeedPlaceholderImageUrl(url: string | undefined): boolean {
@@ -266,6 +276,7 @@ export function getAllGreenLionProductsMerged(): GreenLionProduct[] {
 }
 
 registerPublicApiProducts([]);
+registerSuppressedStorefrontIds([]);
 
 /** Apply DB-backed rows on top of a flat listing (by storefront product id). */
 export function eachApiCatalogProduct(fn: (storefrontId: number, hit: ApiHit) => void) {

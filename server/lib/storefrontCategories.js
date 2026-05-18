@@ -50,8 +50,6 @@ const ALIAS_TO_CANONICAL = {
   'iphone case': 'iPhone Cases',
   'iphone cases': 'iPhone Cases',
   iphonecases: 'iPhone Cases',
-  case: 'iPhone Cases',
-  cases: 'iPhone Cases',
   other: 'Other',
   misc: 'Other',
   miscellaneous: 'Other',

@@ -216,9 +216,20 @@ const AdminProductEditor = () => {
           })),
           connectivityOptions: p.connectivityOptions || [],
           secondaryCategories: p.secondaryCategories || [],
-          galleryImages: (p.images || []).filter(
-            (u: string) => u && u !== p.image && u !== displayPrimary
-          ),
+          galleryImages: (() => {
+            const uploadPath = (url: string) => {
+              if (!url) return url;
+              const m = String(url).match(/(\/uploads\/[^?#]+)/);
+              return m ? m[1] : url;
+            };
+            const primaryPaths = new Set([
+              uploadPath(p.image || ""),
+              uploadPath(displayPrimary),
+            ].filter(Boolean));
+            return (p.images || []).filter(
+              (u: string) => u && !primaryPaths.has(uploadPath(u))
+            );
+          })(),
           stockQuantity: p.stockQuantity != null ? String(p.stockQuantity) : "",
         };
         setForm(loaded);
@@ -958,6 +969,7 @@ const AdminProductEditor = () => {
                               const n = [...form.variants]; n[i] = { ...v, price: e.target.value }; patch("variants", n);
                             }} placeholder="0.00" />
                           </div>
+                          <p className="text-[10px] text-muted-foreground">Enter 0 to use the base product price.</p>
                         </div>
                         <div className="space-y-1">
                           <Label className="text-xs">Storage</Label>
@@ -1044,13 +1056,26 @@ const AdminProductEditor = () => {
                             />
                           </div>
                         </div>
-                        <div className="space-y-1">
+                        <div className="space-y-1 col-span-2">
                           <Label className="text-xs">Color Image (optional)</Label>
-                          <div className="flex gap-1.5">
+                          <div className="flex gap-2 items-center">
+                            <div className="shrink-0 h-9 w-9 rounded-lg border bg-muted/40 overflow-hidden flex items-center justify-center">
+                              {c.image ? (
+                                <img
+                                  src={resolveImageUrl(c.image)}
+                                  alt={c.name || "color"}
+                                  className="h-full w-full object-cover"
+                                  onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                                />
+                              ) : (
+                                <ImageIcon className="h-4 w-4 text-muted-foreground/40" />
+                              )}
+                            </div>
                             <Input value={c.image} onChange={(e) => {
                               const n = [...form.colors]; n[i] = { ...c, image: e.target.value }; patch("colors", n);
-                            }} placeholder="URL or upload" className="text-sm flex-1" />
+                            }} placeholder="Paste URL or click upload →" className="text-sm flex-1" />
                             <Button variant="outline" size="icon" className="h-9 w-9 shrink-0" type="button"
+                              title="Upload color image"
                               onClick={() => pickAndUpload("image/*", false, ([url]) => {
                                 const n = [...form.colors]; n[i] = { ...c, image: url }; patch("colors", n);
                               })}

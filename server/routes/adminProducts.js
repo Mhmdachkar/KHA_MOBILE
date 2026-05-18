@@ -6,6 +6,7 @@ import multer from 'multer';
 import { pool, requirePool } from '../lib/db.js';
 import { requireAdmin } from '../middleware/auth.js';
 import { bodyToRowColumns, rowToPublicProduct } from '../lib/productMapper.js';
+import { normalizeStorefrontCategory } from '../lib/storefrontCategories.js';
 import { logAudit } from '../lib/audit.js';
 import { buildPublicUploadUrl } from '../lib/uploadUrl.js';
 
@@ -355,10 +356,28 @@ adminProductsRouter.delete('/products/:dbId', requirePool, requireAdmin, async (
   try {
     const dbId = Number(req.params.dbId);
     if (!Number.isFinite(dbId)) return res.status(400).json({ error: 'Invalid id' });
-    const r = await pool.query(`DELETE FROM products WHERE id = $1 RETURNING id`, [dbId]);
-    if (r.rowCount === 0) return res.status(404).json({ error: 'Not found' });
-    await logAudit(req.admin, 'delete', 'product', dbId, {});
-    res.json({ ok: true });
+    const existing = await pool.query(
+      `SELECT id, legacy_override_id, name FROM products WHERE id = $1`,
+      [dbId]
+    );
+    if (!existing.rows[0]) return res.status(404).json({ error: 'Not found' });
+
+    // Rows tied to static catalog: deactivate so storefront suppresses static fallback.
+    if (existing.rows[0].legacy_override_id != null) {
+      await pool.query(
+        `UPDATE products SET is_active = false, updated_at = NOW() WHERE id = $1`,
+        [dbId]
+      );
+      await logAudit(req.admin, 'deactivate', 'product', dbId, {
+        name: existing.rows[0].name,
+        reason: 'delete_legacy_override',
+      });
+      return res.json({ ok: true, deactivated: true });
+    }
+
+    await pool.query(`DELETE FROM products WHERE id = $1`, [dbId]);
+    await logAudit(req.admin, 'delete', 'product', dbId, { name: existing.rows[0].name });
+    res.json({ ok: true, deactivated: false });
   } catch (e) {
     console.error(e);
     res.status(500).json({ error: 'Failed to delete product' });
@@ -410,7 +429,7 @@ adminProductsRouter.post('/products/bulk', requirePool, requireAdmin, async (req
         }
         const r = await pool.query(
           `UPDATE products SET category = $1, updated_at = NOW() WHERE id = ANY($2::int[])`,
-          [value.trim(), numIds]
+          [normalizeStorefrontCategory(value.trim()), numIds]
         );
         affected = r.rowCount;
         break;

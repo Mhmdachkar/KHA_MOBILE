@@ -135,6 +135,25 @@ describe("bodyToRowColumns — gallery images stripping", () => {
     const result = bodyToRowColumns({ name: "A", price: 10, category: "X" });
     expect(result.gallery_images).toEqual([]);
   });
+
+  it("strips gallery URL from a different host (deployment host change edge case)", () => {
+    const result = bodyToRowColumns({
+      name: "A", price: 10, category: "X",
+      galleryImages: [
+        "https://old-host.onrender.com/uploads/photo.jpg",
+        "https://new-host.netlify.app/uploads/other.jpg",
+      ],
+    });
+    expect(result.gallery_images).toEqual(["/uploads/photo.jpg", "/uploads/other.jpg"]);
+  });
+
+  it("keeps non-upload CDN URLs in gallery unchanged", () => {
+    const result = bodyToRowColumns({
+      name: "A", price: 10, category: "X",
+      galleryImages: ["https://cdn.example.com/image.png"],
+    });
+    expect(result.gallery_images).toEqual(["https://cdn.example.com/image.png"]);
+  });
 });
 
 describe("bodyToRowColumns — rating clamping", () => {
@@ -477,5 +496,45 @@ describe("rowToPublicProduct", () => {
     const row = { ...baseRow, compare_at_price: "79.99" };
     const product = rowToPublicProduct(row, fakeReq);
     expect(product.compareAtPrice).toBe(79.99);
+  });
+
+  it("expands /uploads/ image URL inside colors JSONB array", () => {
+    process.env.API_PUBLIC_URL = "https://api.render.com";
+    const row = {
+      ...baseRow,
+      colors: [{ name: "Black", image: "/uploads/black.jpg", stock: "available" }],
+    };
+    const product = rowToPublicProduct(row, fakeReq);
+    expect(product.colors[0].image).toBe("https://api.render.com/uploads/black.jpg");
+  });
+
+  it("expands /uploads/ image URL inside variants JSONB array", () => {
+    process.env.API_PUBLIC_URL = "https://api.render.com";
+    const row = {
+      ...baseRow,
+      variants: [{ key: "128gb", label: "128GB", price: 799, image: "/uploads/variant-128.jpg" }],
+    };
+    const product = rowToPublicProduct(row, fakeReq);
+    expect(product.variants[0].image).toBe("https://api.render.com/uploads/variant-128.jpg");
+  });
+
+  it("leaves non-upload URLs inside colors unchanged", () => {
+    process.env.API_PUBLIC_URL = "https://api.render.com";
+    const row = {
+      ...baseRow,
+      colors: [{ name: "Red", image: "https://cdn.example.com/red.png" }],
+    };
+    const product = rowToPublicProduct(row, fakeReq);
+    expect(product.colors[0].image).toBe("https://cdn.example.com/red.png");
+  });
+
+  it("handles colors JSONB with no image field gracefully", () => {
+    process.env.API_PUBLIC_URL = "https://api.render.com";
+    const row = {
+      ...baseRow,
+      colors: [{ name: "White", stock: "available" }],
+    };
+    const product = rowToPublicProduct(row, fakeReq);
+    expect(product.colors[0].image).toBeUndefined();
   });
 });

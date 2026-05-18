@@ -13,29 +13,23 @@ interface CategoryCardProps {
 const CategoryCard = ({ icon: Icon, image, name, onClick, linkTo }: CategoryCardProps) => {
   const cardContent = (
     <>
-      <motion.div 
-        className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-      />
-      <motion.div 
-        className="h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 flex items-center justify-center mb-2 sm:mb-3 md:mb-4 relative z-10"
-        whileHover={{ rotate: [0, -10, 10, -10, 0] }}
-        transition={{ duration: 0.5 }}
-      >
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl" />
+      <div className="h-14 w-14 sm:h-16 sm:w-16 flex items-center justify-center mb-3 relative z-10 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 group-hover:from-primary/20 group-hover:to-accent/20 transition-all duration-300 shadow-sm">
         {image ? (
           <img 
             src={image} 
             alt={name}
-            className="h-8 w-8 sm:h-10 sm:w-10 object-contain transition-all duration-300 group-hover:scale-110" 
+            className="h-8 w-8 sm:h-9 sm:w-9 object-contain transition-all duration-300 group-hover:scale-110" 
           />
         ) : Icon ? (
-          <Icon className="h-8 w-8 sm:h-10 sm:w-10 stroke-[1.5] text-foreground group-hover:text-primary transition-colors duration-300" />
+          <Icon className="h-7 w-7 sm:h-8 sm:w-8 stroke-[1.5] text-primary/70 group-hover:text-primary transition-colors duration-300" />
         ) : null}
-      </motion.div>
-      <p className="text-elegant text-[10px] sm:text-xs relative z-10 group-hover:text-primary transition-colors duration-300 text-center leading-tight px-1">{name}</p>
+      </div>
+      <p className="text-[11px] sm:text-xs font-medium relative z-10 group-hover:text-primary transition-colors duration-300 text-center leading-tight px-1">{name}</p>
     </>
   );
 
-  const cardClassName = "flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 bg-card border border-border rounded-sm hover:border-primary/40 transition-all duration-500 group shadow-card hover:shadow-elegant relative overflow-hidden w-full";
+  const cardClassName = "flex flex-col items-center justify-center p-4 sm:p-5 md:p-6 bg-card border border-border/60 rounded-2xl hover:border-primary/30 transition-all duration-300 group shadow-sm hover:shadow-lg relative overflow-hidden w-full";
 
   if (linkTo) {
       return (

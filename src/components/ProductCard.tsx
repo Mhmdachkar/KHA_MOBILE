@@ -35,6 +35,7 @@ interface ProductVariant {
 
 interface ProductCardProps {
   id: number;
+  dbId?: number;
   name: string;
   title?: string;
   price: number | string;
@@ -54,6 +55,7 @@ interface ProductCardProps {
 
 const ProductCard = ({
   id,
+  dbId,
   name,
   title,
   price,
@@ -177,6 +179,7 @@ const ProductCard = ({
 
     addToCart({
       id,
+      dbId,
       name,
       price: unitPrice,
       image: colorImage,
@@ -271,21 +274,21 @@ const ProductCard = ({
       <motion.div
         ref={cardRef}
         whileHover={
-          window.matchMedia("(hover: hover)").matches && !optionsExpanded ? { y: -8 } : undefined
+          window.matchMedia("(hover: hover)").matches && !optionsExpanded ? { y: -6 } : undefined
         }
-        transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+        transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
         style={{ willChange: optionsExpanded ? "auto" : "transform" }}
         className={cn(
-          "group relative bg-white rounded-sm border transition-all duration-300 shadow-card flex flex-col",
+          "group relative bg-card rounded-2xl border transition-all duration-300 shadow-card flex flex-col",
           optionsExpanded
-            ? "z-20 border-primary ring-2 ring-primary/25 shadow-lg overflow-visible"
-            : "z-0 overflow-hidden border-border hover:border-primary/40 hover:shadow-elegant"
+            ? "z-20 border-primary ring-2 ring-primary/25 shadow-xl overflow-visible"
+            : "z-0 overflow-hidden border-border/60 hover:border-primary/30 hover:shadow-xl"
         )}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
         <Link to={`/product/${id}`} className="block flex-1 min-h-0">
-          <motion.div className="aspect-square overflow-hidden bg-white relative border-b border-border">
+          <div className="aspect-square overflow-hidden bg-muted/30 relative rounded-t-2xl">
             <motion.img
               key={`${id}-${currentImage}`}
               src={currentImage}
@@ -294,63 +297,47 @@ const ProductCard = ({
               loading="lazy"
             />
             {isPreorder && (
-              <div className="absolute top-2 left-2 z-10 bg-black/80 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-1 rounded-sm border border-white/20 tracking-wider">
+              <div className="absolute top-2 left-2 z-10 bg-black/80 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-0.5 rounded-full border border-white/20 tracking-wider">
                 PREORDER
               </div>
             )}
-          </motion.div>
-          <div className="p-2 sm:p-3 md:p-4">
-            {category && (
-              <p className="text-elegant text-[9px] sm:text-[10px] text-primary mb-0.5 sm:mb-1 line-clamp-1">
-                {category}
-              </p>
+            {!isPreorder && cardPricing.showDiscount && cardPricing.discountPercent != null && (
+              <div className="absolute top-2 left-2 z-10 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">
+                {cardPricing.discountPercent}% OFF
+              </div>
             )}
-            <h3 className="text-elegant text-[10px] sm:text-xs mb-1 sm:mb-2 line-clamp-2 group-hover:text-primary transition-colors duration-300 leading-tight sm:leading-normal">
+            {inlineOptions && !optionsExpanded && (
+              <div className="absolute bottom-2 left-2 z-10 bg-black/60 backdrop-blur-sm text-white text-[9px] font-medium px-2 py-0.5 rounded-full">
+                ⚡ Choose config
+              </div>
+            )}
+          </div>
+          <div className="px-3 py-3 sm:px-4">
+            <h3 className="text-xs sm:text-[13px] font-semibold leading-snug line-clamp-2 group-hover:text-primary transition-colors duration-300 mb-1.5">
               {title || name}
             </h3>
-            <div className="flex items-center gap-0.5 sm:gap-1 mb-1 sm:mb-2">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star
-                  key={i}
-                  className={`h-2.5 w-2.5 sm:h-3 sm:w-3 ${i < Math.floor(rating) ? "fill-primary text-primary" : "text-border"}`}
-                />
-              ))}
-              <span className="text-[9px] sm:text-[10px] text-muted-foreground ml-0.5 sm:ml-1">
-                ({rating})
+            <div className="flex items-center mb-2">
+              <span className="inline-flex items-center gap-1 bg-amber-50 border border-amber-200 text-amber-700 dark:bg-amber-950/40 dark:border-amber-800 dark:text-amber-400 text-[10px] font-medium px-2 py-0.5 rounded-full">
+                <Star className="h-2.5 w-2.5 fill-amber-400 text-amber-400" />
+                {rating}
               </span>
             </div>
             {(!inlineOptions || !optionsExpanded) && (
               <>
                 {preorderHideNumeric ? (
-                  <p className="text-elegant text-xs sm:text-sm font-normal text-primary">Pre-order</p>
+                  <p className="text-elegant text-xs sm:text-sm font-semibold text-primary">Pre-order</p>
                 ) : cardPricing.showDiscount && cardPricing.compareAtPrice != null ? (
-                  <div className="flex flex-col gap-0.5">
-                    <div className="flex flex-wrap items-center gap-1 sm:gap-1.5">
-                      <span className="text-[9px] sm:text-[10px] text-muted-foreground line-through">
-                        {formatMoney(cardPricing.compareAtPrice)}
-                      </span>
-                      <span className="text-[9px] sm:text-[10px] font-bold rounded-full bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 px-1.5 py-0">
-                        {cardPricing.discountPercent}% OFF
-                      </span>
-                    </div>
-                    <p className="text-elegant text-xs sm:text-sm font-normal bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <span className="text-[10px] text-muted-foreground line-through">
+                      {formatMoney(cardPricing.compareAtPrice)}
+                    </span>
+                    <p className="text-xs sm:text-sm font-semibold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                       {cardPricing.priceLabel}
                     </p>
                   </div>
                 ) : (
-                  <p className="text-elegant text-xs sm:text-sm font-normal bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                  <p className="text-xs sm:text-sm font-semibold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                     {cardPricing.priceLabel}
-                  </p>
-                )}
-                {inlineOptions && !optionsExpanded && (colors?.length ?? 0) > 0 && (
-                  <p className="text-[10px] sm:text-[10px] text-muted-foreground mt-1 leading-snug">
-                    Tap <span className="text-primary font-medium">cart</span> to choose storage
-                    {hasMultipleColors(colors) ? " & color" : ""}
-                  </p>
-                )}
-                {!inlineOptions && colors && colors.length > 0 && !hasMultipleColors(colors) && (
-                  <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-1">
-                    {colors.length} color{colors.length > 1 ? "s" : ""} available
                   </p>
                 )}
               </>
@@ -387,7 +374,7 @@ const ProductCard = ({
 
         <div
           className={cn(
-            "absolute top-1.5 right-1.5 sm:top-2 sm:right-2 md:top-3 md:right-3 flex flex-col gap-1.5 sm:gap-1.5 transition-opacity duration-300 z-30",
+            "absolute top-2 right-2 flex flex-col gap-1.5 transition-opacity duration-300 z-30",
             optionsExpanded ? "opacity-100" : "opacity-100 md:opacity-0 md:group-hover:opacity-100"
           )}
         >
@@ -399,26 +386,26 @@ const ProductCard = ({
               toggleFavorite({ id, name, price: cardPricing.displayPrice, image, rating, category });
             }}
             className={cn(
-              "h-10 w-10 sm:h-7 sm:w-7 md:h-8 md:w-8 rounded-full glassmorphism border flex items-center justify-center bg-background/90 shadow-sm touch-manipulation active:scale-95",
+              "h-8 w-8 rounded-full glassmorphism border flex items-center justify-center bg-background/90 shadow-sm touch-manipulation active:scale-95",
               favorite ? "bg-primary text-primary-foreground border-primary" : "border-border/50"
             )}
             aria-label={favorite ? "Remove from favorites" : "Add to favorites"}
           >
-            <Heart className={cn("h-4 w-4 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4", favorite && "fill-white")} />
+            <Heart className={cn("h-4 w-4", favorite && "fill-white")} />
           </button>
           <button
             type="button"
             onClick={handleAddToCart}
             disabled={stockQuantity === 0}
             className={cn(
-              "h-10 w-10 sm:h-7 sm:w-7 md:h-8 md:w-8 rounded-full glassmorphism border flex items-center justify-center bg-background/90 shadow-sm touch-manipulation active:scale-95 disabled:opacity-40",
+              "h-8 w-8 rounded-full glassmorphism border flex items-center justify-center bg-background/90 shadow-sm touch-manipulation active:scale-95 disabled:opacity-40",
               optionsExpanded
                 ? "border-primary bg-primary text-primary-foreground"
                 : "border-border/50 hover:bg-accent"
             )}
             aria-label={optionsExpanded ? "Options open" : "Choose options"}
           >
-            <ShoppingCart className="h-4 w-4 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4" />
+            <ShoppingCart className="h-4 w-4" />
           </button>
         </div>
       </motion.div>

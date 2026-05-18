@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Smartphone, Headphones, Gamepad2, CreditCard, Gift, Tv, Watch, Zap, ArrowRight, Star, Sparkles, ShoppingCart, Tablet, Cpu } from "lucide-react";
+import { Smartphone, Headphones, Gamepad2, CreditCard, Gift, Tv, Watch, Zap, ArrowRight, Star, Sparkles, ShoppingCart, Tablet, Cpu, ChevronDown } from "lucide-react";
 import { useState, useRef, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import rechargeLogo from "@/assets/recharges/logo.png";
@@ -22,8 +22,11 @@ import iPhone16Teal from "@/assets/phones/iphone 16/iphone 16 teal.jpeg";
 import iPhone16Ultramarine from "@/assets/phones/iphone 16/iphone 16 ultramarine.jpeg";
 import iPhone16White from "@/assets/phones/iphone 16/iphone 16 white.jpeg";
 import silicon17ProMaxOrange from "@/assets/iphone covers/silicon 17 pro max/Screenshot 2025-12-09 010853 orange.png";
-import { getProductsByCategoryMerged, findStoreProductSplit } from "@/data/productLookup";
+import { findStoreProductSplit } from "@/data/productLookup";
 import { useCatalog } from "@/context/CatalogContext";
+import { filterByCategoryPage } from "@/lib/catalogFilters";
+import { getStorefrontProductById } from "@/lib/catalogProduct";
+import type { StorefrontProduct } from "@/lib/catalogProduct";
 import { useSiteSettings } from "@/context/SiteSettingsContext";
 
 // iPhone 16 / Flagship Showcase Component
@@ -390,8 +393,21 @@ const FlagshipiPhone16Showcase = () => {
   );
 };
 
+function toHomeCarouselProduct(p: StorefrontProduct) {
+  return {
+    id: p.id,
+    dbId: p.dbId,
+    name: p.name,
+    price: p.displayPrice ?? p.price,
+    image: p.image,
+    images: p.images,
+    rating: p.rating,
+    category: p.category,
+  };
+}
+
 const Home = () => {
-  const { catalogTick } = useCatalog();
+  const { storefrontProducts } = useCatalog();
   const { settings: siteSettings } = useSiteSettings();
   const heroSettings = siteSettings.hero;
 
@@ -429,28 +445,16 @@ const Home = () => {
   const trendingSmartphones = useMemo(() => {
     const section = trendingSections.find((s) => s.category === "Smartphones") || trendingSections[0];
     if (section?.productIds?.length > 0) {
-      const allMerged = getProductsByCategoryMerged("Smartphones");
-      const allProducts = [...allMerged, ...getProductsByCategoryMerged("Audio"), ...getProductsByCategoryMerged("Tablets")];
       return section.productIds
-        .map((id) => allProducts.find((p) => p.id === id))
-        .filter(Boolean)
-        .map((p: any) => ({ id: p.id, name: p.name, price: p.price, image: p.image, images: p.images, rating: p.rating, category: p.category }));
+        .map((pid) => getStorefrontProductById(storefrontProducts, pid))
+        .filter((p): p is StorefrontProduct => p != null)
+        .map(toHomeCarouselProduct);
     }
-    return getProductsByCategoryMerged(section?.category || "Smartphones")
+    return filterByCategoryPage(storefrontProducts, section?.category || "Smartphones")
       .reverse()
       .slice(0, 10)
-      .map((product) => ({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        image: product.image,
-        images: product.images,
-        rating: product.rating,
-        category: product.category,
-      }));
-  }, [catalogTick, trendingSections]);
-
-  const trendingAudio = useMemo(() => getProductsByCategoryMerged("Audio"), [catalogTick]);
+      .map(toHomeCarouselProduct);
+  }, [storefrontProducts, trendingSections]);
 
   return (
     <div className="min-h-screen w-full overflow-x-hidden">
@@ -486,184 +490,63 @@ const Home = () => {
           <div className="grid lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8 lg:gap-12 items-center">
             {/* Left Content */}
             <motion.div
-              initial={{ opacity: 0, x: -150, rotateY: 30 }}
-              animate={{ opacity: 1, x: 0, rotateY: 0 }}
-              transition={{
-                duration: 1.5,
-                ease: [0.4, 0, 0.2, 1],
-                type: "spring",
-                stiffness: 80,
-                damping: 20
-              }}
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1, ease: [0.4, 0, 0.2, 1] }}
               className="space-y-3 sm:space-y-4 md:space-y-6 lg:space-y-8 text-center lg:text-left"
             >
-              {/* Floating Badge with Powerful Entrance */}
-              <motion.div
-                initial={{ opacity: 0, y: 50, scale: 0.5, rotate: -10 }}
-                animate={{ opacity: 1, y: 0, scale: 1, rotate: 0 }}
-                transition={{
-                  delay: 0.3,
-                  duration: 1,
-                  ease: [0.4, 0, 0.2, 1],
-                  type: "spring",
-                  stiffness: 150,
-                  damping: 15
-                }}
-                whileHover={{
-                  scale: 1.08,
-                  rotate: [0, -2, 2, 0],
-                  y: -5,
-                  transition: { duration: 0.4 }
-                }}
-              >
-                <Badge className="mb-2 sm:mb-3 md:mb-4 relative overflow-hidden text-xs sm:text-sm">
-                  <motion.div
-                    initial={{ x: "-100%" }}
-                    animate={{ x: "100%" }}
-                    transition={{
-                      delay: 0.8,
-                      duration: 1.5,
-                      ease: "easeInOut"
-                    }}
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                  />
+              {/* Badge */}
+              <div>
+                <Badge className="mb-2 sm:mb-3 md:mb-4 text-xs sm:text-sm">
                   <Sparkles className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-1" />
                   {heroSettings.badge}
                 </Badge>
-              </motion.div>
+              </div>
 
-              {/* Main Heading with Powerful Staggered Animation */}
+              {/* Main Heading */}
               <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.5, duration: 0.8 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
               >
-                <motion.h1
-                  className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-7xl 2xl:text-8xl font-bold leading-tight"
-                >
-                  <motion.span
-                    initial={{ opacity: 0, y: 80, rotateX: -120, scale: 0.5 }}
-                    animate={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }}
-                    transition={{
-                      delay: 0.6,
-                      duration: 1.2,
-                      ease: [0.4, 0, 0.2, 1],
-                      type: "spring",
-                      stiffness: 80,
-                      damping: 20
-                    }}
-                    className="text-gradient block"
-                    whileHover={{ scale: 1.05, x: 10 }}
-                  >
-                    {heroSettings.headline1}
-                  </motion.span>
-                  <motion.span
-                    initial={{ opacity: 0, y: 80, rotateX: -120, scale: 0.5 }}
-                    animate={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }}
-                    transition={{
-                      delay: 0.8,
-                      duration: 1.2,
-                      ease: [0.4, 0, 0.2, 1],
-                      type: "spring",
-                      stiffness: 80,
-                      damping: 20
-                    }}
-                    className="text-elegant block"
-                    whileHover={{ scale: 1.05, x: 10 }}
-                  >
-                    {heroSettings.headline2}
-                  </motion.span>
-                </motion.h1>
+                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-7xl 2xl:text-8xl font-bold leading-tight">
+                  <span className="text-gradient block">{heroSettings.headline1}</span>
+                  <span className="text-elegant block">{heroSettings.headline2}</span>
+                </h1>
               </motion.div>
 
-              {/* Description with Powerful Entrance */}
-              <motion.div
-                initial={{ opacity: 0, y: 50, x: -20 }}
-                animate={{ opacity: 1, y: 0, x: 0 }}
-                transition={{
-                  delay: 1,
-                  duration: 1,
-                  ease: [0.4, 0, 0.2, 1]
-                }}
+              {/* Description */}
+              <motion.p
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+                className="text-xs sm:text-sm md:text-base lg:text-lg text-muted-foreground max-w-lg mx-auto lg:mx-0 font-light leading-relaxed px-2 sm:px-0 break-words"
               >
-                <motion.p
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 1.2, duration: 1 }}
-                  className="text-xs sm:text-sm md:text-base lg:text-lg text-muted-foreground max-w-lg mx-auto lg:mx-0 font-light leading-relaxed px-2 sm:px-0 break-words"
-                >
-                  {heroSettings.description}
-                </motion.p>
-              </motion.div>
+                {heroSettings.description}
+              </motion.p>
 
-              {/* Buttons with Powerful Entrance */}
+              {/* CTA Buttons */}
               <motion.div
-                initial={{ opacity: 0, y: 50, scale: 0.8 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{
-                  delay: 1.3,
-                  duration: 1,
-                  ease: [0.4, 0, 0.2, 1],
-                  type: "spring",
-                  stiffness: 120,
-                  damping: 15
-                }}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
                 className="flex flex-wrap gap-2 sm:gap-3 md:gap-4 justify-center lg:justify-start px-2 sm:px-0 w-full"
               >
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Link to={heroSettings.cta1_url}>
-                    <Button variant="gradient" size="lg" className="group shadow-glow relative overflow-hidden">
-                      <motion.div
-                        initial={{ x: "-100%" }}
-                        whileHover={{ x: "100%" }}
-                        transition={{ duration: 0.6 }}
-                        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                      />
-                      <span className="relative z-10">{heroSettings.cta1_label}</span>
-                      <motion.div
-                        whileHover={{ x: 4 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <ArrowRight className="ml-2 h-5 w-5" />
-                      </motion.div>
-                    </Button>
-                  </Link>
-                </motion.div>
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Link to={heroSettings.cta2_url}>
-                  <Button variant="outline" size="lg" className="glassmorphism relative overflow-hidden">
-                    <motion.div
-                      initial={{ scale: 0, opacity: 0 }}
-                      whileHover={{ scale: 1, opacity: 1 }}
-                      transition={{ duration: 0.3 }}
-                      className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 rounded-md"
-                    />
-                    <span className="relative z-10">{heroSettings.cta2_label}</span>
+                <Link to={heroSettings.cta1_url}>
+                  <Button variant="gradient" size="lg" className="shadow-glow group">
+                    {heroSettings.cta1_label}
+                    <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
                   </Button>
-                  </Link>
-                </motion.div>
+                </Link>
+                <Link to={heroSettings.cta2_url}>
+                  <Button variant="outline" size="lg" className="glassmorphism">
+                    {heroSettings.cta2_label}
+                  </Button>
+                </Link>
               </motion.div>
 
-              {/* Stats with Powerful Staggered Animation */}
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  delay: 1.5,
-                  duration: 1,
-                  ease: [0.4, 0, 0.2, 1],
-                  type: "spring",
-                  stiffness: 100,
-                  damping: 18
-                }}
-                className="flex flex-wrap gap-3 sm:gap-4 md:gap-6 lg:gap-8 pt-4 sm:pt-6 md:pt-8 justify-center lg:justify-start w-full"
-              >
+              {/* Stats */}
+              <div className="flex flex-wrap gap-3 sm:gap-4 md:gap-6 lg:gap-8 pt-4 sm:pt-6 md:pt-8 justify-center lg:justify-start w-full">
                 {[
                   { value: heroSettings.stat1_value, label: heroSettings.stat1_label },
                   { value: heroSettings.stat2_value, label: heroSettings.stat2_label, icon: Star },
@@ -671,66 +554,26 @@ const Home = () => {
                 ].map((stat, i) => (
                   <motion.div
                     key={i}
-                    initial={{ opacity: 0, y: 40, scale: 0.5, rotateY: -30 }}
-                    animate={{ opacity: 1, y: 0, scale: 1, rotateY: 0 }}
-                    transition={{
-                      delay: 1.7 + (i * 0.15),
-                      duration: 0.8,
-                      ease: [0.4, 0, 0.2, 1],
-                      type: "spring",
-                      stiffness: 150,
-                      damping: 15
-                    }}
-                    whileHover={{
-                      scale: 1.15,
-                      y: -8,
-                      rotateY: 5,
-                      transition: { duration: 0.3, type: "spring" }
-                    }}
-                    className="text-center relative group"
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 + i * 0.08, duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+                    className="text-center"
                   >
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      whileHover={{ scale: 1 }}
-                      transition={{ duration: 0.3 }}
-                      className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 rounded-lg blur-xl"
-                    />
-                    <div className="relative z-10 flex items-center justify-center gap-1 text-lg sm:text-xl md:text-2xl font-bold text-primary mb-1">
-                      <motion.span
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 2.1 + (i * 0.1), duration: 0.8 }}
-                      >
-                        {stat.value}
-                      </motion.span>
-                      {stat.icon && (
-                        <motion.div
-                          initial={{ opacity: 0, rotate: -180 }}
-                          animate={{ opacity: 1, rotate: 0 }}
-                          transition={{ delay: 2.2 + (i * 0.1), duration: 0.8 }}
-                        >
-                          <stat.icon className="h-4 w-4 sm:h-5 sm:w-5 fill-primary" />
-                        </motion.div>
-                      )}
+                    <div className="flex items-center justify-center gap-1 text-lg sm:text-xl md:text-2xl font-bold text-primary mb-0.5">
+                      <span>{stat.value}</span>
+                      {stat.icon && <stat.icon className="h-4 w-4 sm:h-5 sm:w-5 fill-primary" />}
                     </div>
                     <div className="text-xs sm:text-sm text-muted-foreground">{stat.label}</div>
                   </motion.div>
                 ))}
-              </motion.div>
+              </div>
             </motion.div>
 
-            {/* Right Content - Premium 3D Product Showcase */}
+            {/* Right Content - Product Image */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.6, rotateY: 45, x: 100 }}
-              animate={{ opacity: 1, scale: 1, rotateY: 0, x: 0 }}
-              transition={{
-                duration: 1.8,
-                delay: 0.4,
-                ease: [0.4, 0, 0.2, 1],
-                type: "spring",
-                stiffness: 70,
-                damping: 25
-              }}
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.2, ease: [0.4, 0, 0.2, 1] }}
               style={{ y }}
               className="relative group order-first lg:order-last"
             >
@@ -765,280 +608,49 @@ const Home = () => {
                   className="edge-blend-right absolute top-0 right-0 w-8 h-full z-20 pointer-events-none"
                 />
 
-                {/* Multiple Floating Elements */}
-                <motion.div
-                  className="absolute -top-4 -right-4 w-20 h-20 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full blur-xl"
-                  initial={{
-                    opacity: 0,
-                    scale: 0,
-                    rotate: -180
-                  }}
-                  animate={{
-                    opacity: 1,
-                    scale: 1,
-                    rotate: 0
-                  }}
-                  transition={{
-                    duration: 1.5,
-                    delay: 1.0,
-                    ease: [0.4, 0, 0.2, 1]
-                  }}
-                />
+                {/* Subtle ambient glow */}
+                <div className="absolute -top-4 -right-4 w-20 h-20 bg-gradient-to-br from-primary/15 to-accent/15 rounded-full blur-xl pointer-events-none" />
+                <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-gradient-to-br from-accent/15 to-primary/15 rounded-full blur-xl pointer-events-none" />
 
-                <motion.div
-                  className="absolute -bottom-4 -left-4 w-16 h-16 bg-gradient-to-br from-accent/20 to-primary/20 rounded-full blur-xl"
-                  initial={{
-                    opacity: 0,
-                    scale: 0,
-                    rotate: 180
-                  }}
-                  animate={{
-                    opacity: 1,
-                    scale: 1,
-                    rotate: 0
-                  }}
-                  transition={{
-                    duration: 1.5,
-                    delay: 1.2,
-                    ease: [0.4, 0, 0.2, 1]
-                  }}
-                />
+                {/* Radial glow */}
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/8 to-accent/8 rounded-full blur-3xl pointer-events-none" />
 
-                {/* Main Glow Effect */}
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 rounded-full blur-3xl"
-                  initial={{
-                    opacity: 0,
-                    scale: 0.5,
-                    rotate: 45
-                  }}
-                  animate={{
-                    opacity: 1,
-                    scale: 1,
-                    rotate: 0
-                  }}
-                  transition={{
-                    duration: 1.8,
-                    delay: 1.0,
-                    ease: [0.4, 0, 0.2, 1]
-                  }}
-                />
-
-                {/* Pulsing Ring Effect */}
-                <motion.div
-                  className="absolute inset-0 border-2 border-primary/20 rounded-full"
-                  initial={{
-                    scale: 0.8,
-                    opacity: 0
-                  }}
-                  animate={{
-                    scale: [0.8, 1.1, 0.8],
-                    opacity: [0, 0.5, 0]
-                  }}
-                  transition={{
-                    duration: 3,
-                    delay: 1.5,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                />
-
-                {/* Product Image with Powerful Animation */}
+                {/* Product Image */}
                 <motion.img
                   src={heroProduct}
                   alt="Premium Technology"
                   className="w-full h-auto relative z-10 max-h-[300px] sm:max-h-[400px] md:max-h-[500px] lg:max-h-[600px] xl:max-h-[700px] object-contain"
-                  initial={{
-                    opacity: 0,
-                    scale: 0.4,
-                    rotateY: -60,
-                    rotateX: 20,
-                    filter: "blur(15px)",
-                    y: 50
-                  }}
-                  animate={{
-                    opacity: 1,
-                    scale: 1,
-                    rotateY: 0,
-                    rotateX: 0,
-                    filter: "blur(0px)",
-                    y: 0
-                  }}
-                  transition={{
-                    duration: 2,
-                    delay: 0.6,
-                    ease: [0.4, 0, 0.2, 1],
-                    type: "spring",
-                    stiffness: 60,
-                    damping: 20
-                  }}
-                  whileHover={{
-                    scale: 1.05,
-                    rotateY: 5,
-                    rotateX: -2,
-                    y: -10,
-                    transition: { duration: 0.4, type: "spring" }
-                  }}
+                  whileHover={{ scale: 1.03, y: -6, transition: { duration: 0.3 } }}
                   style={{
                     backgroundColor: "#ffffff",
                     mixBlendMode: "normal",
                     isolation: "isolate",
-                    imageRendering: "auto",
                     objectFit: "contain",
                     objectPosition: "center"
                   }}
                 />
 
-                {/* Animated Reflection */}
-                <motion.div
-                  className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/10 to-transparent rounded-t-lg"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1.8, duration: 1 }}
-                />
-
-                {/* Enhanced Shadow with Animation */}
-                <motion.div
-                  className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-3/4 h-6 bg-black/10 rounded-full blur-xl"
-                  initial={{
-                    opacity: 0,
-                    scale: 0.8,
-                    y: 20
-                  }}
-                  animate={{
-                    opacity: 1,
-                    scale: 1,
-                    y: 0
-                  }}
-                  transition={{
-                    duration: 1.5,
-                    delay: 1.3,
-                    ease: [0.4, 0, 0.2, 1]
-                  }}
-                />
-
-                {/* Sparkle Effects */}
-                {[...Array(6)].map((_, i) => (
-                  <motion.div
-                    key={i}
-                    className="absolute w-2 h-2 bg-primary/60 rounded-full"
-                    style={{
-                      top: `${20 + (i * 15)}%`,
-                      left: `${10 + (i * 15)}%`,
-                    }}
-                    initial={{
-                      opacity: 0,
-                      scale: 0,
-                      rotate: 0
-                    }}
-                    animate={{
-                      opacity: [0, 1, 0],
-                      scale: [0, 1, 0],
-                      rotate: [0, 360]
-                    }}
-                    transition={{
-                      duration: 2,
-                      delay: 1.5 + (i * 0.2),
-                      repeat: Infinity,
-                      repeatDelay: 3,
-                      ease: "easeInOut"
-                    }}
-                  />
-                ))}
+                {/* Ground shadow */}
+                <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-3/4 h-6 bg-black/10 rounded-full blur-xl" />
               </div>
             </motion.div>
           </div>
         </motion.div>
 
-        {/* Enhanced Scroll Indicator */}
+        {/* Scroll Indicator */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            delay: 2.5,
-            duration: 0.8,
-            ease: [0.4, 0, 0.2, 1]
-          }}
-          className="absolute bottom-4 sm:bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 hidden md:block"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1, duration: 0.6 }}
+          className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-1"
         >
           <motion.div
-            whileHover={{ scale: 1.1 }}
-            className="relative"
+            animate={{ y: [0, 6, 0] }}
+            transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
           >
-            {/* Outer Ring */}
-            <motion.div
-              animate={{
-                scale: [1, 1.1, 1],
-                opacity: [0.5, 0.8, 0.5]
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              className="absolute inset-0 w-6 h-10 border border-primary/30 rounded-full"
-            />
-
-            {/* Main Scroll Indicator */}
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-                ease: [0.4, 0, 0.2, 1]
-              }}
-              className="w-6 h-10 border-2 border-primary rounded-full flex justify-center p-2 relative z-10"
-            >
-              <motion.div
-                className="w-1 h-2 bg-primary rounded-full"
-                animate={{
-                  opacity: [0.4, 1, 0.4]
-                }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              />
-            </motion.div>
-
-            {/* Pulse Effect */}
-            <motion.div
-              className="absolute inset-0 w-6 h-10 border border-primary/20 rounded-full"
-              animate={{
-                scale: [1, 1.3, 1],
-                opacity: [0, 0.6, 0]
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                delay: 0.5,
-                ease: "easeOut"
-              }}
-            />
+            <ChevronDown className="h-5 w-5 text-muted-foreground/60" />
           </motion.div>
-
-          {/* Scroll Text */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 3, duration: 0.5 }}
-            className="text-center mt-4"
-          >
-            <motion.p
-              className="text-xs text-muted-foreground font-light tracking-wider"
-              animate={{
-                opacity: [0.5, 1, 0.5]
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            >
-              SCROLL TO EXPLORE
-            </motion.p>
-          </motion.div>
+          <p className="text-[10px] text-muted-foreground/50 tracking-widest uppercase">Scroll</p>
         </motion.div>
       </motion.section>
 
@@ -1089,6 +701,7 @@ const Home = () => {
             <ProductCarousel
               title={trendingSections[0]?.title || "Trending in Smartphones"}
               products={trendingSmartphones}
+              viewAllLink="/smartphones"
             />
           </motion.div>
         </div>
@@ -1112,46 +725,93 @@ const Home = () => {
       <WhyShopWithUs />
 
       {/* Footer */}
-      <footer className="py-12 sm:py-16 bg-accent text-accent-foreground w-full overflow-hidden">
-        <div className="container mx-auto px-4 sm:px-6 max-w-full">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 md:gap-12 mb-8 sm:mb-12">
+      <footer className="bg-zinc-950 text-zinc-400 w-full overflow-hidden">
+        <div className="container mx-auto px-4 sm:px-6 max-w-full py-12 sm:py-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-10">
+            {/* Brand */}
             <div>
-              <h3 className="text-elegant text-lg mb-4">TechStore</h3>
-              <p className="text-sm font-light tracking-wide opacity-80">
+              <h3 className="text-white text-lg font-semibold tracking-tight mb-3">
+                KHA Mobile
+              </h3>
+              <p className="text-sm font-light leading-relaxed text-zinc-500">
                 Premium technology and digital services for modern living.
               </p>
+              {/* Social icons */}
+              <div className="flex items-center gap-3 mt-5">
+                <a
+                  href="https://instagram.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                  className="h-8 w-8 rounded-lg bg-zinc-800 hover:bg-primary/80 flex items-center justify-center transition-colors"
+                >
+                  <svg className="h-4 w-4 text-zinc-400 hover:text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                  </svg>
+                </a>
+                <a
+                  href={`https://wa.me/${siteSettings.whatsapp_number || ""}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="WhatsApp"
+                  className="h-8 w-8 rounded-lg bg-zinc-800 hover:bg-green-600/80 flex items-center justify-center transition-colors"
+                >
+                  <svg className="h-4 w-4 text-zinc-400" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                  </svg>
+                </a>
+                <a
+                  href="https://facebook.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Facebook"
+                  className="h-8 w-8 rounded-lg bg-zinc-800 hover:bg-blue-600/80 flex items-center justify-center transition-colors"
+                >
+                  <svg className="h-4 w-4 text-zinc-400" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                  </svg>
+                </a>
+              </div>
             </div>
+
+            {/* Shop */}
             <div>
-              <h4 className="text-elegant text-sm mb-4">Shop</h4>
-              <ul className="space-y-2 text-sm font-light">
-                <li><a href="#" className="hover:underline">All Products</a></li>
-                <li><a href="#" className="hover:underline">New Arrivals</a></li>
-                <li><a href="#" className="hover:underline">Best Sellers</a></li>
-                <li><a href="#" className="hover:underline">Offers</a></li>
+              <h4 className="text-zinc-200 text-sm font-semibold mb-4 uppercase tracking-wider">Shop</h4>
+              <ul className="space-y-2.5 text-sm">
+                <li><Link to="/products" className="hover:text-white transition-colors">All Products</Link></li>
+                <li><Link to="/smartphones" className="hover:text-white transition-colors">Smartphones</Link></li>
+                <li><Link to="/accessories" className="hover:text-white transition-colors">Accessories</Link></li>
+                <li><Link to="/recharges" className="hover:text-white transition-colors">Recharges</Link></li>
               </ul>
             </div>
+
+            {/* Support */}
             <div>
-              <h4 className="text-elegant text-sm mb-4">Support</h4>
-              <ul className="space-y-2 text-sm font-light">
-                <li><a href="#" className="hover:underline">Contact Us</a></li>
-                <li><a href="#" className="hover:underline">Shipping Info</a></li>
-                <li><a href="#" className="hover:underline">Returns</a></li>
-                <li><a href="#" className="hover:underline">FAQ</a></li>
-                <li><a href="/order-lookup" className="hover:underline">Track Order</a></li>
+              <h4 className="text-zinc-200 text-sm font-semibold mb-4 uppercase tracking-wider">Support</h4>
+              <ul className="space-y-2.5 text-sm">
+                <li><Link to="/order-lookup" className="hover:text-white transition-colors">Track Order</Link></li>
+                <li><a href={`https://wa.me/${siteSettings.whatsapp_number || ""}`} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">WhatsApp Us</a></li>
+                <li><Link to="/products" className="hover:text-white transition-colors">Browse Catalog</Link></li>
+                <li><Link to="/order-lookup" className="hover:text-white transition-colors">Returns</Link></li>
               </ul>
             </div>
+
+            {/* Company */}
             <div>
-              <h4 className="text-elegant text-sm mb-4">Company</h4>
-              <ul className="space-y-2 text-sm font-light">
-                <li><a href="#" className="hover:underline">About Us</a></li>
-                <li><a href="#" className="hover:underline">Careers</a></li>
-                <li><a href="#" className="hover:underline">Privacy</a></li>
-                <li><a href="#" className="hover:underline">Terms</a></li>
+              <h4 className="text-zinc-200 text-sm font-semibold mb-4 uppercase tracking-wider">Company</h4>
+              <ul className="space-y-2.5 text-sm">
+                <li><Link to="/" className="hover:text-white transition-colors">About Us</Link></li>
+                <li><Link to="/products" className="hover:text-white transition-colors">New Arrivals</Link></li>
+                <li><Link to="/" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+                <li><Link to="/" className="hover:text-white transition-colors">Terms of Service</Link></li>
               </ul>
             </div>
           </div>
-          <div className="pt-8 border-t border-accent-foreground/20 text-center text-sm font-light">
-            <p>&copy; 2026 TechStore. All rights reserved.</p>
+
+          {/* Bottom bar */}
+          <div className="pt-8 border-t border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-zinc-600">
+            <p>&copy; {new Date().getFullYear()} KHA Mobile. All rights reserved.</p>
+            <p className="text-zinc-700">Premium tech, delivered.</p>
           </div>
         </div>
       </footer>

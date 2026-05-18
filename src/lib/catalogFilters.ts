@@ -22,9 +22,6 @@ const CATEGORY_PATH_MAP: Record<string, string> = {
   "/iphonecases": "iPhone Cases",
   "/electronics": "Electronics",
   "/accessories": "Accessories",
-  "/iphone cases": "iPhone Cases",
-  "/iphone%20cases": "iPhone Cases",
-  "/iphonecases": "iPhone Cases",
 };
 
 export function resolveCategoryFromPath(pathname: string): string {

@@ -633,6 +633,7 @@ const Checkout = () => {
     // Cart (product) checkout — server will re-price any item whose id is in the DB.
     return cart.map((item) => ({
       productId: typeof item.id === "number" ? item.id : null,
+      dbId: typeof item.dbId === "number" ? item.dbId : null,
       name: item.name,
       image: (item as any).colorImage || item.image || "",
       variantLabel: [item.variantLabel, (item as any).color, item.size]

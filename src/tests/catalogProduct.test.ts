@@ -1,5 +1,13 @@
-import { describe, it, expect } from "vitest";
-import { coerceVariantArray, normalizeStorefrontVariants } from "@/lib/catalogProduct";
+import { describe, it, expect, afterEach } from "vitest";
+import {
+  buildStorefrontCatalog,
+  coerceVariantArray,
+  normalizeStorefrontVariants,
+} from "@/lib/catalogProduct";
+import {
+  registerPublicApiProducts,
+  registerSuppressedStorefrontIds,
+} from "@/data/productLookup";
 
 describe("normalizeStorefrontVariants", () => {
   it("coerces object-shaped JSONB to array", () => {
@@ -32,5 +40,21 @@ describe("normalizeStorefrontVariants", () => {
     ]);
     expect(out).toHaveLength(1);
     expect(out![0].price).toBe(899.99);
+  });
+});
+
+describe("buildStorefrontCatalog suppressed ids", () => {
+  afterEach(() => {
+    registerPublicApiProducts([]);
+    registerSuppressedStorefrontIds([]);
+  });
+
+  it("omits static rows when legacy override is inactive in DB", () => {
+    const catalog = buildStorefrontCatalog();
+    const sample = catalog[0];
+    expect(sample).toBeDefined();
+    registerSuppressedStorefrontIds([sample.id]);
+    const filtered = buildStorefrontCatalog();
+    expect(filtered.find((p) => p.id === sample.id)).toBeUndefined();
   });
 });

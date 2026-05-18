@@ -106,8 +106,16 @@ function normalisePayload(raw) {
     if (unitPrice > 100000) {
       throw new OrderError(`Item ${idx + 1} price is unreasonably high`);
     }
+    const dbId =
+      it.dbId == null || it.dbId === ''
+        ? null
+        : Number.isFinite(Number(it.dbId))
+          ? Number(it.dbId)
+          : null;
+
     return {
       productId,
+      dbId,
       name: itemName,
       image: String(it.image || '').slice(0, 500),
       variantLabel: String(it.variantLabel || '').slice(0, 255),
@@ -150,37 +158,74 @@ function normalisePayload(raw) {
  * DB) keep their client-supplied price. We log a warning so abuse is visible.
  */
 async function repriceItems(client, items) {
-  const productIds = items
-    .map((it) => it.productId)
-    .filter((id) => id != null);
-  /** @type {Map<number, object>} */
-  const productMap = new Map();
+  const dbIds = [
+    ...new Set(
+      items
+        .map((it) => it.dbId)
+        .filter((id) => id != null && Number.isFinite(id))
+    ),
+  ].sort((a, b) => a - b);
+  const legacyIds = [
+    ...new Set(
+      items
+        .map((it) => it.productId)
+        .filter((id) => id != null && Number.isFinite(id))
+    ),
+  ].sort((a, b) => a - b);
 
-  if (productIds.length > 0) {
-    const sortedIds = [...new Set(productIds)].sort((a, b) => a - b); // deadlock-safe order
+  /** @type {Map<number, object>} */
+  const byDbId = new Map();
+  /** @type {Map<number, object>} */
+  const byLegacyId = new Map();
+  /** @type {Map<number, object>} */
+  const byStorefrontPk = new Map();
+
+  if (dbIds.length > 0 || legacyIds.length > 0) {
     const { rows } = await client.query(
-      `SELECT id, name, price, is_active, is_preorder, stock_quantity, primary_image_url
+      `SELECT id, legacy_override_id, name, price, is_active, is_preorder, stock_quantity, primary_image_url
          FROM products
         WHERE id = ANY($1::int[])
+           OR legacy_override_id = ANY($2::int[])
         FOR UPDATE`,
-      [sortedIds]
+      [dbIds.length ? dbIds : [0], legacyIds.length ? legacyIds : [0]]
     );
-    for (const row of rows) productMap.set(row.id, row);
+    for (const row of rows) {
+      byDbId.set(row.id, row);
+      byStorefrontPk.set(row.id, row);
+      if (row.legacy_override_id != null) {
+        byLegacyId.set(Number(row.legacy_override_id), row);
+      }
+    }
   }
 
+  const resolveProductRow = (it) => {
+    if (it.dbId != null) {
+      const hit = byDbId.get(it.dbId);
+      if (hit) return hit;
+    }
+    if (it.productId != null) {
+      const byLegacy = byLegacyId.get(it.productId);
+      if (byLegacy) return byLegacy;
+      const byPk = byStorefrontPk.get(it.productId);
+      if (byPk) return byPk;
+    }
+    return null;
+  };
+
   const priced = items.map((it, idx) => {
-    if (it.productId == null) {
+    if (it.productId == null && it.dbId == null) {
       // Off-catalog item (legacy streaming/recharge). Trust client price but cap.
       return { ...it, lineTotal: round2(it.unitPrice * it.quantity), product: null };
     }
-    const product = productMap.get(it.productId);
+    const product = resolveProductRow(it);
     if (!product) {
-      // Legacy / static-catalog item whose id isn't in the DB. Trust client
-      // price (capped during normalisation). Logged for visibility.
       console.warn(
-        `[orders] item ${idx + 1} (id=${it.productId}, "${it.name}") not in DB — treating as off-catalog`
+        `[orders] item ${idx + 1} (storefrontId=${it.productId}, dbId=${it.dbId}, "${it.name}") not in DB — rejected`
       );
-      return { ...it, lineTotal: round2(it.unitPrice * it.quantity), product: null };
+      throw new OrderError(`"${it.name}" is no longer available`, {
+        statusCode: 409,
+        code: 'PRODUCT_NOT_FOUND',
+      });
     }
     if (!product.is_active) {
       throw new OrderError(`"${product.name}" is no longer available`, {

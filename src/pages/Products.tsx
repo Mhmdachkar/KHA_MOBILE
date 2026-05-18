@@ -1,12 +1,10 @@
 import { useState, useMemo, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Grid3x3, List, SlidersHorizontal, Filter } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Grid3x3, List, Filter, X, ChevronDown, ChevronUp, SearchX, Sparkles } from "lucide-react";
 import { useLocation, useSearchParams } from "react-router-dom";
 import Header from "@/components/Header";
 import ProductCard from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -25,6 +23,154 @@ import {
 import { useCatalog } from "@/context/CatalogContext";
 import { isGreenLionProduct, type StorefrontProduct } from "@/lib/catalogProduct";
 import { isOutOfStock } from "@/lib/addToCartPolicy";
+
+const FilterSection = ({
+  title,
+  children,
+  defaultOpen = true,
+}: {
+  title: string;
+  children: React.ReactNode;
+  defaultOpen?: boolean;
+}) => {
+  const [open, setOpen] = useState(defaultOpen);
+  return (
+    <div className="border-b border-border/50 pb-4">
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className="w-full flex items-center justify-between py-2 text-sm font-medium text-foreground hover:text-primary transition-colors"
+      >
+        {title}
+        {open ? <ChevronUp className="h-3.5 w-3.5 text-muted-foreground" /> : <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />}
+      </button>
+      {open && <div className="mt-3">{children}</div>}
+    </div>
+  );
+};
+
+const PillGroup = ({
+  items,
+  selected,
+  onToggle,
+}: {
+  items: string[];
+  selected: string[];
+  onToggle: (item: string) => void;
+}) => (
+  <div className="flex flex-wrap gap-1.5">
+    {items.map((item) => {
+      const active = selected.includes(item);
+      return (
+        <button
+          key={item}
+          onClick={() => onToggle(item)}
+          className={`px-2.5 py-1 rounded-xl text-xs font-medium transition-all border ${
+            active
+              ? "bg-primary text-primary-foreground border-primary"
+              : "bg-muted/40 text-muted-foreground border-border/60 hover:border-primary/50 hover:text-foreground"
+          }`}
+        >
+          {item}
+        </button>
+      );
+    })}
+  </div>
+);
+
+interface SidebarFiltersProps {
+  activeFilterCount: number;
+  categories: string[];
+  brands: string[];
+  selectedCategories: string[];
+  selectedBrands: string[];
+  filterInStock: boolean;
+  filterOutOfStock: boolean;
+  minRating: number | null;
+  onClearAll: () => void;
+  onCategoryToggle: (c: string) => void;
+  onBrandToggle: (b: string) => void;
+  onInStockToggle: () => void;
+  onOutOfStockToggle: () => void;
+  onMinRatingChange: (r: number | null) => void;
+}
+
+const SidebarFilters = ({
+  activeFilterCount,
+  categories,
+  brands,
+  selectedCategories,
+  selectedBrands,
+  filterInStock,
+  filterOutOfStock,
+  minRating,
+  onClearAll,
+  onCategoryToggle,
+  onBrandToggle,
+  onInStockToggle,
+  onOutOfStockToggle,
+  onMinRatingChange,
+}: SidebarFiltersProps) => (
+  <div className="space-y-0">
+    <div className="flex items-center justify-between py-2 mb-2">
+      <span className="text-sm font-semibold text-foreground">Filters</span>
+      {activeFilterCount > 0 && (
+        <button
+          onClick={onClearAll}
+          className="text-xs text-muted-foreground hover:text-primary flex items-center gap-1 transition-colors"
+        >
+          <X className="h-3 w-3" /> Clear all
+        </button>
+      )}
+    </div>
+
+    <FilterSection title="Category">
+      <PillGroup items={categories} selected={selectedCategories} onToggle={onCategoryToggle} />
+    </FilterSection>
+
+    <FilterSection title="Brand">
+      <PillGroup items={brands} selected={selectedBrands} onToggle={onBrandToggle} />
+    </FilterSection>
+
+    <FilterSection title="Availability">
+      <div className="flex flex-wrap gap-1.5">
+        {[
+          { label: "In Stock", active: filterInStock, toggle: onInStockToggle },
+          { label: "Out of Stock", active: filterOutOfStock, toggle: onOutOfStockToggle },
+        ].map(({ label, active, toggle }) => (
+          <button
+            key={label}
+            onClick={toggle}
+            className={`px-2.5 py-1 rounded-xl text-xs font-medium transition-all border ${
+              active
+                ? "bg-primary text-primary-foreground border-primary"
+                : "bg-muted/40 text-muted-foreground border-border/60 hover:border-primary/50 hover:text-foreground"
+            }`}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+    </FilterSection>
+
+    <FilterSection title="Min Rating" defaultOpen={false}>
+      <div className="flex flex-wrap gap-1.5">
+        {[5, 4, 3, 2].map((r) => (
+          <button
+            key={r}
+            onClick={() => onMinRatingChange(minRating === r ? null : r)}
+            className={`px-2.5 py-1 rounded-xl text-xs font-medium transition-all border ${
+              minRating === r
+                ? "bg-primary text-primary-foreground border-primary"
+                : "bg-muted/40 text-muted-foreground border-border/60 hover:border-primary/50 hover:text-foreground"
+            }`}
+          >
+            {r}★+
+          </button>
+        ))}
+      </div>
+    </FilterSection>
+  </div>
+);
 
 const Products = () => {
   const { storefrontProducts } = useCatalog();
@@ -291,372 +437,222 @@ const Products = () => {
     );
   };
 
+  const activeFilterCount =
+    selectedCategories.length + selectedBrands.length +
+    (filterOutOfStock ? 1 : 0) + (!filterInStock ? 1 : 0) +
+    (minRating != null ? 1 : 0);
+
+  const sidebarProps: SidebarFiltersProps = {
+    activeFilterCount,
+    categories,
+    brands,
+    selectedCategories,
+    selectedBrands,
+    filterInStock,
+    filterOutOfStock,
+    minRating,
+    onClearAll: handleClearFilters,
+    onCategoryToggle: handleCategoryToggle,
+    onBrandToggle: handleBrandToggle,
+    onInStockToggle: () => setFilterInStock((v) => !v),
+    onOutOfStockToggle: () => setFilterOutOfStock((v) => !v),
+    onMinRatingChange: setMinRating,
+  };
+
   return (
-    <div className="min-h-screen w-full overflow-x-hidden">
+    <div className="min-h-screen w-full overflow-x-hidden bg-background">
       <Header />
 
-      <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12 max-w-full">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 sm:mb-8 md:mb-12">
-          <motion.h1
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-elegant text-2xl sm:text-3xl md:text-4xl"
-          >
-            Shop All Products
-          </motion.h1>
-          {searchQuery && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="flex items-center gap-2 text-sm text-muted-foreground"
+      <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 max-w-full">
+        {/* Page header */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
+          <div>
+            <motion.h1
+              initial={{ opacity: 0, y: -12 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-2xl sm:text-3xl font-semibold tracking-tight"
             >
-              <span>Search: "{searchQuery}"</span>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => {
-                  setSearchQuery("");
-                  // Remove search param from URL
-                  const newParams = new URLSearchParams(searchParams);
-                  newParams.delete("search");
-                  window.history.replaceState({}, "", `${window.location.pathname}${newParams.toString() ? `?${newParams.toString()}` : ""}`);
-                }}
-                className="h-6 px-2 text-xs"
+              All Products
+            </motion.h1>
+            {searchQuery && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="flex items-center gap-2 mt-1 text-sm text-muted-foreground"
               >
-                Clear
-              </Button>
-            </motion.div>
-          )}
+                <span>Results for "<span className="text-foreground font-medium">{searchQuery}</span>"</span>
+                <button
+                  onClick={() => {
+                    setSearchQuery("");
+                    const newParams = new URLSearchParams(searchParams);
+                    newParams.delete("search");
+                    window.history.replaceState({}, "", `${window.location.pathname}${newParams.toString() ? `?${newParams.toString()}` : ""}`);
+                  }}
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              </motion.div>
+            )}
+          </div>
+          <motion.span
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-xs text-muted-foreground bg-muted/50 px-3 py-1.5 rounded-full border border-border/50"
+          >
+            {filteredAndSortedProducts.length} of {allProducts.length} products
+          </motion.span>
         </div>
 
-        {/* Mobile Filter Button */}
+        {/* Mobile toolbar */}
         <div className="lg:hidden mb-4 flex items-center justify-between gap-3">
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="outline" size="sm" className="flex items-center gap-2">
-                <Filter className="h-4 w-4" />
+              <Button variant="outline" size="sm" className="rounded-xl flex items-center gap-2 relative">
+                <Filter className="h-3.5 w-3.5" />
                 Filters
+                {activeFilterCount > 0 && (
+                  <span className="absolute -top-1.5 -right-1.5 h-4 w-4 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center font-medium">
+                    {activeFilterCount}
+                  </span>
+                )}
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-[300px] sm:w-[400px] overflow-y-auto">
+            <SheetContent side="left" className="w-[300px] sm:w-[360px] overflow-y-auto">
               <SheetHeader>
                 <SheetTitle>Filters</SheetTitle>
-                <SheetDescription>Filter products by category, brand, and more</SheetDescription>
+                <SheetDescription>Narrow down products</SheetDescription>
               </SheetHeader>
-              <div className="mt-6 space-y-6">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-elegant text-base">Filters</h3>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-elegant text-xs"
-                    onClick={handleClearFilters}
-                  >
-                    Clear All
-                  </Button>
-                </div>
-
-                {/* Category */}
-                <div>
-                  <h4 className="text-elegant text-sm mb-3">Category</h4>
-                  <div className="space-y-2">
-                    {categories.map((category) => (
-                      <div key={category} className="flex items-center space-x-2">
-                        <Checkbox
-                          id={`mobile-category-${category}`}
-                          checked={selectedCategories.includes(category)}
-                          onCheckedChange={() => handleCategoryToggle(category)}
-                        />
-                        <Label
-                          htmlFor={`mobile-category-${category}`}
-                          className="text-sm font-light cursor-pointer"
-                        >
-                          {category}
-                        </Label>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Brand */}
-                <div>
-                  <h4 className="text-elegant text-sm mb-3">Brand</h4>
-                  <div className="space-y-2">
-                    {brands.map((brand) => (
-                      <div key={brand} className="flex items-center space-x-2">
-                        <Checkbox
-                          id={`mobile-brand-${brand}`}
-                          checked={selectedBrands.includes(brand)}
-                          onCheckedChange={() => handleBrandToggle(brand)}
-                        />
-                        <Label
-                          htmlFor={`mobile-brand-${brand}`}
-                          className="text-sm font-light cursor-pointer"
-                        >
-                          {brand}
-                        </Label>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Availability */}
-                <div>
-                  <h4 className="text-elegant text-sm mb-3">Availability</h4>
-                  <div className="space-y-2">
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="mobile-in-stock"
-                        checked={filterInStock}
-                        onCheckedChange={(v) => setFilterInStock(v === true)}
-                      />
-                      <Label
-                        htmlFor="mobile-in-stock"
-                        className="text-sm font-light cursor-pointer"
-                      >
-                        In Stock
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="mobile-out-of-stock"
-                        checked={filterOutOfStock}
-                        onCheckedChange={(v) => setFilterOutOfStock(v === true)}
-                      />
-                      <Label
-                        htmlFor="mobile-out-of-stock"
-                        className="text-sm font-light cursor-pointer"
-                      >
-                        Out of Stock
-                      </Label>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Rating */}
-                <div>
-                  <h4 className="text-elegant text-sm mb-3">Minimum Rating</h4>
-                  <div className="space-y-3">
-                    {[5, 4, 3, 2].map((rating) => (
-                      <div key={rating} className="flex items-center space-x-2">
-                        <Checkbox
-                          id={`mobile-rating-${rating}`}
-                          checked={minRating === rating}
-                          onCheckedChange={(v) => setMinRating(v === true ? rating : null)}
-                        />
-                        <Label
-                          htmlFor={`mobile-rating-${rating}`}
-                          className="text-sm font-light cursor-pointer flex items-center gap-1"
-                        >
-                          {rating}+ ⭐
-                        </Label>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+              <div className="mt-6">
+                <SidebarFilters {...sidebarProps} />
               </div>
             </SheetContent>
           </Sheet>
 
-          {/* View Mode Toggle */}
           <div className="flex items-center gap-2">
-            <Button
-              variant={viewMode === "grid" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setViewMode("grid")}
-              className="h-9 w-9 p-0"
-              aria-label="Grid view"
-            >
-              <Grid3x3 className="h-4 w-4" />
-            </Button>
-            <Button
-              variant={viewMode === "list" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setViewMode("list")}
-              className="h-9 w-9 p-0"
-              aria-label="List view"
-            >
-              <List className="h-4 w-4" />
-            </Button>
+            <Select value={sortBy} onValueChange={setSortBy}>
+              <SelectTrigger className="w-[150px] rounded-xl text-xs h-9">
+                <SelectValue placeholder="Sort" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="default">Price: High → Low</SelectItem>
+                <SelectItem value="price-low">Price: Low → High</SelectItem>
+                <SelectItem value="price-high">Price: High → Low</SelectItem>
+                <SelectItem value="rating">Top Rated</SelectItem>
+                <SelectItem value="name">A → Z</SelectItem>
+                <SelectItem value="newest">Newest</SelectItem>
+              </SelectContent>
+            </Select>
+            <div className="flex items-center rounded-xl border border-border overflow-hidden">
+              <button
+                onClick={() => setViewMode("grid")}
+                className={`h-9 w-9 flex items-center justify-center transition-colors ${viewMode === "grid" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
+                aria-label="Grid view"
+              >
+                <Grid3x3 className="h-4 w-4" />
+              </button>
+              <button
+                onClick={() => setViewMode("list")}
+                className={`h-9 w-9 flex items-center justify-center border-l border-border transition-colors ${viewMode === "list" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
+                aria-label="List view"
+              >
+                <List className="h-4 w-4" />
+              </button>
+            </div>
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8 w-full">
-          {/* Filters Sidebar - Hidden on mobile, visible on lg+ */}
-          <motion.aside
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-            className="hidden lg:block lg:col-span-1"
-          >
-            <div className="sticky top-20 sm:top-24 space-y-6 sm:space-y-8">
-              <div className="flex items-center justify-between mb-4 sm:mb-6">
-                <h2 className="text-elegant text-base sm:text-lg">Filters</h2>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-elegant text-xs"
-                  onClick={handleClearFilters}
-                >
-                  Clear All
-                </Button>
-              </div>
-
-              {/* Category */}
-              <div>
-                <h3 className="text-elegant text-xs sm:text-sm mb-3 sm:mb-4">Category</h3>
-                <div className="space-y-2 sm:space-y-3">
-                  {categories.map((category) => (
-                    <div key={category} className="flex items-center space-x-2">
-                      <Checkbox
-                        id={category}
-                        checked={selectedCategories.includes(category)}
-                        onCheckedChange={() => handleCategoryToggle(category)}
-                      />
-                      <Label
-                        htmlFor={category}
-                        className="text-sm font-light cursor-pointer"
-                      >
-                        {category}
-                      </Label>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Brand */}
-              <div>
-                <h3 className="text-elegant text-xs sm:text-sm mb-3 sm:mb-4">Brand</h3>
-                <div className="space-y-2 sm:space-y-3">
-                  {brands.map((brand) => (
-                    <div key={brand} className="flex items-center space-x-2">
-                      <Checkbox
-                        id={brand}
-                        checked={selectedBrands.includes(brand)}
-                        onCheckedChange={() => handleBrandToggle(brand)}
-                      />
-                      <Label
-                        htmlFor={brand}
-                        className="text-sm font-light cursor-pointer"
-                      >
-                        {brand}
-                      </Label>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Availability */}
-              <div>
-                <h3 className="text-elegant text-xs sm:text-sm mb-3 sm:mb-4">Availability</h3>
-                <div className="space-y-2 sm:space-y-3">
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id="in-stock"
-                      checked={filterInStock}
-                      onCheckedChange={(v) => setFilterInStock(v === true)}
-                    />
-                    <Label
-                      htmlFor="in-stock"
-                      className="text-sm font-light cursor-pointer"
-                    >
-                      In Stock
-                    </Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id="out-of-stock"
-                      checked={filterOutOfStock}
-                      onCheckedChange={(v) => setFilterOutOfStock(v === true)}
-                    />
-                    <Label
-                      htmlFor="out-of-stock"
-                      className="text-sm font-light cursor-pointer"
-                    >
-                      Out of Stock
-                    </Label>
-                  </div>
-                </div>
-              </div>
-
-              {/* Rating */}
-              <div>
-                <h3 className="text-elegant text-sm mb-4">Minimum Rating</h3>
-                <div className="space-y-3">
-                  {[5, 4, 3, 2].map((rating) => (
-                    <div key={rating} className="flex items-center space-x-2">
-                      <Checkbox
-                        id={`rating-${rating}`}
-                        checked={minRating === rating}
-                        onCheckedChange={(v) => setMinRating(v === true ? rating : null)}
-                      />
-                      <Label
-                        htmlFor={`rating-${rating}`}
-                        className="text-sm font-light cursor-pointer flex items-center gap-1"
-                      >
-                        {rating}+ ⭐
-                      </Label>
-                    </div>
-                  ))}
-                </div>
-              </div>
+        <div className="grid lg:grid-cols-[220px_1fr] gap-6 lg:gap-8 w-full">
+          {/* Desktop sidebar */}
+          <aside className="hidden lg:block">
+            <div className="sticky top-24">
+              <SidebarFilters {...sidebarProps} />
             </div>
-          </motion.aside>
+          </aside>
 
-          {/* Product Grid */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3 }}
-            className="w-full lg:col-span-3"
-          >
-            {/* Controls */}
-            <div className="flex items-center justify-between mb-8">
-              <p className="text-sm text-muted-foreground">
-                Showing {filteredAndSortedProducts.length} of {allProducts.length} products
+          {/* Main content */}
+          <div className="w-full min-w-0">
+            {/* Desktop sort/view bar */}
+            <div className="hidden lg:flex items-center justify-between mb-5">
+              <p className="text-xs text-muted-foreground">
+                {filteredAndSortedProducts.length} product{filteredAndSortedProducts.length !== 1 ? "s" : ""}
+                {activeFilterCount > 0 && " (filtered)"}
               </p>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3">
                 <Select value={sortBy} onValueChange={setSortBy}>
-                  <SelectTrigger className="w-[180px] text-elegant text-xs">
+                  <SelectTrigger className="w-[180px] rounded-xl text-xs h-9">
                     <SelectValue placeholder="Sort by" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="default">Price: High to Low</SelectItem>
-                    <SelectItem value="price-low">Price: Low to High</SelectItem>
-                    <SelectItem value="price-high">Price: High to Low</SelectItem>
-                    <SelectItem value="rating">Highest Rated</SelectItem>
-                    <SelectItem value="name">Name: A-Z</SelectItem>
+                    <SelectItem value="default">Price: High → Low</SelectItem>
+                    <SelectItem value="price-low">Price: Low → High</SelectItem>
+                    <SelectItem value="price-high">Price: High → Low</SelectItem>
+                    <SelectItem value="rating">Top Rated</SelectItem>
+                    <SelectItem value="name">A → Z</SelectItem>
                     <SelectItem value="newest">Newest</SelectItem>
                   </SelectContent>
                 </Select>
-                <div className="flex gap-2">
-                  <Button
-                    variant={viewMode === "grid" ? "default" : "outline"}
-                    size="icon"
+                <div className="flex items-center rounded-xl border border-border overflow-hidden">
+                  <button
                     onClick={() => setViewMode("grid")}
+                    className={`h-9 w-9 flex items-center justify-center transition-colors ${viewMode === "grid" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
+                    aria-label="Grid view"
                   >
                     <Grid3x3 className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant={viewMode === "list" ? "default" : "outline"}
-                    size="icon"
+                  </button>
+                  <button
                     onClick={() => setViewMode("list")}
+                    className={`h-9 w-9 flex items-center justify-center border-l border-border transition-colors ${viewMode === "list" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
+                    aria-label="List view"
                   >
                     <List className="h-4 w-4" />
-                  </Button>
+                  </button>
                 </div>
               </div>
             </div>
 
-            {/* Products */}
+            {/* Active filter pills row */}
+            <AnimatePresence>
+              {activeFilterCount > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="flex flex-wrap gap-1.5 mb-4"
+                >
+                  {selectedCategories.map((c) => (
+                    <button key={c} onClick={() => handleCategoryToggle(c)} className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary/10 text-primary border border-primary/20 text-xs font-medium hover:bg-primary/20 transition-colors">
+                      {c} <X className="h-3 w-3" />
+                    </button>
+                  ))}
+                  {selectedBrands.map((b) => (
+                    <button key={b} onClick={() => handleBrandToggle(b)} className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary/10 text-primary border border-primary/20 text-xs font-medium hover:bg-primary/20 transition-colors">
+                      {b} <X className="h-3 w-3" />
+                    </button>
+                  ))}
+                  {minRating != null && (
+                    <button onClick={() => setMinRating(null)} className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary/10 text-primary border border-primary/20 text-xs font-medium hover:bg-primary/20 transition-colors">
+                      {minRating}★+ <X className="h-3 w-3" />
+                    </button>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Products grid */}
             {filteredAndSortedProducts.length > 0 ? (
-              <div className={`grid gap-2 sm:gap-3 md:gap-4 lg:gap-6 w-full ${viewMode === "grid" ? "grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5" : "grid-cols-1"}`}>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+                className={`grid gap-3 sm:gap-4 ${viewMode === "grid" ? "grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4" : "grid-cols-1"}`}
+              >
                 {filteredAndSortedProducts.map((product, index) => (
                   <motion.div
                     key={product.id}
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.05 }}
+                    transition={{ delay: Math.min(index * 0.03, 0.3), duration: 0.3 }}
                   >
                     <ProductCard
                       id={product.id}
@@ -678,34 +674,52 @@ const Products = () => {
                     />
                   </motion.div>
                 ))}
-              </div>
+              </motion.div>
             ) : (
-              <div className="text-center py-8 sm:py-12">
-                <p className="text-sm sm:text-base text-muted-foreground mb-4">No products found matching your filters.</p>
-                <Button onClick={handleClearFilters} variant="outline" className="text-xs sm:text-sm">
-                  Clear Filters
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex flex-col items-center justify-center py-20 text-center"
+              >
+                <div className="w-16 h-16 rounded-2xl bg-muted/50 flex items-center justify-center mb-4">
+                  <SearchX className="h-8 w-8 text-muted-foreground/60" />
+                </div>
+                <h3 className="text-base font-semibold mb-1">No products found</h3>
+                <p className="text-sm text-muted-foreground mb-5 max-w-xs">
+                  Try adjusting your filters or search query to find what you're looking for.
+                </p>
+                <Button onClick={handleClearFilters} variant="outline" className="rounded-xl">
+                  Clear all filters
                 </Button>
-              </div>
+              </motion.div>
             )}
 
-            {/* Promotional Banner */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="mt-8 sm:mt-10 md:mt-12 bg-white border border-primary/20 rounded-sm p-6 sm:p-8 text-center"
-            >
-              <p className="text-elegant text-lg sm:text-xl md:text-2xl mb-2 text-green-600 font-medium">⚡ Top Picks in Smart Accessories</p>
-              <p className="text-xs sm:text-sm md:text-base font-light mb-4 sm:mb-6 text-green-500">Grab Yours Today!</p>
-              <Button
-                variant="outline"
-                className="text-elegant border-primary text-primary hover:bg-primary/10 min-h-[44px] sm:min-h-[48px] text-xs sm:text-sm md:text-base"
-                style={{ touchAction: 'manipulation' }}
+            {/* Promo banner */}
+            {filteredAndSortedProducts.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="mt-10 rounded-2xl overflow-hidden bg-gradient-to-br from-primary/90 to-primary p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-primary-foreground"
               >
-                Shop Accessories
-              </Button>
-            </motion.div>
-          </motion.div>
+                <div className="text-center sm:text-left">
+                  <div className="flex items-center gap-2 justify-center sm:justify-start mb-1">
+                    <Sparkles className="h-4 w-4" />
+                    <span className="text-xs font-semibold uppercase tracking-widest opacity-80">Top Picks</span>
+                  </div>
+                  <p className="text-lg sm:text-xl font-semibold">Smart Accessories</p>
+                  <p className="text-sm opacity-75 mt-0.5">Cables, chargers, cases & more</p>
+                </div>
+                <Button
+                  variant="secondary"
+                  className="rounded-xl font-medium shrink-0"
+                  onClick={() => handleCategoryToggle("Accessories")}
+                >
+                  Shop Accessories
+                </Button>
+              </motion.div>
+            )}
+          </div>
         </div>
       </div>
     </div>

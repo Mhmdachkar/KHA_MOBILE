@@ -24,6 +24,7 @@ import {
 function toProductCardProps(product: StorefrontProduct) {
   return {
     id: product.id,
+    dbId: product.dbId,
     name: product.name,
     title: product.title,
     price: product.displayPrice ?? product.price ?? 0,

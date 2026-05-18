@@ -1,124 +1,58 @@
 import { motion } from "framer-motion";
-import { Shield, Headphones, Award, RefreshCw, Truck, CreditCard } from "lucide-react";
-import { Card, CardContent } from "./ui/card";
+import { Shield, Headphones, Award, CreditCard } from "lucide-react";
 
 const WhyShopWithUs = () => {
-  const features = [
+  const pillars = [
+    {
+      icon: Award,
+      title: "100% Authentic",
+      subtitle: "Authorized retailer — all major brands",
+    },
     {
       icon: Shield,
-      title: "Price Match Guarantee",
-      description: "Found it cheaper elsewhere? We'll match the price and beat it by 5%.",
-      color: "text-primary"
+      title: "Price Match",
+      subtitle: "We beat any verified lower price",
     },
     {
       icon: Headphones,
-      title: "Expert Support 24/7",
-      description: "Our tech experts are available round the clock to assist you.",
-      color: "text-accent"
-    },
-    {
-      icon: Award,
-      title: "Authorized Retailer",
-      description: "Official partner with all major brands. 100% authentic products.",
-      color: "text-primary"
-    },
-    {
-      icon: RefreshCw,
-      title: "Extended Warranty",
-      description: "Comprehensive warranty coverage up to 3 years on all products.",
-      color: "text-accent"
-    },
-    {
-      icon: Truck,
-      title: "Free Express Shipping",
-      description: "Free next-day delivery on orders over $50. Track in real-time.",
-      color: "text-primary"
+      title: "Expert Support",
+      subtitle: "Available 7 days a week",
     },
     {
       icon: CreditCard,
-      title: "Secure Payments",
-      description: "Bank-level encryption and multiple payment options for your safety.",
-      color: "text-accent"
-    }
+      title: "Secure Checkout",
+      subtitle: "Bank-level encrypted payments",
+    },
   ];
 
   return (
-    <section className="py-24 bg-secondary relative">
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 0.1 }}
-        viewport={{ once: true }}
-        className="absolute inset-0 bg-gradient-to-br from-primary via-transparent to-accent"
-      />
-      
-      <div className="container mx-auto px-6 relative z-10">
+    <section className="py-10 sm:py-12 bg-secondary border-y border-border/40 w-full overflow-hidden">
+      <div className="container mx-auto px-4 sm:px-6 max-w-full">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          transition={{ duration: 0.4 }}
+          className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8"
         >
-          <h2 className="text-elegant text-4xl mb-4">Why Shop With Us</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto font-light">
-            Experience premium service, unbeatable prices, and complete peace of mind
-          </p>
-        </motion.div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {features.map((feature, index) => (
+          {pillars.map((p, i) => (
             <motion.div
-              key={feature.title}
-              initial={{ opacity: 0, y: 40 }}
+              key={p.title}
+              initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
+              transition={{ delay: i * 0.07, duration: 0.35 }}
+              className="flex flex-col sm:flex-row items-center sm:items-start gap-3 text-center sm:text-left"
             >
-              <Card className="group hover:shadow-elegant transition-all duration-500 h-full glassmorphism border-primary/20 hover:border-primary/40">
-                <CardContent className="p-8">
-                  <motion.div
-                    whileHover={{ 
-                      rotate: [0, -10, 10, -10, 0],
-                      scale: 1.1
-                    }}
-                    transition={{ duration: 0.5 }}
-                    className={`${feature.color} mb-6 inline-block`}
-                  >
-                    <feature.icon className="h-12 w-12" />
-                  </motion.div>
-                  <h3 className="text-elegant text-xl mb-3 group-hover:text-primary transition-colors">
-                    {feature.title}
-                  </h3>
-                  <p className="text-muted-foreground font-light leading-relaxed">
-                    {feature.description}
-                  </p>
-                </CardContent>
-              </Card>
+              <div className="shrink-0 h-10 w-10 rounded-xl bg-gradient-to-br from-primary/15 to-accent/15 flex items-center justify-center">
+                <p.icon className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <p className="text-xs sm:text-sm font-semibold leading-snug">{p.title}</p>
+                <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5 leading-snug">{p.subtitle}</p>
+              </div>
             </motion.div>
           ))}
-        </div>
-
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.6 }}
-          className="mt-16 glassmorphism rounded-lg p-8 text-center gradient-border"
-        >
-          <div className="flex flex-wrap justify-center items-center gap-12">
-            {["Apple", "Samsung", "Sony", "LG", "Dell", "HP"].map((brand, index) => (
-              <motion.div
-                key={brand}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.7 + index * 0.1 }}
-                whileHover={{ scale: 1.1 }}
-                className="text-2xl font-bold text-muted-foreground/50 hover:text-primary transition-colors cursor-pointer"
-              >
-                {brand}
-              </motion.div>
-            ))}
-          </div>
         </motion.div>
       </div>
     </section>
