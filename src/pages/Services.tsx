@@ -19,7 +19,6 @@ import {
   Clock
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -206,8 +205,6 @@ const Services = () => {
 
   return (
     <div className="min-h-screen w-full overflow-x-hidden bg-background max-w-full">
-      <Header />
-
       {/* Hero Section */}
       <section className="relative py-12 sm:py-16 md:py-20 lg:py-24 overflow-hidden">
         {/* Background Gradient */}
@@ -478,50 +475,7 @@ const Services = () => {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-12 sm:py-16 bg-accent text-accent-foreground w-full overflow-hidden">
-        <div className="container mx-auto px-4 sm:px-6 max-w-full">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 lg:gap-12 mb-6 sm:mb-8 md:mb-12 w-full">
-            <div>
-              <h3 className="text-elegant text-lg mb-4">KHA_MOBILE</h3>
-              <p className="text-sm font-light tracking-wide opacity-80">
-                Premium technology and digital services for modern living.
-              </p>
-            </div>
-            <div>
-              <h4 className="text-elegant text-sm mb-4">Services</h4>
-              <ul className="space-y-2 text-sm font-light">
-                <li><Link to="/gift-cards" className="hover:underline">Gift Cards</Link></li>
-                <li><Link to="/recharges" className="hover:underline">Recharges</Link></li>
-                <li><Link to="/streaming-services" className="hover:underline">Streaming</Link></li>
-                <li><Link to="/accessories" className="hover:underline">Accessories</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-elegant text-sm mb-4">Shop</h4>
-              <ul className="space-y-2 text-sm font-light">
-                <li><Link to="/smartphones" className="hover:underline">Smartphones</Link></li>
-                <li><Link to="/audio" className="hover:underline">Audio</Link></li>
-                <li><Link to="/gaming" className="hover:underline">Gaming</Link></li>
-                <li><Link to="/wearables" className="hover:underline">Wearables</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-elegant text-sm mb-4">Support</h4>
-              <ul className="space-y-2 text-sm font-light">
-                <li><a href="#contact" className="hover:underline">Contact Us</a></li>
-                <li><Link to="/order-lookup" className="hover:underline">Track Order</Link></li>
-                <li><a href="#" className="hover:underline">Shipping Info</a></li>
-                <li><a href="#" className="hover:underline">Returns</a></li>
-                <li><a href="#" className="hover:underline">FAQ</a></li>
-              </ul>
-            </div>
-          </div>
-          <div className="pt-8 border-t border-accent-foreground/20 text-center text-sm font-light">
-            <p>&copy; 2026 KHA_MOBILE. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+
     </div>
   );
 };

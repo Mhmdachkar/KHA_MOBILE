@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -53,9 +52,7 @@ const OrderLookup = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      <div className="container mx-auto px-4 py-10 max-w-lg">
+    <div className="min-h-screen bg-background">      <div className="container mx-auto px-4 py-10 max-w-lg">
         <motion.h1
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -92,9 +89,13 @@ const OrderLookup = () => {
           <Button className="w-full" onClick={() => void lookup()} disabled={loading || !orderNumber.trim()}>
             {loading ? "Looking up…" : "Find order"}
           </Button>
-          {error && <p className="text-sm text-destructive">{error}</p>}
+          {error && (
+            <p className="text-sm text-destructive" role="alert" aria-live="polite">
+              {error}
+            </p>
+          )}
           {order && (
-            <motion.div className="mt-4 pt-4 border-t space-y-2 text-sm">
+            <motion.div className="mt-4 pt-4 border-t space-y-2 text-sm" aria-live="polite">
               <p className="font-semibold text-lg">{order.order_number}</p>
               <p>
                 Status: <span className="capitalize">{order.status}</span> · Payment:{" "}

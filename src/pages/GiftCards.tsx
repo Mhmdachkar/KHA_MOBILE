@@ -2,7 +2,6 @@ import { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Grid3x3, List, ShoppingCart, Gift, Filter } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -1763,8 +1762,6 @@ const GiftCards = () => {
 
   return (
     <div className="min-h-screen bg-white w-full">
-      <Header />
-
       <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12">
         <motion.h1
           initial={{ opacity: 0, y: -20 }}

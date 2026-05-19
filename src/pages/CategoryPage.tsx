@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Grid3x3, List, Filter, Check } from "lucide-react";
 import { useLocation, Link } from "react-router-dom";
-import Header from "@/components/Header";
 import ProductCard from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -172,9 +171,7 @@ const CategoryPage = () => {
 
   if (isCategoryNotFound) {
     return (
-      <div className="min-h-screen bg-background w-full">
-        <Header />
-        <div className="container mx-auto px-4 sm:px-6 py-12 text-center">
+      <div className="min-h-screen bg-background w-full">        <div className="container mx-auto px-4 sm:px-6 py-12 text-center">
           <h2 className="text-2xl mb-4">Category not found</h2>
           <Link to="/">
             <Button>Back to Home</Button>
@@ -285,8 +282,6 @@ const CategoryPage = () => {
 
   return (
     <div className="min-h-screen bg-background w-full">
-      <Header />
-
       <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-12">
         {/* Breadcrumb */}
         <motion.div

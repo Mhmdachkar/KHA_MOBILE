@@ -2,7 +2,6 @@ import { useState, useEffect, useMemo } from "react";
 import { useCatalog } from "@/context/CatalogContext";
 import { motion } from "framer-motion";
 import { Grid3x3, List, Battery, Smartphone, Filter, Laptop, Cable, Shield, Scissors, Briefcase } from "lucide-react";
-import Header from "@/components/Header";
 import ProductCard from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -96,8 +95,6 @@ const Accessories = () => {
 
   return (
     <motion.div className="min-h-screen bg-background w-full">
-      <Header />
-
       <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <motion.div
           initial={{ opacity: 0, y: -20 }}

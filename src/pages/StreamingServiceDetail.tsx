@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, ShoppingCart, CheckCircle2 } from "lucide-react";
 import { Link, useParams, useNavigate, useSearchParams } from "react-router-dom";
-import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 
 // Import streaming service images
@@ -130,9 +129,7 @@ const StreamingServiceDetail = () => {
 
   if (!service) {
     return (
-      <div className="min-h-screen bg-white w-full">
-        <Header />
-        <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-12 text-center">
+      <div className="min-h-screen bg-white w-full">        <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-12 text-center">
           <h2 className="text-2xl mb-4">Service not found</h2>
           <Link to="/streaming-services">
             <Button>Back to Streaming Services</Button>
@@ -162,8 +159,6 @@ const StreamingServiceDetail = () => {
 
   return (
     <div className="min-h-screen bg-white w-full" style={{ touchAction: "pan-y" }}>
-      <Header />
-
       <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12">
         {/* Breadcrumb */}
         <motion.div

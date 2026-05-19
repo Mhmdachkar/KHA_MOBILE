@@ -1,6 +1,5 @@
 import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
-import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
@@ -19,9 +18,7 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen bg-white w-full">
-      <Header />
-      <div className="flex min-h-[calc(100vh-200px)] items-center justify-center px-4 sm:px-6">
+    <div className="min-h-screen bg-white w-full">      <div className="flex min-h-[calc(100vh-200px)] items-center justify-center px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

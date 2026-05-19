@@ -91,8 +91,12 @@ export interface SiteSettings {
   homepage_categories: HomepageCategory[];
   /** USD shipping for product checkout (authoritative on server at order create). */
   delivery_fee: number;
+  /** Order subtotal at or above this amount gets free delivery in cart preview + checkout. */
+  free_shipping_threshold: number;
   /** Digits only, no + (e.g. 96181861811). Used for wa.me links. */
   whatsapp_number: string;
+  instagram_url?: string;
+  facebook_url?: string;
 }
 
 function parseDeliveryFee(raw: unknown): number | undefined {
@@ -212,7 +216,10 @@ const DEFAULT_SETTINGS: SiteSettings = {
     { name: "iPhone Cases", icon: "Smartphone", linkTo: "/category/iPhone Cases", enabled: true },
   ],
   delivery_fee: 4,
+  free_shipping_threshold: 50,
   whatsapp_number: "96181861811",
+  instagram_url: "",
+  facebook_url: "",
 };
 
 // ─── Context ──────────────────────────────────────────────────────────────────
@@ -243,7 +250,10 @@ const ALL_KEYS = [
   "brand_showcase",
   "homepage_categories",
   "delivery_fee",
+  "free_shipping_threshold",
   "whatsapp_number",
+  "instagram_url",
+  "facebook_url",
 ];
 
 export const SiteSettingsProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -261,7 +271,10 @@ export const SiteSettingsProvider: React.FC<{ children: React.ReactNode }> = ({
       if (!res.ok) return;
       const data = await res.json();
       const deliveryFee = parseDeliveryFee(data.delivery_fee);
+      const freeShippingThreshold = parseDeliveryFee(data.free_shipping_threshold);
       const whatsappNumber = parseWhatsappNumber(data.whatsapp_number);
+      const instagramUrl = typeof data.instagram_url === "string" ? data.instagram_url : undefined;
+      const facebookUrl = typeof data.facebook_url === "string" ? data.facebook_url : undefined;
       setSettings((prev) => ({
         ...prev,
         ...(data.announcements ? { announcements: data.announcements } : {}),
@@ -285,7 +298,10 @@ export const SiteSettingsProvider: React.FC<{ children: React.ReactNode }> = ({
           ? { homepage_categories: data.homepage_categories }
           : {}),
         ...(deliveryFee != null ? { delivery_fee: deliveryFee } : {}),
+        ...(freeShippingThreshold != null ? { free_shipping_threshold: freeShippingThreshold } : {}),
         ...(whatsappNumber ? { whatsapp_number: whatsappNumber } : {}),
+        ...(instagramUrl !== undefined ? { instagram_url: instagramUrl } : {}),
+        ...(facebookUrl !== undefined ? { facebook_url: facebookUrl } : {}),
       }));
     } catch {
       // keep defaults if API unreachable

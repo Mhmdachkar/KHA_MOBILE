@@ -2,7 +2,6 @@ import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Grid3x3, List, Filter, X, ChevronDown, ChevronUp, SearchX, Sparkles } from "lucide-react";
 import { useLocation, useSearchParams } from "react-router-dom";
-import Header from "@/components/Header";
 import ProductCard from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,6 +20,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { useCatalog } from "@/context/CatalogContext";
+import { Skeleton } from "@/components/ui/skeleton";
 import { isGreenLionProduct, type StorefrontProduct } from "@/lib/catalogProduct";
 import { isOutOfStock } from "@/lib/addToCartPolicy";
 
@@ -63,6 +63,8 @@ const PillGroup = ({
       return (
         <button
           key={item}
+          type="button"
+          aria-pressed={active}
           onClick={() => onToggle(item)}
           className={`px-2.5 py-1 rounded-xl text-xs font-medium transition-all border ${
             active
@@ -173,7 +175,7 @@ const SidebarFilters = ({
 );
 
 const Products = () => {
-  const { storefrontProducts } = useCatalog();
+  const { storefrontProducts, catalogLoaded } = useCatalog();
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
@@ -185,13 +187,17 @@ const Products = () => {
   const [filterOutOfStock, setFilterOutOfStock] = useState(false);
   const [minRating, setMinRating] = useState<number | null>(null);
 
-  // Get brand from URL params if present
+  // URL params: brand, category, sort, search
   useEffect(() => {
     const brandParam = searchParams.get("brand");
-    if (brandParam && !selectedBrands.includes(brandParam)) {
-      setSelectedBrands([brandParam]);
-    }
-  }, [searchParams, selectedBrands]);
+    if (brandParam) setSelectedBrands([brandParam]);
+    const categoryParam = searchParams.get("category");
+    if (categoryParam) setSelectedCategories([categoryParam]);
+    const sortParam = searchParams.get("sort");
+    if (sortParam) setSortBy(sortParam);
+    const searchParam = searchParams.get("search");
+    if (searchParam != null) setSearchQuery(searchParam);
+  }, [searchParams]);
 
   // Scroll to top whenever this page or its query changes (handles navigation from brand cards)
   useEffect(() => {
@@ -461,8 +467,6 @@ const Products = () => {
 
   return (
     <div className="min-h-screen w-full overflow-x-hidden bg-background">
-      <Header />
-
       <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 max-w-full">
         {/* Page header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
@@ -640,7 +644,13 @@ const Products = () => {
             </AnimatePresence>
 
             {/* Products grid */}
-            {filteredAndSortedProducts.length > 0 ? (
+            {!catalogLoaded ? (
+              <div className={`grid gap-3 sm:gap-4 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4`}>
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <Skeleton key={i} className="aspect-[4/5] w-full rounded-xl" />
+                ))}
+              </div>
+            ) : filteredAndSortedProducts.length > 0 ? (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}

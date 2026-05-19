@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { Tv, ArrowRight } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import { useEffect } from "react";
-import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 
 // Import streaming service images
@@ -184,8 +183,6 @@ const StreamingServices = () => {
 
   return (
     <div className="min-h-screen bg-white w-full" style={{ touchAction: "pan-y" }}>
-      <Header />
-
       <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-12" style={{ touchAction: "pan-y" }}>
         <motion.h1
           initial={{ opacity: 0, y: -20 }}

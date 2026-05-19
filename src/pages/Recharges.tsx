@@ -2,7 +2,6 @@ import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Grid3x3, List, SlidersHorizontal, ShoppingCart, X } from "lucide-react";
-import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -415,8 +414,6 @@ const Recharges = () => {
 
   return (
     <div className="min-h-screen bg-white w-full">
-      <Header />
-
       <div className="container mx-auto px-3 sm:px-4 md:px-6 py-6 sm:py-8 md:py-12">
         <motion.h1
           initial={{ opacity: 0, y: -20 }}

@@ -45,7 +45,7 @@ const Header = () => {
   const { toast } = useToast();
 
   // Filter products based on search query (case-insensitive)
-  const searchResults = useMemo(() => {
+  const allSearchMatches = useMemo(() => {
     if (!searchQuery.trim()) return [];
 
     // Normalize query to lowercase for case-insensitive search
@@ -80,8 +80,11 @@ const Header = () => {
         searchableText.includes(normalizedQuery);
 
       return allWordsMatch || exactPhraseMatch;
-    }).slice(0, 10); // Limit to 10 results
+    });
   }, [searchQuery, storefrontProducts]);
+
+  const searchResults = useMemo(() => allSearchMatches.slice(0, 10), [allSearchMatches]);
+  const totalSearchMatches = allSearchMatches.length;
 
   const handleSearchClick = () => {
     setSearchOpen(true);
@@ -378,7 +381,7 @@ const Header = () => {
 
               {/* Mobile Menu Button */}
               <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-                <SheetTrigger asChild className="md:hidden">
+                <SheetTrigger asChild className="lg:hidden">
                   <motion.button
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
@@ -539,7 +542,8 @@ const Header = () => {
             ) : (
               <div className="space-y-2">
                 <p className="text-sm text-muted-foreground mb-3">
-                  Found {searchResults.length} {searchResults.length === 1 ? "result" : "results"}
+                  Showing {searchResults.length} of {totalSearchMatches}{" "}
+                  {totalSearchMatches === 1 ? "result" : "results"}
                 </p>
                 {searchResults.map((product) => (
                   <motion.button
@@ -569,21 +573,23 @@ const Header = () => {
                     </div>
                   </motion.button>
                 ))}
-                {searchResults.length > 0 && (
+                {totalSearchMatches > searchResults.length && (
                   <Link
                     to={`/products?search=${encodeURIComponent(searchQuery)}`}
                     onClick={() => {
+                      if (searchQuery.trim()) trackSearch(searchQuery.trim());
                       setSearchOpen(false);
                       setSearchQuery("");
                     }}
                     className="block mt-4 pt-4 border-t border-border"
                   >
                     <motion.button
+                      type="button"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       className="w-full py-2 px-4 text-sm font-medium text-primary hover:bg-primary/10 rounded-lg transition-colors"
                     >
-                      View All Results →
+                      View all {totalSearchMatches} results →
                     </motion.button>
                   </Link>
                 )}

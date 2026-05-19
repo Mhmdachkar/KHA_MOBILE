@@ -1,7 +1,16 @@
 const TOKEN_KEY = "kha_admin_token";
 
+/**
+ * API origin for fetch() calls.
+ * - Set VITE_API_URL for a remote API (e.g. Render).
+ * - In local dev with no VITE_API_URL, use same-origin paths so Vite proxies to :3001.
+ * - Production build without VITE_API_URL falls back to localhost (set env on deploy).
+ */
 export function apiBase(): string {
-  return import.meta.env.VITE_API_URL || "http://localhost:3001";
+  const raw = (import.meta.env.VITE_API_URL as string | undefined)?.trim();
+  if (raw) return raw.replace(/\/+$/, "");
+  if (import.meta.env.DEV) return "";
+  return "http://localhost:3001";
 }
 
 /** Public storefront origin, no trailing slash (e.g. https://khamobile.com). */

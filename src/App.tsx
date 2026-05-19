@@ -46,6 +46,7 @@ import AdminMediaLibrary from "./pages/admin/AdminMediaLibrary";
 import AdminAuditLog from "./pages/admin/AdminAuditLog";
 import AdminOrders from "./pages/admin/AdminOrders";
 import NotFound from "./pages/NotFound";
+import StorefrontLayout from "./components/StorefrontLayout";
 
 // ScrollToTop component to scroll to top on route change and restore scroll when lock persists
 const ScrollToTop = () => {
@@ -100,7 +101,6 @@ const App = () => (
               <Sonner />
               <CartDashboard />
               <Routes>
-                <Route path="/" element={<Home />} />
                 <Route path="/admin/login" element={<AdminLogin />} />
                 <Route path="/admin" element={<AdminLayout />}>
                   <Route index element={<Navigate to="products" replace />} />
@@ -114,26 +114,31 @@ const App = () => (
                   <Route path="media" element={<AdminMediaLibrary />} />
                   <Route path="audit-log" element={<AdminAuditLog />} />
                 </Route>
-                <Route path="/products" element={<Products />} />
-                <Route path="/category/:categoryName" element={<CategoryPage />} />
-                <Route path="/smartphones" element={<CategoryPage />} />
-                <Route path="/audio" element={<CategoryPage />} />
-                <Route path="/computers" element={<CategoryPage />} />
-                <Route path="/wearables" element={<CategoryPage />} />
-                <Route path="/gaming" element={<CategoryPage />} />
-                <Route path="/tablets" element={<CategoryPage />} />
-                <Route path="/electronics" element={<CategoryPage />} />
-                <Route path="/recharges" element={<Recharges />} />
-                <Route path="/gift-cards" element={<GiftCards />} />
-                <Route path="/streaming-services" element={<StreamingServices />} />
-                <Route path="/streaming-service/:id" element={<StreamingServiceDetail />} />
-                <Route path="/accessories" element={<Accessories />} />
-                <Route path="/services" element={<Services />} />
-                <Route path="/about" element={<AboutUs />} />
-                <Route path="/checkout" element={<Checkout />} />
-                <Route path="/order-lookup" element={<OrderLookup />} />
-                <Route path="/favorites" element={<Favorites />} />
-                <Route path="/product/:id" element={<ProductDetail />} />
+                <Route element={<StorefrontLayout />}>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/products" element={<Products />} />
+                  <Route path="/category/:categoryName" element={<CategoryPage />} />
+                  <Route path="/category/accessories" element={<Navigate to="/accessories" replace />} />
+                  <Route path="/smartphones" element={<CategoryPage />} />
+                  <Route path="/audio" element={<CategoryPage />} />
+                  <Route path="/computers" element={<CategoryPage />} />
+                  <Route path="/wearables" element={<CategoryPage />} />
+                  <Route path="/gaming" element={<CategoryPage />} />
+                  <Route path="/tablets" element={<CategoryPage />} />
+                  <Route path="/electronics" element={<CategoryPage />} />
+                  <Route path="/recharges" element={<Recharges />} />
+                  <Route path="/gift-cards" element={<GiftCards />} />
+                  <Route path="/streaming-services" element={<StreamingServices />} />
+                  <Route path="/streaming-service/:id" element={<StreamingServiceDetail />} />
+                  <Route path="/accessories" element={<Accessories />} />
+                  <Route path="/services" element={<Services />} />
+                  <Route path="/about" element={<AboutUs />} />
+                  <Route path="/checkout" element={<Checkout />} />
+                  <Route path="/order-lookup" element={<OrderLookup />} />
+                  <Route path="/favorites" element={<Favorites />} />
+                  <Route path="/product/:id" element={<ProductDetail />} />
+                  <Route path="*" element={<NotFound />} />
+                </Route>
                 <Route path="/instagram-generator" element={<InstagramGenerator />} />
                 <Route path="/promo" element={<InstagramPromo />} />
                 <Route path="/promo-christmas" element={<InstagramPromoChristmas />} />
@@ -143,8 +148,6 @@ const App = () => (
                 <Route path="/promo-live" element={<InstagramPromoLive />} />
                 <Route path="/promo-sale" element={<InstagramPromoSale />} />
                 <Route path="/promo-ipad" element={<InstagramPromoIPadBundle />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
               </Routes>
             </TooltipProvider>
           </SmoothScrollWrapper>

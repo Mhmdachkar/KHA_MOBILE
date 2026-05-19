@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import { Phone, DollarSign, ShoppingBag, MessageCircle, ArrowLeft, Check, Plus, X, Minus, Trash2, MapPin, Banknote, Mail } from "lucide-react";
-import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -69,7 +68,7 @@ const Checkout = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
+  const { cart, removeFromCart, updateQuantity, clearCart, openCart } = useCart();
   const { storefrontProducts, refreshCatalog } = useCatalog();
   const { settings: siteSettings } = useSiteSettings();
   const { trackCheckoutStart, trackCheckoutComplete, trackRemoveFromCart } = useAnalytics();
@@ -778,8 +777,6 @@ const Checkout = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 w-full">
-      <Header />
-
       <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12">
         {/* Back Button */}
         <motion.div
@@ -789,11 +786,21 @@ const Checkout = () => {
         >
           <Button
             variant="ghost"
-            onClick={() => navigate(-1)}
+            onClick={() => {
+              if (checkoutType === "product" && cart.length > 0) {
+                openCart();
+                return;
+              }
+              navigate(-1);
+            }}
             className="text-elegant text-sm sm:text-base"
           >
             <ArrowLeft className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
-            {isRechargeCheckout ? "Back to Cards" : "Back to Cart"}
+            {checkoutType === "product" && cart.length > 0
+              ? "Back to Cart"
+              : isRechargeCheckout
+                ? "Back to Cards"
+                : "Go Back"}
           </Button>
           <Link
             to="/order-lookup"

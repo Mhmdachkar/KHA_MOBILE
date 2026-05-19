@@ -2,17 +2,19 @@ import { motion } from "framer-motion";
 import { Heart, ShoppingCart, Trash2, Link as LinkIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
-import Header from "@/components/Header";
 import { useFavorites } from "@/context/FavoritesContext";
 import { useCart } from "@/context/CartContext";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { formatMoney } from "@/lib/storefrontPricing";
+import { useCatalog } from "@/context/CatalogContext";
+import { getAddToCartAction } from "@/lib/addToCartPolicy";
 
 const Favorites = () => {
   const { favorites, removeFromFavorites, toggleFavorite } = useFavorites();
   const { addToCart, openCart, closeCart } = useCart();
+  const { storefrontProducts } = useCatalog();
   const { toast } = useToast();
 
   // Scroll to top on mount
@@ -25,8 +27,6 @@ const Favorites = () => {
   if (favorites.length === 0) {
     return (
       <div className="min-h-screen bg-white w-full">
-        <Header />
-
         <div className="flex flex-col items-center justify-center min-h-[calc(100vh-200px)] px-4 sm:px-6">
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
@@ -83,24 +83,49 @@ const Favorites = () => {
     // Close cart first to prevent it from opening multiple times
     closeCart();
 
-    // Add each favorite item to cart
-    favorites.forEach((product) => {
+    let added = 0;
+    let skipped = 0;
+
+    favorites.forEach((fav) => {
+      const catalog = storefrontProducts.find((p) => p.id === fav.id);
+      const action = getAddToCartAction({
+        variants: catalog?.variants,
+        colors: catalog?.colors,
+        sizes: catalog?.sizes,
+        surface: "grid",
+      });
+      if (action !== "add_direct") {
+        skipped += 1;
+        return;
+      }
       addToCart({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        image: product.image,
-        rating: product.rating,
-        category: product.category,
+        id: fav.id,
+        name: fav.name,
+        price: fav.price,
+        image: fav.image,
+        rating: fav.rating,
+        category: fav.category,
         quantity: 1,
       });
+      added += 1;
     });
 
-    // Show success message
-    toast({
-      title: "Items added to cart",
-      description: `Successfully added ${favorites.length} ${favorites.length === 1 ? "item" : "items"} to your cart.`,
-    });
+    if (skipped > 0) {
+      toast({
+        title: added > 0 ? "Some items need options" : "Choose options first",
+        description:
+          skipped === favorites.length
+            ? "Open each product page to pick variant, color, or size before adding to cart."
+            : `Added ${added} item(s). ${skipped} need options — open the product page to complete your selection.`,
+      });
+    } else {
+      toast({
+        title: "Items added to cart",
+        description: `Successfully added ${added} ${added === 1 ? "item" : "items"} to your cart.`,
+      });
+    }
+
+    if (added === 0 && skipped > 0) return;
 
     // Open cart dashboard after a short delay to ensure all items are added
     setTimeout(() => {
@@ -110,8 +135,6 @@ const Favorites = () => {
 
   return (
     <div className="min-h-screen bg-white w-full">
-      <Header />
-
       <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12">
         {/* Header Section */}
         <motion.div

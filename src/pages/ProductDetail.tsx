@@ -3,10 +3,10 @@ import { motion } from "framer-motion";
 import { Heart, ShoppingCart, Star, ChevronLeft, ChevronRight, CheckCircle2, Check, Minus, Plus, Truck, ShieldCheck, RefreshCw } from "lucide-react";
 import { Link, useParams, useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { resolveImageUrl } from "@/lib/imageUtils";
+import ProductDetailSkeleton from "@/components/ProductDetailSkeleton";
 import { getPdpPricePresentation, formatMoney } from "@/lib/storefrontPricing";
 import { getStockBadgeInfo } from "@/lib/stockStatus";
 import { addRecentlyViewed } from "@/lib/recentlyViewed";
-import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { useFavorites } from "@/context/FavoritesContext";
 import { useCart } from "@/context/CartContext";
@@ -172,13 +172,6 @@ const ProductDetail = () => {
     ? colorOptions[selectedColorIndex].name
     : null;
 
-  // If product not found, redirect to products page
-  useEffect(() => {
-    if (productId && !product) {
-      navigate("/products");
-    }
-  }, [productId, product, navigate]);
-
   useEffect(() => {
     // Reset selectedColor when product changes
     setSelectedColorIndex(-1);
@@ -280,21 +273,12 @@ const ProductDetail = () => {
   // ─────────────────────────────────────────────────────────────────────────────
 
   if (!catalogLoaded && productId) {
-    return (
-      <motion.div className="min-h-screen bg-white w-full">
-        <Header />
-        <div className="container mx-auto px-6 py-12 text-center text-muted-foreground">
-          Loading product…
-        </div>
-      </motion.div>
-    );
+    return <ProductDetailSkeleton />;
   }
 
   if (catalogLoaded && productId && !catalogRow) {
     return (
-      <motion.div className="min-h-screen bg-white w-full">
-        <Header />
-        <div className="container mx-auto px-6 py-12 text-center">
+      <motion.div className="min-h-screen bg-white w-full">        <div className="container mx-auto px-6 py-12 text-center">
           <h2 className="text-2xl mb-4">Product not found</h2>
           <Link to="/products">
             <Button>Back to Products</Button>
@@ -306,9 +290,7 @@ const ProductDetail = () => {
 
   if (!product) {
     return (
-      <motion.div className="min-h-screen bg-white w-full">
-        <Header />
-        <div className="container mx-auto px-6 py-12 text-center">
+      <motion.div className="min-h-screen bg-white w-full">        <div className="container mx-auto px-6 py-12 text-center">
           <h2 className="text-2xl mb-4">Product not found</h2>
           <Link to="/products">
             <Button>Back to Products</Button>
@@ -616,8 +598,6 @@ const ProductDetail = () => {
 
   return (
     <div className="min-h-screen bg-white w-full">
-      <Header />
-
       <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12 pb-36 md:pb-12 max-w-full overflow-x-hidden">
         {/* Breadcrumb */}
         <motion.div

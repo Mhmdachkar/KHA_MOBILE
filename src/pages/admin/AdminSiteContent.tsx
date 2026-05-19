@@ -140,7 +140,12 @@ const AdminSiteContent = () => {
   const [brands, setBrands] = useState(liveSettings.brand_showcase || []);
   const [categories, setCategories] = useState(liveSettings.homepage_categories || []);
   const [deliveryFee, setDeliveryFee] = useState(String(liveSettings.delivery_fee));
+  const [freeShippingThreshold, setFreeShippingThreshold] = useState(
+    String(liveSettings.free_shipping_threshold ?? 50)
+  );
   const [whatsappNumber, setWhatsappNumber] = useState(liveSettings.whatsapp_number);
+  const [instagramUrl, setInstagramUrl] = useState(liveSettings.instagram_url ?? "");
+  const [facebookUrl, setFacebookUrl] = useState(liveSettings.facebook_url ?? "");
 
   // Sync drafts only on initial load (not after saves, to avoid overwriting unsaved edits)
   const initialLoadRef = useRef(true);
@@ -156,7 +161,10 @@ const AdminSiteContent = () => {
     setBrands(liveSettings.brand_showcase || []);
     setCategories(liveSettings.homepage_categories || []);
     setDeliveryFee(String(liveSettings.delivery_fee));
+    setFreeShippingThreshold(String(liveSettings.free_shipping_threshold ?? 50));
     setWhatsappNumber(liveSettings.whatsapp_number);
+    setInstagramUrl(liveSettings.instagram_url ?? "");
+    setFacebookUrl(liveSettings.facebook_url ?? "");
   }, [liveSettings]);
 
   const saveSetting = useCallback(async (key: string, value: unknown) => {
@@ -956,6 +964,15 @@ const AdminSiteContent = () => {
               onChange={(e) => setDeliveryFee(e.target.value)}
             />
           </Field>
+          <Field label="Free shipping threshold (USD)" hint="Cart and checkout show free delivery at or above this subtotal.">
+            <Input
+              type="number"
+              min={0}
+              step={1}
+              value={freeShippingThreshold}
+              onChange={(e) => setFreeShippingThreshold(e.target.value)}
+            />
+          </Field>
           <Field label="WhatsApp number" hint="Digits only, country code included (e.g. 96181861811).">
             <Input
               value={whatsappNumber}
@@ -963,14 +980,25 @@ const AdminSiteContent = () => {
               placeholder="96181861811"
             />
           </Field>
+          <Field label="Instagram URL" hint="Full profile URL. Leave empty to hide the icon in the footer.">
+            <Input value={instagramUrl} onChange={(e) => setInstagramUrl(e.target.value)} placeholder="https://instagram.com/yourshop" />
+          </Field>
+          <Field label="Facebook URL" hint="Full page URL. Leave empty to hide the icon in the footer.">
+            <Input value={facebookUrl} onChange={(e) => setFacebookUrl(e.target.value)} placeholder="https://facebook.com/yourshop" />
+          </Field>
         </div>
       </SectionCard>
       <div className="flex justify-end">
         <Button
           onClick={async () => {
             const fee = parseFloat(deliveryFee);
+            const threshold = parseFloat(freeShippingThreshold);
             if (!Number.isFinite(fee) || fee < 0) {
               toast({ title: "Invalid delivery fee", variant: "destructive" });
+              return;
+            }
+            if (!Number.isFinite(threshold) || threshold <= 0) {
+              toast({ title: "Invalid free shipping threshold", variant: "destructive" });
               return;
             }
             if (!whatsappNumber.trim()) {
@@ -985,12 +1013,30 @@ const AdminSiteContent = () => {
                 headers: { "Content-Type": "application/json" },
               });
               if (!feeRes.ok) throw new Error(await feeRes.text());
+              const thresholdRes = await adminFetch("/api/admin/settings/free_shipping_threshold", {
+                method: "PUT",
+                body: JSON.stringify({ value: threshold }),
+                headers: { "Content-Type": "application/json" },
+              });
+              if (!thresholdRes.ok) throw new Error(await thresholdRes.text());
               const waRes = await adminFetch("/api/admin/settings/whatsapp_number", {
                 method: "PUT",
                 body: JSON.stringify({ value: whatsappNumber.trim() }),
                 headers: { "Content-Type": "application/json" },
               });
               if (!waRes.ok) throw new Error(await waRes.text());
+              const igRes = await adminFetch("/api/admin/settings/instagram_url", {
+                method: "PUT",
+                body: JSON.stringify({ value: instagramUrl.trim() }),
+                headers: { "Content-Type": "application/json" },
+              });
+              if (!igRes.ok) throw new Error(await igRes.text());
+              const fbRes = await adminFetch("/api/admin/settings/facebook_url", {
+                method: "PUT",
+                body: JSON.stringify({ value: facebookUrl.trim() }),
+                headers: { "Content-Type": "application/json" },
+              });
+              if (!fbRes.ok) throw new Error(await fbRes.text());
               toast({ title: "Saved!", description: "Commerce settings updated on the live site." });
               refreshLive();
             } catch (err: unknown) {

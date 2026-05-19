@@ -14,7 +14,6 @@ import {
   Clock,
   Sparkles
 } from "lucide-react";
-import Header from "@/components/Header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { phoneAccessories, wearablesProducts, smartphoneProducts, tabletProducts, iphoneCases, gamingConsoles } from "@/data/products";
@@ -125,8 +124,6 @@ const AboutUs = () => {
 
   return (
     <div className="min-h-screen w-full overflow-x-hidden bg-background max-w-full">
-      <Header />
-
       {/* Hero Section with Logo */}
       <section className="relative py-16 sm:py-20 md:py-24 lg:py-32 overflow-hidden">
         {/* Background Gradient */}
@@ -603,50 +600,7 @@ const AboutUs = () => {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-12 sm:py-16 bg-accent text-accent-foreground w-full overflow-hidden">
-        <div className="container mx-auto px-4 sm:px-6 max-w-full">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 lg:gap-12 mb-6 sm:mb-8 md:mb-12 w-full">
-            <div>
-              <h3 className="text-elegant text-lg mb-4">KHA_MOBILE</h3>
-              <p className="text-sm font-light tracking-wide opacity-80 break-words">
-                Premium technology and digital services for modern living.
-              </p>
-            </div>
-            <div>
-              <h4 className="text-elegant text-sm mb-4">Shop</h4>
-              <ul className="space-y-2 text-sm font-light">
-                <li><a href="/products" className="hover:underline">All Products</a></li>
-                <li><a href="/smartphones" className="hover:underline">Smartphones</a></li>
-                <li><a href="/audio" className="hover:underline">Audio</a></li>
-                <li><a href="/accessories" className="hover:underline">Accessories</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-elegant text-sm mb-4">Services</h4>
-              <ul className="space-y-2 text-sm font-light">
-                <li><a href="/gift-cards" className="hover:underline">Gift Cards</a></li>
-                <li><a href="/recharges" className="hover:underline">Recharges</a></li>
-                <li><a href="/streaming-services" className="hover:underline">Streaming</a></li>
-                <li><a href="/services" className="hover:underline">All Services</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-elegant text-sm mb-4">Company</h4>
-              <ul className="space-y-2 text-sm font-light">
-                <li><a href="/about" className="hover:underline">About Us</a></li>
-                <li><a href="/order-lookup" className="hover:underline">Track Order</a></li>
-                <li><a href="#contact" className="hover:underline">Contact</a></li>
-                <li><a href="#" className="hover:underline">Privacy</a></li>
-                <li><a href="#" className="hover:underline">Terms</a></li>
-              </ul>
-            </div>
-          </div>
-          <div className="pt-8 border-t border-accent-foreground/20 text-center text-sm font-light">
-            <p>&copy; 2026 KHA_MOBILE. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+
     </div>
   );
 };

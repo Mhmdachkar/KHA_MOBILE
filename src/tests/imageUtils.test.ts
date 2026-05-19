@@ -19,9 +19,9 @@ function loadModule(viteApiUrl: string | undefined) {
   return import("../lib/imageUtils");
 }
 
-// ─── WITHOUT VITE_API_URL configured (production Netlify without env var) ──
+// ─── Dev: no VITE_API_URL → same-origin /uploads (Vite proxy to :3001) ───────
 
-describe("resolveImageUrl — no VITE_API_URL", () => {
+describe("resolveImageUrl — no VITE_API_URL (dev / proxy)", () => {
   let resolveImageUrl: (url: string | undefined) => string;
 
   beforeEach(async () => {
@@ -58,20 +58,18 @@ describe("resolveImageUrl — no VITE_API_URL", () => {
     expect(resolveImageUrl(url)).toBe(url);
   });
 
-  it("rewrites full https /uploads/ URL to local API base (dev default)", () => {
+  it("rewrites full https /uploads/ URL to same-origin path (vite proxy)", () => {
     const url = "https://api.render.com/uploads/image.jpg";
-    expect(resolveImageUrl(url)).toBe("http://localhost:3001/uploads/image.jpg");
+    expect(resolveImageUrl(url)).toBe("/uploads/image.jpg");
   });
 
-  it("rewrites full http /uploads/ URL to local API base", () => {
+  it("rewrites full http /uploads/ URL to same-origin path", () => {
     const url = "http://api.render.com/uploads/image.jpg";
-    expect(resolveImageUrl(url)).toBe("http://localhost:3001/uploads/image.jpg");
+    expect(resolveImageUrl(url)).toBe("/uploads/image.jpg");
   });
 
-  it("rewrites /uploads/ relative path to local API base", () => {
-    expect(resolveImageUrl("/uploads/photo.png")).toBe(
-      "http://localhost:3001/uploads/photo.png"
-    );
+  it("keeps /uploads/ relative path for proxy", () => {
+    expect(resolveImageUrl("/uploads/photo.png")).toBe("/uploads/photo.png");
   });
 
   it("passes through root-relative non-upload paths", () => {
