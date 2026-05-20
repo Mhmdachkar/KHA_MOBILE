@@ -612,6 +612,7 @@ const AdminDashboard = () => {
           {/* Real-time Tab */}
           <TabsContent value="realtime" className="space-y-6 min-w-0">
             {chartsTab === 'realtime' && (
+            <>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-w-0">
               {/* Active Pages */}
               <Card>
@@ -692,7 +693,7 @@ const AdminDashboard = () => {
                 </div>
               </CardContent>
             </Card>
-            </div>
+            </>
             )}
           </TabsContent>
         </Tabs>

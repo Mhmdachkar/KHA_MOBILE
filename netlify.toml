@@ -7,7 +7,7 @@
 
 [build.environment]
   # Node version (Netlify will use .nvmrc if present, or this value)
-  NODE_VERSION = "18"
+  NODE_VERSION = "20"
 
 # Redirect rules for Single Page Application (SPA)
 # This ensures all routes work correctly with React Router
