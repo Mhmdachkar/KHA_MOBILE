@@ -1,158 +1,40 @@
 import { useEffect, useState, useCallback, useRef, useMemo } from "react";
-import { Link } from "react-router-dom";
-import {
-  Megaphone, Layout, Star, Heart, Save, Plus, Trash2,
-  RefreshCw, ChevronRight, Search, Package, AlertCircle,
-  TrendingUp, Store, Grid3X3, Truck, ExternalLink,
-} from "lucide-react";
+import { Layout, Package } from "lucide-react";
 import { adminFetch } from "@/lib/adminApi";
-import { useSiteSettings, SiteSettings } from "@/context/SiteSettingsContext";
-import { resolveImageUrl } from "@/lib/imageUtils";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 import { useAdminMergedCatalog } from "@/lib/useAdminMergedCatalog";
-import {
-  countProductsForBrandName,
-  countProductsForHomepageCategory,
-  getDistinctBrands,
-  resolveHomepageCategoryLabel,
-  SUGGESTED_CATEGORY_LINKS,
-} from "@/lib/adminCatalogTaxonomy";
-import { CANONICAL_STOREFRONT_CATEGORIES } from "@/lib/storefrontCategories";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Switch } from "@/components/ui/switch";
+import { buildCatalogHealthSummary } from "@/lib/adminCatalogSummary";
+import { getDistinctBrands } from "@/lib/adminCatalogTaxonomy";
+import { AdminPageShell } from "@/components/admin/AdminPageShell";
+import { SiteContentTabs } from "@/components/admin/site-content/SiteContentTabs";
+import { AnnouncementsPanel } from "@/components/admin/site-content/AnnouncementsPanel";
+import { HeroPanel } from "@/components/admin/site-content/HeroPanel";
+import { FlagshipPanel } from "@/components/admin/site-content/FlagshipPanel";
+import { NewArrivalsPanel } from "@/components/admin/site-content/NewArrivalsPanel";
+import { WeeklyFavoritesPanel } from "@/components/admin/site-content/WeeklyFavoritesPanel";
+import { TrendingPanel } from "@/components/admin/site-content/TrendingPanel";
+import { BrandsPanel } from "@/components/admin/site-content/BrandsPanel";
+import { CategoriesPanel } from "@/components/admin/site-content/CategoriesPanel";
+import { CommercePanel } from "@/components/admin/site-content/CommercePanel";
+import type { SiteContentTabId } from "@/components/admin/site-content/types";
 import { Badge } from "@/components/ui/badge";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { cn } from "@/lib/utils";
-
-// ─── Tab definitions ──────────────────────────────────────────────────────────
-
-const TABS = [
-  { id: "announcements",    label: "Announcements",      icon: Megaphone },
-  { id: "hero",             label: "Hero Section",        icon: Layout },
-  { id: "flagship",         label: "Flagship Showcase",   icon: Star },
-  { id: "new_arrivals",     label: "New Arrivals",        icon: RefreshCw },
-  { id: "weekly_favorites", label: "Weekly Favorites",    icon: Heart },
-  { id: "trending",         label: "Trending Sections",   icon: TrendingUp },
-  { id: "brands",           label: "Shop by Brand",       icon: Store },
-  { id: "categories",       label: "Categories",          icon: Grid3X3 },
-  { id: "commerce",         label: "Commerce",          icon: Truck },
-] as const;
-type TabId = (typeof TABS)[number]["id"];
-
-// ─── Section card helper ──────────────────────────────────────────────────────
-
-const SectionCard = ({ title, children }: { title: string; children: React.ReactNode }) => (
-  <div className="rounded-xl border bg-card p-5 space-y-4">
-    <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">{title}</p>
-    {children}
-  </div>
-);
-
-// ─── Field row helper ─────────────────────────────────────────────────────────
-
-const Field = ({
-  label, hint, children,
-}: { label: string; hint?: string; children: React.ReactNode }) => (
-  <div className="space-y-1.5">
-    <Label className="text-xs font-medium">{label}</Label>
-    {children}
-    {hint && <p className="text-[11px] text-muted-foreground">{hint}</p>}
-  </div>
-);
-
-// ─── Product search mini-widget ───────────────────────────────────────────────
-
-interface SearchResult { id: number; name: string; category: string; primaryImageUrl?: string }
-
-const ProductPicker = ({
-  value, onChange,
-}: { value: number; onChange: (id: number) => void }) => {
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState<SearchResult[]>([]);
-  const [searching, setSearching] = useState(false);
-
-  useEffect(() => {
-    if (!query.trim()) { setResults([]); return; }
-    const t = setTimeout(async () => {
-      setSearching(true);
-      try {
-        const r = await adminFetch(`/api/admin/products?search=${encodeURIComponent(query)}&limit=8`);
-        if (!r.ok) { setResults([]); return; }
-        const d = await r.json();
-        setResults(d.products ?? []);
-      } catch { /* ignore */ } finally { setSearching(false); }
-    }, 300);
-    return () => clearTimeout(t);
-  }, [query]);
-
-  return (
-    <div className="space-y-2">
-      <div className="flex flex-col sm:flex-row gap-2">
-        <Input
-          type="number"
-          placeholder="ID (e.g. 500)"
-          value={value === 0 ? "" : value || ""}
-          onChange={(e) => onChange(e.target.value === "" ? 0 : Number(e.target.value))}
-          className="w-full sm:w-28 shrink-0"
-        />
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-          <Input
-            placeholder="Search by name…"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            className="pl-8"
-          />
-        </div>
-      </div>
-      {results.length > 0 && (
-        <div className="rounded-lg border bg-popover shadow-md max-h-52 overflow-y-auto divide-y text-sm">
-          {results.map((p) => (
-            <button
-              key={p.id}
-              className="w-full text-left px-3 py-2.5 hover:bg-muted flex items-center gap-3 transition-colors"
-              onClick={() => { onChange(p.id); setQuery(""); setResults([]); }}
-            >
-              {p.primaryImageUrl && (
-                <img src={resolveImageUrl(p.primaryImageUrl)} alt="" className="h-8 w-8 rounded object-contain border bg-muted" />
-              )}
-              <div className="min-w-0">
-                <p className="font-medium truncate">{p.name}</p>
-                <p className="text-[11px] text-muted-foreground">{p.category} · #{p.id}</p>
-              </div>
-              <ChevronRight className="h-3.5 w-3.5 text-muted-foreground ml-auto shrink-0" />
-            </button>
-          ))}
-        </div>
-      )}
-      {searching && <p className="text-xs text-muted-foreground">Searching…</p>}
-    </div>
-  );
-};
-
-// ─── Main component ───────────────────────────────────────────────────────────
 
 const AdminSiteContent = () => {
   const { toast } = useToast();
   const { settings: liveSettings, refresh: refreshLive } = useSiteSettings();
-  const [activeTab, setActiveTab] = useState<TabId>("announcements");
+  const [activeTab, setActiveTab] = useState<SiteContentTabId>("announcements");
   const [saving, setSaving] = useState(false);
   const needsCatalog = activeTab === "brands" || activeTab === "categories";
   const { products: catalogProducts, loading: catalogLoading } = useAdminMergedCatalog({
     enabled: needsCatalog,
   });
+  const catalogSummary = useMemo(
+    () => (catalogProducts.length > 0 ? buildCatalogHealthSummary(catalogProducts) : null),
+    [catalogProducts]
+  );
   const catalogBrands = useMemo(() => getDistinctBrands(catalogProducts), [catalogProducts]);
 
-  // Local draft state - each section managed independently
   const [announcements, setAnnouncements] = useState(liveSettings.announcements);
   const [hero, setHero] = useState(liveSettings.hero);
   const [flagship, setFlagship] = useState(liveSettings.flagship_showcase);
@@ -169,7 +51,6 @@ const AdminSiteContent = () => {
   const [instagramUrl, setInstagramUrl] = useState(liveSettings.instagram_url ?? "");
   const [facebookUrl, setFacebookUrl] = useState(liveSettings.facebook_url ?? "");
 
-  // Sync drafts only on initial load (not after saves, to avoid overwriting unsaved edits)
   const initialLoadRef = useRef(true);
   useEffect(() => {
     if (!initialLoadRef.current) return;
@@ -189,16 +70,64 @@ const AdminSiteContent = () => {
     setFacebookUrl(liveSettings.facebook_url ?? "");
   }, [liveSettings]);
 
-  const saveSetting = useCallback(async (key: string, value: unknown) => {
+  const saveSetting = useCallback(
+    async (key: string, value: unknown) => {
+      setSaving(true);
+      try {
+        const r = await adminFetch(`/api/admin/settings/${key}`, {
+          method: "PUT",
+          body: JSON.stringify({ value }),
+          headers: { "Content-Type": "application/json" },
+        });
+        if (!r.ok) throw new Error(await r.text());
+        toast({ title: "Saved!", description: `"${key}" updated on the live site.` });
+        refreshLive();
+      } catch (err: unknown) {
+        toast({
+          title: "Save failed",
+          description: err instanceof Error ? err.message : "Unknown error",
+          variant: "destructive",
+        });
+      } finally {
+        setSaving(false);
+      }
+    },
+    [toast, refreshLive]
+  );
+
+  const saveCommerce = useCallback(async () => {
+    const fee = parseFloat(deliveryFee);
+    const threshold = parseFloat(freeShippingThreshold);
+    if (!Number.isFinite(fee) || fee < 0) {
+      toast({ title: "Invalid delivery fee", variant: "destructive" });
+      return;
+    }
+    if (!Number.isFinite(threshold) || threshold <= 0) {
+      toast({ title: "Invalid free shipping threshold", variant: "destructive" });
+      return;
+    }
+    if (!whatsappNumber.trim()) {
+      toast({ title: "WhatsApp number is required", variant: "destructive" });
+      return;
+    }
     setSaving(true);
     try {
-      const r = await adminFetch(`/api/admin/settings/${key}`, {
-        method: "PUT",
-        body: JSON.stringify({ value }),
-        headers: { "Content-Type": "application/json" },
-      });
-      if (!r.ok) throw new Error(await r.text());
-      toast({ title: "Saved!", description: `"${key}" updated on the live site.` });
+      const payloads: [string, unknown][] = [
+        ["delivery_fee", fee],
+        ["free_shipping_threshold", threshold],
+        ["whatsapp_number", whatsappNumber.trim()],
+        ["instagram_url", instagramUrl.trim()],
+        ["facebook_url", facebookUrl.trim()],
+      ];
+      for (const [key, value] of payloads) {
+        const r = await adminFetch(`/api/admin/settings/${key}`, {
+          method: "PUT",
+          body: JSON.stringify({ value }),
+          headers: { "Content-Type": "application/json" },
+        });
+        if (!r.ok) throw new Error(await r.text());
+      }
+      toast({ title: "Saved!", description: "Commerce settings updated on the live site." });
       refreshLive();
     } catch (err: unknown) {
       toast({
@@ -209,1056 +138,96 @@ const AdminSiteContent = () => {
     } finally {
       setSaving(false);
     }
-  }, [toast, refreshLive]);
+  }, [
+    deliveryFee,
+    freeShippingThreshold,
+    whatsappNumber,
+    instagramUrl,
+    facebookUrl,
+    toast,
+    refreshLive,
+  ]);
 
-  // ── Announcements tab ─────────────────────────────────────────────────────
-
-  const AnnouncementsTab = (
-    <div className="space-y-5">
-      <p className="text-sm text-muted-foreground">
-        These messages rotate in the announcement bar at the very top of every page. Changes go live immediately after saving.
-      </p>
-      <SectionCard title="Rotating Messages">
-        <div className="space-y-2">
-          {announcements.map((a, i) => (
-            <div key={i} className="flex items-center gap-2">
-              <div className="flex items-center gap-2 shrink-0">
-                <Switch
-                  checked={!!a.highlight}
-                  onCheckedChange={(v) =>
-                    setAnnouncements((prev) =>
-                      prev.map((x, j) => (j === i ? { ...x, highlight: v } : x))
-                    )
-                  }
-                />
-                <span className="text-[10px] text-muted-foreground w-16 shrink-0">
-                  {a.highlight ? "Highlighted" : "Normal"}
-                </span>
-              </div>
-              <Input
-                value={a.text}
-                onChange={(e) =>
-                  setAnnouncements((prev) =>
-                    prev.map((x, j) => (j === i ? { ...x, text: e.target.value } : x))
-                  )
-                }
-                className="flex-1 text-sm"
-              />
-              <button
-                onClick={() => setAnnouncements((prev) => prev.filter((_, j) => j !== i))}
-                className="p-1.5 rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors shrink-0"
-              >
-                <Trash2 className="h-4 w-4" />
-              </button>
-            </div>
-          ))}
-        </div>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => setAnnouncements((prev) => [...prev, { text: "", highlight: false }])}
-          className="gap-1.5"
-        >
-          <Plus className="h-3.5 w-3.5" /> Add Message
-        </Button>
-      </SectionCard>
-      <div className="flex justify-end">
-        <Button 
-          onClick={() => void saveSetting("announcements", announcements)} 
-          disabled={saving}
-          className="w-full sm:w-auto touch-manipulation"
-          style={{ touchAction: 'manipulation' }}
-        >
-          <Save className="h-4 w-4 mr-2" />
-          Save Announcements
-        </Button>
-      </div>
-    </div>
-  );
-
-  // ── Hero tab ───────────────────────────────────────────────────────────────
-
-  const HeroTab = (
-    <div className="space-y-5">
-      <p className="text-sm text-muted-foreground">
-        Customize the main hero banner at the top of the homepage — headline, description, call-to-action buttons, and the trust stats.
-      </p>
-      <SectionCard title="Text Content">
-        <Field label="Badge text" hint="Shown above the headline (e.g. 'New Collection 2026')">
-          <Input value={hero.badge} onChange={(e) => setHero((p) => ({ ...p, badge: e.target.value }))} />
-        </Field>
-        <div className="grid grid-cols-2 gap-3">
-          <Field label="Headline line 1 (gradient)">
-            <Input value={hero.headline1} onChange={(e) => setHero((p) => ({ ...p, headline1: e.target.value }))} />
-          </Field>
-          <Field label="Headline line 2 (black)">
-            <Input value={hero.headline2} onChange={(e) => setHero((p) => ({ ...p, headline2: e.target.value }))} />
-          </Field>
-        </div>
-        <Field label="Description">
-          <Textarea rows={3} value={hero.description} onChange={(e) => setHero((p) => ({ ...p, description: e.target.value }))} />
-        </Field>
-      </SectionCard>
-      <SectionCard title="Call-to-Action Buttons">
-        <div className="grid sm:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <p className="text-xs font-medium text-muted-foreground">Primary Button</p>
-            <Field label="Label">
-              <Input value={hero.cta1_label} onChange={(e) => setHero((p) => ({ ...p, cta1_label: e.target.value }))} />
-            </Field>
-            <Field label="URL">
-              <Input value={hero.cta1_url} onChange={(e) => setHero((p) => ({ ...p, cta1_url: e.target.value }))} />
-            </Field>
-          </div>
-          <div className="space-y-2">
-            <p className="text-xs font-medium text-muted-foreground">Secondary Button</p>
-            <Field label="Label">
-              <Input value={hero.cta2_label} onChange={(e) => setHero((p) => ({ ...p, cta2_label: e.target.value }))} />
-            </Field>
-            <Field label="URL">
-              <Input value={hero.cta2_url} onChange={(e) => setHero((p) => ({ ...p, cta2_url: e.target.value }))} />
-            </Field>
-          </div>
-        </div>
-      </SectionCard>
-      <SectionCard title="Trust Stats (3 numbers shown below the CTAs)">
-        <p className="text-sm text-muted-foreground mb-4">
-          Marketing copy for the homepage hero — not calculated from orders, reviews, or analytics.
-          Edit the values below to match what you want shoppers to see.
-        </p>
-        <div className="grid grid-cols-3 gap-4">
-          {([1, 2, 3] as const).map((n) => {
-            const vKey = `stat${n}_value` as keyof typeof hero;
-            const lKey = `stat${n}_label` as keyof typeof hero;
-            return (
-              <div key={n} className="space-y-2">
-                <Field label={`Stat ${n} value`}>
-                  <Input value={String(hero[vKey])} onChange={(e) => setHero((p) => ({ ...p, [vKey]: e.target.value }))} />
-                </Field>
-                <Field label={`Stat ${n} label`}>
-                  <Input value={String(hero[lKey])} onChange={(e) => setHero((p) => ({ ...p, [lKey]: e.target.value }))} />
-                </Field>
-              </div>
-            );
-          })}
-        </div>
-      </SectionCard>
-      <div className="flex justify-end">
-        <Button 
-          onClick={() => void saveSetting("hero", hero)} 
-          disabled={saving}
-          className="w-full sm:w-auto touch-manipulation"
-          style={{ touchAction: 'manipulation' }}
-        >
-          <Save className="h-4 w-4 mr-2" />
-          Save Hero Section
-        </Button>
-      </div>
-    </div>
-  );
-
-  // ── Flagship showcase tab ─────────────────────────────────────────────────
-
-  const FlagshipTab = (
-    <div className="space-y-5">
-      <div className="rounded-xl border border-blue-500/30 bg-blue-500/5 p-4 flex gap-3">
-        <AlertCircle className="h-4 w-4 text-blue-500 shrink-0 mt-0.5" />
-        <p className="text-sm text-blue-700 dark:text-blue-300">
-          <strong>Swap product</strong> — choose any product from your catalog by ID and all its data (name, image, colors, description, CTAs) will automatically populate the showcase on the homepage. Or switch to <strong>Custom</strong> mode to enter everything manually.
-        </p>
-      </div>
-
-      <SectionCard title="Showcase Mode">
-        <div className="flex gap-3">
-          {(["product", "custom"] as const).map((m) => (
-            <button
-              key={m}
-              onClick={() => setFlagship((p) => ({ ...p, mode: m }))}
-              className={cn(
-                "flex-1 py-3 rounded-xl border text-sm font-medium transition-all",
-                flagship.mode === m
-                  ? "bg-foreground text-background border-foreground"
-                  : "border-border text-muted-foreground hover:border-foreground/30"
-              )}
-            >
-              {m === "product" ? "🔄 Swap Product" : "✏️ Custom Content"}
-            </button>
-          ))}
-        </div>
-      </SectionCard>
-
-      {flagship.mode === "product" ? (
-        <SectionCard title="Featured Product">
-          <p className="text-sm text-muted-foreground">
-            Search or enter the product ID. The showcase will automatically use that product's name, image, colors, description, and link. Currently showing product <strong>#{flagship.productId}</strong>.
-          </p>
-          <Field label="Product ID">
-            <ProductPicker
-              value={flagship.productId}
-              onChange={(id) => {
-                setFlagship((p) => ({
-                  ...p,
-                  productId: id,
-                  cta1_url: `/product/${id}`,
-                }));
-              }}
-            />
-          </Field>
-          <div className="grid sm:grid-cols-2 gap-3 pt-2 border-t">
-            <Field label="CTA 1 label" hint="e.g. Order Now">
-              <Input value={flagship.cta1_label} onChange={(e) => setFlagship((p) => ({ ...p, cta1_label: e.target.value }))} />
-            </Field>
-            <Field label="CTA 2 label" hint="e.g. View All iPhones">
-              <Input value={flagship.cta2_label} onChange={(e) => setFlagship((p) => ({ ...p, cta2_label: e.target.value }))} />
-            </Field>
-            <Field label="CTA 1 URL">
-              <Input value={flagship.cta1_url} onChange={(e) => setFlagship((p) => ({ ...p, cta1_url: e.target.value }))} />
-            </Field>
-            <Field label="CTA 2 URL">
-              <Input value={flagship.cta2_url} onChange={(e) => setFlagship((p) => ({ ...p, cta2_url: e.target.value }))} />
-            </Field>
-          </div>
-        </SectionCard>
-      ) : (
-        <SectionCard title="Custom Content">
-          <div className="grid sm:grid-cols-2 gap-3">
-            <Field label="Badge">
-              <Input value={flagship.custom_badge} onChange={(e) => setFlagship((p) => ({ ...p, custom_badge: e.target.value }))} />
-            </Field>
-            <Field label="Product name">
-              <Input value={flagship.custom_name} onChange={(e) => setFlagship((p) => ({ ...p, custom_name: e.target.value }))} />
-            </Field>
-            <Field label="Tagline (gradient heading)">
-              <Input value={flagship.custom_tagline} onChange={(e) => setFlagship((p) => ({ ...p, custom_tagline: e.target.value }))} />
-            </Field>
-            <Field label="Image URL">
-              <Input placeholder="https://…" value={flagship.custom_image_url} onChange={(e) => setFlagship((p) => ({ ...p, custom_image_url: e.target.value }))} />
-            </Field>
-          </div>
-          <Field label="Description">
-            <Textarea rows={3} value={flagship.custom_description} onChange={(e) => setFlagship((p) => ({ ...p, custom_description: e.target.value }))} />
-          </Field>
-          <div className="grid sm:grid-cols-2 gap-3 pt-2 border-t">
-            <Field label="CTA 1 label"><Input value={flagship.cta1_label} onChange={(e) => setFlagship((p) => ({ ...p, cta1_label: e.target.value }))} /></Field>
-            <Field label="CTA 2 label"><Input value={flagship.cta2_label} onChange={(e) => setFlagship((p) => ({ ...p, cta2_label: e.target.value }))} /></Field>
-            <Field label="CTA 1 URL"><Input value={flagship.cta1_url} onChange={(e) => setFlagship((p) => ({ ...p, cta1_url: e.target.value }))} /></Field>
-            <Field label="CTA 2 URL"><Input value={flagship.cta2_url} onChange={(e) => setFlagship((p) => ({ ...p, cta2_url: e.target.value }))} /></Field>
-          </div>
-        </SectionCard>
-      )}
-
-      <SectionCard title="Feature Chips (4 highlight boxes on the left side)">
-        <div className="space-y-2">
-          {(flagship.feature_chips || []).map((chip, i) => (
-            <div key={i} className="flex items-center gap-2">
-              <Input
-                placeholder="Label"
-                value={chip.label}
-                onChange={(e) =>
-                  setFlagship((p) => ({
-                    ...p,
-                    feature_chips: p.feature_chips.map((c, j) =>
-                      j === i ? { ...c, label: e.target.value } : c
-                    ),
-                  }))
-                }
-                className="flex-1"
-              />
-              <Input
-                placeholder="Sub-label"
-                value={chip.sublabel}
-                onChange={(e) =>
-                  setFlagship((p) => ({
-                    ...p,
-                    feature_chips: p.feature_chips.map((c, j) =>
-                      j === i ? { ...c, sublabel: e.target.value } : c
-                    ),
-                  }))
-                }
-                className="flex-1"
-              />
-              <button
-                onClick={() =>
-                  setFlagship((p) => ({
-                    ...p,
-                    feature_chips: p.feature_chips.filter((_, j) => j !== i),
-                  }))
-                }
-                className="p-1.5 rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors shrink-0"
-              >
-                <Trash2 className="h-4 w-4" />
-              </button>
-            </div>
-          ))}
-          {(flagship.feature_chips || []).length < 4 && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() =>
-                setFlagship((p) => ({
-                  ...p,
-                  feature_chips: [...p.feature_chips, { label: "", sublabel: "" }],
-                }))
-              }
-              className="gap-1.5"
-            >
-              <Plus className="h-3.5 w-3.5" /> Add Chip
-            </Button>
-          )}
-        </div>
-      </SectionCard>
-
-      <div className="flex justify-end">
-        <Button 
-          onClick={() => void saveSetting("flagship_showcase", flagship)} 
-          disabled={saving}
-          className="w-full sm:w-auto touch-manipulation"
-          style={{ touchAction: 'manipulation' }}
-        >
-          <Save className="h-4 w-4 mr-2" />
-          Save Flagship Showcase
-        </Button>
-      </div>
-    </div>
-  );
-
-  // ── New arrivals tab ──────────────────────────────────────────────────────
-
-  const NewArrivalsTab = (
-    <div className="space-y-5">
-      <p className="text-sm text-muted-foreground">
-        The "New Arrival Showcase" rotates through these products automatically every 7 seconds. Each entry shows the product's image and name from the catalog, plus the custom highlight features you define here.
-      </p>
-      {newArrivals.map((entry, i) => (
-        <SectionCard key={i} title={`Showcase ${i + 1}`}>
-          <div className="flex items-center justify-between">
-            <Field label={`Product ID (currently: #${entry.productId})`}>
-              <ProductPicker
-                value={entry.productId}
-                onChange={(id) =>
-                  setNewArrivals((prev) =>
-                    prev.map((e, j) => (j === i ? { ...e, productId: id } : e))
-                  )
-                }
-              />
-            </Field>
-            {newArrivals.length > 1 && (
-              <button
-                onClick={() => setNewArrivals((prev) => prev.filter((_, j) => j !== i))}
-                className="ml-4 mt-6 p-1.5 rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors shrink-0"
-              >
-                <Trash2 className="h-4 w-4" />
-              </button>
-            )}
-          </div>
-          <div className="pt-2 border-t space-y-2">
-            <p className="text-xs font-medium text-muted-foreground">Highlight Features (up to 3)</p>
-            {entry.features.map((feat, fi) => (
-              <div key={fi} className="flex gap-2 items-center">
-                <Input
-                  placeholder="Label"
-                  value={feat.label}
-                  onChange={(e) =>
-                    setNewArrivals((prev) =>
-                      prev.map((en, j) =>
-                        j !== i ? en : {
-                          ...en,
-                          features: en.features.map((f, k) =>
-                            k === fi ? { ...f, label: e.target.value } : f
-                          ),
-                        }
-                      )
-                    )
-                  }
-                  className="flex-1"
-                />
-                <Input
-                  placeholder="Value"
-                  value={feat.value}
-                  onChange={(e) =>
-                    setNewArrivals((prev) =>
-                      prev.map((en, j) =>
-                        j !== i ? en : {
-                          ...en,
-                          features: en.features.map((f, k) =>
-                            k === fi ? { ...f, value: e.target.value } : f
-                          ),
-                        }
-                      )
-                    )
-                  }
-                  className="flex-1"
-                />
-                <button
-                  onClick={() =>
-                    setNewArrivals((prev) =>
-                      prev.map((en, j) =>
-                        j !== i ? en : { ...en, features: en.features.filter((_, k) => k !== fi) }
-                      )
-                    )
-                  }
-                  className="p-1.5 rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors shrink-0"
-                >
-                  <Trash2 className="h-3.5 w-3.5" />
-                </button>
-              </div>
-            ))}
-            {entry.features.length < 3 && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() =>
-                  setNewArrivals((prev) =>
-                    prev.map((en, j) =>
-                      j !== i ? en : { ...en, features: [...en.features, { label: "", value: "" }] }
-                    )
-                  )
-                }
-                className="gap-1.5"
-              >
-                <Plus className="h-3.5 w-3.5" /> Add Feature
-              </Button>
-            )}
-          </div>
-        </SectionCard>
-      ))}
-      {newArrivals.length < 5 && (
-        <Button
-          variant="outline"
-          onClick={() =>
-            setNewArrivals((prev) => [
-              ...prev,
-              { productId: 0, features: [{ label: "", value: "" }] },
-            ])
-          }
-          className="gap-1.5"
-        >
-          <Plus className="h-4 w-4" /> Add Showcase Slot
-        </Button>
-      )}
-      <div className="flex justify-end">
-        <Button 
-          onClick={() => void saveSetting("new_arrival_showcases", newArrivals)} 
-          disabled={saving}
-          className="w-full sm:w-auto touch-manipulation"
-          style={{ touchAction: 'manipulation' }}
-        >
-          <Save className="h-4 w-4 mr-2" />
-          Save New Arrivals
-        </Button>
-      </div>
-    </div>
-  );
-
-  // ── Weekly favorites tab ──────────────────────────────────────────────────
-
-  const TYPE_OPTIONS = [
-    { value: "regular", label: "Regular" },
-    { value: "greenLion", label: "Green Lion" },
-    { value: "recharge", label: "Recharge Card" },
-  ] as const;
-
-  const WeeklyFavoritesTab = (
-    <div className="space-y-5">
-      <p className="text-sm text-muted-foreground">
-        "This Week's Favorites" shows a 6-product grid on the homepage. You can swap any slot with any product from your catalog. The first 2 slots often feature recharge cards.
-      </p>
-      <SectionCard title="6 Featured Products">
-        <div className="space-y-3">
-          {weeklyFavs.map((item, i) => (
-            <div key={i} className="flex flex-col sm:flex-row sm:items-center gap-3 p-3 rounded-xl border bg-muted/20">
-              <div className="flex items-center gap-3 flex-1 min-w-0">
-                <div className="h-6 w-6 rounded-full bg-muted flex items-center justify-center text-xs font-bold shrink-0">
-                  {i + 1}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <ProductPicker
-                    value={item.id}
-                    onChange={(id) =>
-                      setWeeklyFavs((prev) =>
-                        prev.map((x, j) => (j === i ? { ...x, id } : x))
-                      )
-                    }
-                  />
-                </div>
-              </div>
-              <div className="flex items-center gap-2 sm:gap-3">
-                <div className="flex flex-col gap-1 flex-1 sm:flex-none sm:shrink-0">
-                  <p className="text-[10px] text-muted-foreground uppercase tracking-wide">Type</p>
-                  <select
-                    value={item.type}
-                    onChange={(e) =>
-                      setWeeklyFavs((prev) =>
-                        prev.map((x, j) =>
-                          j === i
-                            ? { ...x, type: e.target.value as "regular" | "greenLion" | "recharge" }
-                            : x
-                        )
-                      )
-                    }
-                    className="text-xs rounded-lg border bg-background px-2 py-1.5 min-w-[120px]"
-                  >
-                    {TYPE_OPTIONS.map((o) => (
-                      <option key={o.value} value={o.value}>{o.label}</option>
-                    ))}
-                  </select>
-                </div>
-                <button
-                  onClick={() => setWeeklyFavs((prev) => prev.filter((_, j) => j !== i))}
-                  className="p-1.5 rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors shrink-0 touch-manipulation"
-                  style={{ touchAction: 'manipulation' }}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </button>
-              </div>
-            </div>
-          ))}
-          {weeklyFavs.length < 8 && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() =>
-                setWeeklyFavs((prev) => [...prev, { id: 0, type: "regular" }])
-              }
-              className="gap-1.5"
-            >
-              <Plus className="h-3.5 w-3.5" /> Add Slot
-            </Button>
-          )}
-        </div>
-      </SectionCard>
-      <div className="flex justify-end">
-        <Button 
-          onClick={() => void saveSetting("weekly_favorites", weeklyFavs)} 
-          disabled={saving}
-          className="w-full sm:w-auto touch-manipulation"
-          style={{ touchAction: 'manipulation' }}
-        >
-          <Save className="h-4 w-4 mr-2" />
-          Save Weekly Favorites
-        </Button>
-      </div>
-    </div>
-  );
-
-  // ─── Trending Sections Tab ──────────────────────────────────────────────────
-
-  const TrendingTab = (
-    <div className="space-y-6">
-      <SectionCard title="Trending Product Sections">
-        <p className="text-xs text-muted-foreground mb-4">
-          Configure the "Trending in..." carousels on the homepage. Add product IDs (comma-separated) or leave blank to auto-generate from category.
-        </p>
-        <div className="space-y-4">
-          {trendingSections.map((section, i) => (
-            <div key={i} className="rounded-xl border p-4 space-y-3 bg-muted/20">
-              <div className="flex items-center justify-between">
-                <p className="text-sm font-medium">Section {i + 1}</p>
-                <button
-                  onClick={() => setTrendingSections((prev) => prev.filter((_, j) => j !== i))}
-                  className="p-1.5 rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </button>
-              </div>
-              <div className="grid gap-3 sm:grid-cols-2">
-                <div className="space-y-1.5">
-                  <Label className="text-xs">Section Title</Label>
-                  <Input
-                    value={section.title}
-                    onChange={(e) => setTrendingSections((prev) => prev.map((s, j) => j === i ? { ...s, title: e.target.value } : s))}
-                    placeholder="e.g. Trending in Smartphones"
-                    className="text-sm"
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <Label className="text-xs">Category Filter</Label>
-                  <Input
-                    value={section.category}
-                    onChange={(e) => setTrendingSections((prev) => prev.map((s, j) => j === i ? { ...s, category: e.target.value } : s))}
-                    placeholder="e.g. Smartphones, Audio, Tablets..."
-                    className="text-sm"
-                  />
-                </div>
-              </div>
-              <div className="space-y-1.5">
-                <Label className="text-xs">Product IDs (comma-separated, leave blank for auto)</Label>
-                <Input
-                  value={(section.productIds || []).join(", ")}
-                  onChange={(e) => {
-                    const ids = e.target.value.split(",").map(s => parseInt(s.trim())).filter(n => !isNaN(n));
-                    setTrendingSections((prev) => prev.map((s, j) => j === i ? { ...s, productIds: ids } : s));
-                  }}
-                  placeholder="e.g. 500, 501, 502 (blank = auto from category)"
-                  className="text-sm font-mono"
-                />
-              </div>
-            </div>
-          ))}
-          <Button
-            variant="outline" size="sm"
-            onClick={() => setTrendingSections((prev) => [...prev, { title: "", category: "", productIds: [] }])}
-            className="gap-1.5"
-          >
-            <Plus className="h-3.5 w-3.5" /> Add Trending Section
-          </Button>
-        </div>
-      </SectionCard>
-      <div className="flex justify-end">
-        <Button onClick={() => void saveSetting("trending_sections", trendingSections)} disabled={saving} className="w-full sm:w-auto">
-          <Save className="h-4 w-4 mr-2" /> Save Trending Sections
-        </Button>
-      </div>
-    </div>
-  );
-
-  // ─── Brands Tab ────────────────────────────────────────────────────────────
-
-  const BrandsTab = (
-    <div className="space-y-6">
-      <SectionCard title="Shop by Brand">
-        <p className="text-xs text-muted-foreground mb-4">
-          Configure which brands appear in the "Shop by Brand" section. Leave empty to auto-detect from product catalog.
-        </p>
-        {catalogBrands.length > 0 && (
-          <div className="flex flex-col sm:flex-row gap-2 mb-4">
-            <Select
-              onValueChange={(name) => {
-                if (!name || brands.some((b) => b.name === name)) return;
-                setBrands((prev) => [
-                  ...prev,
-                  {
-                    name,
-                    logoUrl: "",
-                    link: `/products?brand=${encodeURIComponent(name)}`,
-                    featured: true,
-                  },
-                ]);
-              }}
-            >
-              <SelectTrigger className="w-full sm:max-w-xs text-sm">
-                <SelectValue placeholder="Add brand from catalog…" />
-              </SelectTrigger>
-              <SelectContent>
-                {catalogBrands
-                  .filter((b) => !brands.some((row) => row.name === b))
-                  .map((b) => (
-                    <SelectItem key={b} value={b}>
-                      {b} ({countProductsForBrandName(catalogProducts, b)} products)
-                    </SelectItem>
-                  ))}
-              </SelectContent>
-            </Select>
-            {catalogLoading && (
-              <span className="text-xs text-muted-foreground self-center">Loading catalog…</span>
-            )}
-          </div>
-        )}
-        <div className="space-y-3">
-          {brands.map((brand, i) => {
-            const productCount = countProductsForBrandName(catalogProducts, brand.name);
-            return (
-            <div key={i} className="flex flex-col gap-2 rounded-xl border p-3 bg-muted/20">
-            <div className="flex items-center gap-3">
-              {brand.logoUrl && (
-                <img src={resolveImageUrl(brand.logoUrl)} alt={brand.name} className="h-8 w-8 rounded object-cover border shrink-0" />
-              )}
-              <div className="flex-1 grid gap-2 sm:grid-cols-3">
-                <Input
-                  value={brand.name}
-                  onChange={(e) => setBrands((prev) => prev.map((b, j) => j === i ? { ...b, name: e.target.value } : b))}
-                  placeholder="Brand Name"
-                  className="text-sm"
-                />
-                <Input
-                  value={brand.logoUrl}
-                  onChange={(e) => setBrands((prev) => prev.map((b, j) => j === i ? { ...b, logoUrl: e.target.value } : b))}
-                  placeholder="Logo URL"
-                  className="text-sm"
-                />
-                <Input
-                  value={brand.link}
-                  onChange={(e) => setBrands((prev) => prev.map((b, j) => j === i ? { ...b, link: e.target.value } : b))}
-                  placeholder="Link (e.g. /category/Apple)"
-                  className="text-sm"
-                />
-              </div>
-              <div className="flex items-center gap-2 shrink-0">
-                <Switch
-                  checked={brand.featured}
-                  onCheckedChange={(v) => setBrands((prev) => prev.map((b, j) => j === i ? { ...b, featured: v } : b))}
-                />
-                <button
-                  onClick={() => setBrands((prev) => prev.filter((_, j) => j !== i))}
-                  className="p-1.5 rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </button>
-              </div>
-            </div>
-            <div className="flex flex-wrap items-center gap-2 pl-11 sm:pl-0">
-              {!catalogLoading && brand.name.trim() && (
-                <Badge variant={productCount > 0 ? "secondary" : "outline"} className={cn("text-[10px]", productCount === 0 && "border-amber-500/40 text-amber-800 dark:text-amber-300")}>
-                  {productCount > 0 ? `${productCount} products on storefront` : "No products on storefront"}
-                </Badge>
-              )}
-              {brand.name.trim() && productCount > 0 && (
-                <Button variant="link" size="sm" className="h-auto p-0 text-xs" asChild>
-                  <Link to={`/admin/products?brand=${encodeURIComponent(brand.name.trim())}`}>
-                    Manage products
-                  </Link>
-                </Button>
-              )}
-            </div>
-            </div>
-          );
-          })}
-          <Button
-            variant="outline" size="sm"
-            onClick={() => setBrands((prev) => [...prev, { name: "", logoUrl: "", link: "", featured: true }])}
-            className="gap-1.5"
-          >
-            <Plus className="h-3.5 w-3.5" /> Add Brand
-          </Button>
-        </div>
-      </SectionCard>
-      <div className="flex justify-end">
-        <Button onClick={() => void saveSetting("brand_showcase", brands)} disabled={saving} className="w-full sm:w-auto">
-          <Save className="h-4 w-4 mr-2" /> Save Brands
-        </Button>
-      </div>
-    </div>
-  );
-
-  // ─── Categories Tab ────────────────────────────────────────────────────────
-
-  const CategoriesTab = (
-    <div className="space-y-6">
-      <SectionCard title="Homepage Categories">
-        <p className="text-xs text-muted-foreground mb-4">
-          Control which categories appear on the homepage "Shop by Category" grid. Toggle visibility, rename, or reorder.
-        </p>
-        <div className="space-y-2">
-          {categories.map((cat, i) => {
-            const canonical = resolveHomepageCategoryLabel(cat.name, cat.linkTo);
-            const productCount = countProductsForHomepageCategory(catalogProducts, cat.name, cat.linkTo);
-            return (
-            <div key={i} className="flex flex-col gap-2 rounded-xl border p-3 bg-muted/20">
-              <div className="flex items-center gap-3">
-              <span className="text-xs text-muted-foreground w-5 text-center shrink-0">{i + 1}</span>
-              <div className="flex-1 grid gap-2 sm:grid-cols-3">
-                <div className="space-y-1">
-                  <select
-                    value={CANONICAL_STOREFRONT_CATEGORIES.includes(cat.name as (typeof CANONICAL_STOREFRONT_CATEGORIES)[number]) ? cat.name : "__custom__"}
-                    onChange={(e) => {
-                      const v = e.target.value;
-                      if (v === "__custom__") return;
-                      const link = SUGGESTED_CATEGORY_LINKS.find((l) => l.label === v)?.path ?? cat.linkTo;
-                      setCategories((prev) =>
-                        prev.map((c, j) => (j === i ? { ...c, name: v, linkTo: link } : c))
-                      );
-                    }}
-                    className="flex h-9 w-full rounded-md border border-input bg-background px-2 text-sm"
-                  >
-                    <option value="__custom__">Custom name…</option>
-                    {CANONICAL_STOREFRONT_CATEGORIES.map((c) => (
-                      <option key={c} value={c}>{c}</option>
-                    ))}
-                  </select>
-                  {!CANONICAL_STOREFRONT_CATEGORIES.includes(cat.name as (typeof CANONICAL_STOREFRONT_CATEGORIES)[number]) && (
-                    <Input
-                      value={cat.name}
-                      onChange={(e) => setCategories((prev) => prev.map((c, j) => j === i ? { ...c, name: e.target.value } : c))}
-                      placeholder="Category Name"
-                      className="text-sm"
-                    />
-                  )}
-                </div>
-                <select
-                  value={SUGGESTED_CATEGORY_LINKS.some((l) => l.path === cat.linkTo) ? cat.linkTo : "__custom_link__"}
-                  onChange={(e) => {
-                    const v = e.target.value;
-                    if (v === "__custom_link__") return;
-                    setCategories((prev) => prev.map((c, j) => (j === i ? { ...c, linkTo: v } : c)));
-                  }}
-                  className="flex h-9 w-full rounded-md border border-input bg-background px-2 text-sm"
-                >
-                  <option value="__custom_link__">Custom link…</option>
-                  {SUGGESTED_CATEGORY_LINKS.map((l) => (
-                    <option key={l.path} value={l.path}>{l.label} → {l.path}</option>
-                  ))}
-                </select>
-                {!SUGGESTED_CATEGORY_LINKS.some((l) => l.path === cat.linkTo) && (
-                  <Input
-                    value={cat.linkTo}
-                    onChange={(e) => setCategories((prev) => prev.map((c, j) => j === i ? { ...c, linkTo: e.target.value } : c))}
-                    placeholder="Link (e.g. /smartphones)"
-                    className="text-sm"
-                  />
-                )}
-                <Input
-                  value={cat.icon}
-                  onChange={(e) => setCategories((prev) => prev.map((c, j) => j === i ? { ...c, icon: e.target.value } : c))}
-                  placeholder="Icon name (e.g. Smartphone)"
-                  className="text-sm"
-                />
-              </div>
-              <div className="flex items-center gap-2 shrink-0">
-                <Switch
-                  checked={cat.enabled}
-                  onCheckedChange={(v) => setCategories((prev) => prev.map((c, j) => j === i ? { ...c, enabled: v } : c))}
-                />
-                <div className="flex flex-col gap-0.5">
-                  <button
-                    onClick={() => {
-                      if (i === 0) return;
-                      setCategories((prev) => {
-                        const next = [...prev];
-                        [next[i - 1], next[i]] = [next[i], next[i - 1]];
-                        return next;
-                      });
-                    }}
-                    disabled={i === 0}
-                    className="p-0.5 text-muted-foreground hover:text-foreground disabled:opacity-30"
-                  >
-                    <ChevronRight className="h-3 w-3 -rotate-90" />
-                  </button>
-                  <button
-                    onClick={() => {
-                      if (i === categories.length - 1) return;
-                      setCategories((prev) => {
-                        const next = [...prev];
-                        [next[i], next[i + 1]] = [next[i + 1], next[i]];
-                        return next;
-                      });
-                    }}
-                    disabled={i === categories.length - 1}
-                    className="p-0.5 text-muted-foreground hover:text-foreground disabled:opacity-30"
-                  >
-                    <ChevronRight className="h-3 w-3 rotate-90" />
-                  </button>
-                </div>
-                <button
-                  onClick={() => setCategories((prev) => prev.filter((_, j) => j !== i))}
-                  className="p-1.5 rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </button>
-              </div>
-            </div>
-            <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground pl-8 sm:pl-0">
-              {!catalogLoading && (
-                <>
-                  <Badge variant="secondary" className="text-[10px]">
-                    {productCount} products · maps to {canonical}
-                  </Badge>
-                  <Button variant="link" size="sm" className="h-auto p-0 text-xs gap-1" asChild>
-                    <Link to={`/admin/catalog`}>
-                      <ExternalLink className="h-3 w-3" />
-                      Catalog
-                    </Link>
-                  </Button>
-                  <Button variant="link" size="sm" className="h-auto p-0 text-xs" asChild>
-                    <Link to={`/admin/products?category=${encodeURIComponent(canonical)}`}>
-                      Manage products
-                    </Link>
-                  </Button>
-                </>
-              )}
-            </div>
-            </div>
-          );
-          })}
-          <Button
-            variant="outline" size="sm"
-            onClick={() => setCategories((prev) => [...prev, { name: "", icon: "Smartphone", linkTo: "/", enabled: true }])}
-            className="gap-1.5"
-          >
-            <Plus className="h-3.5 w-3.5" /> Add Category
-          </Button>
-        </div>
-      </SectionCard>
-      <div className="flex justify-end">
-        <Button onClick={() => void saveSetting("homepage_categories", categories)} disabled={saving} className="w-full sm:w-auto">
-          <Save className="h-4 w-4 mr-2" /> Save Categories
-        </Button>
-      </div>
-    </div>
-  );
-
-  const CommerceTab = (
-    <div className="space-y-5">
-      <p className="text-sm text-muted-foreground">
-        Checkout shipping and WhatsApp contact for product requests. Values must match what customers see at checkout and on order submission.
-      </p>
-      <SectionCard title="Storefront commerce">
-        <div className="grid gap-4 sm:grid-cols-2">
-          <Field label="Delivery fee (USD)" hint="Shown on checkout and applied when orders are created.">
-            <Input
-              type="number"
-              min={0}
-              step={0.01}
-              value={deliveryFee}
-              onChange={(e) => setDeliveryFee(e.target.value)}
-            />
-          </Field>
-          <Field label="Free shipping threshold (USD)" hint="Cart and checkout show free delivery at or above this subtotal.">
-            <Input
-              type="number"
-              min={0}
-              step={1}
-              value={freeShippingThreshold}
-              onChange={(e) => setFreeShippingThreshold(e.target.value)}
-            />
-          </Field>
-          <Field label="WhatsApp number" hint="Digits only, country code included (e.g. 96181861811).">
-            <Input
-              value={whatsappNumber}
-              onChange={(e) => setWhatsappNumber(e.target.value.replace(/\D/g, ""))}
-              placeholder="96181861811"
-            />
-          </Field>
-          <Field label="Instagram URL" hint="Full profile URL. Leave empty to hide the icon in the footer.">
-            <Input value={instagramUrl} onChange={(e) => setInstagramUrl(e.target.value)} placeholder="https://instagram.com/yourshop" />
-          </Field>
-          <Field label="Facebook URL" hint="Full page URL. Leave empty to hide the icon in the footer.">
-            <Input value={facebookUrl} onChange={(e) => setFacebookUrl(e.target.value)} placeholder="https://facebook.com/yourshop" />
-          </Field>
-        </div>
-      </SectionCard>
-      <div className="flex justify-end">
-        <Button
-          onClick={async () => {
-            const fee = parseFloat(deliveryFee);
-            const threshold = parseFloat(freeShippingThreshold);
-            if (!Number.isFinite(fee) || fee < 0) {
-              toast({ title: "Invalid delivery fee", variant: "destructive" });
-              return;
-            }
-            if (!Number.isFinite(threshold) || threshold <= 0) {
-              toast({ title: "Invalid free shipping threshold", variant: "destructive" });
-              return;
-            }
-            if (!whatsappNumber.trim()) {
-              toast({ title: "WhatsApp number is required", variant: "destructive" });
-              return;
-            }
-            setSaving(true);
-            try {
-              const feeRes = await adminFetch("/api/admin/settings/delivery_fee", {
-                method: "PUT",
-                body: JSON.stringify({ value: fee }),
-                headers: { "Content-Type": "application/json" },
-              });
-              if (!feeRes.ok) throw new Error(await feeRes.text());
-              const thresholdRes = await adminFetch("/api/admin/settings/free_shipping_threshold", {
-                method: "PUT",
-                body: JSON.stringify({ value: threshold }),
-                headers: { "Content-Type": "application/json" },
-              });
-              if (!thresholdRes.ok) throw new Error(await thresholdRes.text());
-              const waRes = await adminFetch("/api/admin/settings/whatsapp_number", {
-                method: "PUT",
-                body: JSON.stringify({ value: whatsappNumber.trim() }),
-                headers: { "Content-Type": "application/json" },
-              });
-              if (!waRes.ok) throw new Error(await waRes.text());
-              const igRes = await adminFetch("/api/admin/settings/instagram_url", {
-                method: "PUT",
-                body: JSON.stringify({ value: instagramUrl.trim() }),
-                headers: { "Content-Type": "application/json" },
-              });
-              if (!igRes.ok) throw new Error(await igRes.text());
-              const fbRes = await adminFetch("/api/admin/settings/facebook_url", {
-                method: "PUT",
-                body: JSON.stringify({ value: facebookUrl.trim() }),
-                headers: { "Content-Type": "application/json" },
-              });
-              if (!fbRes.ok) throw new Error(await fbRes.text());
-              toast({ title: "Saved!", description: "Commerce settings updated on the live site." });
-              refreshLive();
-            } catch (err: unknown) {
-              toast({
-                title: "Save failed",
-                description: err instanceof Error ? err.message : "Unknown error",
-                variant: "destructive",
-              });
-            } finally {
-              setSaving(false);
-            }
-          }}
-          disabled={saving}
-          className="w-full sm:w-auto"
-        >
-          <Save className="h-4 w-4 mr-2" /> Save Commerce Settings
-        </Button>
-      </div>
-    </div>
-  );
-
-  const tabContent: Record<TabId, React.ReactNode> = {
-    announcements:    AnnouncementsTab,
-    hero:             HeroTab,
-    flagship:         FlagshipTab,
-    new_arrivals:     NewArrivalsTab,
-    weekly_favorites: WeeklyFavoritesTab,
-    trending:         TrendingTab,
-    brands:           BrandsTab,
-    categories:       CategoriesTab,
-    commerce:         CommerceTab,
+  const panelProps = {
+    announcements,
+    setAnnouncements,
+    hero,
+    setHero,
+    flagship,
+    setFlagship,
+    newArrivals,
+    setNewArrivals,
+    weeklyFavs,
+    setWeeklyFavs,
+    trendingSections,
+    setTrendingSections,
+    brands,
+    setBrands,
+    categories,
+    setCategories,
+    deliveryFee,
+    setDeliveryFee,
+    freeShippingThreshold,
+    setFreeShippingThreshold,
+    whatsappNumber,
+    setWhatsappNumber,
+    instagramUrl,
+    setInstagramUrl,
+    facebookUrl,
+    setFacebookUrl,
+    saving,
+    saveSetting,
+    catalogSummary,
+    catalogLoading,
+    catalogBrands,
+    saveCommerce,
   };
 
+  const activePanel = (() => {
+    switch (activeTab) {
+      case "announcements":
+        return <AnnouncementsPanel {...panelProps} />;
+      case "hero":
+        return <HeroPanel {...panelProps} />;
+      case "flagship":
+        return <FlagshipPanel {...panelProps} />;
+      case "new_arrivals":
+        return <NewArrivalsPanel {...panelProps} />;
+      case "weekly_favorites":
+        return <WeeklyFavoritesPanel {...panelProps} />;
+      case "trending":
+        return <TrendingPanel {...panelProps} />;
+      case "brands":
+        return <BrandsPanel {...panelProps} />;
+      case "categories":
+        return <CategoriesPanel {...panelProps} />;
+      case "commerce":
+        return <CommercePanel {...panelProps} />;
+      default:
+        return null;
+    }
+  })();
+
   return (
-    <div className="flex flex-col h-full">
-      {/* Header */}
-      <div className="px-4 sm:px-6 pt-4 sm:pt-6 pb-3 sm:pb-4 border-b">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex items-center justify-between gap-3 mb-2">
-            <h1 className="text-xl sm:text-2xl font-bold flex items-center gap-2">
-              <Layout className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
-              <span>Site Content</span>
-            </h1>
-            <Badge variant="outline" className="gap-1.5 shrink-0 text-xs">
-              <Package className="h-3 w-3" />
-              <span className="hidden xs:inline">9 sections</span>
-              <span className="xs:hidden">9</span>
-            </Badge>
-          </div>
-          <p className="text-xs sm:text-sm text-muted-foreground">
-            Control what's displayed in each section of your homepage. All changes go live instantly.
-          </p>
-        </div>
-      </div>
-
-      {/* Tabs */}
-      <div className="border-b bg-muted/20 px-4 sm:px-6">
-        <div className="max-w-4xl mx-auto flex overflow-x-auto no-scrollbar gap-1">
-          {TABS.map(({ id, label, icon: Icon }) => (
-            <button
-              key={id}
-              onClick={() => setActiveTab(id)}
-              className={cn(
-                "flex items-center gap-1.5 px-3 py-3 text-sm font-medium border-b-2 transition-all shrink-0 whitespace-nowrap",
-                activeTab === id
-                  ? "border-foreground text-foreground"
-                  : "border-transparent text-muted-foreground hover:text-foreground"
-              )}
-            >
-              <Icon className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">{label}</span>
-              <span className="sm:hidden">{label.split(" ")[0]}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="flex-1 overflow-y-auto min-h-0">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 pb-24">
-          {tabContent[activeTab]}
-        </div>
-      </div>
-    </div>
+    <AdminPageShell
+      maxWidth="md"
+      title={
+        <span className="flex items-center gap-2">
+          <Layout className="h-5 w-5 sm:h-6 sm:w-6 text-primary shrink-0" />
+          Site Content
+        </span>
+      }
+      description="Control what's displayed in each section of your homepage. All changes go live instantly."
+      headerExtra={
+        <Badge variant="outline" className="gap-1.5 shrink-0 text-xs">
+          <Package className="h-3 w-3" />
+          9 sections
+        </Badge>
+      }
+      tabs={<SiteContentTabs activeTab={activeTab} onTabChange={setActiveTab} />}
+    >
+      {activePanel}
+    </AdminPageShell>
   );
 };
 

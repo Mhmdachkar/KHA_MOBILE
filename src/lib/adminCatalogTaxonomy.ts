@@ -235,3 +235,5 @@ export function countProductsForBrandName(products: AdminListProduct[], brandNam
   if (!trimmed) return 0;
   return filterAdminProductsByBrand(products, trimmed).length;
 }
+
+export { buildCategoryCountMap, buildBrandCountMap } from "@/lib/adminCatalogSummary";

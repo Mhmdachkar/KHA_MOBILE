@@ -87,7 +87,7 @@ const AdminAuditLog = () => {
   };
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full min-h-0 min-w-0 w-full flex flex-col overflow-hidden">
       {/* Header */}
       <div className="px-4 sm:px-6 pt-4 sm:pt-6 pb-3 border-b">
         <div className="flex items-center justify-between gap-3 mb-3">

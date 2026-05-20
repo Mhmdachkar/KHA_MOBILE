@@ -8,13 +8,12 @@ import {
   FolderTree,
   BarChart3,
   ChevronRight,
-  EyeOff,
   Tags,
 } from "lucide-react";
 import { adminFetch } from "@/lib/adminApi";
 import type { AdminProductStats } from "@/types/adminAnalytics";
-import { useAdminMergedCatalog } from "@/lib/useAdminMergedCatalog";
-import { buildCategoryGroups } from "@/lib/adminCatalogTaxonomy";
+import { useAdminCatalogSummary } from "@/hooks/useAdminCatalogSummary";
+import { AdminPageShell } from "@/components/admin/AdminPageShell";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -51,9 +50,10 @@ const StatLink = ({
   <Link
     to={to}
     className={cn(
-      "rounded-xl border bg-card p-4 flex items-center gap-3 transition-colors hover:bg-muted/40",
+      "rounded-xl border bg-card p-4 flex items-center gap-3 transition-colors hover:bg-muted/40 min-h-[72px] touch-manipulation",
       accent
     )}
+    style={{ touchAction: "manipulation" }}
   >
     <div className="h-10 w-10 rounded-lg bg-muted flex items-center justify-center shrink-0">
       <Icon className="h-5 w-5 text-muted-foreground" />
@@ -71,7 +71,7 @@ const AdminHome = () => {
   const [productStats, setProductStats] = useState<AdminProductStats | null>(null);
   const [orderStats, setOrderStats] = useState<OrderStats | null>(null);
   const [recentAudit, setRecentAudit] = useState<AuditEntry[]>([]);
-  const { products, loading: catalogLoading } = useAdminMergedCatalog();
+  const { summary, loading: catalogLoading } = useAdminCatalogSummary();
 
   useEffect(() => {
     let cancelled = false;
@@ -105,176 +105,167 @@ const AdminHome = () => {
   }, []);
 
   const taxonomyAlerts = useMemo(() => {
-    if (catalogLoading) return [];
+    if (catalogLoading || !summary) return [];
     const alerts: { message: string; to: string }[] = [];
-    const nonCanonical = buildCategoryGroups(products).filter((g) => !g.isCanonical);
-    if (nonCanonical.length > 0) {
+    if (summary.nonCanonicalCategoryCount > 0) {
       alerts.push({
-        message: `${nonCanonical.length} categor${nonCanonical.length === 1 ? "y uses" : "ies use"} non-canonical product labels`,
+        message: `${summary.nonCanonicalCategoryCount} categor${summary.nonCanonicalCategoryCount === 1 ? "y uses" : "ies use"} non-canonical product labels`,
         to: "/admin/catalog",
       });
     }
-    const inactiveLive = products.filter((p) => p.onStorefront && !p.isActive).length;
-    if (inactiveLive > 0) {
+    if (summary.inactiveOnStorefront > 0) {
       alerts.push({
-        message: `${inactiveLive} product${inactiveLive === 1 ? "" : "s"} on storefront marked inactive`,
+        message: `${summary.inactiveOnStorefront} product${summary.inactiveOnStorefront === 1 ? "" : "s"} on storefront marked inactive`,
         to: "/admin/products?status=inactive&source=storefront",
       });
     }
-    const dbOnly = products.filter((p) => p.source === "database_only").length;
-    if (dbOnly > 0) {
+    if (productStats && productStats.inactive > 0) {
       alerts.push({
-        message: `${dbOnly} database-only product${dbOnly === 1 ? "" : "s"} not visible on shop`,
-        to: "/admin/products?source=database_only",
+        message: `${productStats.inactive} inactive product${productStats.inactive === 1 ? "" : "s"} in database`,
+        to: "/admin/products?status=inactive",
       });
     }
     return alerts;
-  }, [products, catalogLoading]);
+  }, [summary, catalogLoading, productStats]);
 
   return (
-    <div className="space-y-6 max-w-5xl">
-      <div>
-        <h1 className="text-2xl font-bold">Overview</h1>
-        <p className="text-sm text-muted-foreground mt-0.5">
-          Quick snapshot of your store and catalog health.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        <StatLink
-          to="/admin/products"
-          icon={Package}
-          label="DB products"
-          value={productStats?.total ?? "—"}
-          sub={
-            productStats
-              ? `${productStats.active} active · ${productStats.inactive} inactive`
-              : undefined
-          }
-        />
-        <StatLink
-          to="/admin/orders"
-          icon={ShoppingBag}
-          label="Orders"
-          value={orderStats?.total ?? "—"}
-          sub={orderStats ? `${orderStats.pending} pending` : undefined}
-          accent={
-            orderStats && orderStats.pending > 0
-              ? "border-amber-500/30"
-              : undefined
-          }
-        />
-        <StatLink
-          to="/admin/catalog"
-          icon={FolderTree}
-          label="Website catalog"
-          value={catalogLoading ? "…" : products.length}
-          sub="Merged storefront + database"
-        />
-        <StatLink
-          to="/admin/analytics"
-          icon={BarChart3}
-          label="Analytics"
-          value="View"
-          sub="Revenue & traffic"
-        />
-      </div>
-
-      {taxonomyAlerts.length > 0 && (
-        <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-4 space-y-2">
-          <p className="text-sm font-semibold flex items-center gap-2 text-amber-900 dark:text-amber-200">
-            <AlertTriangle className="h-4 w-4 shrink-0" />
-            Catalog attention
-          </p>
-          <ul className="space-y-2">
-            {taxonomyAlerts.map((a) => (
-              <li key={a.to + a.message}>
-                <Button variant="link" className="h-auto p-0 text-sm font-normal" asChild>
-                  <Link to={a.to}>{a.message}</Link>
-                </Button>
-              </li>
-            ))}
-          </ul>
+    <AdminPageShell
+      title="Overview"
+      description="Quick snapshot of your store and catalog health."
+      maxWidth="lg"
+    >
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          <StatLink
+            to="/admin/products"
+            icon={Package}
+            label="DB products"
+            value={productStats?.total ?? "—"}
+            sub={
+              productStats
+                ? `${productStats.active} active · ${productStats.inactive} inactive`
+                : undefined
+            }
+          />
+          <StatLink
+            to="/admin/orders"
+            icon={ShoppingBag}
+            label="Orders"
+            value={orderStats?.total ?? "—"}
+            sub={orderStats ? `${orderStats.pending} pending` : undefined}
+            accent={
+              orderStats && orderStats.pending > 0 ? "border-amber-500/30" : undefined
+            }
+          />
+          <StatLink
+            to="/admin/catalog"
+            icon={FolderTree}
+            label="Website catalog"
+            value={catalogLoading ? "…" : (summary?.storefrontCount ?? "—")}
+            sub="On the live storefront"
+          />
+          <StatLink
+            to="/admin/analytics"
+            icon={BarChart3}
+            label="Analytics"
+            value="View"
+            sub="Revenue & traffic"
+          />
         </div>
-      )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <div className="rounded-xl border bg-card p-4">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-semibold flex items-center gap-2">
-              <ScrollText className="h-4 w-4" />
-              Recent activity
-            </h2>
-            <Button variant="ghost" size="sm" className="text-xs h-8" asChild>
-              <Link to="/admin/audit-log">View all</Link>
-            </Button>
-          </div>
-          {recentAudit.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No recent actions recorded.</p>
-          ) : (
+        {taxonomyAlerts.length > 0 && (
+          <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-4 space-y-2">
+            <p className="text-sm font-semibold flex items-center gap-2 text-amber-900 dark:text-amber-200">
+              <AlertTriangle className="h-4 w-4 shrink-0" />
+              Catalog attention
+            </p>
             <ul className="space-y-2">
-              {recentAudit.map((e) => (
-                <li
-                  key={e.id}
-                  className="flex items-center justify-between gap-2 text-sm border-b last:border-0 pb-2 last:pb-0"
-                >
-                  <span className="capitalize truncate">
-                    {e.action}{" "}
-                    <span className="text-muted-foreground">{e.entity_type}</span>
-                    {e.entity_id && (
-                      <span className="font-mono text-xs ml-1">#{e.entity_id}</span>
-                    )}
-                  </span>
-                  <span className="text-[10px] text-muted-foreground shrink-0">
-                    {new Date(e.created_at).toLocaleDateString()}
-                  </span>
+              {taxonomyAlerts.map((a) => (
+                <li key={a.to + a.message}>
+                  <Button variant="link" className="h-auto p-0 text-sm font-normal" asChild>
+                    <Link to={a.to}>{a.message}</Link>
+                  </Button>
                 </li>
               ))}
             </ul>
-          )}
-        </div>
+          </div>
+        )}
 
-        <div className="rounded-xl border bg-card p-4">
-          <h2 className="text-sm font-semibold mb-3">Shortcuts</h2>
-          <div className="grid gap-2">
-            <Button variant="outline" className="justify-start h-10" asChild>
-              <Link to="/admin/catalog">
-                <Tags className="h-4 w-4 mr-2" />
-                Browse by category or brand
-              </Link>
-            </Button>
-            <Button variant="outline" className="justify-start h-10" asChild>
-              <Link to="/admin/products/new">
-                <Package className="h-4 w-4 mr-2" />
-                Add new product
-              </Link>
-            </Button>
-            <Button variant="outline" className="justify-start h-10" asChild>
-              <Link to="/admin/site-content">
-                <EyeOff className="h-4 w-4 mr-2" />
-                Edit homepage content
-              </Link>
-            </Button>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="rounded-xl border bg-card p-4 min-w-0">
+            <div className="flex items-center justify-between mb-3 gap-2">
+              <h2 className="text-sm font-semibold flex items-center gap-2">
+                <ScrollText className="h-4 w-4 shrink-0" />
+                Recent activity
+              </h2>
+              <Button variant="ghost" size="sm" className="text-xs h-8 shrink-0" asChild>
+                <Link to="/admin/audit-log">View all</Link>
+              </Button>
+            </div>
+            {recentAudit.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No recent actions recorded.</p>
+            ) : (
+              <ul className="space-y-2">
+                {recentAudit.map((e) => (
+                  <li
+                    key={e.id}
+                    className="flex items-center justify-between gap-2 text-sm border-b last:border-0 pb-2 last:pb-0 min-w-0"
+                  >
+                    <span className="capitalize truncate min-w-0">
+                      {e.action}{" "}
+                      <span className="text-muted-foreground">{e.entity_type}</span>
+                      {e.entity_id && (
+                        <span className="font-mono text-xs ml-1">#{e.entity_id}</span>
+                      )}
+                    </span>
+                    <span className="text-[10px] text-muted-foreground shrink-0">
+                      {new Date(e.created_at).toLocaleDateString()}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          <div className="rounded-xl border bg-card p-4 min-w-0">
+            <h2 className="text-sm font-semibold mb-3">Shortcuts</h2>
+            <div className="grid gap-2">
+              <Button variant="outline" className="justify-start h-10 w-full" asChild>
+                <Link to="/admin/catalog">
+                  <Tags className="h-4 w-4 mr-2 shrink-0" />
+                  Browse by category or brand
+                </Link>
+              </Button>
+              <Button variant="outline" className="justify-start h-10 w-full" asChild>
+                <Link to="/admin/products/new">
+                  <Package className="h-4 w-4 mr-2 shrink-0" />
+                  Add new product
+                </Link>
+              </Button>
+              <Button variant="outline" className="justify-start h-10 w-full" asChild>
+                <Link to="/admin/site-content">
+                  <BarChart3 className="h-4 w-4 mr-2 shrink-0" />
+                  Edit homepage content
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
 
-      {!catalogLoading && productStats && (
-        <p className="text-xs text-muted-foreground flex flex-wrap gap-2">
-          <Badge variant="outline" className="text-[10px]">
-            {products.filter((p) => p.onStorefront).length} on storefront
-          </Badge>
-          <Badge variant="outline" className="text-[10px]">
-            {products.filter((p) => p.source === "bundled").length} bundled only
-          </Badge>
-          {productStats.preorder > 0 && (
+        {!catalogLoading && summary && (
+          <p className="text-xs text-muted-foreground flex flex-wrap gap-2">
             <Badge variant="outline" className="text-[10px]">
-              {productStats.preorder} pre-orders in DB
+              {summary.storefrontCount} on storefront
             </Badge>
-          )}
-        </p>
-      )}
-    </div>
+            {summary.bundledOnly > 0 && (
+              <Badge variant="outline" className="text-[10px]">
+                {summary.bundledOnly} bundled in catalog
+              </Badge>
+            )}
+          </p>
+        )}
+      </div>
+    </AdminPageShell>
   );
 };
 

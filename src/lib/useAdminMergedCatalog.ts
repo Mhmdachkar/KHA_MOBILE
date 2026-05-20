@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, startTransition } from "react";
 import { loadStorefrontCatalogForAdmin, fetchAllAdminDbProductRows } from "@/lib/adminCatalogLoad";
 import {
   mergeAdminProductList,
@@ -21,6 +21,7 @@ export interface UseAdminMergedCatalogResult {
 
 /**
  * Loads full storefront catalog (all bundled website products) + every DB row, then merges.
+ * Use only on Products, Catalog, and Site Content (brands/categories). Prefer useAdminCatalogSummary for counts.
  */
 export function useAdminMergedCatalog(options?: { enabled?: boolean }): UseAdminMergedCatalogResult {
   const enabled = options?.enabled !== false;
@@ -47,7 +48,7 @@ export function useAdminMergedCatalog(options?: { enabled?: boolean }): UseAdmin
         description: error,
       });
     } else {
-      setDbRows(rows);
+      startTransition(() => setDbRows(rows));
       if (reportedTotal > 0 && rows.length < reportedTotal) {
         console.warn(
           `[useAdminMergedCatalog] Loaded ${rows.length} of ${reportedTotal} DB products`
@@ -67,8 +68,10 @@ export function useAdminMergedCatalog(options?: { enabled?: boolean }): UseAdmin
     setCatalogError(null);
     try {
       const { products, bundledCount, error } = await loadStorefrontCatalogForAdmin();
-      setStorefrontCatalog(products);
-      setStorefrontCount(bundledCount);
+      startTransition(() => {
+        setStorefrontCatalog(products);
+        setStorefrontCount(bundledCount);
+      });
       setCatalogError(error);
       if (bundledCount < 150) {
         console.warn("[useAdminMergedCatalog] Storefront catalog smaller than expected:", bundledCount);

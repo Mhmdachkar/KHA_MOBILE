@@ -193,7 +193,7 @@ const AdminOrders = () => {
   };
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full min-h-0 min-w-0 w-full flex flex-col overflow-hidden">
       {/* Header */}
       <div className="px-4 sm:px-6 pt-4 sm:pt-6 pb-3 border-b shrink-0">
         <div className="flex items-center justify-between gap-3 mb-3">
@@ -244,7 +244,7 @@ const AdminOrders = () => {
       {/* Content */}
       <div className="flex-1 flex overflow-hidden min-h-0">
         {/* Order list */}
-        <div className={`flex-1 overflow-y-auto ${selectedOrder ? "hidden md:block md:w-1/2 lg:w-3/5 border-r" : ""}`}>
+        <div className={`flex-1 min-h-0 overflow-y-auto overscroll-y-contain ${selectedOrder ? "hidden md:block md:w-1/2 lg:w-3/5 border-r" : ""}`}>
           {loading ? (
             <div className="flex items-center justify-center py-20">
               <div className="h-8 w-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />

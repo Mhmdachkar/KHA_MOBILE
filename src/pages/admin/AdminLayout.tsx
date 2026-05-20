@@ -3,6 +3,7 @@ import { Outlet, NavLink, useNavigate, useLocation } from "react-router-dom";
 import {
   Package, BarChart3, LogOut, Store, Menu, X, ChevronRight,
   ShieldCheck, Layout, Ticket, Image, ScrollText, ShoppingBag, FolderTree, LayoutDashboard,
+  Loader2,
 } from "lucide-react";
 import { adminFetch, getAdminToken, setAdminToken, siteUrl } from "@/lib/adminApi";
 import type { AdminProductStats } from "@/types/adminAnalytics";
@@ -85,7 +86,7 @@ const AdminLayout = () => {
     return () => {
       cancelled = true;
     };
-  }, [authChecked, location.pathname]);
+  }, [authChecked]);
 
   useEffect(() => {
     setDrawerOpen(false);
@@ -96,7 +97,18 @@ const AdminLayout = () => {
     navigate("/admin/login", { replace: true });
   };
 
-  if (!getAdminToken() || !authChecked) return null;
+  if (!getAdminToken()) return null;
+
+  if (!authChecked) {
+    return (
+      <div className="min-h-[100dvh] flex items-center justify-center bg-background p-6">
+        <div className="flex flex-col items-center gap-3 text-muted-foreground">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <p className="text-sm">Loading admin…</p>
+        </div>
+      </div>
+    );
+  }
 
   const sidebarContent = (
     <div className="flex flex-col h-full">
@@ -221,7 +233,7 @@ const AdminLayout = () => {
   );
 
   return (
-    <div className="min-h-screen flex bg-background">
+    <div className="h-[100dvh] min-h-[100dvh] flex bg-background overflow-hidden">
       {/* ── Desktop sidebar ── */}
       <aside className="hidden sm:flex flex-col w-56 shrink-0 bg-gradient-to-b from-slate-900 to-slate-950 fixed left-0 top-0 h-screen overflow-hidden z-40">
         {sidebarContent}
@@ -251,9 +263,9 @@ const AdminLayout = () => {
       </aside>
 
       {/* ── Main content ── */}
-      <div className="flex-1 flex flex-col min-w-0 sm:ml-56">
+      <div className="flex-1 flex flex-col min-w-0 min-h-0 h-full sm:ml-56 overflow-hidden">
         {/* Mobile top bar */}
-        <header className="sm:hidden sticky top-0 z-30 flex items-center gap-3 px-4 h-14 bg-slate-900 border-b border-white/10">
+        <header className="sm:hidden shrink-0 z-30 flex items-center gap-3 px-4 h-14 pt-[env(safe-area-inset-top)] bg-slate-900 border-b border-white/10">
           <button
             onClick={() => setDrawerOpen(true)}
             className="text-white/60 hover:text-white transition-colors touch-manipulation"
@@ -283,9 +295,11 @@ const AdminLayout = () => {
           ))}
         </header>
 
-        {/* Page content */}
-        <main className="flex-1">
-          <Outlet />
+        {/* Page content — bounded height for child scroll regions */}
+        <main className="flex-1 min-h-0 min-w-0 flex flex-col overflow-hidden">
+          <div className="flex-1 min-h-0 min-w-0 h-full">
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>

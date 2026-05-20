@@ -12,6 +12,7 @@ import {
   Package,
 } from "lucide-react";
 import { useAdminMergedCatalog } from "@/lib/useAdminMergedCatalog";
+import { AdminPageShell } from "@/components/admin/AdminPageShell";
 import {
   buildBrandGroups,
   buildCategoryGroups,
@@ -293,25 +294,24 @@ const AdminCatalog = () => {
   }
 
   return (
-    <div className="space-y-5 max-w-6xl">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-bold">Catalog</h1>
-          <p className="text-sm text-muted-foreground mt-0.5">
-            Browse products by category or brand across the full storefront catalog.
-          </p>
-        </div>
+    <AdminPageShell
+      maxWidth="lg"
+      title="Catalog"
+      description="Browse products by category or brand across the full storefront catalog."
+      headerExtra={
         <Button
           variant="outline"
           size="icon"
-          className="h-9 w-9 shrink-0 self-end sm:self-auto"
+          className="h-9 w-9 shrink-0"
           onClick={() => refresh()}
           disabled={loading}
           title="Refresh catalog"
         >
           <RefreshCw className={cn("h-4 w-4", loading && "animate-spin")} />
         </Button>
-      </div>
+      }
+      bodyClassName="space-y-5"
+    >
 
       {catalogError && !loading && (
         <p className="rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-900 dark:text-amber-200">
@@ -447,7 +447,7 @@ const AdminCatalog = () => {
           ))}
         </div>
       )}
-    </div>
+    </AdminPageShell>
   );
 };
 

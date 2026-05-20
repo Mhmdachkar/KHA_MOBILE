@@ -473,7 +473,7 @@ const AdminProductEditor = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-[calc(100vh-56px)] sm:min-h-screen">
+    <div className="flex flex-col h-full min-h-0 min-w-0 w-full overflow-hidden">
       {/* ── Top bar ── */}
       <div className="sticky top-0 sm:top-0 z-20 bg-background/95 backdrop-blur border-b px-4 sm:px-6 py-3 flex items-center gap-3">
         <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0 touch-manipulation" style={{ touchAction: 'manipulation' }} asChild>

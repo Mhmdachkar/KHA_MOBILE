@@ -63,9 +63,11 @@ import type { AdminAnalyticsSummary } from '@/types/adminAnalytics';
 import { adminFetch } from '@/lib/adminApi';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Info } from 'lucide-react';
+import { AdminPageShell } from '@/components/admin/AdminPageShell';
 
 const AdminDashboard = () => {
   const [dateRange, setDateRange] = useState<'today' | '7days' | '30days' | 'all'>('7days');
+  const [chartsTab, setChartsTab] = useState('overview');
   const [isLoading, setIsLoading] = useState(false);
   const [analytics, setAnalytics] = useState<AnalyticsSummary | null>(null);
   const [realtimeStats, setRealtimeStats] = useState(getRealtimeStats());
@@ -155,61 +157,63 @@ const AdminDashboard = () => {
     return calculateConversionFunnel(filteredSessions);
   }, [dateRange]);
 
+  const analyticsHeader = (
+    <div className="flex items-center gap-2 flex-wrap">
+      <Select value={dateRange} onValueChange={(value: 'today' | '7days' | '30days' | 'all') => setDateRange(value)}>
+        <SelectTrigger className="w-[140px] min-h-10">
+          <Calendar className="h-4 w-4 mr-2" />
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="today">Today</SelectItem>
+          <SelectItem value="7days">Last 7 days</SelectItem>
+          <SelectItem value="30days">Last 30 days</SelectItem>
+          <SelectItem value="all">All time</SelectItem>
+        </SelectContent>
+      </Select>
+      <Button variant="outline" size="icon" className="min-h-10 min-w-10" onClick={loadAnalytics} aria-label="Refresh session analytics">
+        <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+      </Button>
+      <Button
+        variant="outline"
+        size="icon"
+        className="min-h-10 min-w-10"
+        onClick={handleDownloadSessions}
+        aria-label="Download browser session data as CSV"
+      >
+        <Download className="h-4 w-4" />
+      </Button>
+    </div>
+  );
+
   if (!analytics) {
     return (
-      <div className="flex-1 flex items-center justify-center">
-        <div className="text-center">
-          <RefreshCw className="h-12 w-12 animate-spin text-primary mx-auto mb-4" />
-          <p className="text-muted-foreground">Loading analytics...</p>
+      <AdminPageShell
+        maxWidth="xl"
+        title="Analytics Dashboard"
+        description="Track your store performance and customer behavior"
+        headerExtra={analyticsHeader}
+      >
+        <div className="flex items-center justify-center py-20">
+          <div className="text-center">
+            <RefreshCw className="h-12 w-12 animate-spin text-primary mx-auto mb-4" />
+            <p className="text-muted-foreground">Loading analytics...</p>
+          </div>
         </div>
-      </div>
+      </AdminPageShell>
     );
   }
 
   const COLORS = ['#8b5cf6', '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#ec4899'];
 
   return (
-    <div className="bg-background">
-      {/* Header */}
-      <div className="border-b border-border bg-white sticky top-0 z-20">
-        <div className="container mx-auto px-4 sm:px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-elegant">Analytics Dashboard</h1>
-              <p className="text-sm text-muted-foreground mt-1">
-                Track your store performance and customer behavior
-              </p>
-            </div>
-            <div className="flex items-center gap-2 sm:gap-4">
-              <Select value={dateRange} onValueChange={(value: any) => setDateRange(value)}>
-                <SelectTrigger className="w-[140px]">
-                  <Calendar className="h-4 w-4 mr-2" />
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="today">Today</SelectItem>
-                  <SelectItem value="7days">Last 7 days</SelectItem>
-                  <SelectItem value="30days">Last 30 days</SelectItem>
-                  <SelectItem value="all">All time</SelectItem>
-                </SelectContent>
-              </Select>
-              <Button variant="outline" size="icon" onClick={loadAnalytics} aria-label="Refresh session analytics">
-                <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={handleDownloadSessions}
-                aria-label="Download browser session data as CSV"
-              >
-                <Download className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
+    <AdminPageShell
+      maxWidth="xl"
+      title="Analytics Dashboard"
+      description="Track your store performance and customer behavior"
+      headerExtra={analyticsHeader}
+      bodyClassName="space-y-6 min-w-0"
+    >
         <Alert className="mb-6 border-primary/30 bg-primary/5">
           <Info className="h-4 w-4" />
           <AlertTitle>Two data sources</AlertTitle>
@@ -321,8 +325,8 @@ const AdminDashboard = () => {
         </div>
 
         {/* Charts Section */}
-        <Tabs defaultValue="overview" className="mb-8">
-          <TabsList className="grid w-full grid-cols-4 mb-6">
+        <Tabs value={chartsTab} onValueChange={setChartsTab} className="mb-8 min-w-0">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 mb-6 min-w-0">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="traffic">Traffic</TabsTrigger>
             <TabsTrigger value="products">Products</TabsTrigger>
@@ -330,9 +334,11 @@ const AdminDashboard = () => {
           </TabsList>
 
           {/* Overview Tab */}
-          <TabsContent value="overview" className="space-y-6">
+          <TabsContent value="overview" className="space-y-6 min-w-0">
+            {chartsTab === 'overview' && (
+            <>
             {/* Visitors & Revenue Chart */}
-            <Card>
+            <Card className="min-w-0 overflow-hidden">
               <CardHeader>
                 <CardTitle>Visitors & Revenue Over Time</CardTitle>
                 <CardDescription>Daily breakdown of visitors and revenue</CardDescription>
@@ -472,11 +478,14 @@ const AdminDashboard = () => {
                 </CardContent>
               </Card>
             </div>
+            </>
+            )}
           </TabsContent>
 
           {/* Traffic Tab */}
-          <TabsContent value="traffic" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <TabsContent value="traffic" className="space-y-6 min-w-0">
+            {chartsTab === 'traffic' && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-w-0">
               {/* Traffic Sources */}
               <Card>
                 <CardHeader>
@@ -545,11 +554,13 @@ const AdminDashboard = () => {
                 </CardContent>
               </Card>
             </div>
+            )}
           </TabsContent>
 
           {/* Products Tab */}
-          <TabsContent value="products" className="space-y-6">
-            <Card>
+          <TabsContent value="products" className="space-y-6 min-w-0">
+            {chartsTab === 'products' && (
+            <Card className="min-w-0">
               <CardHeader>
                 <CardTitle>Top Products</CardTitle>
                 <CardDescription>Best performing products</CardDescription>
@@ -595,11 +606,13 @@ const AdminDashboard = () => {
                 </div>
               </CardContent>
             </Card>
+            )}
           </TabsContent>
 
           {/* Real-time Tab */}
-          <TabsContent value="realtime" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <TabsContent value="realtime" className="space-y-6 min-w-0">
+            {chartsTab === 'realtime' && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-w-0">
               {/* Active Pages */}
               <Card>
                 <CardHeader>
@@ -679,6 +692,8 @@ const AdminDashboard = () => {
                 </div>
               </CardContent>
             </Card>
+            </div>
+            )}
           </TabsContent>
         </Tabs>
 
@@ -714,8 +729,7 @@ const AdminDashboard = () => {
             </CardContent>
           </Card>
         </div>
-      </div>
-    </div>
+    </AdminPageShell>
   );
 };
 

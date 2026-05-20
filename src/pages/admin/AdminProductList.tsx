@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import {
   Plus, Pencil, Trash2, Search, Package, CheckCircle2,
@@ -27,6 +27,7 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
+import { AdminPageShell } from "@/components/admin/AdminPageShell";
 
 type AdminProduct = AdminListProduct;
 
@@ -67,6 +68,8 @@ const AdminProductList = () => {
   });
 
   const search = searchParams.get("search") ?? "";
+  const [searchDraft, setSearchDraft] = useState(search);
+
   const categoryFilter = searchParams.get("category") ?? "All";
   const brandFilter = searchParams.get("brand") ?? "All";
   const statusParam = searchParams.get("status");
@@ -88,6 +91,17 @@ const AdminProductList = () => {
     },
     [searchParams, setSearchParams]
   );
+
+  useEffect(() => {
+    setSearchDraft(search);
+  }, [search]);
+  useEffect(() => {
+    const t = setTimeout(() => {
+      if (searchDraft === search) return;
+      patchFilterParams({ search: searchDraft || undefined });
+    }, 300);
+    return () => clearTimeout(t);
+  }, [searchDraft, search, patchFilterParams]);
 
   const rowKey = (p: AdminProduct) => (p.dbId != null ? `db-${p.dbId}` : `s-${p.id}`);
   const editHref = (p: AdminProduct) =>
@@ -238,19 +252,8 @@ const AdminProductList = () => {
     });
   };
 
-  return (
-    <div className="p-4 sm:p-6 space-y-6 max-w-7xl mx-auto">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
-        <div className="flex-1">
-          <h1 className="text-xl sm:text-2xl font-bold">Products</h1>
-          <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
-            {listLoading
-              ? "Loading full website catalog…"
-              : `${products.length} products (${storefrontCount} on shop${stats.bundled > 0 ? `, ${stats.bundled} bundled` : ""}) — database edits go live instantly.`}
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
+  const headerActions = (
+    <div className="flex items-center gap-2 flex-wrap">
           <Button
             variant="outline"
             size="sm"
@@ -282,9 +285,21 @@ const AdminProductList = () => {
               <span className="xs:hidden">New</span>
             </Link>
           </Button>
-        </div>
-      </div>
+    </div>
+  );
 
+  return (
+    <AdminPageShell
+      maxWidth="xl"
+      title="Products"
+      description={
+        listLoading
+          ? "Loading full website catalog…"
+          : `${products.length} products (${storefrontCount} on shop${stats.bundled > 0 ? `, ${stats.bundled} bundled` : ""}) — database edits go live instantly.`
+      }
+      headerExtra={headerActions}
+      bodyClassName="space-y-6"
+    >
       {catalogError && !listLoading && (
         <p className="rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-900 dark:text-amber-200">
           Storefront catalog warning: {catalogError}. Showing bundled products from code; database rows are still listed.
@@ -310,8 +325,8 @@ const AdminProductList = () => {
             <Input
               placeholder="Search by name, brand, category…"
               className="pl-9"
-              value={search}
-              onChange={(e) => patchFilterParams({ search: e.target.value })}
+              value={searchDraft}
+              onChange={(e) => setSearchDraft(e.target.value)}
             />
           </div>
           <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
@@ -813,7 +828,7 @@ const AdminProductList = () => {
         confirmLabel="Delete"
         onConfirm={confirmState.onConfirm}
       />
-    </div>
+    </AdminPageShell>
   );
 };
 
