@@ -1,14 +1,26 @@
-import { useEffect, useState, useMemo, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { useState, useMemo, useCallback } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import {
   Plus, Pencil, Trash2, Search, Package, CheckCircle2,
   XCircle, LayoutGrid, LayoutList, RefreshCw,
-  TrendingUp, CheckSquare, Square, Eye, EyeOff, FolderEdit, X,
+  TrendingUp, CheckSquare, Square, Eye, EyeOff, FolderEdit, X, Download,
 } from "lucide-react";
-import { adminFetch } from "@/lib/adminApi";
+import { adminFetch, siteUrl } from "@/lib/adminApi";
 import { useCatalog } from "@/context/CatalogContext";
-import { resolvePrimaryImageWithStaticFallback } from "@/data/productLookup";
 import { resolveImageUrl } from "@/lib/imageUtils";
+import type { AdminListProduct } from "@/lib/adminProductListMerge";
+import { useAdminMergedCatalog } from "@/lib/useAdminMergedCatalog";
+import {
+  buildBrandGroups,
+  buildCategoryGroups,
+  filterAdminProductsByBrand,
+  filterAdminProductsByCategory,
+  filterAdminProductsBySource,
+  matchesAdminProductSearch,
+  type AdminSourceFilter,
+} from "@/lib/adminCatalogTaxonomy";
+import { CANONICAL_STOREFRONT_CATEGORIES } from "@/lib/storefrontCategories";
+import { downloadAdminProductsCsv } from "@/lib/adminCatalogExport";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -16,20 +28,17 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 
-interface AdminProduct {
-  dbId: number;
-  id: number;
-  name: string;
-  price: number | string;
-  image: string;
-  category: string;
-  brand?: string;
-  rating: number;
-  isActive?: boolean;
-  isPreorder?: boolean;
-}
+type AdminProduct = AdminListProduct;
 
-const CATEGORIES = ["All", "Smartphones", "Tablets", "Audio", "Computers", "Wearables", "Gaming", "Accessories", "Charging", "Electronics", "iPhone Cases", "Other"];
+const SOURCE_FILTERS: { value: AdminSourceFilter; label: string }[] = [
+  { value: "all", label: "All" },
+  { value: "storefront", label: "On shop" },
+  { value: "bundled", label: "Bundled" },
+  { value: "database", label: "DB" },
+  { value: "database_only", label: "DB only" },
+];
+
+const VALID_SOURCE = new Set<AdminSourceFilter>(SOURCE_FILTERS.map((s) => s.value));
 
 const StatCard = ({ icon: Icon, label, value, color }: { icon: typeof Package; label: string; value: number; color: string }) => (
   <div className={cn("flex items-center gap-2 sm:gap-3 rounded-xl border px-3 sm:px-4 py-2.5 sm:py-3", color)}>
@@ -44,14 +53,11 @@ const StatCard = ({ icon: Icon, label, value, color }: { icon: typeof Package; l
 const AdminProductList = () => {
   const { toast } = useToast();
   const { refresh: refreshCatalog } = useCatalog();
-  const [listLoading, setListLoading] = useState(true);
-  const [adminRows, setAdminRows] = useState<AdminProduct[]>([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { products, loading: listLoading, catalogError, storefrontCount, refresh } =
+    useAdminMergedCatalog();
   const [deleting, setDeleting] = useState<number | null>(null);
-  const [search, setSearch] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("All");
-  const [statusFilter, setStatusFilter] = useState<"all" | "active" | "inactive">("all");
   const [view, setView] = useState<"grid" | "list">("list");
-  const [refreshKey, setRefreshKey] = useState(0);
   const [selected, setSelected] = useState<Set<number>>(new Set());
   const [bulkBusy, setBulkBusy] = useState(false);
   const [showCatPicker, setShowCatPicker] = useState(false);
@@ -60,106 +66,84 @@ const AdminProductList = () => {
     open: false, title: "", description: "", onConfirm: () => {},
   });
 
-  const loadAdminProducts = useCallback(async () => {
-    console.log('[AdminProductList] Loading admin products...');
-    setListLoading(true);
-    const merged: AdminProduct[] = [];
-    try {
-      let page = 1;
-      const limit = 100;
-      while (true) {
-        console.log('[AdminProductList] Fetching page', page);
-        const res = await adminFetch(`/api/admin/products?page=${page}&limit=${limit}`);
-        console.log('[AdminProductList] Response status:', res.status);
-        const data = await res.json().catch(() => ({}));
-        if (!res.ok) {
-          console.error('[AdminProductList] Load failed:', data.error);
-          toast({
-            variant: "destructive",
-            title: "Could not load products",
-            description: data.error || `Server returned ${res.status}`,
-          });
-          setAdminRows([]);
-          return;
-        }
-        const rows = Array.isArray(data.products) ? data.products : [];
-        for (const p of rows) {
-          const dbId = Number(p.dbId);
-          if (!Number.isFinite(dbId)) continue;
-          const rawImg =
-            Array.isArray(p.images) && p.images.length > 0 ? p.images[0] : p.image;
-          const image = resolvePrimaryImageWithStaticFallback({
-            id: p.id,
-            image: rawImg,
-            legacyOverrideId: p.legacyOverrideId ?? null,
-          });
-          merged.push({
-            dbId,
-            id: Number(p.id),
-            name: p.name,
-            price: p.price,
-            image,
-            category: p.category,
-            brand: p.brand,
-            rating: p.rating,
-            isActive: p.isActive !== false,
-            isPreorder: p.isPreorder,
-          });
-        }
-        if (rows.length < limit) break;
-        page += 1;
-        if (page > 200) {
-          console.warn('[AdminProductList] Reached page limit (200)');
-          break;
-        }
+  const search = searchParams.get("search") ?? "";
+  const categoryFilter = searchParams.get("category") ?? "All";
+  const brandFilter = searchParams.get("brand") ?? "All";
+  const statusParam = searchParams.get("status");
+  const statusFilter: "all" | "active" | "inactive" =
+    statusParam === "active" || statusParam === "inactive" ? statusParam : "all";
+  const sourceParam = searchParams.get("source");
+  const sourceFilter: AdminSourceFilter = VALID_SOURCE.has(sourceParam as AdminSourceFilter)
+    ? (sourceParam as AdminSourceFilter)
+    : "all";
+
+  const patchFilterParams = useCallback(
+    (updates: Record<string, string | null | undefined>) => {
+      const next = new URLSearchParams(searchParams);
+      for (const [key, val] of Object.entries(updates)) {
+        if (val == null || val === "" || val === "All" || val === "all") next.delete(key);
+        else next.set(key, val);
       }
-      console.log('[AdminProductList] Loaded', merged.length, 'products');
-      setAdminRows(merged);
-    } catch (err) {
-      console.error('[AdminProductList] Error loading products:', err);
-      toast({
-        variant: "destructive",
-        title: "Error loading products",
-        description: err instanceof Error ? err.message : "Unknown error"
-      });
-    } finally {
-      setListLoading(false);
-    }
-  }, [toast]);
+      setSearchParams(next, { replace: true });
+    },
+    [searchParams, setSearchParams]
+  );
 
-  useEffect(() => {
-    void loadAdminProducts();
-  }, [loadAdminProducts, refreshKey]);
-
-  const products = useMemo(() => adminRows, [adminRows]);
+  const rowKey = (p: AdminProduct) => (p.dbId != null ? `db-${p.dbId}` : `s-${p.id}`);
+  const editHref = (p: AdminProduct) =>
+    p.dbId != null ? `/admin/products/${p.dbId}` : `/admin/products/new?override=${p.id}`;
+  const canBulkSelect = (p: AdminProduct) => p.dbId != null;
 
   const filtered = useMemo(() => {
-    return products.filter((p) => {
-      const matchSearch =
-        !search ||
-        p.name.toLowerCase().includes(search.toLowerCase()) ||
-        (p.brand || "").toLowerCase().includes(search.toLowerCase()) ||
-        p.category.toLowerCase().includes(search.toLowerCase());
-      const matchCat = categoryFilter === "All" || p.category === categoryFilter;
-      const matchStatus =
-        statusFilter === "all" ||
-        (statusFilter === "active" && p.isActive !== false) ||
-        (statusFilter === "inactive" && p.isActive === false);
-      return matchSearch && matchCat && matchStatus;
+    let list = products;
+    if (search.trim()) list = list.filter((p) => matchesAdminProductSearch(p, search));
+    if (categoryFilter !== "All") list = filterAdminProductsByCategory(list, categoryFilter);
+    if (brandFilter !== "All") list = filterAdminProductsByBrand(list, brandFilter);
+    if (sourceFilter !== "all") list = filterAdminProductsBySource(list, sourceFilter);
+    if (statusFilter === "active") list = list.filter((p) => p.isActive);
+    else if (statusFilter === "inactive") list = list.filter((p) => !p.isActive);
+    return list;
+  }, [products, search, categoryFilter, brandFilter, sourceFilter, statusFilter]);
+
+  const stats = useMemo(
+    () => ({
+      total: products.length,
+      onStorefront: products.filter((p) => p.onStorefront).length,
+      bundled: products.filter((p) => p.source === "bundled").length,
+      active: products.filter((p) => p.isActive).length,
+      inactive: products.filter((p) => !p.isActive).length,
+      preorder: products.filter((p) => p.isPreorder).length,
+    }),
+    [products]
+  );
+
+  const categoryPills = useMemo(
+    () => ["All", ...buildCategoryGroups(products).map((g) => g.canonical)],
+    [products]
+  );
+
+  const brandPills = useMemo(
+    () => ["All", ...buildBrandGroups(products).map((g) => g.displayName)],
+    [products]
+  );
+
+  const deleteProduct = (p: AdminProduct) => {
+    if (p.dbId == null) {
+      toast({
+        variant: "destructive",
+        title: "Bundled catalog item",
+        description:
+          "This product ships with the website code. Create a database override to manage it here, or remove it from src/data/.",
+      });
+      return;
+    }
+    setConfirmState({
+      open: true,
+      title: `Delete "${p.name}"?`,
+      description: "This product will be permanently removed. This action cannot be undone.",
+      onConfirm: () => doDeleteProduct(p.dbId!, p.name),
     });
-  }, [products, search, categoryFilter, statusFilter]);
-
-  const stats = useMemo(() => ({
-    total: products.length,
-    active: products.filter((p) => p.isActive !== false).length,
-    inactive: products.filter((p) => p.isActive === false).length,
-    preorder: products.filter((p) => p.isPreorder).length,
-  }), [products]);
-
-  const categories = useMemo(() => {
-    const cats = Array.from(new Set(products.map((p) => p.category)));
-    return ["All", ...cats.sort()];
-  }, [products]);
+  };
 
   const doDeleteProduct = async (dbId: number, name: string) => {
     console.log('[AdminProductList] Deleting product:', dbId, name);
@@ -175,7 +159,7 @@ const AdminProductList = () => {
       console.log('[AdminProductList] Product deleted successfully');
       toast({ title: "✓ Deleted successfully", description: `"${name}" has been removed.` });
       refreshCatalog();
-      setRefreshKey(k => k + 1);
+      refresh();
     } catch (err) {
       console.error('[AdminProductList] Delete error:', err);
       toast({ 
@@ -188,17 +172,20 @@ const AdminProductList = () => {
     }
   };
 
-  const priceLabel = (p: AdminProduct) =>
-    typeof p.price === "number" ? `$${p.price.toFixed(2)}` : `$${p.price}`;
+  const priceLabel = (p: AdminProduct) => `$${p.price.toFixed(2)}`;
 
-  // ── Bulk selection helpers ──
-  const dbFiltered = filtered;
-  const allSelected = dbFiltered.length > 0 && dbFiltered.every((p) => selected.has(p.dbId!));
+  // ── Bulk selection helpers (database rows only) ──
+  const selectableFiltered = filtered.filter(canBulkSelect);
+  const allSelected =
+    selectableFiltered.length > 0 &&
+    selectableFiltered.every((p) => selected.has(p.dbId!));
 
-  const toggleOne = (dbId: number) => {
+  const toggleOne = (dbId: number | null) => {
+    if (dbId == null) return;
     setSelected((prev) => {
       const next = new Set(prev);
-      if (next.has(dbId)) next.delete(dbId); else next.add(dbId);
+      if (next.has(dbId)) next.delete(dbId);
+      else next.add(dbId);
       return next;
     });
   };
@@ -207,17 +194,8 @@ const AdminProductList = () => {
     if (allSelected) {
       setSelected(new Set());
     } else {
-      setSelected(new Set(dbFiltered.map((p) => p.dbId!)));
+      setSelected(new Set(selectableFiltered.map((p) => p.dbId!)));
     }
-  };
-
-  const deleteProduct = (dbId: number, name: string) => {
-    setConfirmState({
-      open: true,
-      title: `Delete "${name}"?`,
-      description: "This product will be permanently removed. This action cannot be undone.",
-      onConfirm: () => doDeleteProduct(dbId, name),
-    });
   };
 
   const doBulkAction = async (action: string, value?: string) => {
@@ -240,7 +218,7 @@ const AdminProductList = () => {
       setSelected(new Set());
       setShowCatPicker(false);
       refreshCatalog();
-      setRefreshKey((k) => k + 1);
+      refresh();
     } catch (e: any) {
       console.error('[AdminProductList] Bulk action error:', e);
       toast({ variant: 'destructive', title: 'Bulk action failed', description: e.message });
@@ -266,15 +244,33 @@ const AdminProductList = () => {
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
         <div className="flex-1">
           <h1 className="text-xl sm:text-2xl font-bold">Products</h1>
-          <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">Manage your catalog — changes go live instantly.</p>
+          <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
+            {listLoading
+              ? "Loading full website catalog…"
+              : `${products.length} products (${storefrontCount} on shop${stats.bundled > 0 ? `, ${stats.bundled} bundled` : ""}) — database edits go live instantly.`}
+          </p>
         </div>
         <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-9 touch-manipulation hidden sm:inline-flex"
+            disabled={listLoading || filtered.length === 0}
+            onClick={() => downloadAdminProductsCsv(filtered)}
+            title="Export filtered list as CSV"
+          >
+            <Download className="h-4 w-4 mr-1.5" />
+            Export CSV
+          </Button>
           <Button
             variant="outline"
             size="icon"
             className="h-9 w-9 shrink-0 touch-manipulation"
             style={{ touchAction: 'manipulation' }}
-            onClick={() => { refreshCatalog(); setRefreshKey((k) => k + 1); }}
+            onClick={() => {
+              void refreshCatalog();
+              refresh();
+            }}
             title="Refresh"
           >
             <RefreshCw className={cn("h-4 w-4", listLoading && "animate-spin")} />
@@ -289,13 +285,20 @@ const AdminProductList = () => {
         </div>
       </div>
 
+      {catalogError && !listLoading && (
+        <p className="rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-900 dark:text-amber-200">
+          Storefront catalog warning: {catalogError}. Showing bundled products from code; database rows are still listed.
+        </p>
+      )}
+
       {/* Stats */}
       {!listLoading && (
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <StatCard icon={Package} label="Total Products" value={stats.total} color="bg-muted/50" />
-          <StatCard icon={CheckCircle2} label="Active" value={stats.active} color="bg-emerald-500/8 text-emerald-700 dark:text-emerald-400 border-emerald-500/20" />
-          <StatCard icon={XCircle} label="Inactive" value={stats.inactive} color="bg-orange-500/8 text-orange-700 dark:text-orange-400 border-orange-500/20" />
-          <StatCard icon={TrendingUp} label="Preorder" value={stats.preorder} color="bg-violet-500/8 text-violet-700 dark:text-violet-400 border-violet-500/20" />
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+          <StatCard icon={Package} label="Total (website)" value={stats.total} color="bg-muted/50" />
+          <StatCard icon={Eye} label="On storefront" value={stats.onStorefront} color="bg-sky-500/8 text-sky-700 dark:text-sky-400 border-sky-500/20" />
+          <StatCard icon={Package} label="Bundled only" value={stats.bundled} color="bg-amber-500/8 text-amber-800 dark:text-amber-400 border-amber-500/20" />
+          <StatCard icon={CheckCircle2} label="DB active" value={stats.active} color="bg-emerald-500/8 text-emerald-700 dark:text-emerald-400 border-emerald-500/20" />
+          <StatCard icon={XCircle} label="DB inactive" value={stats.inactive} color="bg-orange-500/8 text-orange-700 dark:text-orange-400 border-orange-500/20" />
         </div>
       )}
 
@@ -308,7 +311,7 @@ const AdminProductList = () => {
               placeholder="Search by name, brand, category…"
               className="pl-9"
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => patchFilterParams({ search: e.target.value })}
             />
           </div>
           <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
@@ -317,7 +320,7 @@ const AdminProductList = () => {
               {(["all", "active", "inactive"] as const).map((s) => (
                 <button
                   key={s}
-                  onClick={() => setStatusFilter(s)}
+                  onClick={() => patchFilterParams({ status: s })}
                   className={cn(
                     "px-2.5 sm:px-3 py-1.5 text-xs font-medium rounded-md transition-all capitalize touch-manipulation",
                     statusFilter === s ? "bg-background shadow text-foreground" : "text-muted-foreground"
@@ -350,24 +353,76 @@ const AdminProductList = () => {
           </div>
         </div>
 
+        {/* Source filter */}
+        <div className="flex flex-wrap gap-1.5 items-center">
+          <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium w-full sm:w-auto">
+            Source
+          </span>
+          {SOURCE_FILTERS.map(({ value, label }) => (
+            <button
+              key={value}
+              type="button"
+              onClick={() => patchFilterParams({ source: value })}
+              className={cn(
+                "px-3 py-1.5 rounded-full text-xs font-medium border transition-all touch-manipulation",
+                sourceFilter === value
+                  ? "bg-foreground text-background border-foreground"
+                  : "bg-muted/30 text-muted-foreground border-border hover:border-foreground/30"
+              )}
+              style={{ touchAction: "manipulation" }}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+
         {/* Category pills */}
-        <div className="flex flex-wrap gap-1.5">
-          {categories.map((cat) => (
+        <div className="flex flex-wrap gap-1.5 items-center">
+          <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium w-full sm:w-auto">
+            Category
+          </span>
+          {categoryPills.map((cat) => (
             <button
               key={cat}
-              onClick={() => setCategoryFilter(cat)}
+              type="button"
+              onClick={() => patchFilterParams({ category: cat })}
               className={cn(
                 "px-3 py-1.5 rounded-full text-xs font-medium border transition-all touch-manipulation",
                 categoryFilter === cat
                   ? "bg-foreground text-background border-foreground"
                   : "bg-muted/30 text-muted-foreground border-border hover:border-foreground/30"
               )}
-              style={{ touchAction: 'manipulation' }}
+              style={{ touchAction: "manipulation" }}
             >
               {cat}
             </button>
           ))}
         </div>
+
+        {/* Brand pills */}
+        {brandPills.length > 1 && (
+          <div className="flex flex-wrap gap-1.5 items-center max-h-32 overflow-y-auto">
+            <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium w-full sm:w-auto shrink-0">
+              Brand
+            </span>
+            {brandPills.map((b) => (
+              <button
+                key={b}
+                type="button"
+                onClick={() => patchFilterParams({ brand: b })}
+                className={cn(
+                  "px-3 py-1.5 rounded-full text-xs font-medium border transition-all touch-manipulation shrink-0",
+                  brandFilter === b
+                    ? "bg-foreground text-background border-foreground"
+                    : "bg-muted/30 text-muted-foreground border-border hover:border-foreground/30"
+                )}
+                style={{ touchAction: "manipulation" }}
+              >
+                {b}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Result count + bulk bar */}
@@ -377,7 +432,7 @@ const AdminProductList = () => {
             Showing <strong>{filtered.length}</strong> of <strong>{products.length}</strong> products
             {search && <> for "<em>{search}</em>"</>}
           </p>
-          {dbFiltered.length > 0 && (
+          {selectableFiltered.length > 0 && (
             <Button variant="ghost" size="sm" className="text-xs gap-1.5 h-7" onClick={toggleAll}>
               {allSelected ? <CheckSquare className="h-3.5 w-3.5" /> : <Square className="h-3.5 w-3.5" />}
               {allSelected ? "Deselect All" : "Select All"}
@@ -408,7 +463,9 @@ const AdminProductList = () => {
                 onChange={(e) => setBulkCategory(e.target.value)}
                 className="h-8 rounded-md border border-input bg-background px-2 text-xs"
               >
-                {CATEGORIES.filter((c) => c !== "All").map((c) => <option key={c}>{c}</option>)}
+                {CANONICAL_STOREFRONT_CATEGORIES.map((c) => (
+                  <option key={c}>{c}</option>
+                ))}
               </select>
               <Button size="sm" className="h-8 text-xs" disabled={bulkBusy} onClick={() => bulkAction('change_category', bulkCategory)}>Apply</Button>
               <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => setShowCatPicker(false)}><X className="h-3.5 w-3.5" /></Button>
@@ -457,14 +514,24 @@ const AdminProductList = () => {
       {!listLoading && view === "grid" && filtered.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
           {filtered.map((p) => (
-            <div key={p.dbId} className={cn("group rounded-xl border bg-card overflow-hidden hover:shadow-md transition-shadow", selected.has(p.dbId) && "ring-2 ring-primary")}>
+            <div key={rowKey(p)} className={cn("group rounded-xl border bg-card overflow-hidden hover:shadow-md transition-shadow", p.dbId != null && selected.has(p.dbId) && "ring-2 ring-primary")}>
               <div className="aspect-square relative bg-muted/30 overflow-hidden">
-                <button
+                {canBulkSelect(p) ? (
+                  <button
+                    type="button"
                     className="absolute top-2 right-2 z-10 h-6 w-6 rounded bg-background/80 flex items-center justify-center border shadow-sm"
-                    onClick={(e) => { e.stopPropagation(); toggleOne(p.dbId); }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleOne(p.dbId);
+                    }}
                   >
-                    {selected.has(p.dbId) ? <CheckSquare className="h-3.5 w-3.5 text-primary" /> : <Square className="h-3.5 w-3.5 text-muted-foreground" />}
+                    {selected.has(p.dbId!) ? (
+                      <CheckSquare className="h-3.5 w-3.5 text-primary" />
+                    ) : (
+                      <Square className="h-3.5 w-3.5 text-muted-foreground" />
+                    )}
                   </button>
+                ) : null}
                 <img
                   key={`${p.id}-${p.dbId}-${resolveImageUrl(p.image)}`}
                   src={resolveImageUrl(p.image)}
@@ -478,35 +545,58 @@ const AdminProductList = () => {
                     el.style.opacity = "0.35";
                   }}
                 />
-                {p.isActive === false && (
+                {!p.isActive && p.dbId != null && (
                   <div className="absolute inset-0 bg-background/60 flex items-center justify-center">
                     <Badge variant="secondary" className="text-xs">Inactive</Badge>
                   </div>
                 )}
+                {p.source === "bundled" && (
+                  <Badge className="absolute top-2 left-2 text-[10px] py-0 bg-amber-500">Bundled</Badge>
+                )}
+                {!p.onStorefront && (
+                  <Badge variant="secondary" className="absolute top-2 left-2 text-[10px] py-0">
+                    Off shop
+                  </Badge>
+                )}
                 {p.isPreorder && (
                   <Badge className="absolute top-2 left-2 text-[10px] py-0 bg-violet-500">Pre-order</Badge>
+                )}
+                {!p.image && (
+                  <Badge variant="destructive" className="absolute bottom-2 left-2 text-[10px] py-0">
+                    No image
+                  </Badge>
                 )}
               </div>
               <div className="p-2.5">
                 <p className="text-xs font-semibold line-clamp-2 leading-tight mb-1">{p.name}</p>
+                <p className="text-[10px] text-muted-foreground mb-1">Shop ID #{p.id}</p>
                 <div className="flex items-center justify-between gap-1">
                   <Badge variant="outline" className="text-[10px] py-0">{p.category}</Badge>
                   <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">{priceLabel(p)}</span>
                 </div>
                 <div className="flex gap-1 mt-2">
-                  <Button variant="outline" size="icon" className="h-7 w-7 flex-1 touch-manipulation" style={{ touchAction: 'manipulation' }} asChild>
-                    <Link to={`/admin/products/${p.dbId}`}><Pencil className="h-3 w-3" /></Link>
+                  <Button variant="outline" size="icon" className="h-7 w-7 flex-1 touch-manipulation" style={{ touchAction: "manipulation" }} asChild>
+                    <Link to={editHref(p)} title={p.dbId != null ? "Edit" : "Create override"}>
+                      <Pencil className="h-3 w-3" />
+                    </Link>
                   </Button>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="h-7 w-7 hover:bg-red-500/10 hover:text-red-500 hover:border-red-500/30 touch-manipulation"
-                    style={{ touchAction: 'manipulation' }}
-                    onClick={() => void deleteProduct(p.dbId, p.name)}
-                    disabled={deleting === p.dbId}
-                  >
-                    <Trash2 className="h-3 w-3" />
+                  <Button variant="outline" size="icon" className="h-7 w-7 touch-manipulation" style={{ touchAction: "manipulation" }} asChild>
+                    <a href={`${siteUrl()}/product/${p.id}`} target="_blank" rel="noopener noreferrer" title="View on store">
+                      <Eye className="h-3 w-3" />
+                    </a>
                   </Button>
+                  {p.dbId != null ? (
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="h-7 w-7 hover:bg-red-500/10 hover:text-red-500 hover:border-red-500/30 touch-manipulation"
+                      style={{ touchAction: "manipulation" }}
+                      onClick={() => deleteProduct(p)}
+                      disabled={deleting === p.dbId}
+                    >
+                      <Trash2 className="h-3 w-3" />
+                    </Button>
+                  ) : null}
                 </div>
               </div>
             </div>
@@ -530,13 +620,26 @@ const AdminProductList = () => {
 
           <div className="divide-y">
             {filtered.map((p) => (
-              <div key={p.dbId}>
+              <div key={rowKey(p)}>
                 {/* Desktop row */}
                 <div className="hidden sm:grid grid-cols-[32px_56px_1fr_140px_100px_90px_90px] gap-4 items-center px-4 py-3 hover:bg-muted/20 transition-colors">
                   <div className="flex items-center justify-center">
-                    <button onClick={() => toggleOne(p.dbId)} className="touch-manipulation" style={{ touchAction: 'manipulation' }}>
-                      {selected.has(p.dbId) ? <CheckSquare className="h-4 w-4 text-primary" /> : <Square className="h-4 w-4 text-muted-foreground/40" />}
-                    </button>
+                    {canBulkSelect(p) ? (
+                      <button
+                        type="button"
+                        onClick={() => toggleOne(p.dbId)}
+                        className="touch-manipulation"
+                        style={{ touchAction: "manipulation" }}
+                      >
+                        {selected.has(p.dbId!) ? (
+                          <CheckSquare className="h-4 w-4 text-primary" />
+                        ) : (
+                          <Square className="h-4 w-4 text-muted-foreground/40" />
+                        )}
+                      </button>
+                    ) : (
+                      <span className="h-4 w-4" />
+                    )}
                   </div>
                   <div className="h-12 w-12 rounded-lg border bg-muted/30 overflow-hidden shrink-0">
                     <img
@@ -555,7 +658,10 @@ const AdminProductList = () => {
                   </div>
                   <div className="min-w-0">
                     <p className="text-sm font-medium truncate">{p.name}</p>
-                    <p className="text-xs text-muted-foreground truncate">{p.brand || "—"} · #{p.dbId}</p>
+                    <p className="text-xs text-muted-foreground truncate">
+                      {p.brand || "—"} · Shop #{p.id}
+                      {p.dbId != null ? ` · DB #${p.dbId}` : " · Bundled"}
+                    </p>
                   </div>
                   <div>
                     <Badge variant="outline" className="text-xs">{p.category}</Badge>
@@ -563,38 +669,76 @@ const AdminProductList = () => {
                   <div>
                     <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">{priceLabel(p)}</span>
                   </div>
-                  <div className="flex items-center gap-1">
-                    {p.isActive !== false ? (
+                  <div className="flex flex-wrap items-center gap-1">
+                    {p.source === "bundled" ? (
+                      <Badge variant="outline" className="text-[10px] py-0 text-amber-700 border-amber-500/40">
+                        Bundled
+                      </Badge>
+                    ) : p.isActive ? (
                       <span className="flex items-center gap-1 text-xs text-emerald-600 dark:text-emerald-400">
-                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />Active
+                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                        Active
                       </span>
                     ) : (
                       <span className="flex items-center gap-1 text-xs text-muted-foreground">
-                        <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/40" />Inactive
+                        <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/40" />
+                        Inactive
                       </span>
+                    )}
+                    {!p.onStorefront && (
+                      <Badge variant="outline" className="text-[10px] py-0">
+                        Off shop
+                      </Badge>
                     )}
                   </div>
                   <div className="flex items-center justify-end gap-1">
                     <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
-                      <Link to={`/admin/products/${p.dbId}`}><Pencil className="h-3.5 w-3.5" /></Link>
+                      <Link to={editHref(p)} title={p.dbId != null ? "Edit" : "Create override"}>
+                        <Pencil className="h-3.5 w-3.5" />
+                      </Link>
                     </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 hover:bg-red-500/10 hover:text-red-500"
-                      onClick={() => void deleteProduct(p.dbId, p.name)}
-                      disabled={deleting === p.dbId}
-                    >
-                      <Trash2 className="h-3.5 w-3.5" />
+                    <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
+                      <a
+                        href={`${siteUrl()}/product/${p.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title="View on store"
+                      >
+                        <Eye className="h-3.5 w-3.5" />
+                      </a>
                     </Button>
+                    {p.dbId != null ? (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 hover:bg-red-500/10 hover:text-red-500"
+                        onClick={() => void deleteProduct(p)}
+                        disabled={deleting === p.dbId}
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </Button>
+                    ) : null}
                   </div>
                 </div>
 
                 {/* Mobile row */}
                 <div className="sm:hidden flex items-start gap-3 p-4 hover:bg-muted/20 transition-colors">
-                  <button onClick={() => toggleOne(p.dbId)} className="shrink-0 mt-1 touch-manipulation" style={{ touchAction: 'manipulation' }}>
-                    {selected.has(p.dbId) ? <CheckSquare className="h-5 w-5 text-primary" /> : <Square className="h-5 w-5 text-muted-foreground/30" />}
-                  </button>
+                  {canBulkSelect(p) ? (
+                    <button
+                      type="button"
+                      onClick={() => toggleOne(p.dbId)}
+                      className="shrink-0 mt-1 touch-manipulation"
+                      style={{ touchAction: "manipulation" }}
+                    >
+                      {selected.has(p.dbId!) ? (
+                        <CheckSquare className="h-5 w-5 text-primary" />
+                      ) : (
+                        <Square className="h-5 w-5 text-muted-foreground/30" />
+                      )}
+                    </button>
+                  ) : (
+                    <span className="w-5 shrink-0" />
+                  )}
                   <div className="h-14 w-14 rounded-lg border bg-muted/30 overflow-hidden shrink-0">
                     <img
                       key={`${p.id}-${p.dbId}-${resolveImageUrl(p.image)}`}
@@ -614,28 +758,44 @@ const AdminProductList = () => {
                     <p className="text-sm font-medium leading-snug line-clamp-2">{p.name}</p>
                     <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
                       <Badge variant="outline" className="text-[10px] py-0">{p.category}</Badge>
-                      {p.isActive !== false
-                        ? <Badge variant="outline" className="text-[10px] py-0 text-emerald-600 border-emerald-500/30">Active</Badge>
-                        : <Badge variant="outline" className="text-[10px] py-0 text-muted-foreground">Inactive</Badge>
-                      }
+                      {p.source === "bundled" ? (
+                        <Badge variant="outline" className="text-[10px] py-0 text-amber-700 border-amber-500/40">
+                          Bundled
+                        </Badge>
+                      ) : p.isActive ? (
+                        <Badge variant="outline" className="text-[10px] py-0 text-emerald-600 border-emerald-500/30">
+                          Active
+                        </Badge>
+                      ) : (
+                        <Badge variant="outline" className="text-[10px] py-0 text-muted-foreground">
+                          Inactive
+                        </Badge>
+                      )}
                       {p.isPreorder && <Badge className="text-[10px] py-0 bg-violet-500">Pre-order</Badge>}
                     </div>
                     <div className="flex items-center justify-between mt-2">
                       <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">{priceLabel(p)}</span>
                       <div className="flex items-center gap-1">
-                        <Button variant="outline" size="icon" className="h-8 w-8 touch-manipulation" style={{ touchAction: 'manipulation' }} asChild>
-                          <Link to={`/admin/products/${p.dbId}`}><Pencil className="h-3.5 w-3.5" /></Link>
+                        <Button variant="outline" size="icon" className="h-8 w-8 touch-manipulation" style={{ touchAction: "manipulation" }} asChild>
+                          <Link to={editHref(p)}><Pencil className="h-3.5 w-3.5" /></Link>
                         </Button>
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="h-8 w-8 touch-manipulation hover:bg-red-500/10 hover:text-red-500"
-                          style={{ touchAction: 'manipulation' }}
-                          onClick={() => void deleteProduct(p.dbId, p.name)}
-                          disabled={deleting === p.dbId}
-                        >
-                          <Trash2 className="h-3.5 w-3.5" />
+                        <Button variant="outline" size="icon" className="h-8 w-8 touch-manipulation" style={{ touchAction: "manipulation" }} asChild>
+                          <a href={`${siteUrl()}/product/${p.id}`} target="_blank" rel="noopener noreferrer">
+                            <Eye className="h-3.5 w-3.5" />
+                          </a>
                         </Button>
+                        {p.dbId != null ? (
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="h-8 w-8 touch-manipulation hover:bg-red-500/10 hover:text-red-500"
+                            style={{ touchAction: "manipulation" }}
+                            onClick={() => void deleteProduct(p)}
+                            disabled={deleting === p.dbId}
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </Button>
+                        ) : null}
                       </div>
                     </div>
                   </div>

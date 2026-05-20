@@ -572,6 +572,8 @@ const Checkout = () => {
     return "product";
   };
 
+  const checkoutType = resolveCheckoutType();
+
   // Build the order_items array for the new POST /api/public/orders endpoint.
   // The server re-prices DB-backed products, so unitPrice here is treated as a
   // hint; it will be overridden when productId matches a row in `products`.
@@ -671,7 +673,6 @@ const Checkout = () => {
   //   • idempotencyKey prevents duplicates from double-clicks / retries
   const persistOrder = async (paymentMethod: PaymentMethod) => {
     const items = buildOrderItems();
-    const checkoutType = resolveCheckoutType();
     const total = calculateTotal();
     const shippingCost = checkoutType === "product" ? deliveryFee : 0;
 

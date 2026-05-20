@@ -1,18 +1,35 @@
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback, useRef, useMemo } from "react";
+import { Link } from "react-router-dom";
 import {
   Megaphone, Layout, Star, Heart, Save, Plus, Trash2,
   RefreshCw, ChevronRight, Search, Package, AlertCircle,
-  TrendingUp, Store, Grid3X3, Truck,
+  TrendingUp, Store, Grid3X3, Truck, ExternalLink,
 } from "lucide-react";
 import { adminFetch } from "@/lib/adminApi";
 import { useSiteSettings, SiteSettings } from "@/context/SiteSettingsContext";
 import { resolveImageUrl } from "@/lib/imageUtils";
+import { useAdminMergedCatalog } from "@/lib/useAdminMergedCatalog";
+import {
+  countProductsForBrandName,
+  countProductsForHomepageCategory,
+  getDistinctBrands,
+  resolveHomepageCategoryLabel,
+  SUGGESTED_CATEGORY_LINKS,
+} from "@/lib/adminCatalogTaxonomy";
+import { CANONICAL_STOREFRONT_CATEGORIES } from "@/lib/storefrontCategories";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
@@ -129,6 +146,11 @@ const AdminSiteContent = () => {
   const { settings: liveSettings, refresh: refreshLive } = useSiteSettings();
   const [activeTab, setActiveTab] = useState<TabId>("announcements");
   const [saving, setSaving] = useState(false);
+  const needsCatalog = activeTab === "brands" || activeTab === "categories";
+  const { products: catalogProducts, loading: catalogLoading } = useAdminMergedCatalog({
+    enabled: needsCatalog,
+  });
+  const catalogBrands = useMemo(() => getDistinctBrands(catalogProducts), [catalogProducts]);
 
   // Local draft state - each section managed independently
   const [announcements, setAnnouncements] = useState(liveSettings.announcements);
@@ -798,9 +820,46 @@ const AdminSiteContent = () => {
         <p className="text-xs text-muted-foreground mb-4">
           Configure which brands appear in the "Shop by Brand" section. Leave empty to auto-detect from product catalog.
         </p>
+        {catalogBrands.length > 0 && (
+          <div className="flex flex-col sm:flex-row gap-2 mb-4">
+            <Select
+              onValueChange={(name) => {
+                if (!name || brands.some((b) => b.name === name)) return;
+                setBrands((prev) => [
+                  ...prev,
+                  {
+                    name,
+                    logoUrl: "",
+                    link: `/products?brand=${encodeURIComponent(name)}`,
+                    featured: true,
+                  },
+                ]);
+              }}
+            >
+              <SelectTrigger className="w-full sm:max-w-xs text-sm">
+                <SelectValue placeholder="Add brand from catalog…" />
+              </SelectTrigger>
+              <SelectContent>
+                {catalogBrands
+                  .filter((b) => !brands.some((row) => row.name === b))
+                  .map((b) => (
+                    <SelectItem key={b} value={b}>
+                      {b} ({countProductsForBrandName(catalogProducts, b)} products)
+                    </SelectItem>
+                  ))}
+              </SelectContent>
+            </Select>
+            {catalogLoading && (
+              <span className="text-xs text-muted-foreground self-center">Loading catalog…</span>
+            )}
+          </div>
+        )}
         <div className="space-y-3">
-          {brands.map((brand, i) => (
-            <div key={i} className="flex items-center gap-3 rounded-xl border p-3 bg-muted/20">
+          {brands.map((brand, i) => {
+            const productCount = countProductsForBrandName(catalogProducts, brand.name);
+            return (
+            <div key={i} className="flex flex-col gap-2 rounded-xl border p-3 bg-muted/20">
+            <div className="flex items-center gap-3">
               {brand.logoUrl && (
                 <img src={resolveImageUrl(brand.logoUrl)} alt={brand.name} className="h-8 w-8 rounded object-cover border shrink-0" />
               )}
@@ -837,7 +896,23 @@ const AdminSiteContent = () => {
                 </button>
               </div>
             </div>
-          ))}
+            <div className="flex flex-wrap items-center gap-2 pl-11 sm:pl-0">
+              {!catalogLoading && brand.name.trim() && (
+                <Badge variant={productCount > 0 ? "secondary" : "outline"} className={cn("text-[10px]", productCount === 0 && "border-amber-500/40 text-amber-800 dark:text-amber-300")}>
+                  {productCount > 0 ? `${productCount} products on storefront` : "No products on storefront"}
+                </Badge>
+              )}
+              {brand.name.trim() && productCount > 0 && (
+                <Button variant="link" size="sm" className="h-auto p-0 text-xs" asChild>
+                  <Link to={`/admin/products?brand=${encodeURIComponent(brand.name.trim())}`}>
+                    Manage products
+                  </Link>
+                </Button>
+              )}
+            </div>
+            </div>
+          );
+          })}
           <Button
             variant="outline" size="sm"
             onClick={() => setBrands((prev) => [...prev, { name: "", logoUrl: "", link: "", featured: true }])}
@@ -864,22 +939,63 @@ const AdminSiteContent = () => {
           Control which categories appear on the homepage "Shop by Category" grid. Toggle visibility, rename, or reorder.
         </p>
         <div className="space-y-2">
-          {categories.map((cat, i) => (
-            <div key={i} className="flex items-center gap-3 rounded-xl border p-3 bg-muted/20">
+          {categories.map((cat, i) => {
+            const canonical = resolveHomepageCategoryLabel(cat.name, cat.linkTo);
+            const productCount = countProductsForHomepageCategory(catalogProducts, cat.name, cat.linkTo);
+            return (
+            <div key={i} className="flex flex-col gap-2 rounded-xl border p-3 bg-muted/20">
+              <div className="flex items-center gap-3">
               <span className="text-xs text-muted-foreground w-5 text-center shrink-0">{i + 1}</span>
               <div className="flex-1 grid gap-2 sm:grid-cols-3">
-                <Input
-                  value={cat.name}
-                  onChange={(e) => setCategories((prev) => prev.map((c, j) => j === i ? { ...c, name: e.target.value } : c))}
-                  placeholder="Category Name"
-                  className="text-sm"
-                />
-                <Input
-                  value={cat.linkTo}
-                  onChange={(e) => setCategories((prev) => prev.map((c, j) => j === i ? { ...c, linkTo: e.target.value } : c))}
-                  placeholder="Link (e.g. /smartphones)"
-                  className="text-sm"
-                />
+                <div className="space-y-1">
+                  <select
+                    value={CANONICAL_STOREFRONT_CATEGORIES.includes(cat.name as (typeof CANONICAL_STOREFRONT_CATEGORIES)[number]) ? cat.name : "__custom__"}
+                    onChange={(e) => {
+                      const v = e.target.value;
+                      if (v === "__custom__") return;
+                      const link = SUGGESTED_CATEGORY_LINKS.find((l) => l.label === v)?.path ?? cat.linkTo;
+                      setCategories((prev) =>
+                        prev.map((c, j) => (j === i ? { ...c, name: v, linkTo: link } : c))
+                      );
+                    }}
+                    className="flex h-9 w-full rounded-md border border-input bg-background px-2 text-sm"
+                  >
+                    <option value="__custom__">Custom name…</option>
+                    {CANONICAL_STOREFRONT_CATEGORIES.map((c) => (
+                      <option key={c} value={c}>{c}</option>
+                    ))}
+                  </select>
+                  {!CANONICAL_STOREFRONT_CATEGORIES.includes(cat.name as (typeof CANONICAL_STOREFRONT_CATEGORIES)[number]) && (
+                    <Input
+                      value={cat.name}
+                      onChange={(e) => setCategories((prev) => prev.map((c, j) => j === i ? { ...c, name: e.target.value } : c))}
+                      placeholder="Category Name"
+                      className="text-sm"
+                    />
+                  )}
+                </div>
+                <select
+                  value={SUGGESTED_CATEGORY_LINKS.some((l) => l.path === cat.linkTo) ? cat.linkTo : "__custom_link__"}
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    if (v === "__custom_link__") return;
+                    setCategories((prev) => prev.map((c, j) => (j === i ? { ...c, linkTo: v } : c)));
+                  }}
+                  className="flex h-9 w-full rounded-md border border-input bg-background px-2 text-sm"
+                >
+                  <option value="__custom_link__">Custom link…</option>
+                  {SUGGESTED_CATEGORY_LINKS.map((l) => (
+                    <option key={l.path} value={l.path}>{l.label} → {l.path}</option>
+                  ))}
+                </select>
+                {!SUGGESTED_CATEGORY_LINKS.some((l) => l.path === cat.linkTo) && (
+                  <Input
+                    value={cat.linkTo}
+                    onChange={(e) => setCategories((prev) => prev.map((c, j) => j === i ? { ...c, linkTo: e.target.value } : c))}
+                    placeholder="Link (e.g. /smartphones)"
+                    className="text-sm"
+                  />
+                )}
                 <Input
                   value={cat.icon}
                   onChange={(e) => setCategories((prev) => prev.map((c, j) => j === i ? { ...c, icon: e.target.value } : c))}
@@ -930,7 +1046,29 @@ const AdminSiteContent = () => {
                 </button>
               </div>
             </div>
-          ))}
+            <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground pl-8 sm:pl-0">
+              {!catalogLoading && (
+                <>
+                  <Badge variant="secondary" className="text-[10px]">
+                    {productCount} products · maps to {canonical}
+                  </Badge>
+                  <Button variant="link" size="sm" className="h-auto p-0 text-xs gap-1" asChild>
+                    <Link to={`/admin/catalog`}>
+                      <ExternalLink className="h-3 w-3" />
+                      Catalog
+                    </Link>
+                  </Button>
+                  <Button variant="link" size="sm" className="h-auto p-0 text-xs" asChild>
+                    <Link to={`/admin/products?category=${encodeURIComponent(canonical)}`}>
+                      Manage products
+                    </Link>
+                  </Button>
+                </>
+              )}
+            </div>
+            </div>
+          );
+          })}
           <Button
             variant="outline" size="sm"
             onClick={() => setCategories((prev) => [...prev, { name: "", icon: "Smartphone", linkTo: "/", enabled: true }])}

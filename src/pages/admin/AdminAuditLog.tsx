@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { Link } from "react-router-dom";
 import {
   ScrollText, ChevronLeft, ChevronRight, Filter,
   Package, Ticket, Image, Settings, Trash2, Pencil, Plus, ShoppingBag, Layers,
@@ -158,7 +159,16 @@ const AdminAuditLog = () => {
                         {entry.entity_type}
                       </Badge>
                       {entry.entity_id && (
-                        <span className="text-xs text-muted-foreground font-mono">#{entry.entity_id}</span>
+                        entry.entity_type === "product" && /^\d+$/.test(entry.entity_id) ? (
+                          <Link
+                            to={`/admin/products/${entry.entity_id}`}
+                            className="text-xs text-primary font-mono hover:underline"
+                          >
+                            #{entry.entity_id}
+                          </Link>
+                        ) : (
+                          <span className="text-xs text-muted-foreground font-mono">#{entry.entity_id}</span>
+                        )
                       )}
                     </div>
                     {entry.details && Object.keys(entry.details).length > 0 && (

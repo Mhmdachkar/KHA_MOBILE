@@ -1,5 +1,5 @@
-import { useEffect, useState, useCallback } from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useEffect, useState, useCallback, useMemo } from "react";
+import { useNavigate, useParams, Link, useSearchParams } from "react-router-dom";
 import {
   ArrowLeft, Upload, Plus, Trash2, GripVertical, Star,
   Image as ImageIcon, Video, Check, AlertCircle, Eye, EyeOff,
@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { adminFetch, apiBase, getAdminToken } from "@/lib/adminApi";
 import { useCatalog } from "@/context/CatalogContext";
+import { getStorefrontProductById } from "@/lib/catalogProduct";
 import { resolvePrimaryImageWithStaticFallback } from "@/data/productLookup";
 import { resolveImageUrl } from "@/lib/imageUtils";
 import { Button } from "@/components/ui/button";
@@ -23,7 +24,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { CANONICAL_STOREFRONT_CATEGORIES } from "@/lib/storefrontCategories";
+import { CANONICAL_STOREFRONT_CATEGORIES, normalizeStorefrontCategory } from "@/lib/storefrontCategories";
+import { getDistinctBrands } from "@/lib/adminCatalogTaxonomy";
+import { useAdminMergedCatalog } from "@/lib/useAdminMergedCatalog";
+import { AdminBrandCombobox } from "@/components/admin/AdminBrandCombobox";
 import { cn } from "@/lib/utils";
 import { useUnsavedChanges } from "@/hooks/useUnsavedChanges";
 import { computeCatalogSaveFromBasics, formPricesFromLoadedProduct } from "@/lib/adminProductPricing";
@@ -145,7 +149,9 @@ const AdminProductEditor = () => {
   const isNew = !dbId || dbId === "new";
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { refreshCatalog } = useCatalog();
+  const { refreshCatalog, storefrontProducts, catalogLoaded } = useCatalog();
+  const [searchParams] = useSearchParams();
+  const overrideStorefrontId = searchParams.get("override");
   const [loading, setLoading] = useState(!isNew);
   const [saving, setSaving] = useState(false);
   const [activeTab, setActiveTab] = useState<TabId>("basics");
@@ -153,10 +159,37 @@ const AdminProductEditor = () => {
   const [savedForm, setSavedForm] = useState<FormState>(emptyForm);
   const isDirty = JSON.stringify(form) !== JSON.stringify(savedForm);
   useUnsavedChanges(isDirty);
+  const { products: catalogProducts } = useAdminMergedCatalog();
+  const brandSuggestions = useMemo(() => getDistinctBrands(catalogProducts), [catalogProducts]);
+  const normalizedCategory = normalizeStorefrontCategory(form.category);
 
   const patch = useCallback(<K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm((f) => ({ ...f, [key]: value }));
   }, []);
+
+  // Prefill new product from a bundled storefront id (?override=127)
+  useEffect(() => {
+    if (!isNew || !overrideStorefrontId || !catalogLoaded) return;
+    const id = Number(overrideStorefrontId);
+    if (!Number.isFinite(id)) return;
+    const sp = getStorefrontProductById(storefrontProducts, id);
+    if (!sp) return;
+    const prefill: FormState = {
+      ...emptyForm,
+      legacyOverrideId: String(id),
+      name: sp.name,
+      title: sp.title || sp.name,
+      description: sp.description || "",
+      price: String(sp.displayPrice ?? sp.price),
+      compareAtPrice: sp.compareAtPrice != null ? String(sp.compareAtPrice) : "",
+      primaryImageUrl: sp.image || sp.images?.[0] || "",
+      rating: String(sp.rating ?? "4.5"),
+      category: sp.category || "Smartphones",
+      brand: sp.brand || "",
+    };
+    setForm(prefill);
+    setSavedForm(prefill);
+  }, [isNew, overrideStorefrontId, catalogLoaded, storefrontProducts]);
 
   // ── Load existing product ──
   useEffect(() => {
@@ -585,13 +618,19 @@ const AdminProductEditor = () => {
                     >
                       {(BASE_CATEGORIES.includes(form.category) ? BASE_CATEGORIES : [...BASE_CATEGORIES, form.category]).map((c) => <option key={c}>{c}</option>)}
                     </select>
+                    {form.category.trim() && (
+                      <p className="text-[11px] text-muted-foreground">
+                        Storefront: <span className="font-medium text-foreground">{normalizedCategory}</span>
+                        {normalizedCategory !== form.category.trim() && " (normalized)"}
+                      </p>
+                    )}
                   </div>
                   <div className="space-y-1.5">
                     <Label>Brand</Label>
-                    <Input
+                    <AdminBrandCombobox
                       value={form.brand}
-                      onChange={(e) => patch("brand", e.target.value)}
-                      placeholder="e.g. Apple, Samsung…"
+                      onChange={(v) => patch("brand", v)}
+                      suggestions={brandSuggestions}
                     />
                   </div>
 

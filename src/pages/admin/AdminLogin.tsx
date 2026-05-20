@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { adminFetch, apiBase, setAdminToken, getAdminToken, siteUrl, adminLoginAbsoluteUrl } from "@/lib/adminApi";
+import { Mail, Lock, ShieldCheck, Store } from "lucide-react";
+import { adminFetch, setAdminToken, getAdminToken } from "@/lib/adminApi";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
+
+const inputClass =
+  "h-11 bg-white/5 border-white/10 text-slate-50 placeholder:text-slate-500 focus-visible:ring-violet-500/50 focus-visible:border-violet-500/40 pl-10";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
@@ -16,11 +20,13 @@ const AdminLogin = () => {
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
+  const redirectTo = (location.state as { from?: string })?.from || "/admin";
+
   useEffect(() => {
     if (getAdminToken()) {
-      navigate((location.state as { from?: string })?.from || "/admin/products", { replace: true });
+      navigate(redirectTo, { replace: true });
     }
-  }, [navigate, location.state]);
+  }, [navigate, redirectTo]);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,18 +38,21 @@ const AdminLogin = () => {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        toast({ variant: "destructive", title: "Login failed", description: data.error || res.statusText });
+        toast({
+          variant: "destructive",
+          title: "Sign in failed",
+          description: data.error || "Check your email and password.",
+        });
         return;
       }
       setAdminToken(data.token);
-      toast({ title: "Signed in" });
-      navigate((location.state as { from?: string })?.from || "/admin/products", { replace: true });
+      toast({ title: "Welcome back" });
+      navigate(redirectTo, { replace: true });
     } catch {
-      const base = apiBase();
       toast({
         variant: "destructive",
-        title: "Cannot reach API",
-        description: `Nothing is responding at ${base}. Open a terminal, run: cd server then npm run dev — keep it running while you use the admin.`,
+        title: "Could not connect",
+        description: "The admin service is unavailable. Try again in a moment.",
       });
     } finally {
       setSubmitting(false);
@@ -51,65 +60,84 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-violet-950 flex items-center justify-center p-4">
-      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md">
-        <Card className="border-slate-800 bg-slate-900/90 text-slate-50 shadow-xl">
-          <CardHeader>
-            <CardTitle className="text-2xl">KHA Mobile Admin</CardTitle>
-            <CardDescription className="text-slate-400">
-              Sign in to manage catalog, prices, and media.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={onSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-violet-950 flex items-center justify-center p-4 sm:p-6">
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35, ease: "easeOut" }}
+        className="w-full max-w-[400px]"
+      >
+        <div className="rounded-2xl border border-white/10 bg-slate-900/80 backdrop-blur-md shadow-2xl shadow-black/40 overflow-hidden">
+          <div className="px-6 pt-8 pb-6 text-center border-b border-white/5">
+            <div className="mx-auto mb-4 h-14 w-14 rounded-2xl bg-gradient-to-br from-violet-500/30 to-slate-800 border border-white/10 flex items-center justify-center">
+              <Store className="h-7 w-7 text-violet-200" />
+            </div>
+            <h1 className="text-2xl font-bold text-white tracking-tight">KHA Mobile</h1>
+            <p className="text-sm text-slate-400 mt-1">Admin sign in</p>
+          </div>
+
+          <form onSubmit={onSubmit} className="px-6 py-6 space-y-5">
+            <div className="space-y-2">
+              <Label htmlFor="email" className="text-slate-300 text-xs font-medium">
+                Email address
+              </Label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500 pointer-events-none" />
                 <Input
                   id="email"
                   type="email"
                   autoComplete="username"
+                  placeholder="you@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="bg-slate-950 border-slate-700"
+                  className={inputClass}
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="password" className="text-slate-300 text-xs font-medium">
+                Password
+              </Label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500 pointer-events-none" />
                 <Input
                   id="password"
                   type="password"
                   autoComplete="current-password"
+                  placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="bg-slate-950 border-slate-700"
+                  className={inputClass}
                 />
               </div>
-              <Button type="submit" className="w-full" disabled={submitting}>
-                {submitting ? "Signing in…" : "Sign in"}
-              </Button>
-            </form>
-            <p className="text-xs text-slate-500 mt-4 space-y-2">
-              <span className="block">
-                <span className="text-slate-500">Storefront: </span>
-                <a href={siteUrl()} className="text-primary underline-offset-2 hover:underline break-all" target="_blank" rel="noopener noreferrer">
-                  {siteUrl()}
-                </a>
-              </span>
-              <span className="block">
-                <span className="text-slate-500">Admin sign-in URL: </span>
-                <a href={adminLoginAbsoluteUrl()} className="text-primary underline-offset-2 hover:underline break-all">
-                  {adminLoginAbsoluteUrl()}
-                </a>
-              </span>
-              <span className="block pt-1 border-t border-slate-800 mt-3">
-                API: <code className="text-slate-400 break-all">{apiBase()}</code> — run <code className="text-slate-400">npm run dev</code> in <code className="text-slate-400">server/</code>.
-                Set <code className="text-slate-400">VITE_SITE_URL</code> in <code className="text-slate-400">.env</code> to your live site (and add that origin to server <code className="text-slate-400">FRONTEND_ORIGIN</code>). Admin accounts: <code className="text-slate-400">sql/002_seed_admin.sql</code>.
-              </span>
-            </p>
-          </CardContent>
-        </Card>
+            </div>
+
+            <Button
+              type="submit"
+              className={cn(
+                "w-full h-11 font-semibold bg-violet-600 hover:bg-violet-500 text-white",
+                "shadow-lg shadow-violet-900/30"
+              )}
+              disabled={submitting}
+            >
+              {submitting ? (
+                "Signing in…"
+              ) : (
+                <>
+                  <ShieldCheck className="h-4 w-4 mr-2" />
+                  Sign in
+                </>
+              )}
+            </Button>
+          </form>
+
+          <p className="px-6 pb-6 text-center text-[11px] text-slate-500">
+            Authorized staff only. Contact your store administrator if you need access.
+          </p>
+        </div>
       </motion.div>
     </div>
   );

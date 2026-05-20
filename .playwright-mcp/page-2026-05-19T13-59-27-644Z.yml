@@ -1,0 +1,187 @@
+- generic [ref=e2]:
+  - region "Notifications (F8)":
+    - list
+  - region "Notifications alt+T"
+  - generic [ref=e3]:
+    - generic [ref=e7] [cursor=pointer]:
+      - img [ref=e9]
+      - generic [ref=e11]: 🎉 10% OFF Premium Gaming Accessories
+    - banner [ref=e13]:
+      - generic [ref=e15]:
+        - link "KHA_MOBILE Logo KHA_MOBILE" [ref=e16] [cursor=pointer]:
+          - /url: /
+          - img "KHA_MOBILE Logo" [ref=e18]
+          - generic [ref=e19]: KHA_MOBILE
+        - navigation [ref=e20]:
+          - link "Home" [ref=e21] [cursor=pointer]:
+            - /url: /
+            - text: Home
+          - link "Products" [ref=e22] [cursor=pointer]:
+            - /url: /products
+            - text: Products
+          - link "Recharges" [ref=e23] [cursor=pointer]:
+            - /url: /recharges
+            - text: Recharges
+          - link "Gift Cards" [ref=e24] [cursor=pointer]:
+            - /url: /gift-cards
+            - text: Gift Cards
+          - link "Services" [ref=e25] [cursor=pointer]:
+            - /url: /services
+            - text: Services
+          - link "About Us" [ref=e26] [cursor=pointer]:
+            - /url: /about
+            - text: About Us
+        - generic [ref=e27]:
+          - button "Request a product" [ref=e28] [cursor=pointer]:
+            - img [ref=e30]
+          - button "Search products" [ref=e33] [cursor=pointer]:
+            - img [ref=e34]
+          - link [ref=e37] [cursor=pointer]:
+            - /url: /favorites
+            - button [ref=e38]:
+              - img [ref=e39]
+          - button [ref=e41] [cursor=pointer]:
+            - img [ref=e42]
+    - main [ref=e46]:
+      - generic [ref=e48]:
+        - generic [ref=e49]:
+          - heading "All Products" [level=1] [ref=e51]
+          - generic [ref=e52]: 204 of 204 products
+        - generic [ref=e53]:
+          - complementary [ref=e54]:
+            - generic [ref=e56]:
+              - generic [ref=e58]: Filters
+              - generic [ref=e59]:
+                - button "Category" [ref=e60] [cursor=pointer]:
+                  - text: Category
+                  - img [ref=e61]
+                - generic [ref=e64]:
+                  - button "Accessories" [ref=e65] [cursor=pointer]
+                  - button "All Essentials" [ref=e66] [cursor=pointer]
+                  - button "Audio" [ref=e67] [cursor=pointer]
+                  - button "Charging" [ref=e68] [cursor=pointer]
+                  - button "Electronics" [ref=e69] [cursor=pointer]
+                  - button "Gaming" [ref=e70] [cursor=pointer]
+                  - button "Lifestyle" [ref=e71] [cursor=pointer]
+                  - button "Phone Accessories" [ref=e72] [cursor=pointer]
+                  - button "Smart Home" [ref=e73] [cursor=pointer]
+                  - button "Smartphones" [ref=e74] [cursor=pointer]
+                  - button "Tablets" [ref=e75] [cursor=pointer]
+                  - button "Wearables" [ref=e76] [cursor=pointer]
+                  - button "iPhone Cases" [ref=e77] [cursor=pointer]
+              - generic [ref=e78]:
+                - button "Brand" [ref=e79] [cursor=pointer]:
+                  - text: Brand
+                  - img [ref=e80]
+                - generic [ref=e83]:
+                  - button "Apple" [ref=e84] [cursor=pointer]
+                  - button "BOROFONE" [ref=e85] [cursor=pointer]
+                  - button "CoolPad" [ref=e86] [cursor=pointer]
+                  - button "Dobe" [ref=e87] [cursor=pointer]
+                  - button "Foneng" [ref=e88] [cursor=pointer]
+                  - button "Generic" [ref=e89] [cursor=pointer]
+                  - button "Green Lion" [ref=e90] [cursor=pointer]
+                  - button "Hoco" [ref=e91] [cursor=pointer]
+                  - button "Infinix" [ref=e92] [cursor=pointer]
+                  - button "JBL" [ref=e93] [cursor=pointer]
+                  - button "Kakusiga" [ref=e94] [cursor=pointer]
+                  - button "Kieslect" [ref=e95] [cursor=pointer]
+                  - button "Mibro" [ref=e96] [cursor=pointer]
+                  - button "Oscal" [ref=e97] [cursor=pointer]
+                  - button "Other" [ref=e98] [cursor=pointer]
+                  - button "Philips" [ref=e99] [cursor=pointer]
+                  - button "REDMAGIC" [ref=e100] [cursor=pointer]
+                  - button "Samsung" [ref=e101] [cursor=pointer]
+                  - button "SanDisk" [ref=e102] [cursor=pointer]
+                  - button "Smart" [ref=e103] [cursor=pointer]
+                  - button "Sony" [ref=e104] [cursor=pointer]
+                  - button "Tecno" [ref=e105] [cursor=pointer]
+                  - button "Xiaomi" [ref=e106] [cursor=pointer]
+                  - button "YESIDO" [ref=e107] [cursor=pointer]
+              - generic [ref=e108]:
+                - button "Availability" [ref=e109] [cursor=pointer]:
+                  - text: Availability
+                  - img [ref=e110]
+                - generic [ref=e113]:
+                  - button "In Stock" [ref=e114] [cursor=pointer]
+                  - button "Out of Stock" [ref=e115] [cursor=pointer]
+              - button "Min Rating" [ref=e117] [cursor=pointer]:
+                - text: Min Rating
+                - img [ref=e118]
+          - generic [ref=e120]:
+            - generic [ref=e121]:
+              - paragraph [ref=e122]: 204 products
+              - generic [ref=e123]:
+                - combobox [ref=e124] [cursor=pointer]:
+                  - generic: "Price: High → Low"
+                  - img [ref=e125]
+                - generic [ref=e127]:
+                  - button "Grid view" [ref=e128] [cursor=pointer]:
+                    - img [ref=e129]
+                  - button "List view" [ref=e131] [cursor=pointer]:
+                    - img [ref=e132]
+            - generic [ref=e142]:
+              - generic [ref=e143]:
+                - generic [ref=e144]:
+                  - img [ref=e145]
+                  - generic [ref=e147]: Top Picks
+                - paragraph [ref=e148]: Smart Accessories
+                - paragraph [ref=e149]: Cables, chargers, cases & more
+              - button "Shop Accessories" [ref=e150] [cursor=pointer]
+    - contentinfo [ref=e151]:
+      - generic [ref=e152]:
+        - generic [ref=e153]:
+          - generic [ref=e154]:
+            - heading "KHA Mobile" [level=3] [ref=e155]
+            - paragraph [ref=e156]: Premium technology and digital services for modern living.
+            - link "WhatsApp" [ref=e158] [cursor=pointer]:
+              - /url: https://wa.me/96181861811
+              - img [ref=e159]
+          - generic [ref=e161]:
+            - heading "Shop" [level=4] [ref=e162]
+            - list [ref=e163]:
+              - listitem [ref=e164]:
+                - link "All Products" [ref=e165] [cursor=pointer]:
+                  - /url: /products
+              - listitem [ref=e166]:
+                - link "Smartphones" [ref=e167] [cursor=pointer]:
+                  - /url: /smartphones
+              - listitem [ref=e168]:
+                - link "Accessories" [ref=e169] [cursor=pointer]:
+                  - /url: /accessories
+              - listitem [ref=e170]:
+                - link "Recharges" [ref=e171] [cursor=pointer]:
+                  - /url: /recharges
+          - generic [ref=e172]:
+            - heading "Support" [level=4] [ref=e173]
+            - list [ref=e174]:
+              - listitem [ref=e175]:
+                - link "Track Order" [ref=e176] [cursor=pointer]:
+                  - /url: /order-lookup
+              - listitem [ref=e177]:
+                - link "WhatsApp Us" [ref=e178] [cursor=pointer]:
+                  - /url: https://wa.me/96181861811
+              - listitem [ref=e179]:
+                - link "Browse Catalog" [ref=e180] [cursor=pointer]:
+                  - /url: /products
+              - listitem [ref=e181]:
+                - link "Services" [ref=e182] [cursor=pointer]:
+                  - /url: /services
+          - generic [ref=e183]:
+            - heading "Company" [level=4] [ref=e184]
+            - list [ref=e185]:
+              - listitem [ref=e186]:
+                - link "About Us" [ref=e187] [cursor=pointer]:
+                  - /url: /about
+              - listitem [ref=e188]:
+                - link "New Arrivals" [ref=e189] [cursor=pointer]:
+                  - /url: /products
+              - listitem [ref=e190]:
+                - link "Privacy Policy" [ref=e191] [cursor=pointer]:
+                  - /url: /about#privacy
+              - listitem [ref=e192]:
+                - link "Terms of Service" [ref=e193] [cursor=pointer]:
+                  - /url: /about#terms
+        - generic [ref=e194]:
+          - paragraph [ref=e195]: © 2026 KHA Mobile. All rights reserved.
+          - paragraph [ref=e196]: Premium tech, delivered.

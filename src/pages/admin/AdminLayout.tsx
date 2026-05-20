@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Outlet, NavLink, useNavigate, useLocation } from "react-router-dom";
 import {
   Package, BarChart3, LogOut, Store, Menu, X, ChevronRight,
-  ShieldCheck, Layout, Ticket, Image, ScrollText, ShoppingBag,
+  ShieldCheck, Layout, Ticket, Image, ScrollText, ShoppingBag, FolderTree, LayoutDashboard,
 } from "lucide-react";
 import { adminFetch, getAdminToken, setAdminToken, siteUrl } from "@/lib/adminApi";
 import type { AdminProductStats } from "@/types/adminAnalytics";
@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 const catalogNav = [
+  { to: "/admin/catalog", label: "Catalog", icon: FolderTree },
   { to: "/admin/products", label: "Products", icon: Package },
   { to: "/admin/orders", label: "Orders", icon: ShoppingBag },
   { to: "/admin/coupons", label: "Coupons", icon: Ticket },
@@ -18,6 +19,7 @@ const catalogNav = [
 ];
 
 const siteNav = [
+  { to: "/admin", label: "Overview", icon: LayoutDashboard, end: true },
   { to: "/admin/site-content", label: "Site Content", icon: Layout },
   { to: "/admin/analytics", label: "Analytics", icon: BarChart3 },
   { to: "/admin/audit-log", label: "Activity Log", icon: ScrollText },
@@ -156,10 +158,11 @@ const AdminLayout = () => {
 
         <div className="pt-3">
           <p className="text-[10px] text-white/30 uppercase tracking-widest px-2 mb-2">Management</p>
-          {siteNav.map(({ to, label, icon: Icon }) => (
+          {siteNav.map(({ to, label, icon: Icon, end }) => (
             <NavLink
               key={to}
               to={to}
+              end={end}
               className={({ isActive }) =>
                 cn(
                   "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all",

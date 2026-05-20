@@ -80,9 +80,10 @@ adminProductsRouter.get('/products/stats', requirePool, requireAdmin, async (_re
 adminProductsRouter.get('/products', requirePool, requireAdmin, async (req, res) => {
   try {
     const page = Math.max(1, parseInt(req.query.page) || 1);
-    const limit = Math.min(100, Math.max(1, parseInt(req.query.limit) || 50));
+    const limit = Math.min(500, Math.max(1, parseInt(req.query.limit) || 50));
     const search = (req.query.search || '').trim();
     const category = (req.query.category || '').trim();
+    const brand = (req.query.brand || '').trim();
     const offset = (page - 1) * limit;
 
     const conditions = [];
@@ -97,6 +98,11 @@ adminProductsRouter.get('/products', requirePool, requireAdmin, async (req, res)
     if (category) {
       conditions.push(`category = $${paramIdx}`);
       params.push(category);
+      paramIdx++;
+    }
+    if (brand) {
+      conditions.push(`brand ILIKE $${paramIdx}`);
+      params.push(brand);
       paramIdx++;
     }
 

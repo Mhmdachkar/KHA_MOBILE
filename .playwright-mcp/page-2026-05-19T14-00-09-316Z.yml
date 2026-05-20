@@ -1,0 +1,102 @@
+- generic [ref=e2]:
+  - region "Notifications (F8)":
+    - list
+  - region "Notifications alt+T"
+  - generic [ref=e3]:
+    - generic [ref=e7] [cursor=pointer]:
+      - img [ref=e9]
+      - generic [ref=e11]: 🎉 10% OFF Premium Gaming Accessories
+    - banner [ref=e13]:
+      - generic [ref=e15]:
+        - link "KHA_MOBILE Logo KHA_MOBILE" [ref=e16] [cursor=pointer]:
+          - /url: /
+          - img "KHA_MOBILE Logo" [ref=e18]
+          - generic [ref=e19]: KHA_MOBILE
+        - navigation [ref=e20]:
+          - link "Home" [ref=e21] [cursor=pointer]:
+            - /url: /
+            - text: Home
+          - link "Products" [ref=e22] [cursor=pointer]:
+            - /url: /products
+            - text: Products
+          - link "Recharges" [ref=e23] [cursor=pointer]:
+            - /url: /recharges
+            - text: Recharges
+          - link "Gift Cards" [ref=e24] [cursor=pointer]:
+            - /url: /gift-cards
+            - text: Gift Cards
+          - link "Services" [ref=e25] [cursor=pointer]:
+            - /url: /services
+            - text: Services
+          - link "About Us" [ref=e26] [cursor=pointer]:
+            - /url: /about
+            - text: About Us
+        - generic [ref=e27]:
+          - button "Request a product" [ref=e28] [cursor=pointer]:
+            - img [ref=e30]
+          - button "Search products" [ref=e33] [cursor=pointer]:
+            - img [ref=e34]
+          - link [ref=e37] [cursor=pointer]:
+            - /url: /favorites
+            - button [ref=e38]:
+              - img [ref=e39]
+          - button [ref=e41] [cursor=pointer]:
+            - img [ref=e42]
+    - main [ref=e46]
+    - contentinfo [ref=e60]:
+      - generic [ref=e61]:
+        - generic [ref=e62]:
+          - generic [ref=e63]:
+            - heading "KHA Mobile" [level=3] [ref=e64]
+            - paragraph [ref=e65]: Premium technology and digital services for modern living.
+            - link "WhatsApp" [ref=e67] [cursor=pointer]:
+              - /url: https://wa.me/96181861811
+              - img [ref=e68]
+          - generic [ref=e70]:
+            - heading "Shop" [level=4] [ref=e71]
+            - list [ref=e72]:
+              - listitem [ref=e73]:
+                - link "All Products" [ref=e74] [cursor=pointer]:
+                  - /url: /products
+              - listitem [ref=e75]:
+                - link "Smartphones" [ref=e76] [cursor=pointer]:
+                  - /url: /smartphones
+              - listitem [ref=e77]:
+                - link "Accessories" [ref=e78] [cursor=pointer]:
+                  - /url: /accessories
+              - listitem [ref=e79]:
+                - link "Recharges" [ref=e80] [cursor=pointer]:
+                  - /url: /recharges
+          - generic [ref=e81]:
+            - heading "Support" [level=4] [ref=e82]
+            - list [ref=e83]:
+              - listitem [ref=e84]:
+                - link "Track Order" [ref=e85] [cursor=pointer]:
+                  - /url: /order-lookup
+              - listitem [ref=e86]:
+                - link "WhatsApp Us" [ref=e87] [cursor=pointer]:
+                  - /url: https://wa.me/96181861811
+              - listitem [ref=e88]:
+                - link "Browse Catalog" [ref=e89] [cursor=pointer]:
+                  - /url: /products
+              - listitem [ref=e90]:
+                - link "Services" [ref=e91] [cursor=pointer]:
+                  - /url: /services
+          - generic [ref=e92]:
+            - heading "Company" [level=4] [ref=e93]
+            - list [ref=e94]:
+              - listitem [ref=e95]:
+                - link "About Us" [ref=e96] [cursor=pointer]:
+                  - /url: /about
+              - listitem [ref=e97]:
+                - link "New Arrivals" [ref=e98] [cursor=pointer]:
+                  - /url: /products
+              - listitem [ref=e99]:
+                - link "Privacy Policy" [ref=e100] [cursor=pointer]:
+                  - /url: /about#privacy
+              - listitem [ref=e101]:
+                - link "Terms of Service" [ref=e102] [cursor=pointer]:
+                  - /url: /about#terms
+        - generic [ref=e103]:
+          - paragraph [ref=e104]: © 2026 KHA Mobile. All rights reserved.
+          - paragraph [ref=e105]: Premium tech, delivered.

@@ -56,6 +56,7 @@ export function inferProductBrand(product: StorefrontProduct): string | undefine
   const name = product.name?.toLowerCase() ?? "";
   if (name.startsWith("smart")) return "Smart";
   if (name.includes("samsung")) return "Samsung";
+  if (name.includes("honor")) return "Honor";
   if (name.includes("apple")) return "Apple";
   if (name.includes("green lion")) return "Green Lion";
   if (name.includes("xiaomi") || name.includes("redmi") || name.includes("poco")) return "Xiaomi";

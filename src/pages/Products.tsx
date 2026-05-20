@@ -228,6 +228,7 @@ const Products = () => {
       if (name.includes("green lion") || name.startsWith("green lion")) brandSet.add("Green Lion");
       if (name.includes("apple")) brandSet.add("Apple");
       if (name.includes("samsung")) brandSet.add("Samsung");
+      if (name.includes("honor")) brandSet.add("Honor");
       if (name.includes("tecno")) brandSet.add("Tecno");
       if (name.startsWith("smart ")) brandSet.add("Smart");
       if (name.includes("jbl")) brandSet.add("JBL");
@@ -250,6 +251,7 @@ const Products = () => {
     if (lower.includes("green lion") || lower.startsWith("green lion")) return "Green Lion";
     if (lower.includes("apple")) return "Apple";
     if (lower.includes("samsung")) return "Samsung";
+    if (lower.includes("honor")) return "Honor";
     if (lower.includes("tecno")) return "Tecno";
     if (lower.startsWith("smart ")) return "Smart";
     if (lower.includes("jbl")) return "JBL";

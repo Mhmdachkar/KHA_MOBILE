@@ -45,6 +45,8 @@ import AdminCoupons from "./pages/admin/AdminCoupons";
 import AdminMediaLibrary from "./pages/admin/AdminMediaLibrary";
 import AdminAuditLog from "./pages/admin/AdminAuditLog";
 import AdminOrders from "./pages/admin/AdminOrders";
+import AdminCatalog from "./pages/admin/AdminCatalog";
+import AdminHome from "./pages/admin/AdminHome";
 import NotFound from "./pages/NotFound";
 import StorefrontLayout from "./components/StorefrontLayout";
 
@@ -103,7 +105,8 @@ const App = () => (
               <Routes>
                 <Route path="/admin/login" element={<AdminLogin />} />
                 <Route path="/admin" element={<AdminLayout />}>
-                  <Route index element={<Navigate to="products" replace />} />
+                  <Route index element={<AdminHome />} />
+                  <Route path="catalog" element={<AdminCatalog />} />
                   <Route path="products" element={<AdminProductList />} />
                   <Route path="products/new" element={<AdminProductEditor />} />
                   <Route path="products/:dbId" element={<AdminProductEditor />} />
