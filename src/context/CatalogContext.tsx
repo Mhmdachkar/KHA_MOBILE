@@ -7,19 +7,21 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { apiBase } from "@/lib/adminApi";
-import {
-  registerPublicApiProducts,
-  registerSuppressedStorefrontIds,
-  type ApiPublicProduct,
-} from "@/data/productLookup";
 import { buildStorefrontCatalog, type StorefrontProduct } from "@/lib/catalogProduct";
+import {
+  STOREFRONT_CATALOG_CHANNEL,
+  applyPublicCatalogToRegistry,
+  fetchPublicCatalogProducts,
+} from "@/lib/storefrontCatalogSync";
 
-const CATALOG_CHANNEL = "kha-catalog-updated";
+/** Refetch interval while the tab is visible (keeps admin edits visible without full reload). */
+const CATALOG_REFRESH_MS = 3 * 60 * 1000;
+
 type CatalogContextValue = {
   catalogLoaded: boolean;
   loading: boolean;
   catalogTick: number;
+  apiProductCount: number;
   refreshCatalog: () => Promise<void>;
   refresh: () => Promise<void>;
   lastError: string | null;
@@ -33,40 +35,36 @@ export function CatalogProvider({ children }: { children: React.ReactNode }) {
   const [catalogLoaded, setCatalogLoaded] = useState(false);
   const [loading, setLoading] = useState(true);
   const [catalogTick, setCatalogTick] = useState(0);
+  const [apiProductCount, setApiProductCount] = useState(0);
   const [lastError, setLastError] = useState<string | null>(null);
-  const lastApiProductsRef = useRef<ApiPublicProduct[]>([]);
+  const lastApiProductsRef = useRef<Awaited<ReturnType<typeof fetchPublicCatalogProducts>>["products"]>([]);
   const lastSuppressedRef = useRef<number[]>([]);
   const hasSuccessfulFetchRef = useRef(false);
   const fetchGenerationRef = useRef(0);
   const catalogChannelRef = useRef<BroadcastChannel | null>(null);
 
-  const applyApiProducts = useCallback((products: ApiPublicProduct[], suppressed: number[]) => {
-    lastApiProductsRef.current = products;
-    lastSuppressedRef.current = suppressed;
-    hasSuccessfulFetchRef.current = true;
-    registerPublicApiProducts(products);
-    registerSuppressedStorefrontIds(suppressed);
-    setCatalogTick((n) => n + 1);
-  }, []);
-
-  const broadcastCatalogUpdate = useCallback(() => {
-    try {
-      catalogChannelRef.current?.postMessage({ type: "updated" });
-    } catch {
-      /* ignore */
-    }
-  }, []);
+  const applyApiProducts = useCallback(
+    (products: typeof lastApiProductsRef.current, suppressed: number[]) => {
+      lastApiProductsRef.current = products;
+      lastSuppressedRef.current = suppressed;
+      hasSuccessfulFetchRef.current = true;
+      setApiProductCount(products.length);
+      applyPublicCatalogToRegistry(products, suppressed);
+      setCatalogTick((n) => n + 1);
+    },
+    []
+  );
 
   const refreshCatalog = useCallback(async () => {
     const generation = ++fetchGenerationRef.current;
     setLoading(true);
     setLastError(null);
     try {
-      const url = `${apiBase()}/api/public/products?_=${Date.now()}`;
-      const res = await fetch(url, { cache: "no-store" });
+      const { products, suppressedStorefrontIds, error } = await fetchPublicCatalogProducts();
       if (generation !== fetchGenerationRef.current) return;
-      if (!res.ok) {
-        setLastError(`Catalog API returned ${res.status}`);
+
+      if (error) {
+        setLastError(error);
         if (hasSuccessfulFetchRef.current) {
           applyApiProducts(lastApiProductsRef.current, lastSuppressedRef.current);
         } else {
@@ -74,14 +72,8 @@ export function CatalogProvider({ children }: { children: React.ReactNode }) {
         }
         return;
       }
-      const data = await res.json();
-      const products = (data.products || []) as ApiPublicProduct[];
-      const suppressed = Array.isArray(data.suppressedStorefrontIds)
-        ? (data.suppressedStorefrontIds as number[])
-        : [];
-      if (generation !== fetchGenerationRef.current) return;
-      applyApiProducts(products, suppressed);
-      broadcastCatalogUpdate();
+
+      applyApiProducts(products, suppressedStorefrontIds);
     } catch {
       if (generation !== fetchGenerationRef.current) return;
       setLastError("Could not reach catalog API (using static products only)");
@@ -96,7 +88,7 @@ export function CatalogProvider({ children }: { children: React.ReactNode }) {
         setLoading(false);
       }
     }
-  }, [applyApiProducts, broadcastCatalogUpdate]);
+  }, [applyApiProducts]);
 
   useEffect(() => {
     void refreshCatalog();
@@ -113,8 +105,17 @@ export function CatalogProvider({ children }: { children: React.ReactNode }) {
   }, [refreshCatalog]);
 
   useEffect(() => {
+    const id = window.setInterval(() => {
+      if (document.visibilityState === "visible") {
+        void refreshCatalog();
+      }
+    }, CATALOG_REFRESH_MS);
+    return () => window.clearInterval(id);
+  }, [refreshCatalog]);
+
+  useEffect(() => {
     if (typeof BroadcastChannel === "undefined") return undefined;
-    const channel = new BroadcastChannel(CATALOG_CHANNEL);
+    const channel = new BroadcastChannel(STOREFRONT_CATALOG_CHANNEL);
     catalogChannelRef.current = channel;
     channel.onmessage = () => {
       void refreshCatalog();
@@ -135,13 +136,14 @@ export function CatalogProvider({ children }: { children: React.ReactNode }) {
       catalogLoaded,
       loading,
       catalogTick,
+      apiProductCount,
       refreshCatalog,
       refresh: refreshCatalog,
       lastError,
       allProducts: storefrontProducts,
       storefrontProducts,
     }),
-    [catalogLoaded, loading, catalogTick, refreshCatalog, lastError, storefrontProducts]
+    [catalogLoaded, loading, catalogTick, apiProductCount, refreshCatalog, lastError, storefrontProducts]
   );
 
   return <CatalogContext.Provider value={value}>{children}</CatalogContext.Provider>;

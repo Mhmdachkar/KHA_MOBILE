@@ -28,6 +28,7 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { AdminPageShell } from "@/components/admin/AdminPageShell";
+import { notifyStorefrontCatalogUpdate } from "@/lib/storefrontCatalogSync";
 
 type AdminProduct = AdminListProduct;
 
@@ -172,7 +173,8 @@ const AdminProductList = () => {
       }
       console.log('[AdminProductList] Product deleted successfully');
       toast({ title: "✓ Deleted successfully", description: `"${name}" has been removed.` });
-      refreshCatalog();
+      await refreshCatalog();
+      notifyStorefrontCatalogUpdate();
       refresh();
     } catch (err) {
       console.error('[AdminProductList] Delete error:', err);
@@ -231,7 +233,8 @@ const AdminProductList = () => {
       toast({ title: `✓ Done — ${data.affected} product(s) ${actionLabel}` });
       setSelected(new Set());
       setShowCatPicker(false);
-      refreshCatalog();
+      await refreshCatalog();
+      notifyStorefrontCatalogUpdate();
       refresh();
     } catch (e: any) {
       console.error('[AdminProductList] Bulk action error:', e);

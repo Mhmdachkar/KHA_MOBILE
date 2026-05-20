@@ -17,7 +17,8 @@ const CatalogStatusBanner = () => {
         <div className="flex items-start gap-2 text-sm">
           <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" aria-hidden />
           <p>
-            We couldn&apos;t refresh the product catalog. Some items may be outdated.
+            We couldn&apos;t refresh the product catalog from the server. Bundled items still show, but
+            products added or updated in admin may be missing until the connection is restored.
           </p>
         </div>
         <Button

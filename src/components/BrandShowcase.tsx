@@ -2,10 +2,9 @@ import { motion } from "framer-motion";
 import { useMemo } from "react";
 import { useCatalog } from "@/context/CatalogContext";
 import { useSiteSettings } from "@/context/SiteSettingsContext";
+import { inferProductBrand } from "@/lib/catalogFilters";
 import { Store, TrendingUp, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { phoneAccessories, smartphoneProducts, tabletProducts, wearablesProducts, gamingConsoles } from "@/data/products";
-import { getAllGreenLionProductsMerged } from "@/data/productLookup";
 
 // Import brand logos
 import appleLogo from "@/assets/logo's/apple logo.png";
@@ -25,7 +24,7 @@ interface Brand {
 }
 
 const BrandShowcase = () => {
-  const { catalogTick } = useCatalog();
+  const { storefrontProducts } = useCatalog();
   const { settings: siteSettings } = useSiteSettings();
   const navigate = useNavigate();
   const adminBrands = siteSettings.brand_showcase || [];
@@ -74,44 +73,18 @@ const BrandShowcase = () => {
   };
 
   const allProducts = useMemo(
-    () => [
-      ...phoneAccessories.map((p) => ({
-        ...p,
-        brand: p.brand || extractBrand(p.name, p.category) || "Other",
-        images: [p.image],
-      })),
-      ...smartphoneProducts.map((p) => ({
-        ...p,
-        brand: p.brand || extractBrand(p.name, p.category) || "Other",
-        images: p.images && p.images.length > 0 ? p.images : [p.image],
-      })),
-      ...tabletProducts.map((p) => ({
-        ...p,
-        brand: p.brand || extractBrand(p.name, p.category) || "Other",
-        images: p.images && p.images.length > 0 ? p.images : [p.image],
-      })),
-      ...wearablesProducts.map((p) => ({
-        ...p,
-        brand: p.brand || extractBrand(p.name, p.category) || "Other",
-        images: p.images && p.images.length > 0 ? p.images : [p.image],
-      })),
-      ...gamingConsoles.map((p) => ({
-        ...p,
-        brand: p.brand || extractBrand(p.name, p.category) || "Other",
-        images: p.images && p.images.length > 0 ? p.images : [p.image],
-      })),
-      ...getAllGreenLionProductsMerged().map((p) => ({
+    () =>
+      storefrontProducts.map((p) => ({
         id: p.id,
         name: p.name,
         price: p.price,
-        image: p.images[0],
-        images: p.images,
+        image: p.image,
+        images: p.images?.length ? p.images : [p.image],
         rating: p.rating,
         category: p.category,
-        brand: p.brand || "Green Lion",
+        brand: p.brand || inferProductBrand(p) || extractBrand(p.name, p.category) || "Other",
       })),
-    ],
-    [catalogTick]
+    [storefrontProducts]
   );
 
   // Brand logo mapping

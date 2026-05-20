@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { adminFetch, apiBase, getAdminToken } from "@/lib/adminApi";
 import { useCatalog } from "@/context/CatalogContext";
+import { notifyStorefrontCatalogUpdate } from "@/lib/storefrontCatalogSync";
 import { getStorefrontProductById } from "@/lib/catalogProduct";
 import { resolvePrimaryImageWithStaticFallback } from "@/data/productLookup";
 import { resolveImageUrl } from "@/lib/imageUtils";
@@ -449,6 +450,7 @@ const AdminProductEditor = () => {
       setForm({ ...formSynced });
       toast({ title: isNew ? "Product created!" : "Changes saved" });
       await refreshCatalog();
+      notifyStorefrontCatalogUpdate();
       if (isNew && data.product?.dbId) {
         navigate(`/admin/products/${data.product.dbId}`, { replace: true });
       } else {

@@ -1,11 +1,13 @@
-import { adminFetch, apiBase } from "@/lib/adminApi";
+import { adminFetch } from "@/lib/adminApi";
 import { buildStorefrontCatalog, type StorefrontProduct } from "@/lib/catalogProduct";
+import { resolvePrimaryImageWithStaticFallback } from "@/data/productLookup";
 import {
-  registerPublicApiProducts,
-  registerSuppressedStorefrontIds,
-  resolvePrimaryImageWithStaticFallback,
-  type ApiPublicProduct,
-} from "@/data/productLookup";
+  applyPublicCatalogToRegistry,
+  fetchPublicCatalogProducts,
+  notifyStorefrontCatalogUpdate,
+} from "@/lib/storefrontCatalogSync";
+
+export { notifyStorefrontCatalogUpdate };
 import type { AdminDbProductRow } from "@/lib/adminProductListMerge";
 
 /** Max rows per admin list request (server caps this). */
@@ -107,27 +109,16 @@ export async function loadStorefrontCatalogForAdmin(): Promise<{
   let apiCount = 0;
   let error: string | null = null;
 
-  // Avoid stale partial API state from a previous page (e.g. storefront) shrinking the admin list.
-  registerPublicApiProducts([]);
-  registerSuppressedStorefrontIds([]);
+  // Avoid stale partial API state from a previous page shrinking the admin list.
+  applyPublicCatalogToRegistry([], []);
 
-  try {
-    const url = `${apiBase()}/api/public/products?_=${Date.now()}`;
-    const res = await fetch(url, { cache: "no-store" });
-    if (!res.ok) {
-      error = `Catalog API returned ${res.status} — showing bundled website catalog only`;
-    } else {
-      const data = await res.json();
-      const rows = (data.products || []) as ApiPublicProduct[];
-      apiCount = rows.length;
-      const suppressed = Array.isArray(data.suppressedStorefrontIds)
-        ? (data.suppressedStorefrontIds as number[])
-        : [];
-      registerPublicApiProducts(rows);
-      registerSuppressedStorefrontIds(suppressed);
-    }
-  } catch {
-    error = "Could not reach catalog API — showing bundled website catalog only";
+  const { products: rows, suppressedStorefrontIds, error: fetchError } =
+    await fetchPublicCatalogProducts();
+  apiCount = rows.length;
+  if (fetchError) {
+    error = `${fetchError} — showing bundled website catalog only`;
+  } else {
+    applyPublicCatalogToRegistry(rows, suppressedStorefrontIds);
   }
 
   const products = buildStorefrontCatalog();

@@ -406,9 +406,13 @@ function toHomeCarouselProduct(p: StorefrontProduct) {
 }
 
 const Home = () => {
-  const { storefrontProducts } = useCatalog();
+  const { storefrontProducts, refreshCatalog } = useCatalog();
   const { settings: siteSettings } = useSiteSettings();
   const heroSettings = siteSettings.hero;
+
+  useEffect(() => {
+    void refreshCatalog();
+  }, [refreshCatalog]);
 
   // Scroll to top on mount
   useEffect(() => {

@@ -6,11 +6,14 @@ const TOKEN_KEY = "kha_admin_token";
  * - In local dev with no VITE_API_URL, use same-origin paths so Vite proxies to :3001.
  * - Production build without VITE_API_URL falls back to localhost (set env on deploy).
  */
+/** Default API host when VITE_API_URL is unset in production builds (Netlify → Render). */
+const DEFAULT_PRODUCTION_API = "https://kha-mobile.onrender.com";
+
 export function apiBase(): string {
   const raw = (import.meta.env.VITE_API_URL as string | undefined)?.trim();
   if (raw) return raw.replace(/\/+$/, "");
   if (import.meta.env.DEV) return "";
-  return "http://localhost:3001";
+  return DEFAULT_PRODUCTION_API;
 }
 
 /** Public storefront origin, no trailing slash (e.g. https://khamobile.com). */

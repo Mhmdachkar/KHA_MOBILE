@@ -175,7 +175,7 @@ const SidebarFilters = ({
 );
 
 const Products = () => {
-  const { storefrontProducts, catalogLoaded } = useCatalog();
+  const { storefrontProducts, catalogLoaded, refreshCatalog } = useCatalog();
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
@@ -198,6 +198,10 @@ const Products = () => {
     const searchParam = searchParams.get("search");
     if (searchParam != null) setSearchQuery(searchParam);
   }, [searchParams]);
+
+  useEffect(() => {
+    void refreshCatalog();
+  }, [refreshCatalog]);
 
   // Scroll to top whenever this page or its query changes (handles navigation from brand cards)
   useEffect(() => {
