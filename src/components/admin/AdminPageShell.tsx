@@ -43,7 +43,7 @@ export function AdminPageShell({
         className
       )}
     >
-      <div className={cn("flex flex-col min-h-0 flex-1 mx-auto w-full", maxWidthClass[maxWidth])}>
+      <div className={cn("flex flex-col min-h-0 flex-1 overflow-hidden mx-auto w-full h-full", maxWidthClass[maxWidth])}>
         {(title || description || headerExtra) && (
           <div className="shrink-0 px-4 sm:px-6 pt-4 sm:pt-6 pb-3 border-b border-border/60 bg-background">
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 min-w-0">
@@ -70,7 +70,7 @@ export function AdminPageShell({
           className={cn(
             "min-w-0",
             scrollBody
-              ? "flex-1 overflow-y-auto overscroll-y-contain px-4 sm:px-6 py-4 sm:py-6 pb-10"
+              ? "flex-1 min-h-0 overflow-y-auto overscroll-y-contain px-4 sm:px-6 py-4 sm:py-6 pb-10"
               : "px-4 sm:px-6 py-4 sm:py-6 pb-10",
             bodyClassName
           )}

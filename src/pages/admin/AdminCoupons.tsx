@@ -180,7 +180,7 @@ const AdminCoupons = () => {
   return (
     <div className="h-full min-h-0 min-w-0 w-full flex flex-col overflow-hidden">
       {/* Header */}
-      <div className="px-4 sm:px-6 pt-4 sm:pt-6 pb-3 border-b">
+      <div className="shrink-0 px-4 sm:px-6 pt-4 sm:pt-6 pb-3 border-b">
         <div className="flex items-center justify-between gap-3 mb-3">
           <h1 className="text-xl sm:text-2xl font-bold flex items-center gap-2">
             <Ticket className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
@@ -201,7 +201,8 @@ const AdminCoupons = () => {
         </div>
       </div>
 
-      {/* Form panel */}
+      {/* Form + list (single scroll region on mobile) */}
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain">
       {showForm && (
         <div className="border-b bg-muted/20 px-4 sm:px-6 py-5">
           <div className="max-w-2xl mx-auto space-y-4">
@@ -337,7 +338,7 @@ const AdminCoupons = () => {
       )}
 
       {/* Coupon list */}
-      <div className="flex-1 overflow-y-auto min-h-0 px-4 sm:px-6 py-4">
+      <div className="px-4 sm:px-6 py-4">
         {loading ? (
           <div className="flex items-center justify-center py-20">
             <div className="h-8 w-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />
@@ -417,6 +418,7 @@ const AdminCoupons = () => {
             ))}
           </div>
         )}
+      </div>
       </div>
       <ConfirmDialog
         open={confirmDelete.open}

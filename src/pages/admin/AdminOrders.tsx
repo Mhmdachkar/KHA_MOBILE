@@ -328,8 +328,8 @@ const AdminOrders = () => {
 
         {/* Order detail panel */}
         {selectedOrder && (
-          <div className="flex-1 md:w-1/2 lg:w-2/5 overflow-auto md:border-l bg-background">
-            <div className="sticky top-0 z-10 bg-background border-b px-4 py-3 flex items-center justify-between">
+          <div className="flex flex-col flex-1 min-h-0 min-w-0 overflow-hidden md:w-1/2 lg:w-2/5 md:border-l bg-background">
+            <div className="shrink-0 z-10 bg-background border-b px-4 py-3 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Button variant="ghost" size="icon" className="h-8 w-8 md:hidden" onClick={() => setSelectedOrder(null)}>
                   <ChevronLeft className="h-4 w-4" />
@@ -350,6 +350,7 @@ const AdminOrders = () => {
               </div>
             </div>
 
+            <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain">
             {detailLoading ? (
               <div className="flex items-center justify-center py-20">
                 <div className="h-6 w-6 rounded-full border-2 border-primary border-t-transparent animate-spin" />
@@ -481,6 +482,7 @@ const AdminOrders = () => {
                 </div>
               </div>
             )}
+            </div>
           </div>
         )}
       </div>
