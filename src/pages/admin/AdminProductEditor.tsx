@@ -87,6 +87,60 @@ const emptyForm = (): FormState => ({
   stockQuantity: "",
 });
 
+function asStringArray(val: unknown): string[] {
+  if (Array.isArray(val)) {
+    const items = val.map((x) => String(x ?? "").trim()).filter(Boolean);
+    return items.length ? items : [""];
+  }
+  if (typeof val === "string" && val.trim()) return [val.trim()];
+  return [""];
+}
+
+function asStringList(val: unknown): string[] {
+  if (!Array.isArray(val)) return [];
+  return val.map((x) => String(x ?? "").trim()).filter(Boolean);
+}
+
+function asSpecArray(val: unknown): Spec[] {
+  if (!Array.isArray(val) || val.length === 0) return [{ label: "", value: "" }];
+  return val.map((s) => ({
+    label: String((s as Spec)?.label ?? ""),
+    value: String((s as Spec)?.value ?? ""),
+  }));
+}
+
+function asVariantArray(val: unknown): Variant[] {
+  if (!Array.isArray(val)) return [];
+  return val.map((v) => ({
+    key: String((v as Variant)?.key ?? ""),
+    label: String((v as Variant)?.label ?? ""),
+    ram: String((v as Variant)?.ram ?? ""),
+    storage: String((v as Variant)?.storage ?? ""),
+    price: (v as Variant)?.price ?? 0,
+    description: String((v as Variant)?.description ?? ""),
+  }));
+}
+
+function asColorArray(val: unknown): ColorOption[] {
+  if (!Array.isArray(val)) return [];
+  return val.map((c) => ({
+    name: String((c as ColorOption)?.name ?? ""),
+    price: (c as ColorOption)?.price ?? "",
+    stock: String((c as ColorOption)?.stock ?? "available"),
+    image: String((c as ColorOption)?.image ?? ""),
+  }));
+}
+
+function asSizeArray(val: unknown): SizeOption[] {
+  if (!Array.isArray(val)) return [];
+  return val.map((s) => ({
+    name: String((s as SizeOption)?.name ?? ""),
+    price: (s as SizeOption)?.price ?? "",
+    stock: String((s as SizeOption)?.stock ?? "available"),
+    description: String((s as SizeOption)?.description ?? ""),
+  }));
+}
+
 const StarRating = ({ value }: { value: number }) => (
   <div className="flex gap-0.5">
     {[1, 2, 3, 4, 5].map((i) => (
@@ -156,8 +210,8 @@ const AdminProductEditor = () => {
   const [loading, setLoading] = useState(!isNew);
   const [saving, setSaving] = useState(false);
   const [activeTab, setActiveTab] = useState<TabId>("basics");
-  const [form, setForm] = useState<FormState>(emptyForm);
-  const [savedForm, setSavedForm] = useState<FormState>(emptyForm);
+  const [form, setForm] = useState<FormState>(() => emptyForm());
+  const [savedForm, setSavedForm] = useState<FormState>(() => emptyForm());
   const isDirty = JSON.stringify(form) !== JSON.stringify(savedForm);
   useUnsavedChanges(isDirty);
   const { products: catalogProducts } = useAdminMergedCatalog();
@@ -176,7 +230,7 @@ const AdminProductEditor = () => {
     const sp = getStorefrontProductById(storefrontProducts, id);
     if (!sp) return;
     const prefill: FormState = {
-      ...emptyForm,
+      ...emptyForm(),
       legacyOverrideId: String(id),
       name: sp.name,
       title: sp.title || sp.name,
@@ -187,6 +241,14 @@ const AdminProductEditor = () => {
       rating: String(sp.rating ?? "4.5"),
       category: sp.category || "Smartphones",
       brand: sp.brand || "",
+      features: asStringArray(sp.features),
+      specifications: asSpecArray(sp.specifications),
+      variants: asVariantArray(sp.variants),
+      colors: asColorArray(sp.colors),
+      sizes: asSizeArray(sp.sizes),
+      connectivityOptions: asStringList(sp.connectivityOptions),
+      secondaryCategories: asStringList(sp.secondaryCategories),
+      galleryImages: asStringList(sp.images).filter(Boolean),
     };
     setForm(prefill);
     setSavedForm(prefill);
@@ -236,20 +298,13 @@ const AdminProductEditor = () => {
           isPreorder: Boolean(p.isPreorder),
           showPreorderPrice: p.showPreorderPrice !== false,
           isActive: p.isActive !== false,
-          features: (p.features?.length ? p.features : [""]),
-          specifications: (p.specifications?.length ? p.specifications : [{ label: "", value: "" }]),
-          variants: (p.variants || []).map((v: Variant) => ({
-            key: v.key || "", label: v.label || "", ram: v.ram || "",
-            storage: v.storage || "", price: v.price ?? 0, description: v.description || "",
-          })),
-          colors: (p.colors || []).map((c: ColorOption) => ({
-            name: c.name || "", price: c.price ?? "", stock: c.stock || "available", image: c.image || "",
-          })),
-          sizes: (p.sizes || []).map((s: SizeOption) => ({
-            name: s.name || "", price: s.price ?? "", stock: s.stock || "available", description: s.description || "",
-          })),
-          connectivityOptions: p.connectivityOptions || [],
-          secondaryCategories: p.secondaryCategories || [],
+          features: asStringArray(p.features),
+          specifications: asSpecArray(p.specifications),
+          variants: asVariantArray(p.variants),
+          colors: asColorArray(p.colors),
+          sizes: asSizeArray(p.sizes),
+          connectivityOptions: asStringList(p.connectivityOptions),
+          secondaryCategories: asStringList(p.secondaryCategories),
           galleryImages: (() => {
             const uploadPath = (url: string) => {
               if (!url) return url;
@@ -1220,16 +1275,17 @@ const TagList = ({
   items, onChange, placeholder,
 }: { items: string[]; onChange: (v: string[]) => void; placeholder: string }) => {
   const [input, setInput] = useState("");
+  const safeItems = items ?? [];
   const add = () => {
     const v = input.trim();
-    if (v && !items.includes(v)) onChange([...items, v]);
+    if (v && !safeItems.includes(v)) onChange([...safeItems, v]);
     setInput("");
   };
   return (
     <div className="space-y-2">
-      {items.length > 0 && (
+      {(safeItems).length > 0 && (
         <div className="flex flex-wrap gap-1.5">
-          {items.map((item) => (
+          {safeItems.map((item) => (
             <span key={item} className="inline-flex items-center gap-1 bg-muted px-2.5 py-1 rounded-full text-xs font-medium">
               {item}
               <button
