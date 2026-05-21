@@ -465,7 +465,7 @@ const AdminProductEditor = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-32">
+      <div className="flex flex-col h-full min-h-0 items-center justify-center py-16 px-4">
         <div className="text-center">
           <div className="h-10 w-10 rounded-full border-2 border-primary border-t-transparent animate-spin mx-auto mb-4" />
           <p className="text-sm text-muted-foreground">Loading product…</p>
@@ -477,7 +477,7 @@ const AdminProductEditor = () => {
   return (
     <div className="flex flex-col h-full min-h-0 min-w-0 w-full overflow-hidden">
       {/* ── Top bar ── */}
-      <div className="sticky top-0 sm:top-0 z-20 bg-background/95 backdrop-blur border-b px-4 sm:px-6 py-3 flex items-center gap-3">
+      <div className="shrink-0 z-20 bg-background/95 backdrop-blur border-b px-4 sm:px-6 py-3 flex items-center gap-3">
         <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0 touch-manipulation" style={{ touchAction: 'manipulation' }} asChild>
           <Link to="/admin/products"><ArrowLeft className="h-4 w-4" /></Link>
         </Button>
@@ -518,8 +518,8 @@ const AdminProductEditor = () => {
       </div>
 
       {/* ── Tabs ── */}
-      <div className="border-b bg-muted/20">
-        <div className="flex overflow-x-auto px-4 sm:px-6 no-scrollbar">
+      <div className="shrink-0 border-b bg-muted/20">
+        <div className="flex overflow-x-auto overscroll-x-contain touch-pan-x px-4 sm:px-6 no-scrollbar">
           {TABS.map(({ id, label, icon: Icon }) => (
             <button
               key={id}
@@ -540,9 +540,9 @@ const AdminProductEditor = () => {
         </div>
       </div>
 
-      {/* ── Tab content ── */}
-      <div className="flex-1">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 space-y-6 pb-24">
+      {/* ── Tab content (scrollable) ── */}
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 space-y-6 pb-8">
 
           {/* ──────── BASICS ──────── */}
           {activeTab === "basics" && (
@@ -1189,8 +1189,8 @@ const AdminProductEditor = () => {
         </div>
       </div>
 
-      {/* ── Mobile save bar ── */}
-      <div className="sm:hidden sticky bottom-0 z-30 border-t bg-background/95 backdrop-blur px-4 py-3 flex gap-2">
+      {/* ── Mobile save bar (fixed footer, not inside scroll) ── */}
+      <div className="sm:hidden shrink-0 z-30 border-t bg-background/95 backdrop-blur px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] flex gap-2">
         <Button variant="outline" className="flex-1 touch-manipulation" style={{ touchAction: 'manipulation' }} asChild>
           <Link to="/admin/products">Cancel</Link>
         </Button>
