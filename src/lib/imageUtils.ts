@@ -51,3 +51,17 @@ export function resolveImageUrl(url: string | undefined): string {
 export function resolveImageUrls(urls: (string | undefined)[]): string[] {
   return urls.map(resolveImageUrl).filter((url): url is string => !!url);
 }
+
+/** Primary product thumbnail: `image`, then first gallery entry — always API-resolved for /uploads/. */
+export function resolveProductImage(
+  image: string | undefined,
+  images?: (string | undefined)[]
+): string {
+  const primary = resolveImageUrl(image);
+  if (primary) return primary;
+  for (const url of images ?? []) {
+    const resolved = resolveImageUrl(url);
+    if (resolved) return resolved;
+  }
+  return "";
+}

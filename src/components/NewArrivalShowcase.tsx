@@ -7,6 +7,7 @@ import { useCatalog } from "@/context/CatalogContext";
 import { useCart } from "@/context/CartContext";
 import { useToast } from "@/hooks/use-toast";
 import { formatMoney, getCardPricePresentation } from "@/lib/storefrontPricing";
+import { resolveProductImage } from "@/lib/imageUtils";
 import type { StorefrontProduct } from "@/lib/catalogProduct";
 
 // ─── Countdown timer hook ────────────────────────────────────────────────────
@@ -72,7 +73,7 @@ const DealCard = ({ product, index }: { product: StorefrontProduct; index: numbe
         {/* Image */}
         <div className="relative aspect-square bg-muted/30 overflow-hidden">
           <img
-            src={product.image}
+            src={resolveProductImage(product.image, product.images)}
             alt={product.name}
             className="absolute inset-0 w-full h-full object-contain p-3 group-hover:scale-105 transition-transform duration-300"
             loading="lazy"

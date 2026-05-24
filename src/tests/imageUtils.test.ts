@@ -149,6 +149,28 @@ describe("resolveImageUrl — VITE_API_URL=https://my-api.onrender.com", () => {
   });
 });
 
+describe("resolveProductImage", () => {
+  it("prefers primary image when set", async () => {
+    vi.resetModules();
+    vi.stubEnv("VITE_API_URL", "https://my-api.onrender.com");
+    const { resolveProductImage } = await import("../lib/imageUtils");
+    expect(
+      resolveProductImage("/uploads/main.jpg", ["/uploads/other.jpg"])
+    ).toBe("https://my-api.onrender.com/uploads/main.jpg");
+    vi.unstubAllEnvs();
+  });
+
+  it("falls back to first gallery image when primary is empty", async () => {
+    vi.resetModules();
+    vi.stubEnv("VITE_API_URL", "https://my-api.onrender.com");
+    const { resolveProductImage } = await import("../lib/imageUtils");
+    expect(resolveProductImage("", ["/uploads/gallery.jpg"])).toBe(
+      "https://my-api.onrender.com/uploads/gallery.jpg"
+    );
+    vi.unstubAllEnvs();
+  });
+});
+
 // ─── resolveImageUrls (batch) ────────────────────────────────────────────────
 
 describe("resolveImageUrls", () => {

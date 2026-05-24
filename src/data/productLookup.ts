@@ -104,8 +104,28 @@ function mergeGreenWithStaticImages(apiProduct: GreenLionProduct, staticPeer: Gr
   };
 }
 
+function firstNonEmptyImage(...candidates: (string | undefined | null)[]): string {
+  for (const c of candidates) {
+    const s = c != null ? String(c).trim() : "";
+    if (s) return s;
+  }
+  return "";
+}
+
 function mapApiToProduct(p: ApiPublicProduct): Product {
-  const rawImgs = p.images?.length ? p.images : [p.image];
+  const primary = firstNonEmptyImage(p.image, ...(p.images ?? []));
+  const rawImgs = (p.images?.length ? p.images : primary ? [primary] : []).filter(
+    (u) => u != null && String(u).trim() !== ""
+  );
+  const images = rawImgs.length
+    ? rawImgs.includes(primary)
+      ? rawImgs
+      : primary
+        ? [primary, ...rawImgs]
+        : rawImgs
+    : primary
+      ? [primary]
+      : [];
   return {
     id: p.id,
     dbId: p.dbId,
@@ -113,8 +133,8 @@ function mapApiToProduct(p: ApiPublicProduct): Product {
     name: p.name,
     title: p.title,
     price: p.price,
-    image: p.image,
-    images: rawImgs.length > 1 ? rawImgs : rawImgs.length === 1 ? [rawImgs[0]] : undefined,
+    image: primary,
+    images: images.length > 1 ? images : images.length === 1 ? [images[0]] : undefined,
     rating: p.rating,
     category: normalizeStorefrontCategory(p.category),
     brand: p.brand,
@@ -138,7 +158,19 @@ function mapApiToProduct(p: ApiPublicProduct): Product {
 }
 
 function mapApiToGreenLion(p: ApiPublicProduct): GreenLionProduct {
-  const rawImgs = p.images?.length ? p.images : [p.image];
+  const primary = firstNonEmptyImage(p.image, ...(p.images ?? []));
+  const rawImgs = (p.images?.length ? p.images : primary ? [primary] : []).filter(
+    (u) => u != null && String(u).trim() !== ""
+  );
+  const images = rawImgs.length
+    ? rawImgs.includes(primary)
+      ? rawImgs
+      : primary
+        ? [primary, ...rawImgs]
+        : rawImgs
+    : primary
+      ? [primary]
+      : [];
   return {
     id: p.id,
     dbId: p.dbId,
@@ -146,7 +178,7 @@ function mapApiToGreenLion(p: ApiPublicProduct): GreenLionProduct {
     name: p.name,
     title: p.title,
     price: typeof p.price === "number" ? p.price : Number(p.price),
-    images: rawImgs,
+    images,
     rating: p.rating,
     category: normalizeStorefrontCategory(p.category),
     brand: p.brand || "Green Lion",
@@ -177,17 +209,18 @@ export function registerPublicApiProducts(rows: ApiPublicProduct[]) {
     if (isGreen) {
       const mapped = mapApiToGreenLion(p);
       const staticPeer = getGreenLionProductById(legacy!);
-      const primary = mapped.images?.[0];
+      const resolvedImage = firstNonEmptyImage(mapped.images?.[0], p.image);
       const product =
-        staticPeer && shouldPreferStaticCatalogImage(primary)
+        staticPeer && shouldPreferStaticCatalogImage(resolvedImage)
           ? mergeGreenWithStaticImages(mapped, staticPeer)
           : mapped;
       apiByStorefrontId.set(p.id, { kind: "green", product });
     } else {
       const mapped = mapApiToProduct(p);
       const staticPeer = getProductById(p.id);
+      const resolvedImage = firstNonEmptyImage(mapped.image, ...(mapped.images ?? []));
       const product =
-        staticPeer && shouldPreferStaticCatalogImage(mapped.image)
+        staticPeer && shouldPreferStaticCatalogImage(resolvedImage)
           ? mergeRegularWithStaticImages(mapped, staticPeer)
           : mapped;
       apiByStorefrontId.set(p.id, { kind: "regular", product });

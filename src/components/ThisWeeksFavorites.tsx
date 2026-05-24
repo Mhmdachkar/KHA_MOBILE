@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
+import { resolveProductImage } from "@/lib/imageUtils";
 import { formatMoney } from "@/lib/storefrontPricing";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
@@ -156,7 +157,7 @@ const FeaturedProductCard = ({
 
           {/* Product Image */}
           <motion.img
-            src={product.image || product.images?.[0]}
+            src={resolveProductImage(product.image, product.images)}
             alt={product.name}
             className="w-full h-full object-contain p-4 sm:p-6 transition-transform duration-500 group-hover:scale-110"
             loading="lazy"

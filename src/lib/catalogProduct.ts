@@ -70,8 +70,13 @@ export interface StorefrontProduct {
 }
 
 function normalizeImages(image: string, images?: string[]): string[] {
-  if (images?.length) return images;
-  return image ? [image] : [];
+  const primary = image?.trim() || images?.find((u) => u?.trim()) || "";
+  if (images?.length) {
+    const filtered = images.filter((u) => u?.trim());
+    if (primary && !filtered.includes(primary)) return [primary, ...filtered];
+    return filtered.length ? filtered : primary ? [primary] : [];
+  }
+  return primary ? [primary] : [];
 }
 
 /** JSONB may be stored as an object; coerce to array for admin/API rows. */
@@ -140,7 +145,7 @@ function fromRegular(p: Product): StorefrontProduct {
     description: p.description,
     price: typeof p.price === "number" ? p.price : Number.parseFloat(String(p.price)) || 0,
     compareAtPrice: p.compareAtPrice ?? null,
-    image: images[0] || p.image,
+    image: images[0] || p.image?.trim() || "",
     images,
     rating: p.rating ?? 4.5,
     category: p.category,

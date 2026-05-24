@@ -136,6 +136,17 @@ describe("bodyToRowColumns — gallery images stripping", () => {
     expect(result.gallery_images).toEqual([]);
   });
 
+  it("promotes first gallery image to primary when primary is empty", () => {
+    const result = bodyToRowColumns({
+      name: "A",
+      price: 10,
+      category: "X",
+      galleryImages: ["https://api.render.com/uploads/hero.jpg", "/uploads/extra.jpg"],
+    });
+    expect(result.primary_image_url).toBe("/uploads/hero.jpg");
+    expect(result.gallery_images).toEqual(["/uploads/extra.jpg"]);
+  });
+
   it("strips gallery URL from a different host (deployment host change edge case)", () => {
     const result = bodyToRowColumns({
       name: "A", price: 10, category: "X",
@@ -470,7 +481,20 @@ describe("rowToPublicProduct", () => {
   it("includes primary image in images array", () => {
     process.env.API_PUBLIC_URL = "https://api.render.com";
     const product = rowToPublicProduct(baseRow, fakeReq);
+    expect(product.image).toBe("https://api.render.com/uploads/main.jpg");
     expect(product.images).toContain("https://api.render.com/uploads/main.jpg");
+  });
+
+  it("falls back to gallery when primary_image_url is empty", () => {
+    process.env.API_PUBLIC_URL = "https://api.render.com";
+    const row = {
+      ...baseRow,
+      primary_image_url: "",
+      gallery_images: ["/uploads/gallery-only.jpg"],
+    };
+    const product = rowToPublicProduct(row, fakeReq);
+    expect(product.image).toBe("https://api.render.com/uploads/gallery-only.jpg");
+    expect(product.images).toEqual(["https://api.render.com/uploads/gallery-only.jpg"]);
   });
 
   it("merges gallery images deduplicating primary", () => {

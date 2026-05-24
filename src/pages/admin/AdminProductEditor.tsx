@@ -376,6 +376,22 @@ const AdminProductEditor = () => {
     input.click();
   };
 
+  /** After upload, keep primary + gallery in sync so saves always persist a storefront thumbnail. */
+  const applyUploadedImages = (urls: string[], target: "primary" | "gallery") => {
+    if (!urls.length) return;
+    setForm((f) => {
+      if (target === "primary") {
+        const primary = urls[0];
+        const gallery = f.galleryImages.filter(Boolean);
+        const nextGallery = gallery.includes(primary) ? gallery : [primary, ...gallery];
+        return { ...f, primaryImageUrl: primary, galleryImages: nextGallery };
+      }
+      const nextGallery = [...f.galleryImages.filter(Boolean), ...urls];
+      const primary = f.primaryImageUrl.trim() || urls[0];
+      return { ...f, primaryImageUrl: primary, galleryImages: nextGallery };
+    });
+  };
+
   // ── Save ──
   const save = async () => {
     const basics = computeCatalogSaveFromBasics({
@@ -465,6 +481,11 @@ const AdminProductEditor = () => {
     setSaving(true);
     try {
       const legacy = form.legacyOverrideId === "" ? null : Number(form.legacyOverrideId);
+      const galleryFiltered = form.galleryImages.filter(Boolean);
+      let primaryImageUrl = form.primaryImageUrl.trim();
+      if (!primaryImageUrl && galleryFiltered.length > 0) {
+        primaryImageUrl = galleryFiltered[0];
+      }
       const body = {
         legacyOverrideId: legacy,
         name: form.name.trim(),
@@ -472,7 +493,7 @@ const AdminProductEditor = () => {
         description: form.description,
         price: basics.price,
         compareAtPrice: basics.compareAtPrice,
-        primaryImageUrl: form.primaryImageUrl.trim(),
+        primaryImageUrl,
         rating: Number(form.rating),
         category: form.category.trim(), // normalized on server; must match CANONICAL_STOREFRONT_CATEGORIES
         brand: form.brand.trim() || undefined,
@@ -487,7 +508,7 @@ const AdminProductEditor = () => {
         sizes: sizesOut.map((s) => ({ ...s, price: s.price === "" ? undefined : Number(s.price) })),
         connectivityOptions: form.connectivityOptions.filter(Boolean),
         secondaryCategories: form.secondaryCategories.filter(Boolean),
-        galleryImages: form.galleryImages.filter(Boolean),
+        galleryImages: galleryFiltered.filter((url) => url !== primaryImageUrl),
         stockQuantity: form.stockQuantity !== "" ? Number(form.stockQuantity) : null,
       };
       const url = isNew ? "/api/admin/products" : `/api/admin/products/${dbId}`;
@@ -501,8 +522,16 @@ const AdminProductEditor = () => {
         });
         return;
       }
-      setSavedForm({ ...formSynced });
-      setForm({ ...formSynced });
+      setSavedForm({
+        ...formSynced,
+        primaryImageUrl,
+        galleryImages: galleryFiltered.filter((url) => url !== primaryImageUrl),
+      });
+      setForm({
+        ...formSynced,
+        primaryImageUrl,
+        galleryImages: galleryFiltered.filter((url) => url !== primaryImageUrl),
+      });
       toast({ title: isNew ? "Product created!" : "Changes saved" });
       await refreshCatalog();
       notifyStorefrontCatalogUpdate();
@@ -623,7 +652,7 @@ const AdminProductEditor = () => {
                         variant="outline" size="sm" type="button"
                         className="touch-manipulation"
                         style={{ touchAction: 'manipulation' }}
-                        onClick={() => pickAndUpload("image/*", false, ([url]) => patch("primaryImageUrl", url))}
+                        onClick={() => pickAndUpload("image/*", false, (urls) => applyUploadedImages(urls, "primary"))}
                       >
                         <Upload className="h-3.5 w-3.5 mr-1.5" />Upload Photo
                       </Button>
@@ -878,7 +907,7 @@ const AdminProductEditor = () => {
                     />
                     <Button
                       variant="outline" size="sm" type="button"
-                      onClick={() => pickAndUpload("image/*", false, ([url]) => patch("primaryImageUrl", url))}
+                      onClick={() => pickAndUpload("image/*", false, (urls) => applyUploadedImages(urls, "primary"))}
                     >
                       <Upload className="h-3.5 w-3.5 mr-1.5" />Upload
                     </Button>
@@ -928,7 +957,7 @@ const AdminProductEditor = () => {
                     <Button
                       variant="outline" size="sm" type="button"
                       onClick={() => pickAndUpload("image/*,video/mp4", true, (urls) =>
-                        patch("galleryImages", [...form.galleryImages, ...urls])
+                        applyUploadedImages(urls, "gallery")
                       )}
                     >
                       <Upload className="h-3.5 w-3.5 mr-1.5" />Upload

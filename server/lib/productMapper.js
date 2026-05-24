@@ -97,7 +97,11 @@ function normalizeGallery(primary, gallery) {
 }
 
 export function rowToPublicProduct(row, req) {
-  const primaryRaw = row.primary_image_url;
+  const galleryRaw = Array.isArray(row.gallery_images) ? row.gallery_images : [];
+  const primaryRaw =
+    row.primary_image_url ||
+    galleryRaw.find((url) => url != null && String(url).trim() !== '') ||
+    '';
   const primary = expandMediaUrlForPublicClient(primaryRaw, req);
   const gallery = normalizeGallery(primaryRaw, row.gallery_images).map(url => expandMediaUrlForPublicClient(url, req));
   const images = gallery.length > 1 ? gallery : gallery.length === 1 ? [gallery[0]] : [];
@@ -111,8 +115,8 @@ export function rowToPublicProduct(row, req) {
     description: row.description,
     price: Number(row.price),
     compareAtPrice: row.compare_at_price != null ? Number(row.compare_at_price) : null,
-    image: primary,
-    images: images.length > 0 ? images : [primary],
+    image: primary || images[0] || '',
+    images: images.length > 0 ? images : primary ? [primary] : [],
     rating: Number(row.rating),
     category: normalizeStorefrontCategory(row.category),
     brand: row.brand || undefined,
@@ -160,11 +164,17 @@ export function bodyToRowColumns(body) {
     : 4.5;
 
   const rawPrimary = b.primaryImageUrl ?? b.primary_image_url ?? b.image ?? '';
-  const primary_image_url =
+  let primary_image_url =
     typeof rawPrimary === 'string' ? stripToUploadPath(rawPrimary) : rawPrimary;
 
   const rawGallery = b.galleryImages ?? b.gallery_images ?? [];
-  const gallery_images = stripGalleryUrls(Array.isArray(rawGallery) ? rawGallery : []);
+  let gallery_images = stripGalleryUrls(Array.isArray(rawGallery) ? rawGallery : []);
+
+  // Gallery-only uploads: promote first gallery image to primary so storefront cards get a thumbnail.
+  if (!primary_image_url && gallery_images.length > 0) {
+    primary_image_url = gallery_images[0];
+    gallery_images = gallery_images.slice(1);
+  }
 
   return {
     legacy_override_id: legacy,
