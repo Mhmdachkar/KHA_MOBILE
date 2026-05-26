@@ -22,6 +22,85 @@ import ImageLightbox from "@/components/ImageLightbox";
 import { useEnsureMobileScroll } from "@/hooks/useEnsureMobileScroll";
 import { useScrollLockRestore } from "@/hooks/useScrollLockRestore";
 
+const accessoryFilters = ["All Essentials", "Charging", "Protection", "Audio"] as const;
+type AccessoryFilter = (typeof accessoryFilters)[number];
+
+function determineAccessoryCategory(accessory: { name: string; category?: string }): AccessoryFilter {
+  const name = accessory.name.toLowerCase();
+  const primaryCategory = accessory.category?.toLowerCase() || "";
+
+  const matchesAudio =
+    primaryCategory === "audio" ||
+    ["earbud", "speaker", "headphone", "neckband", "buds", "audio", "sound", "airpods", "airpod", "wireless earbuds", "true wireless"].some((keyword) => name.includes(keyword));
+
+  const matchesCharging = !matchesAudio && (
+    primaryCategory === "charging" ||
+    ["charger", "charging", "power bank", "adapter", "cable", "usb", "type-c", "lightning", "wall", "dock", "magsafe"].some((keyword) =>
+      name.includes(keyword)
+    )
+  );
+
+  const matchesProtection = !matchesAudio &&
+    ["case", "cover", "protector", "screen", "holder", "stand", "mount", "armour", "sleeve"].some((keyword) =>
+      name.includes(keyword)
+    );
+
+  if (matchesAudio) return "Audio";
+  if (matchesCharging) return "Charging";
+  if (matchesProtection) return "Protection";
+  return "All Essentials";
+}
+
+function asStringArray(val: unknown): string[] {
+  if (Array.isArray(val)) return val.map((x) => String(x ?? "").trim()).filter(Boolean);
+  if (typeof val === "string" && val.trim()) return [val.trim()];
+  return [];
+}
+
+function asSpecArray(val: unknown): Array<{ label: string; value: string }> {
+  if (!Array.isArray(val)) return [];
+  return val.map((s) => ({
+    label: String((s as { label?: string })?.label ?? ""),
+    value: String((s as { value?: string })?.value ?? ""),
+  }));
+}
+
+function buildSmartAccessories(storefrontProducts: StorefrontProduct[], isSmartphone: boolean) {
+  if (!isSmartphone) return [];
+
+  const seen = new Set<number>();
+  const allAccessories: StorefrontProduct[] = [];
+  for (const cat of ["Accessories", "Charging", "Audio"] as const) {
+    for (const p of filterByCategoryPage(storefrontProducts, cat)) {
+      if (!seen.has(p.id)) {
+        seen.add(p.id);
+        allAccessories.push(p);
+      }
+    }
+  }
+
+  const essentialKeywords = [
+    "case", "cover", "screen protector", "charger", "cable", "adapter",
+    "power bank", "holder", "stand", "usb", "type-c", "lightning",
+    "wireless", "magsafe", "charging", "wall adapter",
+  ];
+
+  return allAccessories
+    .map((acc) => {
+      let score = 0;
+      const nameLower = acc.name.toLowerCase();
+      essentialKeywords.forEach((keyword) => {
+        if (nameLower.includes(keyword)) score += 10;
+      });
+      if (acc.rating >= 4.5) score += 5;
+      if (acc.id >= 5000 || acc.brand === "Green Lion") score += 8;
+      if (acc.category === "Charging") score += 7;
+      if (acc.category === "Audio") score += 6;
+      return { ...acc, score };
+    })
+    .sort((a, b) => b.score - a.score);
+}
+
 const ProductDetail = () => {
   const location = useLocation();
   // Ensure mobile scrolling always works
@@ -154,14 +233,24 @@ const ProductDetail = () => {
     const { greenLionProduct, regularProduct } = split;
     let raw: string[];
     if (greenLionProduct) {
-      raw = greenLionProduct.images;
+      raw = Array.isArray(greenLionProduct.images) && greenLionProduct.images.length > 0
+        ? greenLionProduct.images
+        : greenLionProduct.image
+          ? [greenLionProduct.image]
+          : catalogRow?.image
+            ? [catalogRow.image]
+            : [];
     } else if (regularProduct?.images && regularProduct.images.length > 0) {
       raw = regularProduct.images;
     } else {
-      raw = regularProduct ? [regularProduct.image] : [];
+      raw = regularProduct?.image
+        ? [regularProduct.image]
+        : catalogRow?.image
+          ? [catalogRow.image]
+          : [];
     }
     return raw.map(resolveImageUrl);
-  }, [split]);
+  }, [split, catalogRow]);
 
   const colorOptions = useMemo(
     () => catalogRow?.colors ?? product?.colors ?? [],
@@ -270,6 +359,34 @@ const ProductDetail = () => {
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [showAllFeatures, setShowAllFeatures] = useState(false);
   const [showAllSpecs, setShowAllSpecs] = useState(false);
+
+  // Accessory hooks MUST stay above early returns (Rules of Hooks).
+  const isSmartphone = catalogRow?.category === "Smartphones";
+  const [selectedAccessoryFilter, setSelectedAccessoryFilter] = useState<AccessoryFilter>("All Essentials");
+
+  useEffect(() => {
+    setSelectedAccessoryFilter("All Essentials");
+  }, [productId]);
+
+  const smartAccessories = useMemo(
+    () => buildSmartAccessories(storefrontProducts, isSmartphone),
+    [storefrontProducts, isSmartphone]
+  );
+
+  const categorizedAccessories = useMemo(
+    () =>
+      smartAccessories.map((accessory) => ({
+        ...accessory,
+        accessoryCategory: determineAccessoryCategory(accessory),
+      })),
+    [smartAccessories]
+  );
+
+  const filteredAccessories = useMemo(() => {
+    if (selectedAccessoryFilter === "All Essentials") return categorizedAccessories;
+    return categorizedAccessories.filter((a) => a.accessoryCategory === selectedAccessoryFilter);
+  }, [categorizedAccessories, selectedAccessoryFilter]);
+
   // ─────────────────────────────────────────────────────────────────────────────
 
   if (!catalogLoaded && productId) {
@@ -337,9 +454,12 @@ const ProductDetail = () => {
     return price.toFixed(2);
   };
   const primaryImage =
+    productImages[selectedImage] ||
     productImages[0] ||
     resolveImageUrl(split.regularProduct?.image) ||
-    (split.greenLionProduct ? resolveImageUrl(split.greenLionProduct.images[0]) : "/placeholder.svg");
+    resolveImageUrl(split.greenLionProduct?.images?.[0]) ||
+    resolveImageUrl(catalogRow?.image) ||
+    "/placeholder.svg";
 
   const favorite = isFavorite(product.id);
 
@@ -350,10 +470,10 @@ const ProductDetail = () => {
 
   const FEATURE_LIMIT = 6;
   const SPEC_LIMIT = 6;
-  const displayedFeatures =
-    product.features && !showAllFeatures ? product.features.slice(0, FEATURE_LIMIT) : product.features;
-  const displayedSpecs =
-    product.specifications && !showAllSpecs ? product.specifications.slice(0, SPEC_LIMIT) : product.specifications;
+  const featureList = asStringArray(product.features);
+  const specList = asSpecArray(product.specifications);
+  const displayedFeatures = !showAllFeatures ? featureList.slice(0, FEATURE_LIMIT) : featureList;
+  const displayedSpecs = !showAllSpecs ? specList.slice(0, SPEC_LIMIT) : specList;
 
   const handleAddToCart = (redirect?: boolean) => {
     if (cannotPurchase) return;
@@ -492,110 +612,6 @@ const ProductDetail = () => {
 
   const relatedProducts = getRecommendedProducts();
 
-  // Determine if this is a smartphone product for specialized display logic
-  const isSmartphone = product.category === "Smartphones";
-
-  // Get smart accessory recommendations for smartphones
-  const getSmartAccessories = () => {
-    if (!isSmartphone) return [];
-
-    const seen = new Set<number>();
-    const allAccessories: StorefrontProduct[] = [];
-    for (const cat of ["Accessories", "Charging", "Audio"] as const) {
-      for (const p of filterByCategoryPage(storefrontProducts, cat)) {
-        if (!seen.has(p.id)) {
-          seen.add(p.id);
-          allAccessories.push(p);
-        }
-      }
-    }
-
-    // Prioritize essential phone accessories
-    const essentialKeywords = [
-      'case', 'cover', 'screen protector', 'charger', 'cable', 'adapter',
-      'power bank', 'holder', 'stand', 'usb', 'type-c', 'lightning',
-      'wireless', 'magsafe', 'charging', 'wall adapter'
-    ];
-
-    // Score and sort accessories
-    const scoredAccessories = allAccessories.map(acc => {
-      let score = 0;
-      const nameLower = acc.name.toLowerCase();
-
-      // Boost essential accessories
-      essentialKeywords.forEach(keyword => {
-        if (nameLower.includes(keyword)) score += 10;
-      });
-
-      // Boost highly rated products
-      if (acc.rating >= 4.5) score += 5;
-
-      // Boost Green Lion products
-      if (acc.id >= 5000 || acc.brand === "Green Lion") score += 8;
-
-      // Boost charging accessories
-      if (acc.category === "Charging") score += 7;
-
-      // Boost audio accessories
-      if (acc.category === "Audio") score += 6;
-
-      return { ...acc, score };
-    });
-
-    // Don't limit the results - return all accessories so Audio filter can show all audio products
-    return scoredAccessories
-      .sort((a, b) => b.score - a.score);
-  };
-
-  const smartAccessories = getSmartAccessories();
-
-  const accessoryFilters = ["All Essentials", "Charging", "Protection", "Audio"] as const;
-  const [selectedAccessoryFilter, setSelectedAccessoryFilter] = useState<(typeof accessoryFilters)[number]>("All Essentials");
-
-  const determineAccessoryCategory = (accessory: typeof smartAccessories[number]) => {
-    const name = accessory.name.toLowerCase();
-    const primaryCategory = accessory.category?.toLowerCase() || "";
-
-    // Check Audio FIRST to ensure audio products are never categorized as Charging or Protection
-    const matchesAudio =
-      primaryCategory === "audio" ||
-      ["earbud", "speaker", "headphone", "neckband", "buds", "audio", "sound", "airpods", "airpod", "wireless earbuds", "true wireless"].some((keyword) => name.includes(keyword));
-
-    // Only check charging if it's NOT an audio product
-    const matchesCharging = !matchesAudio && (
-      primaryCategory === "charging" ||
-      ["charger", "charging", "power bank", "adapter", "cable", "usb", "type-c", "lightning", "wall", "dock", "magsafe"].some((keyword) =>
-        name.includes(keyword)
-      )
-    );
-
-    // Only check protection if it's NOT an audio product
-    const matchesProtection = !matchesAudio &&
-      ["case", "cover", "protector", "screen", "holder", "stand", "mount", "armour", "sleeve"].some((keyword) =>
-        name.includes(keyword)
-      );
-
-    // Priority: Audio first, then Charging, then Protection
-    if (matchesAudio) return "Audio" as const;
-    if (matchesCharging) return "Charging" as const;
-    if (matchesProtection) return "Protection" as const;
-    return "All Essentials" as const;
-  };
-
-  const categorizedAccessories = useMemo(() => {
-    return smartAccessories.map((accessory) => ({
-      ...accessory,
-      accessoryCategory: determineAccessoryCategory(accessory),
-    }));
-  }, [smartAccessories]);
-
-  const filteredAccessories = useMemo(() => {
-    if (selectedAccessoryFilter === "All Essentials") {
-      return categorizedAccessories;
-    }
-    return categorizedAccessories.filter((accessory) => accessory.accessoryCategory === selectedAccessoryFilter);
-  }, [categorizedAccessories, selectedAccessoryFilter]);
-
   return (
     <div className="min-h-screen bg-white w-full">
       <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12 pb-36 md:pb-12 max-w-full overflow-x-hidden">
@@ -706,10 +722,10 @@ const ProductDetail = () => {
             )}
 
             {/* Desktop trust compact bar */}
-            {product.features && product.features.length > 0 && (
+            {featureList.length > 0 && (
               <div className="hidden md:block mt-4">
                 <div className="bg-secondary/40 border border-border/40 rounded-2xl p-4 flex flex-col gap-2">
-                  {product.features.slice(0, 3).map((feature, i) => (
+                  {featureList.slice(0, 3).map((feature, i) => (
                     <div key={i} className="flex items-start gap-2">
                       <CheckCircle2 className="h-3.5 w-3.5 text-primary mt-0.5 shrink-0" />
                       <p className="text-xs text-muted-foreground leading-relaxed line-clamp-1">{feature}</p>
@@ -1028,7 +1044,7 @@ const ProductDetail = () => {
                       </li>
                     ))}
                   </ul>
-                  {product.features && product.features.length > FEATURE_LIMIT && (
+                  {featureList.length > FEATURE_LIMIT && (
                     <div className="mt-3">
                       <Button
                         variant="outline"
