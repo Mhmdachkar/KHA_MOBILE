@@ -7,6 +7,12 @@ import {
 
 export const STOREFRONT_CATALOG_CHANNEL = "kha-catalog-updated";
 
+/** Unique per browser tab — used to skip self-triggered BroadcastChannel refresh. */
+export const CATALOG_TAB_ID =
+  typeof crypto !== "undefined" && "randomUUID" in crypto
+    ? crypto.randomUUID()
+    : `tab-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+
 export interface PublicCatalogFetchResult {
   products: ApiPublicProduct[];
   suppressedStorefrontIds: number[];
@@ -56,7 +62,7 @@ export function applyPublicCatalogToRegistry(
 export function notifyStorefrontCatalogUpdate(): void {
   try {
     const channel = new BroadcastChannel(STOREFRONT_CATALOG_CHANNEL);
-    channel.postMessage({ type: "updated" });
+    channel.postMessage({ type: "updated", senderId: CATALOG_TAB_ID });
     channel.close();
   } catch {
     /* BroadcastChannel unavailable */

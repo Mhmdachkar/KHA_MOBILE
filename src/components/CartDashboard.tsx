@@ -4,11 +4,24 @@ import { X, Plus, Minus, Trash2, ShoppingBag, ArrowRight } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { Link } from "react-router-dom";
 import { formatMoney } from "@/lib/storefrontPricing";
+import {
+  estimateProductOrderTotal,
+  getDeliveryFee,
+  getFreeShippingThreshold,
+} from "@/lib/storefrontCommerce";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 
 const CartDashboard = () => {
   const { cart, isOpen, closeCart, removeFromCart, updateQuantity, getTotalItems, getTotalPrice } = useCart();
+  const { settings: siteSettings } = useSiteSettings();
+  const subtotal = getTotalPrice();
+  const { deliveryCharge, total, qualifiesForFreeShipping } = estimateProductOrderTotal(
+    subtotal,
+    getDeliveryFee(siteSettings.delivery_fee),
+    getFreeShippingThreshold(siteSettings.free_shipping_threshold)
+  );
   const cartItemsContainerRef = useRef<HTMLDivElement>(null);
 
   // CRITICAL: Force scroll to top IMMEDIATELY when cart opens - before any animation
@@ -383,13 +396,30 @@ const CartDashboard = () => {
                   </div>
                   <div className="flex items-center justify-between text-sm sm:text-base md:text-lg">
                     <span className="text-muted-foreground">Delivery</span>
-                    <span className="font-medium">{formatMoney(4)}</span>
+                    <span className="font-medium flex items-center gap-2">
+                      {qualifiesForFreeShipping ? (
+                        <>
+                          <span className="line-through text-muted-foreground/70 text-xs">
+                            {formatMoney(getDeliveryFee(siteSettings.delivery_fee))}
+                          </span>
+                          <span className="text-emerald-600">Free</span>
+                        </>
+                      ) : (
+                        formatMoney(deliveryCharge)
+                      )}
+                    </span>
                   </div>
+                  {!qualifiesForFreeShipping && subtotal > 0 && (
+                    <p className="text-[11px] text-muted-foreground">
+                      Free delivery on orders over{" "}
+                      {formatMoney(getFreeShippingThreshold(siteSettings.free_shipping_threshold))}
+                    </p>
+                  )}
                   <div className="h-px bg-border" />
                   <div className="flex items-center justify-between text-base sm:text-lg md:text-xl font-bold">
                     <span className="text-elegant">Total</span>
                     <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                      {formatMoney(getTotalPrice() + 4)}
+                      {formatMoney(total)}
                     </span>
                   </div>
                 </div>

@@ -66,6 +66,63 @@ export function inferProductBrand(product: StorefrontProduct): string | undefine
   return undefined;
 }
 
+/** Distinct canonical categories present in the catalog. */
+export function getDistinctCategoriesFromProducts(products: StorefrontProduct[]): string[] {
+  const set = new Set<string>();
+  for (const p of products) {
+    if (p.category) set.add(normalizeStorefrontCategory(p.category));
+  }
+  return Array.from(set).sort((a, b) => a.localeCompare(b));
+}
+
+/** Distinct filter brands present in the catalog. */
+export function getDistinctBrandsFromProducts(products: StorefrontProduct[]): string[] {
+  const set = new Set<string>();
+  for (const p of products) {
+    const brand = getProductFilterBrand(p);
+    if (brand) set.add(brand);
+  }
+  return Array.from(set).sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
+}
+
+export function productMatchesBrandFilters(
+  product: StorefrontProduct,
+  selectedBrands: string[]
+): boolean {
+  if (selectedBrands.length === 0) return true;
+  const brand = getProductFilterBrand(product);
+  return brand !== null && selectedBrands.includes(brand);
+}
+
+export function productMatchesCategoryFilters(
+  product: StorefrontProduct,
+  selectedCategories: string[]
+): boolean {
+  if (selectedCategories.length === 0) return true;
+  return selectedCategories.some((cat) => matchesStorefrontCategory(product, cat));
+}
+
+/** Brand label used by /products sidebar and URL ?brand= filter. */
+export function getProductFilterBrand(product: StorefrontProduct): string | null {
+  if (product.brand) return product.brand;
+  const name = product.name ?? "";
+  const lower = name.toLowerCase();
+  if (lower.includes("green lion") || lower.startsWith("green lion")) return "Green Lion";
+  if (lower.includes("apple")) return "Apple";
+  if (lower.includes("samsung") || lower.includes("galaxy")) return "Samsung";
+  if (lower.includes("honor")) return "Honor";
+  if (lower.includes("tecno")) return "Tecno";
+  if (lower.startsWith("smart ")) return "Smart";
+  if (lower.includes("jbl")) return "JBL";
+  if (lower.includes("hoco")) return "Hoco";
+  if (lower.includes("dobe")) return "Dobe";
+  if (lower.includes("foneng")) return "Foneng";
+  if (lower.includes("borofone")) return "BOROFONE";
+  if (lower.includes("kakusiga")) return "Kakusiga";
+  if (product.id >= 5000) return "Green Lion";
+  return null;
+}
+
 function isSonyProduct(product: StorefrontProduct): boolean {
   if (product.brand === "Sony") return true;
   const name = product.name?.toLowerCase() ?? "";

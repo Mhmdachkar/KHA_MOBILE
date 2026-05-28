@@ -9,6 +9,7 @@ import React, {
 } from "react";
 import { buildStorefrontCatalog, type StorefrontProduct } from "@/lib/catalogProduct";
 import {
+  CATALOG_TAB_ID,
   STOREFRONT_CATALOG_CHANNEL,
   applyPublicCatalogToRegistry,
   fetchPublicCatalogProducts,
@@ -41,6 +42,7 @@ export function CatalogProvider({ children }: { children: React.ReactNode }) {
   const lastSuppressedRef = useRef<number[]>([]);
   const hasSuccessfulFetchRef = useRef(false);
   const fetchGenerationRef = useRef(0);
+  const inFlightRef = useRef<Promise<void> | null>(null);
   const catalogChannelRef = useRef<BroadcastChannel | null>(null);
 
   const applyApiProducts = useCallback(
@@ -56,37 +58,49 @@ export function CatalogProvider({ children }: { children: React.ReactNode }) {
   );
 
   const refreshCatalog = useCallback(async () => {
-    const generation = ++fetchGenerationRef.current;
-    setLoading(true);
-    setLastError(null);
-    try {
-      const { products, suppressedStorefrontIds, error } = await fetchPublicCatalogProducts();
-      if (generation !== fetchGenerationRef.current) return;
+    if (inFlightRef.current) return inFlightRef.current;
 
-      if (error) {
-        setLastError(error);
+    const run = (async () => {
+      const generation = ++fetchGenerationRef.current;
+      const isBackground = hasSuccessfulFetchRef.current;
+      if (!isBackground) setLoading(true);
+      setLastError(null);
+      try {
+        const { products, suppressedStorefrontIds, error } = await fetchPublicCatalogProducts();
+        if (generation !== fetchGenerationRef.current) return;
+
+        if (error) {
+          setLastError(error);
+          if (hasSuccessfulFetchRef.current) {
+            applyApiProducts(lastApiProductsRef.current, lastSuppressedRef.current);
+          } else {
+            applyApiProducts([], []);
+          }
+          return;
+        }
+
+        applyApiProducts(products, suppressedStorefrontIds);
+      } catch {
+        if (generation !== fetchGenerationRef.current) return;
+        setLastError("Could not reach catalog API (using static products only)");
         if (hasSuccessfulFetchRef.current) {
           applyApiProducts(lastApiProductsRef.current, lastSuppressedRef.current);
         } else {
           applyApiProducts([], []);
         }
-        return;
+      } finally {
+        if (generation === fetchGenerationRef.current) {
+          setCatalogLoaded(true);
+          setLoading(false);
+        }
       }
+    })();
 
-      applyApiProducts(products, suppressedStorefrontIds);
-    } catch {
-      if (generation !== fetchGenerationRef.current) return;
-      setLastError("Could not reach catalog API (using static products only)");
-      if (hasSuccessfulFetchRef.current) {
-        applyApiProducts(lastApiProductsRef.current, lastSuppressedRef.current);
-      } else {
-        applyApiProducts([], []);
-      }
+    inFlightRef.current = run;
+    try {
+      await run;
     } finally {
-      if (generation === fetchGenerationRef.current) {
-        setCatalogLoaded(true);
-        setLoading(false);
-      }
+      if (inFlightRef.current === run) inFlightRef.current = null;
     }
   }, [applyApiProducts]);
 
@@ -117,7 +131,8 @@ export function CatalogProvider({ children }: { children: React.ReactNode }) {
     if (typeof BroadcastChannel === "undefined") return undefined;
     const channel = new BroadcastChannel(STOREFRONT_CATALOG_CHANNEL);
     catalogChannelRef.current = channel;
-    channel.onmessage = () => {
+    channel.onmessage = (event: MessageEvent<{ type?: string; senderId?: string }>) => {
+      if (event.data?.senderId === CATALOG_TAB_ID) return;
       void refreshCatalog();
     };
     return () => {

@@ -43,7 +43,7 @@ function toProductCardProps(product: StorefrontProduct) {
 }
 
 const Accessories = () => {
-  const { storefrontProducts, refreshCatalog } = useCatalog();
+  const { storefrontProducts } = useCatalog();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedBrand, setSelectedBrand] = useState<string>("all");
@@ -61,10 +61,6 @@ const Accessories = () => {
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
   }, []);
-
-  useEffect(() => {
-    void refreshCatalog();
-  }, [refreshCatalog]);
 
   const accessoryProducts = useMemo(
     () => filterAccessoriesPageProducts(storefrontProducts),

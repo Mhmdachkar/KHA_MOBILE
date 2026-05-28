@@ -4,7 +4,7 @@
 
 import { normalizeStorefrontVariants } from "@/lib/catalogProduct";
 
-export type AddToCartSurface = "grid" | "carousel" | "featured" | "pdp";
+export type AddToCartSurface = "grid" | "list" | "carousel" | "featured" | "pdp";
 
 export interface ColorOption {
   name: string;

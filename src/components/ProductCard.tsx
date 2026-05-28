@@ -269,17 +269,22 @@ const ProductCard = ({
     }
   };
 
+  const isList = surface === "list";
+
   return (
     <>
       <motion.div
         ref={cardRef}
         whileHover={
-          window.matchMedia("(hover: hover)").matches && !optionsExpanded ? { y: -6 } : undefined
+          !isList && window.matchMedia("(hover: hover)").matches && !optionsExpanded
+            ? { y: -6 }
+            : undefined
         }
         transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
         style={{ willChange: optionsExpanded ? "auto" : "transform" }}
         className={cn(
-          "group relative bg-card rounded-2xl border transition-all duration-300 shadow-card flex flex-col",
+          "group relative bg-card rounded-2xl border transition-all duration-300 shadow-card",
+          isList ? "flex flex-row items-stretch overflow-hidden" : "flex flex-col",
           optionsExpanded
             ? "z-20 border-primary ring-2 ring-primary/25 shadow-xl overflow-visible"
             : "z-0 overflow-hidden border-border/60 hover:border-primary/30 hover:shadow-xl"
@@ -287,8 +292,16 @@ const ProductCard = ({
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        <Link to={`/product/${id}`} className="block flex-1 min-h-0">
-          <div className="aspect-square overflow-hidden bg-muted/30 relative rounded-t-2xl">
+        <Link
+          to={`/product/${id}`}
+          className={cn("block min-h-0", isList ? "flex shrink-0 w-28 sm:w-36" : "flex-1")}
+        >
+          <div
+            className={cn(
+              "overflow-hidden bg-muted/30 relative",
+              isList ? "h-full min-h-[7rem] w-full rounded-l-2xl" : "aspect-square rounded-t-2xl"
+            )}
+          >
             <motion.img
               key={`${id}-${currentImage}`}
               src={currentImage}
@@ -312,10 +325,18 @@ const ProductCard = ({
               </div>
             )}
           </div>
-          <div className="px-3 py-3 sm:px-4">
-            <h3 className="text-xs sm:text-[13px] font-semibold leading-snug line-clamp-2 group-hover:text-primary transition-colors duration-300 mb-1.5">
+          <div className={cn("px-3 py-3 sm:px-4", isList && "flex-1 flex flex-col justify-center min-w-0")}>
+            <h3
+              className={cn(
+                "font-semibold leading-snug line-clamp-2 group-hover:text-primary transition-colors duration-300 mb-1.5",
+                isList ? "text-sm sm:text-base" : "text-xs sm:text-[13px]"
+              )}
+            >
               {title || name}
             </h3>
+            {category && isList && (
+              <p className="text-[10px] text-muted-foreground mb-1 truncate">{category}</p>
+            )}
             <div className="flex items-center mb-2">
               <span className="inline-flex items-center gap-1 bg-amber-50 border border-amber-200 text-amber-700 dark:bg-amber-950/40 dark:border-amber-800 dark:text-amber-400 text-[10px] font-medium px-2 py-0.5 rounded-full">
                 <Star className="h-2.5 w-2.5 fill-amber-400 text-amber-400" />
@@ -344,6 +365,35 @@ const ProductCard = ({
             )}
           </div>
         </Link>
+
+        {isList && !optionsExpanded && (
+          <div className="flex flex-col justify-center gap-2 pr-3 shrink-0">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleFavorite({ id, name, price: cardPricing.displayPrice, image, rating, category });
+              }}
+              className={cn(
+                "h-9 w-9 rounded-full border flex items-center justify-center bg-background shadow-sm",
+                favorite ? "bg-primary text-primary-foreground border-primary" : "border-border/50"
+              )}
+              aria-label={favorite ? "Remove from favorites" : "Add to favorites"}
+            >
+              <Heart className={cn("h-4 w-4", favorite && "fill-white")} />
+            </button>
+            <button
+              type="button"
+              onClick={handleAddToCart}
+              disabled={stockQuantity === 0}
+              className="h-9 w-9 rounded-full border border-border/50 flex items-center justify-center bg-background shadow-sm hover:bg-accent disabled:opacity-40"
+              aria-label="Add to cart"
+            >
+              <ShoppingCart className="h-4 w-4" />
+            </button>
+          </div>
+        )}
 
         <AnimatePresence>
           {inlineOptions && optionsExpanded && (
@@ -375,6 +425,7 @@ const ProductCard = ({
         <div
           className={cn(
             "absolute top-2 right-2 flex flex-col gap-1.5 transition-opacity duration-300 z-30",
+            isList && "hidden",
             optionsExpanded ? "opacity-100" : "opacity-100 md:opacity-0 md:group-hover:opacity-100"
           )}
         >

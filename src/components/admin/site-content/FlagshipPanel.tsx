@@ -74,7 +74,7 @@ export function FlagshipPanel({ flagship, setFlagship, saving, saveSetting }: Si
                 onChange={(e) =>
                   setFlagship((p) => ({
                     ...p,
-                    feature_chips: p.feature_chips.map((c, j) => (j === i ? { ...c, label: e.target.value } : c)),
+                    feature_chips: (p.feature_chips ?? []).map((c, j) => (j === i ? { ...c, label: e.target.value } : c)),
                   }))
                 }
                 className="flex-1 min-w-0"
@@ -85,7 +85,7 @@ export function FlagshipPanel({ flagship, setFlagship, saving, saveSetting }: Si
                 onChange={(e) =>
                   setFlagship((p) => ({
                     ...p,
-                    feature_chips: p.feature_chips.map((c, j) => (j === i ? { ...c, sublabel: e.target.value } : c)),
+                    feature_chips: (p.feature_chips ?? []).map((c, j) => (j === i ? { ...c, sublabel: e.target.value } : c)),
                   }))
                 }
                 className="flex-1 min-w-0"
@@ -93,7 +93,7 @@ export function FlagshipPanel({ flagship, setFlagship, saving, saveSetting }: Si
               <button
                 type="button"
                 onClick={() =>
-                  setFlagship((p) => ({ ...p, feature_chips: p.feature_chips.filter((_, j) => j !== i) }))
+                  setFlagship((p) => ({ ...p, feature_chips: (p.feature_chips ?? []).filter((_, j) => j !== i) }))
                 }
                 className="p-1.5 rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive shrink-0 self-end sm:self-center"
               >
@@ -106,7 +106,7 @@ export function FlagshipPanel({ flagship, setFlagship, saving, saveSetting }: Si
               variant="outline"
               size="sm"
               onClick={() =>
-                setFlagship((p) => ({ ...p, feature_chips: [...p.feature_chips, { label: "", sublabel: "" }] }))
+                setFlagship((p) => ({ ...p, feature_chips: [...(p.feature_chips ?? []), { label: "", sublabel: "" }] }))
               }
               className="gap-1.5"
             >

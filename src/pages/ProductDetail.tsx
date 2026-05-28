@@ -4,6 +4,8 @@ import { Heart, ShoppingCart, Star, ChevronLeft, ChevronRight, CheckCircle2, Che
 import { Link, useParams, useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { resolveImageUrl } from "@/lib/imageUtils";
 import ProductDetailSkeleton from "@/components/ProductDetailSkeleton";
+import { PdpStickyBar } from "@/components/pdp/PdpStickyBar";
+import { ProductNotFound } from "@/components/pdp/ProductNotFound";
 import { getPdpPricePresentation, formatMoney } from "@/lib/storefrontPricing";
 import { getStockBadgeInfo } from "@/lib/stockStatus";
 import { addRecentlyViewed } from "@/lib/recentlyViewed";
@@ -24,6 +26,11 @@ import { useScrollLockRestore } from "@/hooks/useScrollLockRestore";
 
 const accessoryFilters = ["All Essentials", "Charging", "Protection", "Audio"] as const;
 type AccessoryFilter = (typeof accessoryFilters)[number];
+
+function productImagesMatch(resolvedGalleryUrl: string, colorImage: string | undefined): boolean {
+  if (!colorImage) return false;
+  return resolvedGalleryUrl === resolveImageUrl(colorImage);
+}
 
 function determineAccessoryCategory(accessory: { name: string; category?: string }): AccessoryFilter {
   const name = accessory.name.toLowerCase();
@@ -101,6 +108,75 @@ function buildSmartAccessories(storefrontProducts: StorefrontProduct[], isSmartp
     .sort((a, b) => b.score - a.score);
 }
 
+function extractBrandFromName(productName: string): string | null {
+  const brandPatterns = [
+    /^Green Lion\s+/i,
+    /^Apple\s+/i,
+    /^Samsung\s+/i,
+    /^Sony\s+/i,
+    /^Bose\s+/i,
+    /^JBL\s+/i,
+    /^Hoco\s+/i,
+    /^Dobe\s+/i,
+    /^Foneng\s+/i,
+    /^Borofone\s+/i,
+  ];
+  for (const pattern of brandPatterns) {
+    const match = productName.match(pattern);
+    if (match) return match[0].trim();
+  }
+  return null;
+}
+
+function scoreRelatedProducts(
+  product: {
+    id: number;
+    name: string;
+    price: number | string;
+    category: string;
+  },
+  split: ReturnType<typeof findStoreProductSplit>,
+  allProducts: StorefrontProduct[]
+) {
+  const { greenLionProduct, regularProduct } = split;
+  const currentProduct = greenLionProduct || regularProduct;
+  if (!currentProduct) return [];
+
+  const currentBrand = greenLionProduct ? greenLionProduct.brand : extractBrandFromName(product.name);
+  const currentPrice =
+    allProducts.find((p) => p.id === product.id)?.displayPrice ??
+    (typeof product.price === "number" ? product.price : Number(product.price) || 0);
+  const currentCategory = product.category;
+  const currentSecondaryCategories = greenLionProduct?.secondaryCategories || [];
+
+  return allProducts
+    .filter((p) => p.id !== product.id)
+    .map((p) => {
+      let score = 0;
+      if (p.category === currentCategory) score += 40;
+      else if (p.secondaryCategories?.includes(currentCategory)) score += 20;
+      else if (
+        currentSecondaryCategories?.some(
+          (cat) => p.category === cat || p.secondaryCategories?.includes(cat)
+        )
+      ) {
+        score += 15;
+      }
+      if (currentBrand && p.brand === currentBrand) score += 25;
+      const priceDifference = Math.abs(p.displayPrice - currentPrice);
+      const pricePercentage = currentPrice > 0 ? (priceDifference / currentPrice) * 100 : 100;
+      if (pricePercentage <= 20) score += 20;
+      else if (pricePercentage <= 50) score += 10;
+      else if (pricePercentage <= 100) score += 5;
+      if (p.rating >= 4.5) score += 15;
+      else if (p.rating >= 4.0) score += 10;
+      else if (p.rating >= 3.5) score += 5;
+      return { ...p, score };
+    })
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 8);
+}
+
 const ProductDetail = () => {
   const location = useLocation();
   // Ensure mobile scrolling always works
@@ -114,7 +190,7 @@ const ProductDetail = () => {
   const { isFavorite, toggleFavorite } = useFavorites();
   const { addToCart } = useCart();
   const { trackProductView, trackAddToCart } = useAnalytics();
-  const { storefrontProducts, catalogLoaded } = useCatalog();
+  const { storefrontProducts, catalogLoaded, catalogTick } = useCatalog();
 
   const productId = id ? parseInt(id, 10) : null;
 
@@ -128,7 +204,7 @@ const ProductDetail = () => {
       productId != null
         ? findStoreProductSplit(productId)
         : { regularProduct: null, greenLionProduct: null },
-    [productId, storefrontProducts]
+    [productId, catalogTick]
   );
 
   const product = useMemo(() => {
@@ -313,6 +389,11 @@ const ProductDetail = () => {
 
   // Track if user manually clicked an image (to prevent color sync from overriding)
   const manualImageSelectionRef = useRef(false);
+  const variantSectionRef = useRef<HTMLDivElement>(null);
+
+  const scrollToVariantOptions = () => {
+    variantSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
 
   // When color changes from COLOR BUTTON click, update selectedImage
   // But don't interfere if user manually clicked an image thumbnail
@@ -387,6 +468,19 @@ const ProductDetail = () => {
     return categorizedAccessories.filter((a) => a.accessoryCategory === selectedAccessoryFilter);
   }, [categorizedAccessories, selectedAccessoryFilter]);
 
+  const relatedProducts = useMemo(() => {
+    if (!product) return [];
+    const accessoryIds = new Set(categorizedAccessories.map((a) => a.id));
+    return scoreRelatedProducts(product, split, storefrontProducts).filter(
+      (p) => !accessoryIds.has(p.id)
+    );
+  }, [product, split, storefrontProducts, categorizedAccessories]);
+
+  const notFoundSuggestions = useMemo(
+    () => storefrontProducts.slice(0, 4),
+    [storefrontProducts]
+  );
+
   // ─────────────────────────────────────────────────────────────────────────────
 
   if (!catalogLoaded && productId) {
@@ -394,27 +488,11 @@ const ProductDetail = () => {
   }
 
   if (catalogLoaded && productId && !catalogRow) {
-    return (
-      <motion.div className="min-h-screen bg-white w-full">        <div className="container mx-auto px-6 py-12 text-center">
-          <h2 className="text-2xl mb-4">Product not found</h2>
-          <Link to="/products">
-            <Button>Back to Products</Button>
-          </Link>
-        </div>
-      </motion.div>
-    );
+    return <ProductNotFound suggestions={notFoundSuggestions} />;
   }
 
   if (!product) {
-    return (
-      <motion.div className="min-h-screen bg-white w-full">        <div className="container mx-auto px-6 py-12 text-center">
-          <h2 className="text-2xl mb-4">Product not found</h2>
-          <Link to="/products">
-            <Button>Back to Products</Button>
-          </Link>
-        </div>
-      </motion.div>
-    );
+    return <ProductNotFound suggestions={notFoundSuggestions} />;
   }
 
   const stockQty = (product as { stockQuantity?: number | null }).stockQuantity;
@@ -520,98 +598,6 @@ const ProductDetail = () => {
     setSelectedImage((prev) => (prev < productImages.length - 1 ? prev + 1 : 0));
   };
 
-  const allProducts: StorefrontProduct[] = storefrontProducts;
-
-  // Helper function to extract brand from product name
-  function extractBrand(productName: string): string | null {
-    const brandPatterns = [
-      /^Green Lion\s+/i,
-      /^Apple\s+/i,
-      /^Samsung\s+/i,
-      /^Sony\s+/i,
-      /^Bose\s+/i,
-      /^JBL\s+/i,
-      /^Hoco\s+/i,
-      /^Dobe\s+/i,
-      /^Foneng\s+/i,
-      /^Borofone\s+/i,
-    ];
-
-    for (const pattern of brandPatterns) {
-      const match = productName.match(pattern);
-      if (match) {
-        return match[0].trim();
-      }
-    }
-    return null;
-  }
-
-  // Multi-factor scoring recommendation algorithm
-  const getRecommendedProducts = () => {
-    const { greenLionProduct, regularProduct } = split;
-    const currentProduct = greenLionProduct || regularProduct;
-    if (!currentProduct) return [];
-
-    const currentBrand = greenLionProduct ? greenLionProduct.brand : extractBrand(product.name);
-    const currentPrice =
-      allProducts.find((p) => p.id === product.id)?.displayPrice ??
-      (typeof product.price === "number" ? product.price : Number(product.price) || 0);
-    const currentCategory = product.category;
-    const currentSecondaryCategories = greenLionProduct?.secondaryCategories || [];
-
-    // Score each product
-    const scoredProducts = allProducts
-      .filter(p => p.id !== product.id) // Exclude current product
-      .map(p => {
-        let score = 0;
-
-        // Factor 1: Category Match (40% weight = 40 points max)
-        if (p.category === currentCategory) {
-          score += 40; // Primary category match
-        } else if (p.secondaryCategories?.includes(currentCategory)) {
-          score += 20; // Secondary category match
-        } else if (currentSecondaryCategories?.some(cat => p.category === cat || p.secondaryCategories?.includes(cat))) {
-          score += 15; // Cross-category match
-        }
-
-        // Factor 2: Brand Match (25% weight = 25 points max)
-        if (currentBrand && p.brand === currentBrand) {
-          score += 25; // Same brand
-        }
-
-        // Factor 3: Price Similarity (20% weight = 20 points max)
-        const priceDifference = Math.abs(p.displayPrice - currentPrice);
-        const pricePercentage = (priceDifference / currentPrice) * 100;
-        if (pricePercentage <= 20) {
-          score += 20; // Within ±20%
-        } else if (pricePercentage <= 50) {
-          score += 10; // Within ±50%
-        } else if (pricePercentage <= 100) {
-          score += 5; // Within ±100%
-        }
-
-        // Factor 4: Rating (15% weight = 15 points max)
-        if (p.rating >= 4.5) {
-          score += 15; // High-rated (4.5+)
-        } else if (p.rating >= 4.0) {
-          score += 10; // Good (4.0-4.4)
-        } else if (p.rating >= 3.5) {
-          score += 5; // Average (3.5-3.9)
-        }
-
-        return {
-          ...p,
-          score,
-        };
-      })
-      .sort((a, b) => b.score - a.score) // Sort by score descending
-      .slice(0, 8); // Get top 8 recommendations (will show 4 in 2x2 grid, but having extras for better variety)
-
-    return scoredProducts;
-  };
-
-  const relatedProducts = getRecommendedProducts();
-
   return (
     <div className="min-h-screen bg-white w-full">
       <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12 pb-36 md:pb-12 max-w-full overflow-x-hidden">
@@ -691,7 +677,9 @@ const ProductDetail = () => {
                       // Sync color selection when clicking on images
                       if (colorOptions.length > 0) {
                         // Try to find which color this image corresponds to
-                        const matchingColorIdx = colorOptions.findIndex(color => color.image === image);
+                        const matchingColorIdx = colorOptions.findIndex((color) =>
+                          productImagesMatch(image, color.image)
+                        );
                         if (matchingColorIdx !== -1) {
                           setSelectedColorIndex(matchingColorIdx);
                         }
@@ -735,96 +723,6 @@ const ProductDetail = () => {
               </div>
             )}
 
-            {/* Mobile Action Buttons - Only visible on mobile */}
-            <motion.div className="md:hidden mt-4 sm:mt-6">
-              {(stickySelection.text || stickySelection.incomplete) && (
-                <p
-                  className={`text-xs mb-2 truncate ${stickySelection.incomplete ? "text-amber-600" : "text-muted-foreground"}`}
-                  title={stickySelection.text}
-                >
-                  {stickySelection.incomplete ? "Select options above" : stickySelection.text}
-                </p>
-              )}
-              {!cannotPurchase && (
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-sm text-muted-foreground">Quantity</span>
-                  <div
-                    className="flex items-center border border-border rounded-lg bg-background"
-                    aria-label="Quantity"
-                  >
-                    <button
-                      type="button"
-                      onClick={() => setCartQuantity((q) => Math.max(1, q - 1))}
-                      disabled={cartQuantity <= 1}
-                      className="h-10 w-10 flex items-center justify-center hover:bg-muted disabled:opacity-40 transition-colors"
-                      aria-label="Decrease quantity"
-                    >
-                      <Minus className="h-4 w-4" />
-                    </button>
-                    <span className="text-sm font-medium w-10 text-center tabular-nums">{cartQuantity}</span>
-                    <button
-                      type="button"
-                      onClick={() => setCartQuantity((q) => Math.min(maxCartQuantity, q + 1))}
-                      disabled={cartQuantity >= maxCartQuantity}
-                      className="h-10 w-10 flex items-center justify-center hover:bg-muted disabled:opacity-40 transition-colors"
-                      aria-label="Increase quantity"
-                    >
-                      <Plus className="h-4 w-4" />
-                    </button>
-                  </div>
-                </div>
-              )}
-              <div className="flex flex-col gap-3 mb-4">
-                <Button
-                  size="lg"
-                  className="flex-1 text-elegant text-sm py-4 sm:py-5 w-full"
-                  onClick={() => handleAddToCart()}
-                  disabled={cannotPurchase || stickySelection.incomplete}
-                  style={{ touchAction: "manipulation" }}
-                >
-                  <ShoppingCart className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-                  {cannotPurchase
-                    ? "Out of Stock"
-                    : stickySelection.incomplete
-                      ? "Choose options"
-                      : product.isPreorder
-                        ? `Preorder Now${cartQuantity > 1 ? ` (${cartQuantity})` : ""}`
-                        : `Add to Cart${cartQuantity > 1 ? ` (${cartQuantity})` : ""}`}
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="flex-1 text-elegant text-sm py-4 sm:py-5 w-full"
-                  onClick={() => handleAddToCart(true)}
-                  disabled={cannotPurchase || stickySelection.incomplete}
-                  style={{ touchAction: "manipulation" }}
-                >
-                  {cannotPurchase
-                    ? "Unavailable"
-                    : stickySelection.incomplete
-                      ? "Choose options"
-                      : product.isPreorder
-                        ? "Preorder & Checkout"
-                        : "Buy Now"}
-                </Button>
-              </div>
-
-              {/* Wishlist Button - Well structured below Buy Now */}
-              <motion.button
-                whileHover={window.matchMedia('(hover: hover)').matches ? { scale: 1.02 } : undefined}
-                onClick={() => toggleFavorite(product)}
-                style={{ touchAction: 'manipulation' }}
-                className={`w-full flex items-center justify-center gap-2 px-4 py-3 sm:py-3.5 rounded-sm border transition-all duration-300 ${favorite
-                  ? "bg-accent/10 text-accent border-accent/30 hover:bg-accent/20"
-                  : "bg-background text-foreground border-border hover:bg-secondary/50 hover:border-primary/40"
-                  }`}
-              >
-                <Heart className={`h-4 w-4 sm:h-5 sm:w-5 transition-colors ${favorite ? "fill-accent text-accent" : ""}`} />
-                <span className="text-elegant text-sm font-medium">
-                  {favorite ? "Remove from Wishlist" : "Add to Wishlist"}
-                </span>
-              </motion.button>
-            </motion.div>
           </motion.div>
 
           {/* Product Info */}
@@ -838,7 +736,7 @@ const ProductDetail = () => {
             <p className="text-muted-foreground text-xs sm:text-sm mb-3 sm:mb-4" style={{ userSelect: 'text', WebkitUserSelect: 'text' }}>{product.category}</p>
 
             <div className="flex items-center gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 flex-wrap w-full">
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1" aria-label={`${product.rating.toFixed(1)} out of 5 stars`}>
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star
                     key={i}
@@ -846,6 +744,7 @@ const ProductDetail = () => {
                       ? "fill-primary text-primary"
                       : "text-border fill-border/30"
                       }`}
+                    aria-hidden
                   />
                 ))}
               </div>
@@ -914,19 +813,25 @@ const ProductDetail = () => {
               </div>
             ) : null}
 
+            <div ref={variantSectionRef} id="pdp-variant-options">
             {colorOptions.length > 0 && (
               <div className="mb-5">
                 <p className="text-[11px] uppercase tracking-widest text-muted-foreground mb-2.5 font-medium">
                   Color — <span className="text-foreground normal-case tracking-normal font-semibold">{selectedColor || colorOptions[0].name}</span>
                 </p>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Select color">
                   {colorOptions.map((color, colorIdx) => (
                     <button
                       key={color.name || `color-${colorIdx}`}
+                      type="button"
+                      role="radio"
+                      aria-checked={colorIdx === selectedColorIndex}
                       onClick={() => {
                         setSelectedColorIndex(colorIdx);
                         if (color.image && productImages.length > 0) {
-                          const imageIndex = productImages.findIndex(img => img === color.image);
+                          const imageIndex = productImages.findIndex((img) =>
+                            productImagesMatch(img, color.image)
+                          );
                           if (imageIndex !== -1) setSelectedImage(imageIndex);
                         }
                       }}
@@ -947,10 +852,13 @@ const ProductDetail = () => {
             {sizeOptions.length > 0 && (
               <div className="mb-5">
                 <p className="text-[11px] uppercase tracking-widest text-muted-foreground mb-2.5 font-medium">Size</p>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Select size">
                   {sizeOptions.map((size, sizeIdx) => (
                     <button
                       key={size.name || `size-${sizeIdx}`}
+                      type="button"
+                      role="radio"
+                      aria-checked={sizeIdx === selectedSizeIndex}
                       onClick={() => setSelectedSizeIndex(sizeIdx)}
                       style={{ touchAction: 'manipulation', minHeight: '40px' }}
                       className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all duration-200 ${
@@ -977,12 +885,15 @@ const ProductDetail = () => {
             {variantOptions.length > 0 && (
               <div className="mb-5 sm:mb-6">
                 <p className="text-[11px] uppercase tracking-widest text-muted-foreground mb-2.5 font-medium">Configuration</p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2" role="radiogroup" aria-label="Select configuration">
                   {variantOptions.map((variant) => {
                     const isActive = variant.key === selectedVariant?.key;
                     return (
                       <button
                         key={variant.key}
+                        type="button"
+                        role="radio"
+                        aria-checked={isActive}
                         onClick={() => setSelectedVariantKey(variant.key)}
                         style={{ touchAction: 'manipulation', minHeight: '72px' }}
                         className={`relative text-left rounded-xl p-3 flex flex-col gap-1 transition-all duration-200 ${
@@ -1013,6 +924,7 @@ const ProductDetail = () => {
                 </div>
               </div>
             )}
+            </div>
 
             {/* Description */}
             <div className="mb-8">
@@ -1063,26 +975,67 @@ const ProductDetail = () => {
 
             {/* Desktop CTAs */}
             <div className="hidden md:flex flex-col gap-3 mb-5">
+              {!cannotPurchase && (
+                <div className="flex items-center justify-between max-w-xs">
+                  <span className="text-sm text-muted-foreground">Quantity</span>
+                  <div
+                    className="flex items-center border border-border rounded-lg bg-background"
+                    aria-label="Quantity"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => setCartQuantity((q) => Math.max(1, q - 1))}
+                      disabled={cartQuantity <= 1}
+                      className="h-9 w-9 flex items-center justify-center hover:bg-muted disabled:opacity-40 transition-colors"
+                      aria-label="Decrease quantity"
+                    >
+                      <Minus className="h-4 w-4" />
+                    </button>
+                    <span className="text-sm font-medium w-10 text-center tabular-nums">{cartQuantity}</span>
+                    <button
+                      type="button"
+                      onClick={() => setCartQuantity((q) => Math.min(maxCartQuantity, q + 1))}
+                      disabled={cartQuantity >= maxCartQuantity}
+                      className="h-9 w-9 flex items-center justify-center hover:bg-muted disabled:opacity-40 transition-colors"
+                      aria-label="Increase quantity"
+                    >
+                      <Plus className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
+              )}
               <div className="flex gap-3">
                 <Button
                   size="lg"
                   className="flex-1 text-sm font-semibold"
-                  onClick={() => handleAddToCart()}
+                  onClick={() => (stickySelection.incomplete ? scrollToVariantOptions() : handleAddToCart())}
                   disabled={cannotPurchase}
                   style={{ touchAction: 'manipulation' }}
                 >
                   <ShoppingCart className="mr-2 h-4 w-4" />
-                  {cannotPurchase ? "Out of Stock" : product.isPreorder ? "Preorder Now" : "Add to Cart"}
+                  {cannotPurchase
+                    ? "Out of Stock"
+                    : stickySelection.incomplete
+                      ? "Choose options"
+                      : product.isPreorder
+                        ? `Preorder Now${cartQuantity > 1 ? ` (${cartQuantity})` : ""}`
+                        : `Add to Cart${cartQuantity > 1 ? ` (${cartQuantity})` : ""}`}
                 </Button>
                 <Button
                   size="lg"
                   variant="outline"
                   className="flex-1 text-sm font-semibold"
-                  onClick={() => handleAddToCart(true)}
+                  onClick={() => (stickySelection.incomplete ? scrollToVariantOptions() : handleAddToCart(true))}
                   disabled={cannotPurchase}
                   style={{ touchAction: 'manipulation' }}
                 >
-                  {cannotPurchase ? "Unavailable" : product.isPreorder ? "Preorder & Checkout" : "Buy Now"}
+                  {cannotPurchase
+                    ? "Unavailable"
+                    : stickySelection.incomplete
+                      ? "Choose options"
+                      : product.isPreorder
+                        ? "Preorder & Checkout"
+                        : "Buy Now"}
                 </Button>
                 <button
                   onClick={() => toggleFavorite(product)}
@@ -1194,7 +1147,7 @@ const ProductDetail = () => {
         )}
 
         {/* Complete Your Setup - Smart Accessories for Smartphones */}
-        {isSmartphone && filteredAccessories.length > 0 && (
+        {isSmartphone && categorizedAccessories.length > 0 && (
           <motion.section
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -1255,7 +1208,12 @@ const ProductDetail = () => {
                   msOverflowStyle: "none",
                 }}
               >
-                {filteredAccessories.map((accessory, index) => (
+                {filteredAccessories.length === 0 ? (
+                  <p className="text-sm text-muted-foreground text-center py-8 w-full">
+                    No accessories in this category. Try &quot;All Essentials&quot; or browse all accessories.
+                  </p>
+                ) : (
+                  filteredAccessories.map((accessory, index) => (
                   <motion.div
                     key={accessory.id}
                     initial={{ opacity: 0, y: 20 }}
@@ -1279,7 +1237,8 @@ const ProductDetail = () => {
                       showPreorderPrice={accessory.showPreorderPrice}
                     />
                   </motion.div>
-                ))}
+                ))
+                )}
               </div>
             </div>
 
@@ -1338,79 +1297,21 @@ const ProductDetail = () => {
         <RecentlyViewed />
       </div>
 
-      {/* Mobile sticky buy bar */}
-      <motion.div className="md:hidden fixed bottom-0 left-0 right-0 z-40 border-t border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 px-4 py-2.5 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_-4px_24px_rgba(0,0,0,0.06)]">
-        <motion.div className="max-w-lg mx-auto space-y-2">
-          <motion.div className="flex items-center gap-3 min-w-0">
-            <motion.div className="flex-1 min-w-0">
-              {stickySelection.text ? (
-                <p className="text-[11px] text-muted-foreground truncate" title={stickySelection.text}>
-                  {stickySelection.text}
-                </p>
-              ) : stickySelection.incomplete ? (
-                <p className="text-[11px] text-amber-600">Select options above</p>
-              ) : null}
-              <p className="text-sm font-semibold text-primary leading-tight">
-                {preorderHideNumeric ? (
-                  "Pre-order"
-                ) : (
-                  <>
-                    {formatMoney(displayPrice)}
-                    {cartQuantity > 1 && (
-                      <span className="text-xs font-normal text-muted-foreground">
-                        {" "}
-                        × {cartQuantity}
-                      </span>
-                    )}
-                  </>
-                )}
-              </p>
-            </motion.div>
-            {!cannotPurchase && (
-              <motion.div
-                className="flex items-center border border-border rounded-lg shrink-0 bg-background"
-                aria-label="Quantity"
-              >
-                <button
-                  type="button"
-                  onClick={() => setCartQuantity((q) => Math.max(1, q - 1))}
-                  disabled={cartQuantity <= 1}
-                  className="h-9 w-9 flex items-center justify-center hover:bg-muted disabled:opacity-40 transition-colors"
-                  aria-label="Decrease quantity"
-                >
-                  <Minus className="h-3.5 w-3.5" />
-                </button>
-                <span className="text-sm font-medium w-8 text-center tabular-nums">{cartQuantity}</span>
-                <button
-                  type="button"
-                  onClick={() => setCartQuantity((q) => Math.min(maxCartQuantity, q + 1))}
-                  disabled={cartQuantity >= maxCartQuantity}
-                  className="h-9 w-9 flex items-center justify-center hover:bg-muted disabled:opacity-40 transition-colors"
-                  aria-label="Increase quantity"
-                >
-                  <Plus className="h-3.5 w-3.5" />
-                </button>
-              </motion.div>
-            )}
-          </motion.div>
-          <Button
-            size="sm"
-            className="w-full text-elegant h-10"
-            onClick={() => handleAddToCart()}
-            disabled={cannotPurchase || stickySelection.incomplete}
-            style={{ touchAction: "manipulation" }}
-          >
-            <ShoppingCart className="mr-1.5 h-4 w-4" />
-            {cannotPurchase
-              ? "Out of Stock"
-              : stickySelection.incomplete
-                ? "Choose options"
-                : product.isPreorder
-                  ? `Pre-order${cartQuantity > 1 ? ` (${cartQuantity})` : ""}`
-                  : `Add to cart${cartQuantity > 1 ? ` (${cartQuantity})` : ""}`}
-          </Button>
-        </motion.div>
-      </motion.div>
+      <PdpStickyBar
+        selectionText={stickySelection.text}
+        selectionIncomplete={stickySelection.incomplete}
+        displayPrice={displayPrice}
+        preorderHideNumeric={preorderHideNumeric}
+        cartQuantity={cartQuantity}
+        maxCartQuantity={maxCartQuantity}
+        cannotPurchase={cannotPurchase}
+        isPreorder={product.isPreorder}
+        onDecreaseQty={() => setCartQuantity((q) => Math.max(1, q - 1))}
+        onIncreaseQty={() => setCartQuantity((q) => Math.min(maxCartQuantity, q + 1))}
+        onAddToCart={() => handleAddToCart()}
+        onBuyNow={() => handleAddToCart(true)}
+        onIncompleteTap={scrollToVariantOptions}
+      />
 
       {/* Image Lightbox */}
       <ImageLightbox

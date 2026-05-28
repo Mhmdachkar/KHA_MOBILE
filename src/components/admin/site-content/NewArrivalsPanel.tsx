@@ -38,7 +38,7 @@ export function NewArrivalsPanel({
           </div>
           <div className="pt-2 border-t space-y-2">
             <p className="text-xs font-medium text-muted-foreground">Highlight Features (up to 3)</p>
-            {entry.features.map((feat, fi) => (
+            {(entry.features ?? []).map((feat, fi) => (
               <div key={fi} className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
                 <Input
                   placeholder="Label"
@@ -50,7 +50,7 @@ export function NewArrivalsPanel({
                           ? en
                           : {
                               ...en,
-                              features: en.features.map((f, k) =>
+                              features: (en.features ?? []).map((f, k) =>
                                 k === fi ? { ...f, label: e.target.value } : f
                               ),
                             }
@@ -69,7 +69,7 @@ export function NewArrivalsPanel({
                           ? en
                           : {
                               ...en,
-                              features: en.features.map((f, k) =>
+                              features: (en.features ?? []).map((f, k) =>
                                 k === fi ? { ...f, value: e.target.value } : f
                               ),
                             }
@@ -83,7 +83,7 @@ export function NewArrivalsPanel({
                   onClick={() =>
                     setNewArrivals((prev) =>
                       prev.map((en, j) =>
-                        j !== i ? en : { ...en, features: en.features.filter((_, k) => k !== fi) }
+                        j !== i ? en : { ...en, features: (en.features ?? []).filter((_, k) => k !== fi) }
                       )
                     )
                   }
@@ -93,14 +93,14 @@ export function NewArrivalsPanel({
                 </button>
               </div>
             ))}
-            {entry.features.length < 3 && (
+            {(entry.features ?? []).length < 3 && (
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() =>
                   setNewArrivals((prev) =>
                     prev.map((en, j) =>
-                      j !== i ? en : { ...en, features: [...en.features, { label: "", value: "" }] }
+                      j !== i ? en : { ...en, features: [...(en.features ?? []), { label: "", value: "" }] }
                     )
                   )
                 }

@@ -26,8 +26,7 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { CANONICAL_STOREFRONT_CATEGORIES, normalizeStorefrontCategory } from "@/lib/storefrontCategories";
-import { getDistinctBrands } from "@/lib/adminCatalogTaxonomy";
-import { useAdminMergedCatalog } from "@/lib/useAdminMergedCatalog";
+import { getDistinctBrandsFromStorefront } from "@/lib/adminCatalogTaxonomy";
 import { AdminBrandCombobox } from "@/components/admin/AdminBrandCombobox";
 import { cn } from "@/lib/utils";
 import { useUnsavedChanges } from "@/hooks/useUnsavedChanges";
@@ -214,8 +213,10 @@ const AdminProductEditor = () => {
   const [savedForm, setSavedForm] = useState<FormState>(() => emptyForm());
   const isDirty = JSON.stringify(form) !== JSON.stringify(savedForm);
   useUnsavedChanges(isDirty);
-  const { products: catalogProducts } = useAdminMergedCatalog();
-  const brandSuggestions = useMemo(() => getDistinctBrands(catalogProducts), [catalogProducts]);
+  const brandSuggestions = useMemo(
+    () => getDistinctBrandsFromStorefront(storefrontProducts),
+    [storefrontProducts]
+  );
   const normalizedCategory = normalizeStorefrontCategory(form.category);
 
   const patch = useCallback(<K extends keyof FormState>(key: K, value: FormState[K]) => {

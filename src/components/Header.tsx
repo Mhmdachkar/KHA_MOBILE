@@ -16,6 +16,10 @@ import { useToast } from "@/hooks/use-toast";
 import { useCatalog } from "@/context/CatalogContext";
 import { useSiteSettings } from "@/context/SiteSettingsContext";
 import { formatMoney } from "@/lib/storefrontPricing";
+import {
+  MobileProductBrowseNav,
+  type MobileProductBrowseStep,
+} from "@/components/MobileProductBrowseNav";
 
 const Header = () => {
   const { storefrontProducts } = useCatalog();
@@ -27,6 +31,8 @@ const Header = () => {
   const navigate = useNavigate();
   const [hidden, setHidden] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [productBrowseStep, setProductBrowseStep] = useState<MobileProductBrowseStep | null>(null);
+  const [browseCategory, setBrowseCategory] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [requestDialogOpen, setRequestDialogOpen] = useState(false);
@@ -43,6 +49,13 @@ const Header = () => {
   });
   const lastScrollY = useRef(0);
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (!mobileMenuOpen) {
+      setProductBrowseStep(null);
+      setBrowseCategory(null);
+    }
+  }, [mobileMenuOpen]);
 
   // Filter products based on search query (case-insensitive)
   const allSearchMatches = useMemo(() => {
@@ -393,63 +406,89 @@ const Header = () => {
                 <SheetContent side="right" className="w-[280px] sm:w-[320px]">
                   <div className="flex flex-col h-full">
                     <div className="mb-8">
-                      <h2 className="text-elegant text-xl mb-6">Menu</h2>
-                      <nav className="flex flex-col gap-4">
-                        <SheetClose asChild>
-                          <Link
-                            to="/"
-                            className="text-elegant text-sm hover:text-primary transition-all duration-300 py-2 border-b border-border/50"
-                            onClick={() => setMobileMenuOpen(false)}
-                          >
-                            Home
-                          </Link>
-                        </SheetClose>
-                        <SheetClose asChild>
-                          <Link
-                            to="/products"
-                            className="text-elegant text-sm hover:text-primary transition-all duration-300 py-2 border-b border-border/50"
-                            onClick={() => setMobileMenuOpen(false)}
-                          >
-                            Products
-                          </Link>
-                        </SheetClose>
-                        <SheetClose asChild>
-                          <Link
-                            to="/recharges"
-                            className="text-elegant text-sm hover:text-primary transition-all duration-300 py-2 border-b border-border/50"
-                            onClick={() => setMobileMenuOpen(false)}
-                          >
-                            Recharges
-                          </Link>
-                        </SheetClose>
-                        <SheetClose asChild>
-                          <Link
-                            to="/gift-cards"
-                            className="text-elegant text-sm hover:text-primary transition-all duration-300 py-2 border-b border-border/50"
-                            onClick={() => setMobileMenuOpen(false)}
-                          >
-                            Gift Cards
-                          </Link>
-                        </SheetClose>
-                        <SheetClose asChild>
-                          <Link
-                            to="/services"
-                            className="text-elegant text-sm hover:text-primary transition-all duration-300 py-2 border-b border-border/50"
-                            onClick={() => setMobileMenuOpen(false)}
-                          >
-                            Services
-                          </Link>
-                        </SheetClose>
-                        <SheetClose asChild>
-                          <Link
-                            to="/about"
-                            className="text-elegant text-sm hover:text-primary transition-all duration-300 py-2 border-b border-border/50"
-                            onClick={() => setMobileMenuOpen(false)}
-                          >
-                            About Us
-                          </Link>
-                        </SheetClose>
-                      </nav>
+                      <h2 className="text-elegant text-xl mb-6">
+                        {productBrowseStep ? "Products" : "Menu"}
+                      </h2>
+                      {productBrowseStep ? (
+                        <MobileProductBrowseNav
+                          step={productBrowseStep}
+                          selectedCategory={browseCategory}
+                          onOpenCategories={() => setProductBrowseStep("categories")}
+                          onSelectCategory={(category) => {
+                            setBrowseCategory(category);
+                            setProductBrowseStep("brands");
+                          }}
+                          onBackToMenu={() => {
+                            setProductBrowseStep(null);
+                            setBrowseCategory(null);
+                          }}
+                          onBackToCategories={() => setProductBrowseStep("categories")}
+                          onCloseMenu={() => setMobileMenuOpen(false)}
+                        />
+                      ) : (
+                        <nav className="flex flex-col gap-4">
+                          <SheetClose asChild>
+                            <Link
+                              to="/"
+                              className="text-elegant text-sm hover:text-primary transition-all duration-300 py-2 border-b border-border/50"
+                              onClick={() => setMobileMenuOpen(false)}
+                            >
+                              Home
+                            </Link>
+                          </SheetClose>
+                          <MobileProductBrowseNav
+                            step={null}
+                            selectedCategory={null}
+                            onOpenCategories={() => setProductBrowseStep("categories")}
+                            onSelectCategory={(category) => {
+                              setBrowseCategory(category);
+                              setProductBrowseStep("brands");
+                            }}
+                            onBackToMenu={() => {
+                              setProductBrowseStep(null);
+                              setBrowseCategory(null);
+                            }}
+                            onBackToCategories={() => setProductBrowseStep("categories")}
+                            onCloseMenu={() => setMobileMenuOpen(false)}
+                          />
+                          <SheetClose asChild>
+                            <Link
+                              to="/recharges"
+                              className="text-elegant text-sm hover:text-primary transition-all duration-300 py-2 border-b border-border/50"
+                              onClick={() => setMobileMenuOpen(false)}
+                            >
+                              Recharges
+                            </Link>
+                          </SheetClose>
+                          <SheetClose asChild>
+                            <Link
+                              to="/gift-cards"
+                              className="text-elegant text-sm hover:text-primary transition-all duration-300 py-2 border-b border-border/50"
+                              onClick={() => setMobileMenuOpen(false)}
+                            >
+                              Gift Cards
+                            </Link>
+                          </SheetClose>
+                          <SheetClose asChild>
+                            <Link
+                              to="/services"
+                              className="text-elegant text-sm hover:text-primary transition-all duration-300 py-2 border-b border-border/50"
+                              onClick={() => setMobileMenuOpen(false)}
+                            >
+                              Services
+                            </Link>
+                          </SheetClose>
+                          <SheetClose asChild>
+                            <Link
+                              to="/about"
+                              className="text-elegant text-sm hover:text-primary transition-all duration-300 py-2 border-b border-border/50"
+                              onClick={() => setMobileMenuOpen(false)}
+                            >
+                              About Us
+                            </Link>
+                          </SheetClose>
+                        </nav>
+                      )}
                     </div>
                   </div>
                 </SheetContent>

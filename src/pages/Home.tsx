@@ -182,7 +182,7 @@ const FlagshipiPhone16Showcase = () => {
               transition={{ delay: 0.5, duration: 0.8 }}
               className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 max-w-md mx-auto lg:mx-0 w-full"
             >
-              {(flagship.feature_chips.length > 0 ? flagship.feature_chips : [
+              {((flagship.feature_chips?.length ?? 0) > 0 ? flagship.feature_chips! : [
                 { label: "A18 Pro Chip", sublabel: "Next-Gen Performance" },
                 { label: "ProMotion", sublabel: "120Hz Display" },
                 { label: "48MP Camera", sublabel: "Pro Photography" },
@@ -406,13 +406,9 @@ function toHomeCarouselProduct(p: StorefrontProduct) {
 }
 
 const Home = () => {
-  const { storefrontProducts, refreshCatalog } = useCatalog();
+  const { storefrontProducts } = useCatalog();
   const { settings: siteSettings } = useSiteSettings();
   const heroSettings = siteSettings.hero;
-
-  useEffect(() => {
-    void refreshCatalog();
-  }, [refreshCatalog]);
 
   // Scroll to top on mount
   useEffect(() => {

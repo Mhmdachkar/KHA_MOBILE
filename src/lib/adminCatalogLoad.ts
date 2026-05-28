@@ -109,9 +109,6 @@ export async function loadStorefrontCatalogForAdmin(): Promise<{
   let apiCount = 0;
   let error: string | null = null;
 
-  // Avoid stale partial API state from a previous page shrinking the admin list.
-  applyPublicCatalogToRegistry([], []);
-
   const { products: rows, suppressedStorefrontIds, error: fetchError } =
     await fetchPublicCatalogProducts();
   apiCount = rows.length;

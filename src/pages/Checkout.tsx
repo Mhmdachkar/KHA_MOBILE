@@ -24,6 +24,12 @@ import { useCatalog } from "@/context/CatalogContext";
 import { useSiteSettings } from "@/context/SiteSettingsContext";
 import { formatMoney, resolveSalePrice } from "@/lib/storefrontPricing";
 import {
+  estimateProductOrderTotal,
+  getDeliveryFee,
+  getFreeShippingThreshold,
+} from "@/lib/storefrontCommerce";
+import { CheckoutPaymentBullets, CheckoutTrustNotice } from "@/components/checkout/CheckoutTrustNotice";
+import {
   RECHARGE_CATALOG,
   TOUCH_RECHARGE_CARDS,
   DAYS_RECHARGE_CARDS,
@@ -78,6 +84,34 @@ const Checkout = () => {
   const [couponError, setCouponError] = useState<string | null>(null);
   const [couponLoading, setCouponLoading] = useState(false);
   const priceDriftWarnedRef = useRef(false);
+  const [summaryOpen, setSummaryOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isMobile) setSummaryOpen(true);
+  }, [isMobile]);
+
+  const scrollToFirstCheckoutError = () => {
+    requestAnimationFrame(() => {
+      const el = document.querySelector('[data-checkout-error="true"]');
+      (el as HTMLElement | null)?.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  };
+
+  const navigateToConfirmation = (
+    orderNumber: string,
+    paymentMethod: PaymentMethod,
+    total: number,
+    whatsappUrl: string | null
+  ) => {
+    if (checkoutType === "product") {
+      clearCart();
+    }
+    setIsProcessing(false);
+    navigate(`/order-confirmation/${encodeURIComponent(orderNumber)}`, {
+      state: { paymentMethod, total, whatsappUrl },
+      replace: true,
+    });
+  };
 
   // Check if this is a recharge/gift card checkout (has URL params) or cart checkout
   const isRechargeCheckout = searchParams.has("name") || searchParams.has("price");
@@ -419,7 +453,25 @@ const Checkout = () => {
     setAdditionalCards(prev => prev.filter(c => c.id !== cardId));
   };
 
-  const deliveryFee = siteSettings.delivery_fee;
+  const deliveryFee = getDeliveryFee(siteSettings.delivery_fee);
+  const freeShippingThreshold = getFreeShippingThreshold(siteSettings.free_shipping_threshold);
+
+  const getProductCheckoutTotals = () => {
+    const subtotal = getCartSubtotal();
+    const discount = appliedCoupon?.discount ?? 0;
+    const { deliveryCharge, qualifiesForFreeShipping } = estimateProductOrderTotal(
+      subtotal,
+      deliveryFee,
+      freeShippingThreshold
+    );
+    return {
+      subtotal,
+      discount,
+      deliveryCharge,
+      qualifiesForFreeShipping,
+      total: Math.max(0, subtotal - discount) + deliveryCharge,
+    };
+  };
 
   const getStreamingPlanPrice = () => {
     const brandPricing = STREAMING_PRICING[productBrand];
@@ -543,9 +595,7 @@ const Checkout = () => {
       }
       return total;
     } else {
-      const subtotal = getCartSubtotal();
-      const discount = appliedCoupon?.discount ?? 0;
-      return Math.max(0, subtotal - discount) + deliveryFee;
+      return getProductCheckoutTotals().total;
     }
   };
 
@@ -674,7 +724,8 @@ const Checkout = () => {
   const persistOrder = async (paymentMethod: PaymentMethod) => {
     const items = buildOrderItems();
     const total = calculateTotal();
-    const shippingCost = checkoutType === "product" ? deliveryFee : 0;
+    const shippingCost =
+      checkoutType === "product" ? getProductCheckoutTotals().deliveryCharge : 0;
 
     return submitOrder({
       checkoutType,
@@ -697,6 +748,7 @@ const Checkout = () => {
   // Handle WhatsApp payment
   const handleWhatsAppPayment = async () => {
     if (!validateActiveFlow(false)) {
+      scrollToFirstCheckoutError();
       toast({
         title: "Validation Error",
         description: "Please fix the errors before proceeding.",
@@ -708,30 +760,14 @@ const Checkout = () => {
     setIsProcessing(true);
     try {
       const result = await persistOrder("whatsapp");
-
-      // Server returns a ready-built wa.me link with the real order number.
-      if (result.whatsappUrl) {
-        window.open(result.whatsappUrl, "_blank");
-      }
-
       trackCheckoutComplete(result.order.orderNumber, result.order.total);
-
-      toast({
-        title: `Order ${result.order.orderNumber} placed`,
-        description: "Opening WhatsApp to confirm your order…",
-      });
-
-      // Allow another order from the same tab.
       setIdempotencyKey(newIdempotencyKey());
-
-      if (!isRechargeCheckout) {
-        setTimeout(() => {
-          clearCart();
-          setIsProcessing(false);
-        }, 2000);
-      } else {
-        setTimeout(() => setIsProcessing(false), 2000);
-      }
+      navigateToConfirmation(
+        result.order.orderNumber,
+        "whatsapp",
+        result.order.total,
+        result.whatsappUrl
+      );
     } catch (err: unknown) {
       console.error("[Checkout] WhatsApp order failed:", err);
       await handleOrderError(err);
@@ -742,6 +778,7 @@ const Checkout = () => {
   // Handle Cash on Delivery payment
   const handleCashOnDeliveryPayment = async () => {
     if (!validateActiveFlow(true)) {
+      scrollToFirstCheckoutError();
       toast({
         title: "Validation Error",
         description: "Please fix the errors before proceeding.",
@@ -753,22 +790,9 @@ const Checkout = () => {
     setIsProcessing(true);
     try {
       const result = await persistOrder("cash_on_delivery");
-
       trackCheckoutComplete(result.order.orderNumber, result.order.total);
-
-      toast({
-        title: `Order ${result.order.orderNumber} placed`,
-        description:
-          "We'll contact you shortly to confirm delivery and payment.",
-      });
-
       setIdempotencyKey(newIdempotencyKey());
-
-      setTimeout(() => {
-        clearCart();
-        setIsProcessing(false);
-        navigate("/");
-      }, 2000);
+      navigateToConfirmation(result.order.orderNumber, "cash_on_delivery", result.order.total, null);
     } catch (err: unknown) {
       console.error("[Checkout] COD order failed:", err);
       await handleOrderError(err);
@@ -777,7 +801,7 @@ const Checkout = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 w-full">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 w-full pb-28 lg:pb-0">
       <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-12">
         {/* Back Button */}
         <motion.div
@@ -819,8 +843,34 @@ const Checkout = () => {
             transition={{ delay: 0.1 }}
           >
             <div className="bg-white rounded-lg p-4 sm:p-6 md:p-8 shadow-elegant border border-border">
-              <h2 className="text-elegant text-xl sm:text-2xl mb-4 sm:mb-6">Order Summary</h2>
+              <div className="flex items-center justify-between gap-3 mb-4 sm:mb-6">
+                <h2 className="text-elegant text-xl sm:text-2xl">Order Summary</h2>
+                {checkoutType === "product" && cart.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => openCart()}
+                    className="text-xs text-primary hover:underline shrink-0"
+                  >
+                    Edit cart
+                  </button>
+                )}
+              </div>
 
+              {isMobile && checkoutType === "product" && (
+                <button
+                  type="button"
+                  onClick={() => setSummaryOpen((o) => !o)}
+                  className="w-full flex items-center justify-between rounded-xl border border-border px-3 py-2.5 mb-4 text-sm lg:hidden"
+                >
+                  <span className="text-muted-foreground">
+                    {cart.length} item{cart.length !== 1 ? "s" : ""}
+                  </span>
+                  <span className="font-semibold">{formatMoney(calculateTotal())}</span>
+                </button>
+              )}
+
+              {(summaryOpen || !isMobile || checkoutType !== "product") && (
+              <>
               {isStreamingServiceCheckout || isRechargeCheckout ? (
                 <>
                   {/* Streaming Service/Recharge/Gift Card Product Image */}
@@ -933,29 +983,9 @@ const Checkout = () => {
                             {item.category && (
                               <p className="text-[10px] sm:text-xs text-muted-foreground mb-1 sm:mb-2">{item.category}</p>
                             )}
-                            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mt-1 sm:mt-2">
-                              <div className="flex items-center gap-1 sm:gap-2 border border-border rounded-lg">
-                                <motion.button
-                                  whileHover={{ scale: 1.1 }}
-                                  whileTap={{ scale: 0.9 }}
-                                  onClick={() => updateQuantity(item.id, item.quantity - 1, item.variantKey, (item as any).color, item.size)}
-                                  className="h-6 w-6 sm:h-7 sm:w-7 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
-                                >
-                                  <Minus className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
-                                </motion.button>
-                                <span className="text-xs sm:text-sm font-medium w-6 sm:w-8 text-center">
-                                  {item.quantity}
-                                </span>
-                                <motion.button
-                                  whileHover={{ scale: 1.1 }}
-                                  whileTap={{ scale: 0.9 }}
-                                  onClick={() => updateQuantity(item.id, item.quantity + 1, item.variantKey, (item as any).color, item.size)}
-                                  className="h-6 w-6 sm:h-7 sm:w-7 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
-                                >
-                                  <Plus className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
-                                </motion.button>
-                              </div>
-                              <div className="text-left sm:text-right">
+                            <div className="flex items-center justify-between gap-2 mt-1 sm:mt-2">
+                              <p className="text-xs text-muted-foreground">Qty: {item.quantity}</p>
+                              <div className="text-right">
                                 <p className="text-base sm:text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                                   {formatMoney(getPriceAsNumber(item.price) * item.quantity)}
                                 </p>
@@ -965,16 +995,6 @@ const Checkout = () => {
                               </div>
                             </div>
                           </div>
-
-                          {/* Remove Button */}
-                          <motion.button
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
-                            onClick={() => removeFromCart(item.id, item.variantKey, (item as any).color, item.size)}
-                            className="h-6 w-6 sm:h-8 sm:w-8 rounded-full hover:bg-destructive hover:text-destructive-foreground transition-all flex items-center justify-center self-start"
-                          >
-                            <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
-                          </motion.button>
                         </motion.div>
                       );
                     })}
@@ -1068,7 +1088,13 @@ const Checkout = () => {
                     </div>
                     <motion.div className="flex items-center justify-between text-sm">
                       <span className="text-muted-foreground">Delivery</span>
-                      <span className="font-medium">{formatMoney(deliveryFee)}</span>
+                      <span className="font-medium">
+                        {getProductCheckoutTotals().qualifiesForFreeShipping ? (
+                          <span className="text-emerald-600">Free</span>
+                        ) : (
+                          formatMoney(getProductCheckoutTotals().deliveryCharge)
+                        )}
+                      </span>
                     </motion.div>
                     <div className="pt-2 space-y-2">
                       <Label className="text-xs text-muted-foreground">Promo code</Label>
@@ -1122,18 +1148,9 @@ const Checkout = () => {
                 </div>
               </div>
 
-              {/* Security Notice */}
-              <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-primary/5 rounded-lg border border-primary/20">
-                <div className="flex items-start gap-2 sm:gap-3">
-                  <Check className="h-4 w-4 sm:h-5 sm:w-5 text-primary mt-0.5 flex-shrink-0" />
-                  <div>
-                    <p className="text-xs sm:text-sm font-medium mb-1">Secure Payment</p>
-                    <p className="text-[10px] sm:text-xs text-muted-foreground">
-                      Your payment will be processed securely via WhatsApp. We'll send your card details instantly after confirmation.
-                    </p>
-                  </div>
-                </div>
-              </div>
+              <CheckoutTrustNotice checkoutType={checkoutType} paymentMethod={paymentMethod} />
+              </>
+              )}
             </div>
           </motion.div>
 
@@ -1318,6 +1335,9 @@ const Checkout = () => {
                   </>
                 ) : (
                   <>
+                    <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                      Payment method
+                    </h3>
                     {/* Payment Method Selection */}
                     <div className="mb-6">
                       <Label className="text-elegant mb-3 block">Payment Method</Label>
@@ -1358,6 +1378,10 @@ const Checkout = () => {
                       </div>
                     </div>
 
+                    <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground pt-2">
+                      Delivery details
+                    </h3>
+
                     {/* Customer Name Field - Required (for product checkout) */}
                     <div>
                       <Label htmlFor="customerName" className="text-elegant text-sm mb-2 flex items-center gap-2">
@@ -1371,6 +1395,7 @@ const Checkout = () => {
                         placeholder="John Doe"
                         value={formData.customerName}
                         onChange={handleCustomerNameChange}
+                        data-checkout-error={errors.customerName ? "true" : undefined}
                         className={`mt-2 ${errors.customerName ? "border-red-500" : ""}`}
                         required
                       />
@@ -1406,6 +1431,7 @@ const Checkout = () => {
                           placeholder="your.email@example.com"
                           value={formData.email}
                           onChange={handleEmailChange}
+                          data-checkout-error={errors.email ? "true" : undefined}
                           className={`mt-2 ${errors.email ? "border-red-500" : ""}`}
                         />
                         {errors.email && (
@@ -1465,6 +1491,7 @@ const Checkout = () => {
                         placeholder="Street address, Building number, City, Area, Landmarks..."
                         value={formData.deliveryLocation}
                         onChange={handleDeliveryLocationChange}
+                        data-checkout-error={errors.deliveryLocation ? "true" : undefined}
                         className={`mt-2 min-h-[100px] resize-y ${errors.deliveryLocation ? "border-red-500" : ""}`}
                         required
                       />
@@ -1620,25 +1647,37 @@ const Checkout = () => {
                 </motion.div>
 
                 {/* Payment Info */}
-                <div className="pt-3 sm:pt-4 space-y-2 sm:space-y-3">
-                  <div className="flex items-start gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-muted-foreground">
-                    <Check className="h-3 w-3 sm:h-4 sm:w-4 text-primary mt-0.5 flex-shrink-0" />
-                    <p>Instant delivery via WhatsApp after payment confirmation</p>
-                  </div>
-                  <div className="flex items-start gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-muted-foreground">
-                    <Check className="h-3 w-3 sm:h-4 sm:w-4 text-primary mt-0.5 flex-shrink-0" />
-                    <p>Secure payment process - your information is protected</p>
-                  </div>
-                  <div className="flex items-start gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-muted-foreground">
-                    <Check className="h-3 w-3 sm:h-4 sm:w-4 text-primary mt-0.5 flex-shrink-0" />
-                    <p>24/7 customer support available</p>
-                  </div>
-                </div>
+                <CheckoutPaymentBullets
+                  paymentMethod={paymentMethod}
+                  isDigitalCheckout={isRechargeCheckout || isStreamingServiceCheckout}
+                />
               </div>
             </div>
           </motion.div>
         </div>
       </div>
+
+      {isMobile && (
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 border-t border-border bg-background/95 backdrop-blur px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_-4px_24px_rgba(0,0,0,0.06)]">
+          <div className="flex items-center gap-3 max-w-lg mx-auto">
+            <div className="flex-1 min-w-0">
+              <p className="text-[11px] text-muted-foreground">Total</p>
+              <p className="text-base font-bold text-primary truncate">{formatMoney(calculateTotal())}</p>
+            </div>
+            <Button
+              onClick={paymentMethod === "whatsapp" ? handleWhatsAppPayment : handleCashOnDeliveryPayment}
+              disabled={isProcessing}
+              className={`shrink-0 h-11 px-4 ${
+                paymentMethod === "whatsapp"
+                  ? "bg-gradient-to-r from-[#25D366] to-[#128C7E] hover:from-[#128C7E] hover:to-[#25D366]"
+                  : ""
+              }`}
+            >
+              {isProcessing ? "Processing…" : "Place order"}
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

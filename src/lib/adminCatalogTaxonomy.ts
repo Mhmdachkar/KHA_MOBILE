@@ -197,6 +197,16 @@ export function getDistinctBrands(products: AdminListProduct[]): string[] {
   return Array.from(set).sort((a, b) => a.localeCompare(b));
 }
 
+/** Brand suggestions for admin editors without loading the full merged admin catalog. */
+export function getDistinctBrandsFromStorefront(products: StorefrontProduct[]): string[] {
+  const set = new Set<string>();
+  for (const p of products) {
+    const b = p.brand || inferProductBrand(p);
+    if (b && b !== "Unbranded") set.add(b);
+  }
+  return Array.from(set).sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
+}
+
 /** Suggested storefront paths for homepage category links. */
 export const SUGGESTED_CATEGORY_LINKS: { label: string; path: string }[] = [
   { label: "Smartphones", path: "/smartphones" },

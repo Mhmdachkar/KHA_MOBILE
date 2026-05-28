@@ -102,7 +102,7 @@ const categoryQuotes: Record<string, { title: string; subtitle: string }> = {
 const GRID_SKELETON_COUNT = 10;
 
 const CategoryPage = () => {
-  const { storefrontProducts, catalogLoaded, refreshCatalog } = useCatalog();
+  const { storefrontProducts, catalogLoaded } = useCatalog();
   const location = useLocation();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [sortBy, setSortBy] = useState<string>("default");
@@ -115,10 +115,6 @@ const CategoryPage = () => {
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
   }, [location.pathname]);
-
-  useEffect(() => {
-    void refreshCatalog();
-  }, [location.pathname, refreshCatalog]);
 
   const categoryDisplayName = resolveCategoryFromPath(location.pathname);
 
